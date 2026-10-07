@@ -8,6 +8,7 @@ export interface SwipeCard {
   correct: Direction;
   explanation: string;
   sourceSlide?: number;
+  sourceNote?: string;
   source?: { title: string; url: string; page: number; label?: string; teacher?: string };
 }
 

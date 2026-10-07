@@ -2,14 +2,19 @@ import type { Direction, SwipeCard } from './swipe-cards';
 import { astronomyCards } from './astronomy-cards';
 import { jeonCards } from './jeon-cards';
 import { socialCards } from './social-cards';
+import { parkCards, joCards } from './biology-cards';
+import { parkWritten, joWritten, type WrittenQuestion } from './biology-written';
 interface MenuItem { id: string; name: string; direction: Direction; symbol: string; description: string }
-export interface SubjectDeck extends MenuItem { kind: 'deck'; cards: SwipeCard[]; fullName?: string }
+export interface SubjectDeck extends MenuItem { kind: 'deck'; cards: SwipeCard[]; fullName?: string; writtenQuestions?: WrittenQuestion[] }
 export interface SubjectGroup extends MenuItem { kind: 'group'; children: SubjectNode[] }
 export type SubjectNode = SubjectDeck | SubjectGroup;
 export const subjectMenu: SubjectGroup = {
   id: 'root', kind: 'group', name: '과목 선택', direction: 'up', symbol: '✳', description: '분야를 고르고, 그 안에서 공부할 과목을 골라요.',
   children: [
-    { id: 'biology', kind: 'deck', name: '생물', direction: 'up', symbol: '✳', description: '생명의 원리를 한 장씩.', cards: [] },
+    { id: 'biology', kind: 'group', name: '생물', direction: 'up', symbol: '✳', description: '선생님별 객관식과 서술형 연습.', children: [
+      { id: 'biology-jo', kind: 'deck', name: '조용민T', fullName: '생물(조용민T)', direction: 'left', symbol: '✳', description: '전사·번역·발현 조절·세포 분화.', cards: joCards, writtenQuestions: joWritten },
+      { id: 'biology-park', kind: 'deck', name: '박상영T', fullName: '생물(박상영T)', direction: 'right', symbol: '✳', description: '유전 법칙·사람의 유전·돌연변이·유전 물질.', cards: parkCards, writtenQuestions: parkWritten },
+    ] },
     { id: 'humanities', kind: 'group', name: '인문(국,사,영)', direction: 'left', symbol: '가', description: '국어 · 사회 · 영어를 방향으로 골라요.', children: [
       { id: 'korean', kind: 'deck', name: '국어', direction: 'up', symbol: '가', description: '말과 글의 감각을 한 장씩.', cards: [] },
       { id: 'social', kind: 'deck', name: '사회', fullName: '사회(성신제)', direction: 'left', symbol: '◎', description: '세계화·국제 갈등·평화·정의관을 꼬아서.', cards: socialCards },

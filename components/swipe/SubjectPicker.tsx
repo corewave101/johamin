@@ -5,6 +5,7 @@ import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANC
 import { playTick } from '../../lib/sound';
 import LaminatedCard from './LaminatedCard';
 import SwipeGame from './SwipeGame';
+import BiologyStudy from './BiologyStudy';
 
 export default function SubjectPicker() {
   const [path, setPath] = useState<SubjectGroup[]>([]);
@@ -66,6 +67,7 @@ export default function SubjectPicker() {
   const activeDirection = distance > 18 ? directionOf(drag.x, drag.y) : null;
   const highlighted = options.find(item => item.direction === activeDirection && item.enabled);
   const backLabel = path.length ? '← 파트' : '← 과목';
+  if (subject?.writtenQuestions?.length) return <BiologyStudy key={subject.id} deck={subject} onBack={back} />;
   if (subject?.cards.length) return <SwipeGame key={subject.id} cards={subject.cards} deckName={subject.fullName ?? subject.name} onBack={back} backLabel={backLabel} />;
 
   return <main className="swipe-app subject-app">

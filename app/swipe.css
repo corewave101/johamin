@@ -230,3 +230,28 @@
 }
 
 @media (prefers-reduced-motion: reduce) { .swipe-flying { display: none; } }
+
+
+/* Biology uses the existing glass theme with a scrollable writing workspace. */
+.biology-app { overflow-y: auto; touch-action: auto; }
+.biology-study { width: min(860px, calc(100% - 32px)); margin: 24px auto 48px; }
+.biology-header { display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: 20px; }
+.biology-header h1 { font-size: clamp(18px, 3vw, 25px); margin: 0; }
+.biology-menu, .biology-written { padding: clamp(20px, 4vw, 36px); border-radius: 24px; margin-top: 20px; }
+.biology-mode { display: grid; gap: 10px; width: 100%; text-align: left; padding: 24px; margin: 18px 0; border: 1px solid #ffffff65; border-radius: 18px; background: #ffffffdf; color: #172438; cursor: pointer; }
+.biology-mode strong { font-size: 22px; }
+.biology-mode span, .biology-note { font-size: 14px; line-height: 1.7; }
+.biology-progress { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; font-size: 14px; }
+.biology-written h2 { font-size: clamp(20px, 3vw, 27px); line-height: 1.6; margin: 24px 0; }
+.biology-written textarea { display: block; width: 100%; box-sizing: border-box; margin: 10px 0 20px; padding: 16px; resize: vertical; font: inherit; font-size: 16px; line-height: 1.8; color: #172438; background: #fffffff0; border: 1px solid #ffffff80; border-radius: 14px; }
+.biology-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin: 18px 0; }
+.biology-model { background: #fffffff0; color: #172438; padding: 22px; border-radius: 16px; margin: 20px 0; }
+.biology-model p { line-height: 1.9; }
+.biology-model fieldset { border: 1px solid #ced5df; padding: 16px; border-radius: 12px; }
+.biology-model fieldset label { display: flex; gap: 10px; align-items: flex-start; line-height: 1.8; margin: 12px 0; }
+.biology-model input { margin-top: 7px; width: 18px; height: 18px; flex-shrink: 0; }
+.biology-score { font-weight: 700; }
+.biology-written select { max-width: 100%; padding: 8px; border-radius: 8px; font: inherit; color: #172438; }
+.biology-study button:disabled { opacity: .45; cursor: default; }
+.biology-study button:focus-visible, .biology-study textarea:focus-visible, .biology-study select:focus-visible { outline: 3px solid #79baff; outline-offset: 3px; }
+@media (max-width: 520px) { .biology-header { flex-wrap: wrap; } .biology-actions label { width: 100%; } .biology-written select { width: 80%; } }
