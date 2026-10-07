@@ -1,6 +1,7 @@
 -- 조하민레츠고 Supabase schema.
 -- Run once in Supabase → SQL Editor, then run db/seed.sql to load the cards.
--- Reading cards needs no login. Editing needs a Google login whose email is in public.editors.
+-- Reading cards needs no login. Cards are edited in the Supabase dashboard (Table Editor), which bypasses RLS.
+-- If the app ever gets a login, only emails in public.editors may write through the API.
 
 -- ─── Decks ──────────────────────────────────────────────────────────────
 create table if not exists public.decks (
@@ -73,7 +74,7 @@ create or replace function public.stamp_card_update() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
   new.updated_at := now();
-  new.updated_by := auth.jwt() ->> 'email';
+  new.updated_by := coalesce(auth.jwt() ->> 'email', 'dashboard');
   return new;
 end $$;
 
@@ -81,7 +82,7 @@ create or replace function public.track_card_change() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
   insert into public.card_history (card_id, action, changed_by, before, after)
-  values (coalesce(new.id, old.id), tg_op, auth.jwt() ->> 'email',
+  values (coalesce(new.id, old.id), tg_op, coalesce(auth.jwt() ->> 'email', 'dashboard'),
           case when tg_op <> 'INSERT' then to_jsonb(old) end,
           case when tg_op <> 'DELETE' then to_jsonb(new) end);
   return null;
