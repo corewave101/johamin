@@ -1,0 +1,17 @@
+{
+  "name": "조하민레츠고",
+  "short_name": "조하민",
+  "description": "카드를 네 방향으로 넘기며 푸는 시험공부 게임. 한 번 열면 인터넷 없이도 열려요.",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#3c2412",
+  "theme_color": "#7fa9d6",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

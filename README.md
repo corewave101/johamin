@@ -55,6 +55,13 @@
 검증: `node tests/test_study_content.cjs`, `node tests/test_study_render.cjs`, 기존 `tests/test_*.cjs`, `npm run build`.
 GitHub Pages는 `.github/workflows/deploy.yml`에서 main push 시 전체 데이터 테스트와 빌드 후 배포합니다.
 
+## 오프라인 · 앱 설치
+
+- 사이트를 한 번 열면 서비스 워커(`public/sw.js`)가 코드·사진·배경 영상을 기기에 저장해, 이후 인터넷 없이도 크롬에서 열립니다.
+- 크롬 메뉴 → "앱 설치"(PC) / "홈 화면에 추가"(폰)로 설치하면 주소창 없는 앱처럼 열립니다. 아이콘은 `public/icons/`, 앱 정보는 `public/manifest.webmanifest`.
+- 저장할 파일 목록과 버전은 빌드 때 `vite.config.ts`의 `offline()`이 자동으로 채웁니다. 배포하면 다음 접속 때 새 버전으로 바뀝니다.
+- 카드는 오프라인이면 기기에 저장된 마지막 DB 카드(없으면 내장 카드)로 풀고, 연결되면 새로 받습니다.
+
 ## 시작 화면
 
 - `components/swipe/Intro.tsx`: 처음 열 때 배경 영상·사진·카드 DB·글꼴을 불러오며 진행률을 보여 주고, 다 되면 JO 버튼(마우스 올리면·누르면 HAMIN!)이 뜹니다. 기다리는 목록은 `lib/boot.ts`(테스트: `tests/test_boot.cjs`).

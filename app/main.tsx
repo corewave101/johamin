@@ -13,6 +13,11 @@ import './intro.css';
 
 // #demo (or the older #johamin/demo) opens the sample deck; every other address opens the subject menu.
 const isDemo = ['#demo', '#johamin/demo'].includes(window.location.hash);
+// Offline support: the service worker keeps the app on this device after the first visit (only in the built site).
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => { /* the site still works online */ }); });
+}
+
 createRoot(document.getElementById('root')!).render(<>
   <Backdrop />
   <SoundToggle />
