@@ -1,5 +1,5 @@
 /* 조하민레츠고 · laminated cards and glass sections over the village video. */
-.swipe-app {
+:root {
   --ink: #2a1f16;
   --ink-soft: rgba(42, 31, 22, .68);
   --accent: #1d6a86;
@@ -9,6 +9,9 @@
   --glass-line: rgba(255, 255, 255, .6);
   --glass-shadow: 0 18px 40px -18px rgba(28, 18, 8, .6), 0 2px 8px -2px rgba(28, 18, 8, .25);
   --glass-shine: inset 0 1px 0 rgba(255, 255, 255, .9), inset 0 -1px 0 rgba(255, 255, 255, .2);
+  --gold: #e8b931;
+}
+.swipe-app {
   position: relative; z-index: 1; min-height: 100svh; display: grid; justify-items: center; align-content: start;
   padding: 26px 20px 40px; color: var(--ink);
 }
@@ -292,3 +295,35 @@
 .swipe-reading { padding: 18px 22px; margin-top: 18px; border-radius: 16px; }
 .swipe-reading summary { font-weight: 700; cursor: pointer; }
 .swipe-reading p { margin-top: 12px; white-space: pre-line; line-height: 1.9; font-size: 16px; overflow-wrap: anywhere; }
+
+/* 하민의 가호 */
+.blessing-toggle { position: fixed; left: 12px; bottom: 12px; z-index: 12; display: grid; justify-items: start; gap: 1px; padding: 7px 14px 7px 12px;
+  border-radius: 14px; color: #5a3e05; text-align: left; transition: background .2s, box-shadow .2s, transform .2s; }
+.blessing-toggle strong { position: relative; font-size: 14px; font-weight: 800; letter-spacing: -.01em; }
+.blessing-best { position: relative; font-size: 12px; font-weight: 600; color: rgba(90, 62, 5, .78); }
+.blessing-best b { font-size: 15px; font-weight: 900; font-variant-numeric: tabular-nums; margin-right: 2px; }
+.blessing-toggle.is-on { background: linear-gradient(135deg, rgba(255, 226, 120, .82), rgba(232, 185, 49, .78) 55%, rgba(199, 141, 18, .8));
+  border-color: rgba(255, 240, 180, .9); box-shadow: var(--glass-shadow), 0 0 18px rgba(232, 185, 49, .55), var(--glass-shine); }
+.blessing-toggle.is-on:hover { transform: translateY(-1px); box-shadow: var(--glass-shadow), 0 0 26px rgba(232, 185, 49, .75), var(--glass-shine); }
+.blessing-toggle.is-off { color: var(--ink-soft); }
+.blessing-toggle.is-off .blessing-best { color: var(--ink-soft); }
+.blessing-warning { position: fixed; inset: 0; z-index: 900; display: grid; place-items: center; padding: 20px; background: rgba(20, 12, 4, .45); }
+.blessing-warning-box { width: min(100%, 380px); padding: 22px 22px 18px; border-radius: 20px; color: var(--ink); }
+.blessing-warning-box h2 { position: relative; margin: 0 0 8px; font-size: 19px; color: #9a1c2c; }
+.blessing-warning-box p { position: relative; margin: 0 0 18px; font-size: 15px; line-height: 1.6; }
+.blessing-warning-actions { position: relative; display: flex; justify-content: flex-end; gap: 8px; }
+.blessing-keep { border-radius: 999px; padding: 7px 16px; font-size: 14px; font-weight: 800; color: #5a3e05;
+  background: linear-gradient(135deg, #ffe278, var(--gold)); border: 1px solid rgba(255, 240, 180, .9); }
+:root[data-blessing="on"] .streak-flame { transform: scale(1.35); transform-origin: top right;
+  box-shadow: var(--glass-shadow), 0 0 0 1.5px var(--gold), 0 0 20px rgba(232, 185, 49, .6); }
+.swipe-app { padding-bottom: 84px; }
+@media (min-width: 901px) {
+  .blessing-toggle { left: 16px; top: 14px; bottom: auto; }
+  .swipe-app { padding-bottom: 40px; }
+}
+
+/* 갑툭튀 */
+.jumpscare { position: fixed; inset: 0; z-index: 1000; background: #000 center / cover no-repeat; pointer-events: none; }
+.jumpscare.is-fading { animation: scare-fade 1s ease-out forwards; }
+.jumpscare.is-stuck { pointer-events: auto; cursor: pointer; }
+@keyframes scare-fade { from { opacity: 1; } to { opacity: 0; } }

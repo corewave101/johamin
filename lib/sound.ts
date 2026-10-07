@@ -18,7 +18,7 @@ export function onMutedChange(listener: (muted: boolean) => void) {
   return () => { listeners.delete(listener); };
 }
 
-function audio() {
+export function audio() {
   if (muted) return null;
   try {
     context ??= new AudioContext();
@@ -29,7 +29,7 @@ function audio() {
   }
 }
 
-function noiseBuffer(ctx: AudioContext) {
+export function noiseBuffer(ctx: AudioContext) {
   if (!noise) {
     noise = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.5), ctx.sampleRate);
     const data = noise.getChannelData(0);
@@ -38,7 +38,7 @@ function noiseBuffer(ctx: AudioContext) {
   return noise;
 }
 
-function envelope(ctx: AudioContext, start: number, peak: number, attack: number, release: number) {
+export function envelope(ctx: AudioContext, start: number, peak: number, attack: number, release: number) {
   const gain = ctx.createGain();
   gain.gain.setValueAtTime(0.0001, start);
   gain.gain.exponentialRampToValueAtTime(peak, start + attack);

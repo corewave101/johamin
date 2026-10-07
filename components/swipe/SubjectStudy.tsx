@@ -26,8 +26,8 @@ export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBa
   };
   useEffect(() => { title.current?.focus(); }, [mode, index]);
   // The parent handles Esc; mode navigation uses explicit buttons.
-  if (mode === 'missed') return <SwipeGame cards={retryCards} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode('problems')} backLabel="← 문제 유형" />;
-  if (mode === 'choice') return <SwipeGame cards={choiceCards} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode('problems')} backLabel="← 문제 유형" />;
+  if (mode === 'missed') return <SwipeGame cards={retryCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode('problems')} backLabel="← 문제 유형" />;
+  if (mode === 'choice') return <SwipeGame cards={choiceCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode('problems')} backLabel="← 문제 유형" />;
   const reviewed = questions.filter(item => drafts[item.id]?.reviewed).length;
   const missed = missedCards(choiceCards);
   return <main className="swipe-app biology-app">

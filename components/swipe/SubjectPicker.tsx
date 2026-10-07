@@ -34,6 +34,11 @@ export default function SubjectPicker() {
     resetDrag();
   }, [subject, path.length, current, back, resetDrag]);
   useEffect(() => {
+    const home = () => { setSubject(null); setPath([]); resetDrag(); };
+    window.addEventListener('johamin:home', home);
+    return () => window.removeEventListener('johamin:home', home);
+  }, [resetDrag]);
+  useEffect(() => {
     if (!subject) heading.current?.focus();
   }, [subject, current]);
   useEffect(() => {

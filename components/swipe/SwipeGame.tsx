@@ -3,6 +3,8 @@ import { swipeCards, type Direction, type SwipeCard } from '../../data/swipe-car
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playResult, playSwipe } from '../../lib/sound';
 import { recordResult } from '../../lib/progress';
+import { recordStreak } from '../../lib/best-streak';
+import { IDLE_MS, LEAVE_CHANCE, newTracker, scareForAnswer, triggerScare } from '../../lib/jumpscare';
 import { answerCard, getStats, newGame, type AnswerChoice } from '../../lib/swipe-game';
 import LaminatedCard from './LaminatedCard';
 import StreakFlame from './StreakFlame';
@@ -11,9 +13,13 @@ type Offset = { x: number; y: number };
 type Flight = { card: SwipeCard; direction: Direction; id: number; from: Offset };
 const FLIGHT_MS = 380;
 
-export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱', onBack, backLabel = '← 과목' }: { cards?: SwipeCard[]; deckName?: string; onBack?: () => void; backLabel?: string }) {
+export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱', deckId, onBack, backLabel = '← 과목' }: { cards?: SwipeCard[]; deckName?: string; deckId?: string; onBack?: () => void; backLabel?: string }) {
   const [game, setGame] = useState(() => newGame(cards));
   const gameRef = useRef(game);
+  const scares = useRef(newTracker());
+  const idleShown = useRef(false);
+  const deck = useRef({ deckId, deckName, onBack });
+  deck.current = { deckId, deckName, onBack };
   const started = useRef(performance.now());
   const [flight, setFlight] = useState<Flight | null>(null);
   const [drag, setDrag] = useState<Offset>({ x: 0, y: 0 });
@@ -40,6 +46,11 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     const next = answerCard(current, direction, (now - started.current) / 1000);
     const answered = next.attempts[next.attempts.length - 1];
     recordResult(answered.card.id, direction === 'unknown' ? 'u' : answered.correct ? 'c' : 'w');
+    const judged = scareForAnswer(scares.current, { correct: answered.correct, unknown: direction === 'unknown', seconds: answered.seconds,
+      streakBefore: current.streak, streakAfter: next.streak, astronomy: Boolean(deck.current.deckId?.startsWith('astronomy')) });
+    scares.current = judged.tracker;
+    if (judged.scare) triggerScare(judged.scare);
+    if (deck.current.onBack) recordStreak(deck.current.deckName.split(' · ')[0], next.streak);
     playSwipe(flyTo);
     if (direction !== 'unknown') playResult(next.attempts[next.attempts.length - 1].correct);
     gameRef.current = next;
@@ -60,7 +71,20 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     return () => { window.removeEventListener('keydown', handleKey); clearTimeout(flightTimer.current); };
   }, [choose]);
 
+  // 9: five minutes on one card. 10: leaving a game in progress.
+  const cardKey = card ? `${card.id}-${game.attempts.length}` : '';
+  useEffect(() => {
+    if (!cardKey) return;
+    const timer = setTimeout(() => { idleShown.current = triggerScare('idle', true); }, IDLE_MS);
+    return () => clearTimeout(timer);
+  }, [cardKey]);
+  useEffect(() => () => {
+    const left = gameRef.current;
+    if (!idleShown.current && left.attempts.length > 0 && left.queue.length > 0 && Math.random() < LEAVE_CHANCE) triggerScare('leave');
+  }, []);
+
   const restart = () => {
+    scares.current = newTracker();
     const next = newGame(cards);
     gameRef.current = next;
     setGame(next);
