@@ -1,5 +1,6 @@
 -- 조하민레츠고 Supabase schema.
--- Run once in Supabase → SQL Editor, then run db/seed.sql to load the cards.
+-- For a fresh project: run once in Supabase → SQL Editor, then run db/seed.sql to load the cards.
+-- (Already applied to the live project as migrations; this file is the reference copy.)
 -- Reading cards needs no login. Cards are edited in the Supabase dashboard (Table Editor), which bypasses RLS.
 -- If the app ever gets a login, only emails in public.editors may write through the API.
 
@@ -90,11 +91,9 @@ begin
   return null;
 end $$;
 
-drop trigger if exists cards_stamp on public.cards;
-create trigger cards_stamp before update on public.cards
+create or replace trigger cards_stamp before update on public.cards
   for each row execute function public.stamp_card_update();
-drop trigger if exists cards_history on public.cards;
-create trigger cards_history after insert or update or delete on public.cards
+create or replace trigger cards_history after insert or update or delete on public.cards
   for each row execute function public.track_card_change();
 
 -- ─── Learner attempts (each user sees only their own) ───────────────────
@@ -114,21 +113,19 @@ alter table public.editors      enable row level security;
 alter table public.card_history enable row level security;
 alter table public.attempts     enable row level security;
 
-drop policy if exists "decks readable"   on public.decks;
-drop policy if exists "decks editable"   on public.decks;
-drop policy if exists "cards readable"   on public.cards;
-drop policy if exists "cards editable"   on public.cards;
-drop policy if exists "editors see list" on public.editors;
-drop policy if exists "history for editors" on public.card_history;
-drop policy if exists "own attempts"     on public.attempts;
-
 create policy "decks readable" on public.decks for select using (true);
-create policy "decks editable" on public.decks for all using (public.is_editor()) with check (public.is_editor());
 create policy "cards readable" on public.cards for select using (true);
-create policy "cards editable" on public.cards for all using (public.is_editor()) with check (public.is_editor());
-create policy "editors see list" on public.editors for select using (public.is_editor());
-create policy "history for editors" on public.card_history for select using (public.is_editor());
+-- Editing policies apply to signed-in users only, so anonymous readers never evaluate is_editor().
+create policy "decks editable" on public.decks for all to authenticated using (public.is_editor()) with check (public.is_editor());
+create policy "cards editable" on public.cards for all to authenticated using (public.is_editor()) with check (public.is_editor());
+create policy "editors see list" on public.editors for select to authenticated using (public.is_editor());
+create policy "history for editors" on public.card_history for select to authenticated using (public.is_editor());
 create policy "own attempts" on public.attempts for all using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+revoke execute on function public.is_editor() from public, anon;
+grant execute on function public.is_editor() to authenticated;
+revoke execute on function public.stamp_card_update() from public, anon, authenticated;
+revoke execute on function public.track_card_change() from public, anon, authenticated;
 -- editors itself has no insert/update policy: add or remove editors from the Supabase dashboard only.
 
 -- ─── First editor ───────────────────────────────────────────────────────

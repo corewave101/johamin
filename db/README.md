@@ -1,13 +1,22 @@
 # 카드 DB (Supabase)
 
-카드를 한 장씩 표로 관리하기 위한 준비물입니다. 아직 앱은 DB를 읽지 않고 `data/*.ts`의 내장 카드를 씁니다.
+카드를 한 장씩 표로 관리하는 DB입니다. 아직 앱은 DB를 읽지 않고 `data/*.ts`의 내장 카드를 씁니다.
+
+**현재 상태:** Supabase 프로젝트(서울, `vlmwrkalgjaduagxavhb`)에 표·권한 규칙이 적용되었고 덱 7개·카드 600장이 들어 있습니다. 앱에서 쓸 주소와 공개 키는 `lib/supabase-config.ts`에 있습니다.
+
+## 카드 고치기 (지금 방법)
+
+1. supabase.com 로그인 → 프로젝트 → **Table Editor** → `cards`
+2. 위쪽 검색·필터(Filter)로 `deck_id = social`, `question` 포함 `노직` 처럼 찾기
+3. 칸을 더블클릭해 고치고 저장. 오답 수가 3개가 아니거나 보기가 겹치면 DB가 저장을 거부합니다
+4. 바뀐 내용은 `card_history` 표에 자동으로 남습니다
 
 ## 파일
 
 | 파일 | 내용 |
 |---|---|
 | `schema.sql` | 표·권한 규칙·수정 이력. Supabase SQL Editor에서 한 번 실행 |
-| `seed.sql` | 지금 있는 카드 전부(덱 7개, 카드 496장). `schema.sql` 다음에 실행 |
+| `seed.sql` | 지금 있는 카드 전부(덱 7개, 카드 600장). 새 프로젝트에서 `schema.sql` 다음에 실행 |
 | `cards.json` | `seed.sql`과 같은 내용을 사람이 읽기 쉽게 정리한 사본 |
 | `../scripts/export-cards.cjs` | `data/*.ts`에서 위 두 파일을 다시 만드는 스크립트 |
 
@@ -19,7 +28,9 @@
 | `deck_id` | 덱 | `social` |
 | `kind` | `choice`(4지선다) / `written`(서술형) | `choice` |
 | `topic` | 주제 | `분배적 정의` |
+| `badge` | 질문 위 작은 표시 | `박상영T`, `영어` |
 | `question` | 질문 | `취득·이전·교정의 원칙을 말한 X. …` |
+| `passage` | 함께 보여 줄 지문(영어) | |
 | `answer` | 정답(서술형은 모범 답안) | `최소 국가` |
 | `wrong` | 오답 3개 | `{복지 국가, 확대 국가, 공화정 연맹}` |
 | `criteria` | 서술형 채점 기준 | `{상동염색체 분리, …}` |
@@ -31,17 +42,15 @@ DB가 저장 전에 검사합니다: 오답은 정확히 3개, 정답·오답 4�
 ## 권한
 
 - 카드·덱 읽기: 누구나(로그인 없이)
-- 카드·덱 수정: 구글 로그인 + `editors` 표에 있는 이메일만. 처음에는 `mungga1111@gmail.com` 하나
+- 카드·덱 수정: Supabase 대시보드(계정 로그인 필요)에서. 앱에 로그인을 붙이면 `editors` 표의 이메일만 수정 가능 (처음에는 `mungga1111@gmail.com`)
 - 편집자 추가: Supabase 대시보드 → Table Editor → `editors` → Insert row (앱에서는 못 바꿈)
 - 풀이 기록(`attempts`): 각자 자기 것만 읽고 쓰기
 - 카드가 바뀌면 `card_history`에 누가·언제·무엇을 바꿨는지 자동으로 남음
 
-## 설정 순서
+## 새 프로젝트에 다시 만들 때
 
-1. supabase.com 가입 → New project (지역은 Northeast Asia (Seoul) 추천)
-2. SQL Editor → `schema.sql` 내용 붙여넣기 → Run
-3. SQL Editor → `seed.sql` 내용 붙여넣기 → Run
-4. Authentication → Providers → Google 켜기
-5. Project Settings → API의 Project URL과 anon key를 Claude에게 전달 (service_role key는 절대 공유·커밋하지 말 것)
+1. SQL Editor → `schema.sql` 실행
+2. SQL Editor → `seed.sql` 실행
+3. `lib/supabase-config.ts`의 주소·공개 키 교체 (service_role key는 절대 넣지 말 것)
 
-`schema.sql`과 `seed.sql`은 다시 실행해도 안전합니다(이미 있는 표·카드는 건너뜀).
+두 파일 모두 다시 실행해도 표·카드가 중복되지 않습니다(정책 생성 줄은 이미 있으면 에러가 나니 그 부분만 건너뛰세요).
