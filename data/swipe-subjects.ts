@@ -20,7 +20,7 @@ export const subjectMenu: SubjectGroup = {
     ] },
     { id: 'humanities', kind: 'group', name: '인문(국,사,영)', direction: 'left', symbol: '가', description: '국어 · 사회 · 영어를 방향으로 골라요.', children: [
       { id: 'korean', kind: 'deck', name: '국어', direction: 'up', symbol: '가', description: '수업자료 미제공 · 공통 독해·문학 기초와 연습.', cards: koreanCards },
-      { id: 'social', kind: 'deck', name: '사회', fullName: '사회(성신제)', direction: 'left', symbol: '◎', description: '세계화·국제 갈등·평화·정의관을 꼬아서.', cards: socialCards },
+      { id: 'social', kind: 'deck', name: '사회', fullName: '사회(성신제)', direction: 'left', symbol: '◎', description: '세계화·국제 갈등·평화·정의관·불평등을 꼬아서.', cards: socialCards },
       { id: 'english', kind: 'deck', name: '영어', direction: 'right', symbol: 'A', description: '고대 건축물·Bartleby·가정법·예술과 측정.', cards: englishCards, writtenQuestions: englishWritten },
     ] },
     { id: 'astronomy', kind: 'group', name: '행성우주과학', direction: 'right', symbol: '✦', description: '왼쪽은 황, 오른쪽은 전. 공부할 파트를 골라요.', children: [
