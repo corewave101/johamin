@@ -1,0 +1,13 @@
+/* Village video backdrop. The media moves by the pointer offset (--px, --py) for a little depth. */
+.scene { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; background: #c9a87a; --px: 0; --py: 0; }
+.scene-media { position: absolute; left: -3%; top: -3%; width: 106%; height: 106%; object-fit: cover; object-position: 66% 40%;
+  background: center 40% / cover no-repeat; transform: translate3d(calc(var(--px) * -18px), calc(var(--py) * -10px), 0); will-change: transform; }
+.scene-poster { background-position: 66% 40%; }
+/* Shade the left, where the quiz sits, and keep the person on the right bright. */
+.scene-shade { position: absolute; inset: 0; background:
+  linear-gradient(90deg, rgba(36, 24, 14, .5) 0%, rgba(36, 24, 14, .26) 32%, rgba(36, 24, 14, 0) 58%),
+  linear-gradient(180deg, rgba(24, 34, 52, .18) 0%, rgba(24, 34, 52, 0) 22%, rgba(36, 24, 14, 0) 70%, rgba(36, 24, 14, .32) 100%); }
+@media (max-width: 900px) {
+  .scene-media, .scene-poster { object-position: 70% 35%; background-position: 70% 35%; }
+  .scene-shade { background: linear-gradient(180deg, rgba(24, 30, 44, .38) 0%, rgba(36, 24, 14, .34) 45%, rgba(36, 24, 14, .5) 100%); }
+}

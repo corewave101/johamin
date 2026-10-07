@@ -14,4 +14,3 @@
 
 검증: `node tests/test_swipe_game.cjs`, `node tests/check_swipe_browser.cjs`, `node tests/check_jeon_browser.cjs`.
 화면 검증은 `JOHAMIN_TEST_URL`로 실행 중인 정적 사이트를 지정합니다.
-
