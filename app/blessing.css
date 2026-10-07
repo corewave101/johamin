@@ -1,0 +1,74 @@
+/* 가호 받기 (chooser) and 다른 가호 만들기 (editor). They reuse .blessing-warning as the dimmed layer. */
+.blessing-sheet { align-items: start; overflow-y: auto; padding: max(20px, env(safe-area-inset-top)) 16px 40px; }
+.blessing-panel { position: relative; width: min(100%, 520px); margin: 0 auto; padding: 18px 18px 16px; border-radius: 22px; color: var(--ink);
+  background: rgba(252, 247, 238, .9); }
+.blessing-panel > * { position: relative; }
+.blessing-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.blessing-panel h2 { margin: 0; font-size: 20px; outline: none; }
+.blessing-panel h3 { margin: 18px 0 8px; font-size: 15px; color: var(--ink-soft); }
+.blessing-panel .glass-button { border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 700; color: var(--ink); }
+.blessing-panel .glass-button.is-danger { color: #fff; background: #b8323f; border-color: #b8323f; }
+.blessing-choice { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border-radius: 16px; text-align: left; color: var(--ink);
+  background: rgba(255, 255, 255, .7); border: 1px solid rgba(120, 90, 50, .16); box-shadow: 0 6px 16px -10px rgba(40, 24, 8, .5); transition: transform .15s, box-shadow .15s; }
+.blessing-choice:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -10px rgba(40, 24, 8, .55); }
+.blessing-choice span { display: grid; gap: 1px; min-width: 0; }
+.blessing-choice strong { font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.blessing-choice small { font-size: 12px; color: var(--ink-soft); }
+.blessing-choice.is-hamin { background: linear-gradient(135deg, rgba(255, 238, 170, .85), rgba(246, 210, 102, .7)); }
+.blessing-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.blessing-row-actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 4px 0; }
+.blessing-panel-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 18px; }
+.blessing-new { padding: 11px 18px; border-radius: 14px; font-size: 15px; font-weight: 800; color: #fff; background: linear-gradient(180deg, #2a7fa3, #1b5a78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 10px 20px -12px rgba(16, 60, 80, .8); }
+.blessing-new:disabled { opacity: .6; }
+.blessing-note { margin: 10px 2px 0; font-size: 13px; line-height: 1.6; color: var(--ink-soft); }
+.blessing-error { margin: 14px 0 0; padding: 10px 12px; border-radius: 12px; font-size: 14px; font-weight: 700; color: #8a1d28; background: #fde3e5; }
+
+.mini-coin { flex: none; display: grid; place-items: center; border-radius: 50%; overflow: hidden; white-space: nowrap; font-weight: 900; line-height: 1; color: var(--c-ink);
+  background: radial-gradient(circle at 34% 28%, var(--c-light) 0%, var(--c-soft) 30%, var(--c-base) 52%, var(--c-deep) 100%);
+  border: 1.5px solid var(--c-light); box-shadow: 0 0 12px rgb(var(--c-glow) / .5), inset 0 -3px 6px color-mix(in srgb, var(--c-deep) 50%, transparent); }
+
+/* Editor */
+.editor-field { display: grid; justify-items: start; gap: 10px; padding: 14px 0; border-top: 1px solid rgba(120, 90, 50, .14); }
+.editor-field label, .editor-label { font-size: 15px; font-weight: 800; }
+.editor-field b { display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 6px; border-radius: 50%; font-size: 12px; color: #fff; background: var(--ink); }
+.editor-field input[type="text"], .editor-field input:not([type]), .editor-coin-text input { width: 100%; padding: 10px 12px; border-radius: 12px; font: inherit; font-size: 16px; color: var(--ink);
+  background: #fff; border: 1px solid rgba(120, 90, 50, .25); }
+#blessing-name { width: 100%; }
+.editor-field > input { justify-self: stretch; }
+.editor-coin-row { display: flex; align-items: center; gap: 16px; width: 100%; }
+.editor-coin { --size: 96px; flex: none; display: grid; place-items: center; width: var(--size); height: var(--size); border-radius: 50%; overflow: hidden; white-space: nowrap;
+  font-weight: 900; line-height: 1; color: var(--c-ink); background: radial-gradient(circle at 34% 28%, var(--c-light) 0%, var(--c-soft) 30%, var(--c-base) 52%, var(--c-deep) 100%);
+  border: 2px solid var(--c-light); box-shadow: 0 0 0 6px rgb(var(--c-glow) / .18), 0 0 30px rgb(var(--c-glow) / .55), inset 0 -6px 12px color-mix(in srgb, var(--c-deep) 55%, transparent); }
+.editor-coin span { max-width: 86%; text-shadow: 0 1px 0 color-mix(in srgb, var(--c-light) 70%, transparent); }
+.editor-coin-text { display: grid; gap: 8px; flex: 1; min-width: 0; }
+.editor-coin-text label { display: grid; gap: 4px; font-size: 13px; font-weight: 700; }
+.editor-coin-text small, .editor-help { font-size: 12.5px; line-height: 1.55; color: var(--ink-soft); font-weight: 500; }
+.editor-swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+.editor-swatch { position: relative; width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(60, 40, 20, .2); cursor: pointer; }
+.editor-swatch[aria-checked="true"] { box-shadow: 0 0 0 3px var(--ink); }
+.editor-swatch.is-custom { overflow: hidden; background: conic-gradient(#e86a5a, #e8b931, #5cbf5a, #3fb8b0, #4f8de0, #9b7be0, #f08ac0, #e86a5a); }
+.editor-swatch.is-custom input { position: absolute; inset: -6px; width: 46px; height: 46px; opacity: 0; cursor: pointer; }
+
+.editor-focus, .editor-crop { display: grid; gap: 10px; width: 100%; }
+.editor-focus-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 14px; }
+.editor-focus-photo { position: relative; flex: 1 1 200px; max-width: 100%; touch-action: none; cursor: crosshair; line-height: 0; }
+.editor-focus-photo img { display: block; max-width: 100%; max-height: 240px; border-radius: 10px; user-select: none; }
+.editor-focus-dot { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; border: 3px solid #fff; background: rgba(42, 127, 163, .6);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, .35), 0 2px 8px rgba(0, 0, 0, .4); pointer-events: none; }
+.editor-screens { display: flex; align-items: flex-end; gap: 12px; }
+.editor-screens figure { display: grid; justify-items: center; gap: 4px; margin: 0; font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+.editor-screen { background-size: cover; background-repeat: no-repeat; border: 3px solid #2a2420; border-radius: 10px; touch-action: none; cursor: grab; box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .6); }
+.editor-screen.is-phone { width: 64px; height: 132px; border-radius: 14px; }
+.editor-screen.is-pc { width: 150px; height: 94px; }
+.editor-crop-frame { position: relative; width: min(240px, 70vw); aspect-ratio: 4 / 5; overflow: hidden; border-radius: 16px; background: #222; touch-action: none; cursor: grab;
+  box-shadow: 0 0 0 3px #fff, 0 10px 24px -12px rgba(0, 0, 0, .7); }
+.editor-crop-frame img { position: absolute; max-width: none; user-select: none; pointer-events: none; }
+.editor-crop-caption { position: absolute; left: 10px; right: 10px; bottom: 10px; height: 38%; display: grid; place-items: center; border-radius: 10px; font-size: 12px; font-weight: 700;
+  color: rgba(255, 248, 236, .85); background: linear-gradient(180deg, rgba(22, 38, 54, .42), rgba(14, 27, 41, .7)); pointer-events: none; }
+.editor-zoom { display: flex; align-items: center; gap: 10px; width: min(240px, 70vw); font-size: 13px !important; }
+.editor-zoom input { flex: 1; }
+@media (max-width: 420px) {
+  .editor-coin { --size: 80px; }
+  .editor-screen.is-pc { width: 120px; height: 75px; }
+}

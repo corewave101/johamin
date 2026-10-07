@@ -55,6 +55,12 @@
 검증: `node tests/test_study_content.cjs`, `node tests/test_study_render.cjs`, 기존 `tests/test_*.cjs`, `npm run build`.
 GitHub Pages는 `.github/workflows/deploy.yml`에서 main push 시 전체 데이터 테스트와 빌드 후 배포합니다.
 
+## 가호 (2.0)
+
+- 하민의 가호(기본): 마을 영상, 조하민 카드, 황금색, 갑툭튀. 가호 없음: 푸른 기본 화면. 다른 가호: 각자 만든 배경·카드 사진·색·동전 글자(갑툭튀 없음).
+- 상태는 `lib/theme.ts`, 다른 가호 저장(IndexedDB)·파일 내보내기/불러오기는 `lib/blessing-store.ts`, 색 자동 조정은 `lib/palette.ts`, 사진 줄이기·자르기는 `lib/image-tools.ts`.
+- 화면: `components/swipe/BlessingToggle.tsx`(버튼·경고·가호 받기), `BlessingEditor.tsx`(만들기). 테스트: `tests/test_blessings.cjs`.
+
 ## 오프라인 · 앱 설치
 
 - 사이트를 한 번 열면 서비스 워커(`public/sw.js`)가 코드·사진·배경 영상을 기기에 저장해, 이후 인터넷 없이도 크롬에서 열립니다.
@@ -71,4 +77,4 @@ GitHub Pages는 `.github/workflows/deploy.yml`에서 main push 시 전체 데이
 
 - 조건과 확률은 `lib/jumpscare.ts` 맨 위 주석에 정리되어 있습니다(테스트: `tests/test_jumpscare.cjs`). 사진은 `public/scares/`에 있습니다.
 - 소리는 지금 합성한 임시 소리입니다. 진짜 파일은 `public/sounds/`에 넣고 `lib/scare-sounds.ts`의 `SCARE_SOUND_FILES`에 `ya: 'sounds/ya.mp3'`처럼 적으면 바뀝니다.
-- "하민의 가호"(왼쪽 아래, 넓은 화면에서는 왼쪽 위)를 끄면 갑툭튀가 모두 꺼집니다. 기기에 저장되며, 최고 연속 정답 기록 하나도 함께 표시합니다.
+- 갑툭튀는 "하민의 가호"(왼쪽 아래, 넓은 화면에서는 왼쪽 위)일 때만 나옵니다. 가호 버튼에는 기기 최고 연속 정답 기록 하나도 함께 표시합니다.

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { preloadImage, trackLoad, trackPromise } from '../../lib/boot';
+import { useTheme } from './useTheme';
 
 const POSTER = `${import.meta.env.BASE_URL}videos/johamin-bg-poster.webp`;
 // Phones and data-saver connections get the lighter 720p loop.
@@ -8,8 +9,13 @@ const pickSource = () => {
   return saveData || matchMedia('(max-width: 900px)').matches ? `${import.meta.env.BASE_URL}videos/johamin-bg-720.mp4` : `${import.meta.env.BASE_URL}videos/johamin-bg-1080.mp4`;
 };
 
-/** Looping village video behind everything. It shifts slightly with the pointer (or phone tilt) for depth. */
+/**
+ * The scene behind everything: the looping village video for 하민의 가호, a plain blue screen without a blessing,
+ * or the photo of a custom blessing. It shifts slightly with the pointer (or phone tilt) for depth.
+ */
 export default function Backdrop() {
+  const theme = useTheme();
+  const kind = theme.choice.kind;
   const scene = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [still] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -17,6 +23,7 @@ export default function Backdrop() {
 
   // The intro screen waits until the poster is in and the video can play through.
   useEffect(() => {
+    if (kind !== 'hamin') return;
     trackPromise('poster', preloadImage(POSTER));
     const clip = video.current;
     if (!clip) return;
@@ -35,7 +42,7 @@ export default function Backdrop() {
       clip.removeEventListener('canplaythrough', load.done);
       clip.removeEventListener('error', load.done);
     };
-  }, []);
+  }, [kind]);
 
   useEffect(() => {
     const clip = video.current;
@@ -46,7 +53,7 @@ export default function Backdrop() {
     play();
     document.addEventListener('visibilitychange', onVisibility);
     return () => document.removeEventListener('visibilitychange', onVisibility);
-  }, []);
+  }, [kind]);
 
   useEffect(() => {
     const el = scene.current;
@@ -78,7 +85,9 @@ export default function Backdrop() {
   }, [still]);
 
   return <div className="scene" ref={scene} aria-hidden="true">
-    {still ? <div className="scene-media scene-poster" style={{ backgroundImage: `url('${POSTER}')` }} />
+    {kind === 'none' ? <div className="scene-media scene-plain" />
+      : kind === 'custom' ? <div className="scene-media scene-photo" style={theme.background ? { backgroundImage: `url("${theme.background.url}")`, backgroundPosition: `${theme.background.focusX}% ${theme.background.focusY}%` } : undefined} />
+      : still ? <div className="scene-media scene-poster" style={{ backgroundImage: `url('${POSTER}')` }} />
       : <video ref={video} className="scene-media" src={source} poster={POSTER} autoPlay muted loop playsInline preload="auto" disablePictureInPicture />}
     <div className="scene-shade" />
   </div>;

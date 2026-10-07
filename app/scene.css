@@ -11,3 +11,10 @@
   .scene-media, .scene-poster { object-position: 70% 35%; background-position: 70% 35%; }
   .scene-shade { background: linear-gradient(180deg, rgba(24, 30, 44, .38) 0%, rgba(36, 24, 14, .34) 45%, rgba(36, 24, 14, .5) 100%); }
 }
+
+/* Without a blessing: a plain blue screen. With a custom blessing: the person's photo, kept on the chosen spot. */
+:root[data-theme="none"] .scene { background: #6f9fd2; }
+.scene-plain { background: linear-gradient(165deg, #a6c8ec 0%, #6f9fd2 52%, #4f7fb3 100%); }
+:root[data-theme="none"] .scene-shade { background: linear-gradient(180deg, rgba(20, 40, 70, .06), rgba(20, 40, 70, .22)); }
+.scene-photo { background: var(--theme-deep) center / cover no-repeat; }
+:root[data-theme="custom"] .scene { background: var(--theme-deep); }

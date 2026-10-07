@@ -10,6 +10,8 @@
   --glass-shadow: 0 18px 40px -18px rgba(28, 18, 8, .6), 0 2px 8px -2px rgba(28, 18, 8, .25);
   --glass-shine: inset 0 1px 0 rgba(255, 255, 255, .9), inset 0 -1px 0 rgba(255, 255, 255, .2);
   --gold: #e8b931;
+  /* Blessing palette; lib/theme.ts overwrites these for the chosen blessing (defaults = 하민 gold). */
+  --theme-light: #fff4c4; --theme-soft: #f6d266; --theme-base: #e8b931; --theme-deep: #b67c14; --theme-ink: #4a2b00; --theme-glow: 232 185 49;
 }
 .swipe-app {
   position: relative; z-index: 1; min-height: 100svh; display: grid; justify-items: center; align-content: start;
@@ -81,6 +83,8 @@
 .swipe-card.is-current { animation: card-enter .34s cubic-bezier(.2, .8, .2, 1) both; }
 .card-art { position: absolute; inset: 8px; border-radius: 15px; background: #22384a url('/images/johamin-card.webp') center 22% / cover;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .2), inset 0 -90px 90px -50px rgba(10, 22, 34, .6); }
+:root[data-theme="custom"] .card-art { background: var(--theme-deep) var(--card-image, none) center / cover no-repeat; }
+:root[data-theme="none"] .card-art { background: linear-gradient(160deg, #b4d0ee 0%, #7aa6d6 48%, #4b77a8 100%); }
 .card-caption { position: absolute; left: 16px; right: 16px; bottom: 16px; max-height: calc(100% - 32px); overflow: hidden; padding: 14px 16px 15px; border-radius: 13px; color: #fff8ec;
   background: linear-gradient(180deg, rgba(22, 38, 54, .5), rgba(14, 27, 41, .8));
   -webkit-backdrop-filter: blur(14px) saturate(150%); backdrop-filter: blur(14px) saturate(150%);
@@ -303,12 +307,13 @@
 /* 하민의 가호 */
 .blessing-toggle { position: fixed; left: 12px; bottom: 12px; z-index: 12; display: grid; justify-items: start; gap: 1px; padding: 7px 14px 7px 12px;
   border-radius: 14px; color: #5a3e05; text-align: left; transition: background .2s, box-shadow .2s, transform .2s; }
-.blessing-toggle strong { position: relative; font-size: 14px; font-weight: 800; letter-spacing: -.01em; }
-.blessing-best { position: relative; font-size: 12px; font-weight: 600; color: rgba(90, 62, 5, .78); }
+.blessing-toggle strong { position: relative; max-width: 46vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; font-weight: 800; letter-spacing: -.01em; }
+.blessing-best { position: relative; font-size: 12px; font-weight: 600; color: color-mix(in srgb, var(--theme-ink) 78%, transparent); }
 .blessing-best b { font-size: 15px; font-weight: 900; font-variant-numeric: tabular-nums; margin-right: 2px; }
-.blessing-toggle.is-on { background: linear-gradient(135deg, rgba(255, 226, 120, .82), rgba(232, 185, 49, .78) 55%, rgba(199, 141, 18, .8));
-  border-color: rgba(255, 240, 180, .9); box-shadow: var(--glass-shadow), 0 0 18px rgba(232, 185, 49, .55), var(--glass-shine); }
-.blessing-toggle.is-on:hover { transform: translateY(-1px); box-shadow: var(--glass-shadow), 0 0 26px rgba(232, 185, 49, .75), var(--glass-shine); }
+.blessing-toggle.is-on { color: var(--theme-ink);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-soft) 84%, transparent), color-mix(in srgb, var(--theme-base) 80%, transparent) 55%, color-mix(in srgb, var(--theme-deep) 80%, transparent));
+  border-color: color-mix(in srgb, var(--theme-light) 90%, transparent); box-shadow: var(--glass-shadow), 0 0 18px rgb(var(--theme-glow) / .55), var(--glass-shine); }
+.blessing-toggle.is-on:hover { transform: translateY(-1px); box-shadow: var(--glass-shadow), 0 0 26px rgb(var(--theme-glow) / .75), var(--glass-shine); }
 .blessing-toggle.is-off { color: var(--ink-soft); }
 .blessing-toggle.is-off .blessing-best { color: var(--ink-soft); }
 .blessing-warning { position: fixed; inset: 0; z-index: 900; display: grid; place-items: center; padding: 20px; background: rgba(20, 12, 4, .45); }
@@ -316,10 +321,10 @@
 .blessing-warning-box h2 { position: relative; margin: 0 0 8px; font-size: 19px; color: #9a1c2c; }
 .blessing-warning-box p { position: relative; margin: 0 0 18px; font-size: 15px; line-height: 1.6; }
 .blessing-warning-actions { position: relative; display: flex; justify-content: flex-end; gap: 8px; }
-.blessing-keep { border-radius: 999px; padding: 7px 16px; font-size: 14px; font-weight: 800; color: #5a3e05;
-  background: linear-gradient(135deg, #ffe278, var(--gold)); border: 1px solid rgba(255, 240, 180, .9); }
+.blessing-keep { border-radius: 999px; padding: 7px 16px; font-size: 14px; font-weight: 800; color: var(--theme-ink);
+  background: linear-gradient(135deg, var(--theme-soft), var(--theme-base)); border: 1px solid color-mix(in srgb, var(--theme-light) 90%, transparent); }
 :root[data-blessing="on"] .streak-flame { transform: scale(1.35); transform-origin: top right;
-  box-shadow: var(--glass-shadow), 0 0 0 1.5px var(--gold), 0 0 20px rgba(232, 185, 49, .6); }
+  box-shadow: var(--glass-shadow), 0 0 0 1.5px var(--theme-base), 0 0 20px rgb(var(--theme-glow) / .6); }
 .swipe-app { padding-bottom: 84px; }
 @media (min-width: 901px) {
   .blessing-toggle { left: 16px; top: 14px; bottom: auto; }

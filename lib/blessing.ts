@@ -1,21 +1,12 @@
-// "하민의 가호": while on, jump scares can appear and the streak flame grows. Saved on this device.
-const KEY = 'johamin-blessing';
-let on = (() => { try { return localStorage.getItem(KEY) !== '0'; } catch { return true; } })();
-const listeners = new Set<(on: boolean) => void>();
+// Jump scares follow the blessing: only 하민의 가호 has them. (The blessing itself lives in lib/theme.ts.)
+import { getTheme, onThemeChange } from './theme';
 
-function mark() {
-  try { document.documentElement.dataset.blessing = on ? 'on' : 'off'; } catch { /* no document (tests) */ }
-}
-mark();
+export const isBlessed = () => getTheme().scares;
 
-export const isBlessed = () => on;
-export function setBlessed(value: boolean) {
-  on = value;
-  try { localStorage.setItem(KEY, value ? '1' : '0'); } catch { /* storage may be unavailable */ }
-  mark();
-  listeners.forEach(listener => listener(value));
-}
+/** Calls back when scares turn on or off. */
 export function onBlessedChange(listener: (on: boolean) => void) {
-  listeners.add(listener);
-  return () => { listeners.delete(listener); };
+  let last = isBlessed();
+  return onThemeChange(theme => {
+    if (theme.scares !== last) { last = theme.scares; listener(last); }
+  });
 }

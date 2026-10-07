@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Backdrop from '../components/swipe/Backdrop';
 import BlessingToggle from '../components/swipe/BlessingToggle';
@@ -10,6 +11,7 @@ import './globals.css';
 import './scene.css';
 import './swipe.css';
 import './intro.css';
+import './blessing.css';
 
 // #demo (or the older #johamin/demo) opens the sample deck; every other address opens the subject menu.
 const isDemo = ['#demo', '#johamin/demo'].includes(window.location.hash);
@@ -18,12 +20,23 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => { navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => { /* the site still works online */ }); });
 }
 
+/** The JO intro; shown again whenever the blessing changes. */
+function IntroHost() {
+  const [run, setRun] = useState(0);
+  useEffect(() => {
+    const again = () => setRun(n => n + 1);
+    window.addEventListener('johamin:intro', again);
+    return () => window.removeEventListener('johamin:intro', again);
+  }, []);
+  return <Intro key={run} />;
+}
+
 createRoot(document.getElementById('root')!).render(<>
   <Backdrop />
   <SoundToggle />
   <BlessingToggle />
   {isDemo ? <SwipeGame /> : <SubjectPicker />}
   <JumpscareLayer />
-  <Intro />
+  <IntroHost />
   <span className="app-version">v{__APP_VERSION__}</span>
 </>);
