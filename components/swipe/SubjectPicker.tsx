@@ -80,7 +80,7 @@ export default function SubjectPicker() {
           className={`swipe-option swipe-option-${direction} ${enabled ? 'glass' : 'swipe-empty-option'} ${activeDirection === direction && enabled ? 'is-active' : ''}`}
           onClick={() => choose(direction)} aria-label={enabled ? `${arrows[direction]} ${label}` : '빈 선택지'}>
           <kbd>{arrows[direction]}</kbd>
-          {enabled && <span>{label}{node?.kind === 'deck' && node.cards.length > 0 && <small>{node.cards.length}장</small>}</span>}
+          {enabled && <span>{label}{node?.kind === 'deck' && (node.cards.length > 0 ? <small>{node.cards.length}장</small> : !node.writtenQuestions?.length && <small>준비 중</small>)}</span>}
         </button>)}
         <div className="swipe-stack">
           <div className="swipe-under swipe-under-two" /><div className="swipe-under swipe-under-one" />

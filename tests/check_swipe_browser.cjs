@@ -46,11 +46,15 @@ const keys = { up: 'ArrowUp', left: 'ArrowLeft', right: 'ArrowRight', down: 'Arr
     await menu('과목 선택').waitFor();
     await page.keyboard.press('ArrowLeft');
     await menu('인문(국,사,영)').waitFor();
-    for (const [key, name] of [['ArrowUp', '국어'], ['ArrowRight', '영어']]) {
-      await page.keyboard.press(key);
-      await page.getByRole('region', { name: '학습 메뉴' }).waitFor();
-      await page.keyboard.press('Escape');
-    }
+    // 국어 is a group of three parts: 문법 has cards, 뉴욕제과점 and 고전 시가 are waiting for material.
+    await page.keyboard.press('ArrowUp'); await menu('국어').waitFor();
+    await page.keyboard.press('ArrowUp'); await page.getByRole('heading', { name: '국어(문법)' }).waitFor();
+    await page.keyboard.press('Escape'); await menu('국어').waitFor();
+    await page.keyboard.press('ArrowLeft'); await page.getByText('아직 자료가 없어요').waitFor();
+    await page.keyboard.press('Escape'); await menu('국어').waitFor();
+    await page.keyboard.press('ArrowDown'); await menu('인문(국,사,영)').waitFor();
+    await page.keyboard.press('ArrowRight'); await page.getByRole('region', { name: '학습 메뉴' }).waitFor();
+    await page.keyboard.press('Escape');
     await page.keyboard.press('ArrowLeft');
     await page.getByRole('button', { name: /문제 파트/ }).click();
     await page.getByRole('button', { name: /^객관식/ }).click();

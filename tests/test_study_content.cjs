@@ -9,10 +9,13 @@ const { englishWritten } = require('../data/english-written.ts');
 const { newGame, answerCard } = require('../lib/swipe-game.ts');
 assert.equal(englishCards.length, 170);
 assert.equal(englishWritten.length, 16);
-assert.equal(studyConcepts.length, 54);
+assert.equal(studyConcepts.length, 60);
 const ids = new Set();
+const pending = subjectDecks.filter(deck => !deck.cards.length && !deck.writtenQuestions?.length);
+assert.deepEqual(pending.map(deck => deck.id), ['korean-newyork', 'korean-classic'], 'Only parts waiting for class material may be empty');
 for (const deck of subjectDecks) {
   const lessons = conceptsFor(deck.id);
+  if (pending.includes(deck)) { assert.equal(lessons.length, 0, deck.id); continue; }
   assert.ok(lessons.length > 0, deck.id);
   assert.ok(deck.cards.length > 0, deck.id);
   for (const card of deck.cards) {
@@ -26,7 +29,7 @@ for (const deck of subjectDecks) {
       if (section.table) assert.ok(section.table.rows.every(row => row.length === section.table.columns.length), lesson.id);
     }
   }
-  if (!['english', 'korean'].includes(deck.id)) {
+  if (deck.id !== 'english') {
     const examples = lessons.flatMap(lesson => lesson.examples ?? []).map(example => example.id);
     assert.equal(examples.length, deck.cards.length, `${deck.id}: all original examples retained`);
     assert.equal(new Set(examples).size, deck.cards.length);
@@ -60,4 +63,4 @@ assert.equal(game.queue[12].id, first.id);
 assert.equal(game.queue[12].answers[game.queue[12].correct], first.answers[first.correct]);
 while (game.queue.length) game = answerCard(game, game.queue[0].correct, 1);
 assert.equal(game.mastered.length, englishCards.length);
-console.log('PASS: all 7 subject parts have 54 concepts and connected practice; all 495 original examples retained; 170 self-contained English choices, 16 rubrics, semantic traps, retry and completion.');
+console.log('PASS: 7 subject parts (+2 waiting for material) have 60 concepts and connected practice; every card is an example in its concept; 170 self-contained English choices, 16 rubrics, semantic traps, retry and completion.');

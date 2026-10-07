@@ -4,7 +4,7 @@ import { jeonCards } from './jeon-cards';
 import { socialCards } from './social-cards';
 import { englishCards } from './english-cards';
 import { englishWritten } from './english-written';
-import { koreanCards } from './korean-cards';
+import { koreanGrammarCards, koreanGrammarWritten } from './korean-cards';
 import { parkCards, joCards } from './biology-cards';
 import { parkWritten, joWritten, type WrittenQuestion } from './biology-written';
 interface MenuItem { id: string; name: string; direction: Direction; symbol: string; description: string }
@@ -19,7 +19,11 @@ export const subjectMenu: SubjectGroup = {
       { id: 'biology-park', kind: 'deck', name: '박상영T', fullName: '생물(박상영T)', direction: 'right', symbol: '✳', description: '유전 법칙·사람의 유전·돌연변이·유전 물질.', cards: parkCards, writtenQuestions: parkWritten },
     ] },
     { id: 'humanities', kind: 'group', name: '인문(국,사,영)', direction: 'left', symbol: '가', description: '국어 · 사회 · 영어를 방향으로 골라요.', children: [
-      { id: 'korean', kind: 'deck', name: '국어', direction: 'up', symbol: '가', description: '수업자료 미제공 · 공통 독해·문학 기초와 연습.', cards: koreanCards },
+      { id: 'korean', kind: 'group', name: '국어', direction: 'up', symbol: '가', description: '뉴욕제과점 · 문법 · 고전 시가.', children: [
+        { id: 'korean-newyork', kind: 'deck', name: '뉴욕제과점', fullName: '국어(뉴욕제과점)', direction: 'left', symbol: '가', description: '수업 자료를 기다리는 중.', cards: [] },
+        { id: 'korean-grammar', kind: 'deck', name: '문법', fullName: '국어(문법)', direction: 'up', symbol: '가', description: '우리말 바로 쓰기: 한글 맞춤법·띄어쓰기·헷갈리는 표기.', cards: koreanGrammarCards, writtenQuestions: koreanGrammarWritten },
+        { id: 'korean-classic', kind: 'deck', name: '고전 시가', fullName: '국어(고전 시가)', direction: 'right', symbol: '가', description: '수업 자료를 기다리는 중.', cards: [] },
+      ] },
       { id: 'social', kind: 'deck', name: '사회', fullName: '사회(성신제)', direction: 'left', symbol: '◎', description: '세계화·국제 갈등·평화·정의관·불평등을 꼬아서.', cards: socialCards },
       { id: 'english', kind: 'deck', name: '영어', direction: 'right', symbol: 'A', description: '고대 건축물·Bartleby·가정법·예술과 측정.', cards: englishCards, writtenQuestions: englishWritten },
     ] },

@@ -10,6 +10,7 @@ const SubjectStudy = require('../components/swipe/SubjectStudy.tsx').default;
 const ConceptReader = require('../components/swipe/ConceptReader.tsx').default;
 for (const deck of subjectDecks) {
   const menu = renderToStaticMarkup(React.createElement(SubjectStudy, { deck, onBack: () => {} }));
+  if (!deck.cards.length && !deck.writtenQuestions?.length) { assert.ok(menu.includes('아직 자료가 없어요') && !menu.includes('문제 파트'), deck.id); continue; }
   assert.ok(menu.includes('개념 파트') && menu.includes('문제 파트'), deck.id);
   assert.ok(menu.includes(`${deck.cards.length} / 서술형`), deck.id);
   const lessons = conceptsFor(deck.id);
@@ -17,6 +18,5 @@ for (const deck of subjectDecks) {
   assert.ok(markup.includes('개념 검색') && markup.includes('관련 문제 연습'), deck.id);
   assert.ok(markup.includes('aria-current="true"') && markup.includes('aria-pressed="true"'), deck.id);
   assert.ok(markup.includes(lessons[0].title));
-  if (deck.id === 'korean') assert.ok(menu.includes('특정 시험 범위 정리는 아니에요'));
 }
-console.log('PASS: all subject menus render concept/problem choices and counts; concept search, active chapter, retained read marker, practice link and Korean scope notice render correctly.');
+console.log('PASS: all subject menus render concept/problem choices and counts; concept search, active chapter, retained read marker, practice link and the waiting notice for empty Korean parts render correctly.');
