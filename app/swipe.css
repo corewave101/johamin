@@ -324,6 +324,6 @@
 
 /* 갑툭튀 */
 .jumpscare { position: fixed; inset: 0; z-index: 1000; background: #000 center / cover no-repeat; pointer-events: none; }
-.jumpscare.is-fading { animation: scare-fade 1s ease-out forwards; }
+.jumpscare.is-fading { animation: scare-fade 1s ease-in forwards; }
 .jumpscare.is-stuck { pointer-events: auto; cursor: pointer; }
 @keyframes scare-fade { from { opacity: 1; } to { opacity: 0; } }

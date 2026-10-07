@@ -53,3 +53,9 @@
 
 검증: `node tests/test_study_content.cjs`, `node tests/test_study_render.cjs`, 기존 `tests/test_*.cjs`, `npm run build`.
 GitHub Pages는 `.github/workflows/deploy.yml`에서 main push 시 전체 데이터 테스트와 빌드 후 배포합니다.
+
+## 갑툭튀 · 하민의 가호
+
+- 조건과 확률은 `lib/jumpscare.ts` 맨 위 주석에 정리되어 있습니다(테스트: `tests/test_jumpscare.cjs`). 사진은 `public/scares/`에 있습니다.
+- 소리는 지금 합성한 임시 소리입니다. 진짜 파일은 `public/sounds/`에 넣고 `lib/scare-sounds.ts`의 `SCARE_SOUND_FILES`에 `ya: 'sounds/ya.mp3'`처럼 적으면 바뀝니다.
+- "하민의 가호"(왼쪽 아래, 넓은 화면에서는 왼쪽 위)를 끄면 갑툭튀가 모두 꺼집니다. 기기에 저장되며, 최고 연속 정답 기록 하나도 함께 표시합니다.
