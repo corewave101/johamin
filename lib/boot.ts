@@ -27,7 +27,7 @@ export function trackLoad(name: string): LoadHandle {
 }
 
 /** Tracks a promise; success or failure both count as finished (the app works without any one part). */
-export function trackPromise(name: string, promise: Promise<unknown>) {
+export function trackPromise<T>(name: string, promise: Promise<T>): Promise<T> {
   const task = trackLoad(name);
   promise.then(task.done, task.done);
   return promise;
