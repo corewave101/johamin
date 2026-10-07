@@ -3,6 +3,8 @@ import type { HTMLAttributes, PointerEvent, ReactNode } from 'react';
 type Props = HTMLAttributes<HTMLElement> & { topic: string; subject?: string; question: string; children?: ReactNode };
 
 const lengthClass = (text: string) => text.length > 38 ? 'long' : text.length > 22 ? 'medium' : 'short';
+// The big line above the question can hold a whole example sentence, so it shrinks as it grows.
+const subjectLength = (text: string) => text.length > 36 ? 'long' : text.length > 16 ? 'medium' : 'short';
 
 function tilt(event: PointerEvent<HTMLElement>) {
   const el = event.currentTarget;
@@ -31,7 +33,7 @@ export default function LaminatedCard({ topic, subject, question, className = ''
     <div className="card-caption">
       <span className="card-topic">{topic}</span>
       <div className="swipe-question">
-        {subject && <p className="card-subject">{subject}</p>}
+        {subject && <p className="card-subject" data-length={subjectLength(subject)}>{subject}</p>}
         <h2 data-length={lengthClass(question)}>{question}</h2>
       </div>
     </div>
