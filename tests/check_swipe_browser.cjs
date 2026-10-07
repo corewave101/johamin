@@ -68,7 +68,7 @@ const keys = { up: 'ArrowUp', left: 'ArrowLeft', right: 'ArrowRight', down: 'Arr
     await page.getByRole('button', { name: /문제 파트/ }).click();
     await page.getByRole('button', { name: /^객관식/ }).click();
     await page.locator('.streak-flame').waitFor();
-    assert.match(await page.locator('.swipe-progress-row').innerText(), /0 \/ 79/);
+    assert.match(await page.locator('.swipe-progress-row').innerText(), /0 \/ 75/);
     assert.equal(await page.locator('.swipe-verdict').count(), 0);
     await page.screenshot({ path: 'artifacts/astronomy-compact-desktop.png', fullPage: true });
     await page.setViewportSize({ width: 320, height: 844 });
@@ -96,8 +96,8 @@ const keys = { up: 'ArrowUp', left: 'ArrowLeft', right: 'ArrowRight', down: 'Arr
     assert.notEqual(wrongRetry.correct, beforeWrong.correct);
     let guard = 100;
     while (await page.locator('.swipe-board').count()) { assert.ok(guard-- > 0); await solve(); }
-    assert.equal(seen.size, 79);
-    assert.match(await page.locator('.swipe-complete').innerText(), /79장 완료 · 총 81번 선택/);
+    assert.equal(seen.size, 75);
+    assert.match(await page.locator('.swipe-complete').innerText(), /75장 완료 · 총 77번 선택/);
     await page.getByRole('button', { name: '한 판 더' }).click();
     assert.equal(await page.locator('.streak-flame strong').innerText(), '0');
     await page.setViewportSize({ width: 390, height: 844 });
@@ -113,7 +113,7 @@ const keys = { up: 'ArrowUp', left: 'ArrowLeft', right: 'ArrowRight', down: 'Arr
     await page.getByRole('heading', { name: '깔끔하게 털었다!' }).waitFor();
     await page.goto(base + '/'); await menu('과목 선택').waitFor();
     assert.deepEqual(errors, []);
-    console.log('PASS: nested menus, all 79 shuffled cards at 320px, semantic answers preserved, wrong/unknown retry at 12 with changed arrows, flame heats/cools, compact feedback, complete/restart, demo deck and root menu.');
+    console.log('PASS: nested menus, all 75 shuffled cards at 320px, semantic answers preserved, wrong/unknown retry at 12 with changed arrows, flame heats/cools, compact feedback, complete/restart, demo deck and root menu.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });
 

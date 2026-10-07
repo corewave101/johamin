@@ -8,9 +8,9 @@ const { subjectDecks } = require('../data/swipe-subjects.ts');
 const { newGame, answerCard, getStats, RETRY_GAP } = require('../lib/swipe-game.ts');
 const rng = seed => () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
 assert.equal(RETRY_GAP, 12);
-assert.equal(astronomyCards.length, 79);
-assert.equal(new Set(astronomyCards.map(c => c.id)).size, 79);
-assert.equal(new Set(astronomyCards.map(c => c.question)).size, 79);
+assert.equal(astronomyCards.length, 75);
+assert.equal(new Set(astronomyCards.map(c => c.id)).size, 75);
+assert.equal(new Set(astronomyCards.map(c => c.question)).size, 75);
 assert.ok(!JSON.stringify(astronomyCards).match(/2030|2050|정렬 정밀도|조정 범위/));
 assert.equal(subjectDecks.find(d => d.id === 'astronomy-hwang').cards, astronomyCards);
 assert.ok(subjectDecks.every(d => d.cards.length > 0));
@@ -45,9 +45,9 @@ for (const choice of ['wrong', 'unknown']) {
   assert.equal(state.streak, 0);
   assert.equal(state.bestStreak, 12);
   while (state.queue.length) state = answerCard(state, state.queue[0].correct, 1);
-  assert.equal(state.mastered.length, 79);
-  assert.equal(new Set(state.mastered).size, 79);
-  assert.equal(state.attempts.length, 81);
+  assert.equal(state.mastered.length, 75);
+  assert.equal(new Set(state.mastered).size, 75);
+  assert.equal(state.attempts.length, 77);
   assert.equal(getStats(state).mistakes, 2);
   assert.equal(answerCard(state, 'up', 1), state);
 }
@@ -57,5 +57,5 @@ assert.equal(one.queue.length, 1);
 one = answerCard(one, one.queue[0].correct, 1);
 assert.equal(one.queue.length, 0);
 assert.equal(JSON.stringify(astronomyCards), sourceSnapshot, 'Authored data is never mutated');
-console.log('PASS: 79 sourced prompts, immutable shuffle with preserved meaning, new order per seed, guaranteed changed retry arrow, 12-card delay, unknown, streak reset, completion and one-card fallback.');
+console.log('PASS: 75 sourced prompts, immutable shuffle with preserved meaning, new order per seed, guaranteed changed retry arrow, 12-card delay, unknown, streak reset, completion and one-card fallback.');
 
