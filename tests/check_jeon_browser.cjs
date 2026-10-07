@@ -42,6 +42,8 @@ assert.equal(JSON.stringify(jeonCards), snapshot);
     await page.goto((process.env.JOHAMIN_TEST_URL || 'http://127.0.0.1:5180') + '/?v=jeon#johamin');
     await page.getByRole('region', { name: '과목 선택 메뉴', exact: true }).waitFor();
     await page.keyboard.press('ArrowRight'); await page.keyboard.press('ArrowRight');
+    await page.getByRole('button', { name: /문제 파트/ }).click();
+    await page.getByRole('button', { name: /^객관식/ }).click();
     await page.locator('.swipe-deck-bar strong').filter({ hasText: '행성우주과학(전)' }).waitFor();
     const read = async () => {
       const q = await page.locator('.swipe-card:not(.swipe-flying) h2').innerText();
@@ -83,3 +85,4 @@ assert.equal(JSON.stringify(jeonCards), snapshot);
     console.log('PASS: 121 sourced Jeon cards, 7 PDFs, calculations, all mobile layouts, semantic shuffle, 12-card retry, source links, completion/restart and parent menu.');
   } finally { await browser.close(); }
 })().catch(e => { console.error(e); process.exitCode = 1; });
+

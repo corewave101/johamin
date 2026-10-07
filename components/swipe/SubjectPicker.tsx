@@ -4,8 +4,7 @@ import { subjectMenu, type SubjectDeck, type SubjectGroup } from '../../data/swi
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playTick } from '../../lib/sound';
 import LaminatedCard from './LaminatedCard';
-import SwipeGame from './SwipeGame';
-import BiologyStudy from './BiologyStudy';
+import SubjectStudy from './SubjectStudy';
 
 export default function SubjectPicker() {
   const [path, setPath] = useState<SubjectGroup[]>([]);
@@ -13,7 +12,6 @@ export default function SubjectPicker() {
   const [drag, setDrag] = useState({ x: 0, y: 0 });
   const pointer = useRef<{ id: number; x: number; y: number } | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
-  const returnButton = useRef<HTMLButtonElement>(null);
   const current = path.at(-1) ?? subjectMenu;
   const resetDrag = useCallback(() => { pointer.current = null; setDrag({ x: 0, y: 0 }); }, []);
   const back = useCallback(() => {
@@ -34,8 +32,7 @@ export default function SubjectPicker() {
     resetDrag();
   }, [subject, path.length, current, back, resetDrag]);
   useEffect(() => {
-    if (subject && !subject.cards.length) returnButton.current?.focus();
-    else if (!subject) heading.current?.focus();
+    if (!subject) heading.current?.focus();
   }, [subject, current]);
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -66,14 +63,12 @@ export default function SubjectPicker() {
   const distance = Math.hypot(drag.x, drag.y);
   const activeDirection = distance > 18 ? directionOf(drag.x, drag.y) : null;
   const highlighted = options.find(item => item.direction === activeDirection && item.enabled);
-  const backLabel = path.length ? '← 파트' : '← 과목';
-  if (subject?.writtenQuestions?.length) return <BiologyStudy key={subject.id} deck={subject} onBack={back} />;
-  if (subject?.cards.length) return <SwipeGame key={subject.id} cards={subject.cards} deckName={subject.fullName ?? subject.name} onBack={back} backLabel={backLabel} />;
+  if (subject) return <SubjectStudy key={subject.id} deck={subject} onBack={back} />;
 
   return <main className="swipe-app subject-app">
     <div className="swipe-game">
       <header className="swipe-heading"><h1 className="glass" ref={heading} tabIndex={-1}>조하민<span>레츠고</span></h1></header>
-      {!subject ? <section className="swipe-board" aria-label={`${current.name} 메뉴`}>
+      <section className="swipe-board" aria-label={`${current.name} 메뉴`}>
         {options.map(({ direction, node, enabled, label }) => <button type="button" key={direction} disabled={!enabled}
           className={`swipe-option swipe-option-${direction} ${enabled ? 'glass' : 'swipe-empty-option'} ${activeDirection === direction && enabled ? 'is-active' : ''}`}
           onClick={() => choose(direction)} aria-label={enabled ? `${arrows[direction]} ${label}` : '빈 선택지'}>
@@ -91,13 +86,7 @@ export default function SubjectPicker() {
           </LaminatedCard>
         </div>
       </section>
-      : <section className="subject-empty" aria-label={`${subject.fullName ?? subject.name} 빈 덱`}>
-        <div className="swipe-stack">
-          <div className="swipe-under swipe-under-one" />
-          <LaminatedCard className="is-current" topic={subject.fullName ?? subject.name} question="아직 카드가 없어요" />
-        </div>
-        <button type="button" ref={returnButton} className="subject-back glass-button" onClick={back}>{backLabel} <kbd>Esc</kbd></button>
-      </section>}
     </div>
   </main>;
 }
+

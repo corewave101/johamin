@@ -4,6 +4,7 @@ export interface SwipeCard {
   topic: string;
   subject?: string;
   question: string;
+  passage?: string;
   answers: Record<Direction, string>;
   correct: Direction;
   explanation: string;

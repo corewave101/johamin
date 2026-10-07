@@ -13,7 +13,7 @@ assert.equal(new Set(astronomyCards.map(c => c.id)).size, 79);
 assert.equal(new Set(astronomyCards.map(c => c.question)).size, 79);
 assert.ok(!JSON.stringify(astronomyCards).match(/2030|2050|정렬 정밀도|조정 범위/));
 assert.equal(subjectDecks.find(d => d.id === 'astronomy-hwang').cards, astronomyCards);
-assert.ok(subjectDecks.filter(d => !['astronomy-hwang', 'astronomy-jeon', 'social', 'biology-jo', 'biology-park'].includes(d.id)).every(d => !d.cards.length));
+assert.ok(subjectDecks.every(d => d.cards.length > 0));
 for (const c of [...swipeCards, ...astronomyCards]) {
   assert.equal(new Set(Object.values(c.answers)).size, 4, c.id);
   assert.ok(c.answers[c.correct]);
@@ -58,3 +58,4 @@ one = answerCard(one, one.queue[0].correct, 1);
 assert.equal(one.queue.length, 0);
 assert.equal(JSON.stringify(astronomyCards), sourceSnapshot, 'Authored data is never mutated');
 console.log('PASS: 79 sourced prompts, immutable shuffle with preserved meaning, new order per seed, guaranteed changed retry arrow, 12-card delay, unknown, streak reset, completion and one-card fallback.');
+
