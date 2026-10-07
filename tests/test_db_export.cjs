@@ -11,7 +11,7 @@ for (const c of cards) {
   if (c.kind === 'choice') {
     assert.equal(c.wrong.length, 3, c.id);
     assert.equal(new Set([c.answer, ...c.wrong]).size, 4, c.id);
-    assert.ok(c.answer.length <= 30 && c.explanation.length > 10, c.id);
+    assert.ok(c.answer.length <= 40 && c.explanation.length > 10, c.id);
   } else {
     assert.ok(c.criteria.length >= 1, c.id);
   }

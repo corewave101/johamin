@@ -22,7 +22,9 @@ create table if not exists public.cards (
   deck_id       text not null references public.decks(id) on update cascade,
   kind          text not null default 'choice' check (kind in ('choice', 'written')),
   topic         text not null,
+  badge         text,                           -- small label above the question: '박상영T', '영어'
   question      text not null check (char_length(question) between 1 and 200),
+  passage       text,                           -- reading passage shown with the question (영어)
   answer        text not null check (char_length(answer) >= 1),
   wrong         text[] not null default '{}',
   criteria      text[] not null default '{}',
@@ -38,7 +40,7 @@ create table if not exists public.cards (
   constraint choice_shape check (
     kind <> 'choice' or (
       cardinality(wrong) = 3
-      and char_length(answer) <= 30
+      and char_length(answer) <= 40
       and answer <> all (wrong)
       and wrong[1] <> wrong[2] and wrong[1] <> wrong[3] and wrong[2] <> wrong[3]
       and char_length(explanation) > 10
