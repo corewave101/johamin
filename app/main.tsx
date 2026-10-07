@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import Backdrop from '../components/swipe/Backdrop';
 import BlessingToggle from '../components/swipe/BlessingToggle';
+import Intro from '../components/swipe/Intro';
 import JumpscareLayer from '../components/swipe/JumpscareLayer';
 import SoundToggle from '../components/swipe/SoundToggle';
 import SubjectPicker from '../components/swipe/SubjectPicker';
@@ -8,6 +9,7 @@ import SwipeGame from '../components/swipe/SwipeGame';
 import './globals.css';
 import './scene.css';
 import './swipe.css';
+import './intro.css';
 
 // #demo (or the older #johamin/demo) opens the sample deck; every other address opens the subject menu.
 const isDemo = ['#demo', '#johamin/demo'].includes(window.location.hash);
@@ -17,5 +19,6 @@ createRoot(document.getElementById('root')!).render(<>
   <BlessingToggle />
   {isDemo ? <SwipeGame /> : <SubjectPicker />}
   <JumpscareLayer />
+  <Intro />
   <span className="app-version">v{__APP_VERSION__}</span>
 </>);

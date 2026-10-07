@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { subjectMenu, type SubjectGroup, type SubjectNode } from '../../data/swipe-subjects';
+import { trackPromise } from '../../lib/boot';
 import { cachedRows, cacheRows, fetchCardRows, groupRows, withLiveCards } from '../../lib/card-store';
 
 /**
@@ -14,7 +15,7 @@ export function useLiveMenu(): SubjectGroup {
   });
   useEffect(() => {
     const controller = new AbortController();
-    fetchCardRows(controller.signal).then(rows => {
+    trackPromise('cards', fetchCardRows(controller.signal)).then(rows => {
       if (!rows.length) return;
       cacheRows(rows);
       setMenu(withLiveCards(subjectMenu, groupRows(rows)));

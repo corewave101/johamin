@@ -1,0 +1,85 @@
+/* Intro: blowing sand over the blurred backdrop, then the golden JO / HAMIN! button. */
+:root.intro-open { overflow: hidden; }
+:root.intro-open .sound-toggle { z-index: 60; }
+
+.intro {
+  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; overflow: hidden; color: #fff6e4;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 52%, rgba(226, 170, 98, .18), rgba(226, 170, 98, 0) 70%),
+    linear-gradient(180deg, rgba(58, 34, 16, .62), rgba(120, 76, 36, .48) 55%, rgba(48, 28, 12, .74));
+  -webkit-backdrop-filter: blur(12px) saturate(115%) sepia(.25); backdrop-filter: blur(12px) saturate(115%) sepia(.25);
+  transition: opacity .8s ease .1s, -webkit-backdrop-filter .8s ease, backdrop-filter .8s ease;
+}
+.intro.is-leaving { opacity: 0; pointer-events: none; -webkit-backdrop-filter: blur(0) saturate(100%); backdrop-filter: blur(0) saturate(100%); }
+.intro-sand { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* Two slow dust clouds drifting with the wind. */
+.intro-haze { position: absolute; inset: -20% -60%; pointer-events: none; opacity: .55; mix-blend-mode: screen;
+  background:
+    radial-gradient(ellipse 22% 14% at 30% 62%, rgba(240, 200, 140, .55), transparent 70%),
+    radial-gradient(ellipse 30% 12% at 70% 38%, rgba(236, 196, 132, .4), transparent 70%),
+    radial-gradient(ellipse 26% 18% at 52% 82%, rgba(220, 170, 104, .45), transparent 70%);
+  animation: intro-drift 11s linear infinite; }
+@keyframes intro-drift { from { transform: translateX(-12%); } to { transform: translateX(12%); } }
+
+.intro-title { position: absolute; top: max(14vh, 70px); left: 0; right: 0; margin: 0; text-align: center; font-size: 15px; font-weight: 700;
+  letter-spacing: .55em; padding-left: .55em; color: rgba(255, 240, 214, .82); text-shadow: 0 2px 10px rgba(40, 20, 4, .6); }
+
+.intro-center { position: relative; display: grid; justify-items: center; align-items: center; }
+.intro-loading, .intro-button { grid-area: 1 / 1; }
+.intro-hint { grid-area: 2 / 1; }
+
+.intro-loading { display: grid; justify-items: center; gap: 12px; transition: opacity .4s ease, transform .4s ease; }
+.intro-loading p { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: .02em; color: rgba(255, 240, 214, .86); text-shadow: 0 1px 6px rgba(40, 20, 4, .6); }
+.intro-loading b { display: inline-block; min-width: 3.2ch; text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; color: #ffe39a; }
+.intro-bar { width: min(220px, 60vw); height: 4px; border-radius: 99px; overflow: hidden; background: rgba(255, 236, 200, .2);
+  box-shadow: 0 0 0 1px rgba(255, 236, 200, .12); }
+.intro-bar span { display: block; height: 100%; border-radius: inherit; transform-origin: left center; transition: transform .45s ease;
+  background: linear-gradient(90deg, #f6d27a, var(--gold), #fff1bd); box-shadow: 0 0 12px rgba(232, 185, 49, .8); }
+.intro.is-ready .intro-loading { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+
+/* The button: a gold coin. JO normally, HAMIN! on hover, keyboard focus or touch. */
+.intro-button { --size: 172px; position: relative; width: var(--size); height: var(--size); border-radius: 50%; padding: 0; cursor: pointer;
+  display: grid; place-items: center; color: #4a2b00; font-family: inherit; font-weight: 900; line-height: 1;
+  border: 2px solid rgba(255, 244, 200, .95);
+  background: radial-gradient(circle at 34% 28%, #fff4c4 0%, #f6d266 30%, var(--gold) 52%, #b67c14 100%);
+  box-shadow: 0 0 0 8px rgba(232, 185, 49, .16), 0 0 54px rgba(232, 185, 49, .55), 0 22px 40px -14px rgba(50, 24, 0, .8),
+    inset 0 2px 0 rgba(255, 255, 255, .75), inset 0 -8px 16px rgba(120, 68, 0, .35);
+  opacity: 0; transform: scale(.55); visibility: hidden;
+  transition: opacity .35s ease, transform .6s cubic-bezier(.34, 1.56, .64, 1), box-shadow .25s ease, visibility 0s .6s; }
+.intro.is-ready .intro-button { opacity: 1; transform: scale(1); visibility: visible; transition-delay: .15s, .15s, 0s, 0s; }
+.intro-button > span { grid-area: 1 / 1; text-shadow: 0 1px 0 rgba(255, 246, 210, .7); transition: opacity .22s ease, transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+.intro-jo { font-size: 72px; letter-spacing: -.03em; }
+.intro-hamin { font-size: 40px; letter-spacing: -.02em; opacity: 0; transform: scale(.4) rotate(-22deg); }
+.intro-button.is-pressed .intro-jo, .intro-button:focus-visible .intro-jo { opacity: 0; transform: translateY(-28%) scale(.6); }
+.intro-button.is-pressed .intro-hamin, .intro-button:focus-visible .intro-hamin { opacity: 1; transform: scale(1) rotate(-7deg); }
+.intro-button:focus-visible { outline: 3px solid rgba(255, 246, 214, .95); outline-offset: 6px; }
+@media (hover: hover) {
+  .intro.is-ready .intro-button:hover { transform: scale(1.07);
+    box-shadow: 0 0 0 10px rgba(232, 185, 49, .24), 0 0 80px rgba(255, 210, 90, .8), 0 24px 44px -14px rgba(50, 24, 0, .8),
+      inset 0 2px 0 rgba(255, 255, 255, .75), inset 0 -8px 16px rgba(120, 68, 0, .35); }
+  .intro-button:hover .intro-jo { opacity: 0; transform: translateY(-28%) scale(.6); }
+  .intro-button:hover .intro-hamin { opacity: 1; transform: scale(1) rotate(-7deg); }
+}
+/* A soft ring pulsing out of the coin while it waits. */
+.intro-button::after { content: ''; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid rgba(255, 226, 140, .7); opacity: 0; pointer-events: none; }
+.intro.is-ready:not(.is-leaving) .intro-button::after { animation: intro-ring 2.2s ease-out .8s infinite; }
+@keyframes intro-ring { from { opacity: .8; transform: scale(1); } to { opacity: 0; transform: scale(1.55); } }
+.intro.is-leaving .intro-button { transform: scale(1.35); opacity: 0; transition: transform .7s cubic-bezier(.2, .7, .3, 1), opacity .6s ease .15s; }
+
+.intro-hint { margin: 26px 0 0; font-size: 14px; font-weight: 600; letter-spacing: .12em; color: rgba(255, 240, 214, .8); opacity: 0;
+  text-shadow: 0 1px 6px rgba(40, 20, 4, .6); transition: opacity .5s ease; }
+.intro.is-ready .intro-hint { opacity: 1; transition-delay: .7s; }
+.intro.is-leaving .intro-hint { opacity: 0; transition-delay: 0s; }
+
+@media (max-width: 900px) {
+  .intro-button { --size: 150px; }
+  .intro-jo { font-size: 64px; }
+  .intro-hamin { font-size: 35px; }
+  .intro-title { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-haze { animation: none; }
+  .intro.is-ready:not(.is-leaving) .intro-button::after { animation: none; }
+  .intro, .intro-button, .intro-button > span, .intro-loading { transition-duration: .01s !important; transition-delay: 0s !important; }
+}

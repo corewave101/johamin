@@ -54,6 +54,11 @@
 검증: `node tests/test_study_content.cjs`, `node tests/test_study_render.cjs`, 기존 `tests/test_*.cjs`, `npm run build`.
 GitHub Pages는 `.github/workflows/deploy.yml`에서 main push 시 전체 데이터 테스트와 빌드 후 배포합니다.
 
+## 시작 화면
+
+- `components/swipe/Intro.tsx`: 처음 열 때 배경 영상·사진·카드 DB·글꼴을 불러오며 진행률을 보여 주고, 다 되면 JO 버튼(마우스 올리면·누르면 HAMIN!)이 뜹니다. 기다리는 목록은 `lib/boot.ts`(테스트: `tests/test_boot.cjs`).
+- 바람 소리는 합성 소리입니다(`lib/intro-sound.ts`). 진짜 파일은 `public/sounds/`에 넣고 `INTRO_SOUND_FILE`에 경로를 적으면 바뀝니다.
+
 ## 갑툭튀 · 하민의 가호
 
 - 조건과 확률은 `lib/jumpscare.ts` 맨 위 주석에 정리되어 있습니다(테스트: `tests/test_jumpscare.cjs`). 사진은 `public/scares/`에 있습니다.

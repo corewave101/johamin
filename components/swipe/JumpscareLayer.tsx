@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { goHome, onScare, SCARE_IDS, type ScareEvent } from '../../lib/jumpscare';
 import { isBlessed, onBlessedChange } from '../../lib/blessing';
 import { playScare } from '../../lib/scare-sounds';
+import { preloadImage, trackPromise } from '../../lib/boot';
 
 const image = (id: string) => `${import.meta.env.BASE_URL}scares/${id}.webp`;
 
@@ -11,9 +12,9 @@ export default function JumpscareLayer() {
 
   // Preload the photos while the blessing is on, so a scare appears instantly.
   useEffect(() => {
-    const preload = (on: boolean) => { if (on) SCARE_IDS.forEach(id => { new Image().src = image(id); }); };
-    preload(isBlessed());
-    return onBlessedChange(preload);
+    const preload = (on: boolean) => Promise.all(on ? SCARE_IDS.map(id => preloadImage(image(id))) : []);
+    trackPromise('scares', preload(isBlessed())); // the intro waits for these
+    return onBlessedChange(on => { void preload(on); });
   }, []);
 
   useEffect(() => onScare(event => { setScare(event); playScare(event.id); }), []);

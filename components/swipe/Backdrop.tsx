@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { preloadImage, trackLoad, trackPromise } from '../../lib/boot';
 
 const POSTER = `${import.meta.env.BASE_URL}videos/johamin-bg-poster.webp`;
 // Phones and data-saver connections get the lighter 720p loop.
@@ -13,6 +14,28 @@ export default function Backdrop() {
   const video = useRef<HTMLVideoElement>(null);
   const [still] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
   const [source] = useState(pickSource);
+
+  // The intro screen waits until the poster is in and the video can play through.
+  useEffect(() => {
+    trackPromise('poster', preloadImage(POSTER));
+    const clip = video.current;
+    if (!clip) return;
+    const load = trackLoad('video');
+    const onProgress = () => {
+      if (clip.readyState >= 4) return load.done();
+      if (clip.duration > 0 && clip.buffered.length) load.progress(clip.buffered.end(clip.buffered.length - 1) / clip.duration);
+    };
+    const events = ['progress', 'loadeddata', 'canplay'] as const;
+    events.forEach(name => clip.addEventListener(name, onProgress));
+    clip.addEventListener('canplaythrough', load.done);
+    clip.addEventListener('error', load.done);
+    onProgress();
+    return () => {
+      events.forEach(name => clip.removeEventListener(name, onProgress));
+      clip.removeEventListener('canplaythrough', load.done);
+      clip.removeEventListener('error', load.done);
+    };
+  }, []);
 
   useEffect(() => {
     const clip = video.current;

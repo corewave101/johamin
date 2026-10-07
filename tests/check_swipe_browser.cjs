@@ -16,6 +16,8 @@ const keys = { up: 'ArrowUp', left: 'ArrowLeft', right: 'ArrowRight', down: 'Arr
     const errors = [], seen = new Set();
     page.on('pageerror', e => errors.push(e.message));
     const menu = name => page.getByRole('region', { name: `${name} 메뉴`, exact: true });
+    // Every page load starts on the intro: wait for the JO button and press it.
+    const enter = async () => { await page.locator('.intro.is-ready .intro-button').click(); await page.locator('.intro').waitFor({ state: 'detached' }); };
     const read = async (deck = astronomyCards) => {
       const question = await page.locator('.swipe-card:not(.swipe-flying) h2').innerText();
       const subjectEl = page.locator('.swipe-card:not(.swipe-flying) .card-subject');
@@ -40,7 +42,7 @@ const keys = { up: 'ArrowUp', left: 'ArrowLeft', right: 'ArrowRight', down: 'Arr
       if (state.card.sourceSlide) assert.match(await page.locator('.swipe-source').innerText(), new RegExp(`슬라이드 ${state.card.sourceSlide}$`));
       return state;
     };
-    await page.goto(base + '/#johamin');
+    await page.goto(base + '/#johamin'); await enter();
     await menu('과목 선택').waitFor();
     await page.keyboard.press('ArrowLeft');
     await menu('인문(국,사,영)').waitFor();
@@ -107,13 +109,13 @@ const keys = { up: 'ArrowUp', left: 'ArrowLeft', right: 'ArrowRight', down: 'Arr
     await menu('행성우주과학').waitFor();
     await page.keyboard.press('Escape');
     await menu('과목 선택').waitFor();
-    await page.goto(base + '/#johamin/demo'); await page.reload();
+    await page.goto(base + '/#johamin/demo'); await page.reload(); await enter();
     await page.locator('.swipe-progress-row').waitFor();
     for (let i = 0; i < 12; i++) await solve(swipeCards);
     await page.getByRole('heading', { name: '깔끔하게 털었다!' }).waitFor();
-    await page.goto(base + '/'); await menu('과목 선택').waitFor();
+    await page.goto(base + '/'); await enter(); await menu('과목 선택').waitFor();
     assert.deepEqual(errors, []);
-    console.log('PASS: nested menus, all 75 shuffled cards at 320px, semantic answers preserved, wrong/unknown retry at 12 with changed arrows, flame heats/cools, compact feedback, complete/restart, demo deck and root menu.');
+    console.log('PASS: nested menus, all 75 shuffled cards at 320px, semantic answers preserved, wrong/unknown retry at 12 with changed arrows, flame heats/cools, compact feedback, complete/restart, demo deck and root menu, intro button.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });
 
