@@ -17,4 +17,5 @@ createRoot(document.getElementById('root')!).render(<>
   <BlessingToggle />
   {isDemo ? <SwipeGame /> : <SubjectPicker />}
   <JumpscareLayer />
+  <span className="app-version">v{__APP_VERSION__}</span>
 </>);
