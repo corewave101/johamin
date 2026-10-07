@@ -13,7 +13,7 @@ assert.equal(new Set(astronomyCards.map(c => c.id)).size, 79);
 assert.equal(new Set(astronomyCards.map(c => c.question)).size, 79);
 assert.ok(!JSON.stringify(astronomyCards).match(/2030|2050|정렬 정밀도|조정 범위/));
 assert.equal(subjectDecks.find(d => d.id === 'astronomy-hwang').cards, astronomyCards);
-assert.ok(subjectDecks.filter(d => !['astronomy-hwang', 'astronomy-jeon'].includes(d.id)).every(d => !d.cards.length));
+assert.ok(subjectDecks.filter(d => !['astronomy-hwang', 'astronomy-jeon', 'social'].includes(d.id)).every(d => !d.cards.length));
 for (const c of [...swipeCards, ...astronomyCards]) {
   assert.equal(new Set(Object.values(c.answers)).size, 4, c.id);
   assert.ok(c.answers[c.correct]);

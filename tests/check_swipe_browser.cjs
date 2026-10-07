@@ -44,11 +44,15 @@ const keys = { up: 'ArrowUp', left: 'ArrowLeft', right: 'ArrowRight', down: 'Arr
     await menu('과목 선택').waitFor();
     await page.keyboard.press('ArrowLeft');
     await menu('인문(국,사,영)').waitFor();
-    for (const [key, name] of [['ArrowUp', '국어'], ['ArrowLeft', '사회'], ['ArrowRight', '영어']]) {
+    for (const [key, name] of [['ArrowUp', '국어'], ['ArrowRight', '영어']]) {
       await page.keyboard.press(key);
       await page.getByRole('region', { name: `${name} 빈 덱` }).waitFor();
       await page.keyboard.press('Escape');
     }
+    await page.keyboard.press('ArrowLeft');
+    await page.locator('.swipe-deck-bar strong').filter({ hasText: '사회(성신제)' }).waitFor();
+    await page.keyboard.press('Escape');
+    await menu('인문(국,사,영)').waitFor();
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowRight');
     await menu('행성우주과학').waitFor();

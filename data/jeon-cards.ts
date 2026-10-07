@@ -141,5 +141,5 @@ export const jeonCards: SwipeCard[] = rows.map(([topic, question, choices, expla
   topic, question,
   answers: Object.fromEntries(directions.map((direction, i) => [direction, choices[i]])) as Record<Direction, string>,
   correct: 'up', explanation,
-  source: { title: jeonSources[file - 1].title, url: jeonSources[file - 1].url, page },
+  source: { title: jeonSources[file - 1].title, url: jeonSources[file - 1].url, page, teacher: '전효진T' },
 }));

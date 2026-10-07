@@ -8,7 +8,7 @@ export interface SwipeCard {
   correct: Direction;
   explanation: string;
   sourceSlide?: number;
-  source?: { title: string; url: string; page: number };
+  source?: { title: string; url: string; page: number; label?: string; teacher?: string };
 }
 
 // A small authored demo deck. Directions are answer choices, not navigation.
