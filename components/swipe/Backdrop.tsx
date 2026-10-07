@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-const POSTER = '/videos/johamin-bg-poster.webp';
+const POSTER = `${import.meta.env.BASE_URL}videos/johamin-bg-poster.webp`;
 // Phones and data-saver connections get the lighter 720p loop.
 const pickSource = () => {
   const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
-  return saveData || matchMedia('(max-width: 900px)').matches ? '/videos/johamin-bg-720.mp4' : '/videos/johamin-bg-1080.mp4';
+  return saveData || matchMedia('(max-width: 900px)').matches ? `${import.meta.env.BASE_URL}videos/johamin-bg-720.mp4` : `${import.meta.env.BASE_URL}videos/johamin-bg-1080.mp4`;
 };
 
 /** Looping village video behind everything. It shifts slightly with the pointer (or phone tilt) for depth. */
