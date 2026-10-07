@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 import type { Direction } from '../../data/swipe-cards';
-import { subjectMenu, type SubjectDeck, type SubjectGroup } from '../../data/swipe-subjects';
+import type { SubjectDeck, SubjectGroup } from '../../data/swipe-subjects';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playTick } from '../../lib/sound';
 import LaminatedCard from './LaminatedCard';
 import SubjectStudy from './SubjectStudy';
+import { findGroup, useLiveMenu } from './useLiveMenu';
 
 export default function SubjectPicker() {
   const [path, setPath] = useState<SubjectGroup[]>([]);
@@ -12,7 +13,8 @@ export default function SubjectPicker() {
   const [drag, setDrag] = useState({ x: 0, y: 0 });
   const pointer = useRef<{ id: number; x: number; y: number } | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
-  const current = path.at(-1) ?? subjectMenu;
+  const menu = useLiveMenu();
+  const current = findGroup(menu, path.at(-1)?.id) ?? menu;
   const resetDrag = useCallback(() => { pointer.current = null; setDrag({ x: 0, y: 0 }); }, []);
   const back = useCallback(() => {
     if (subject) setSubject(null);

@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import type { SubjectDeck } from '../../data/swipe-subjects';
+import type { SwipeCard } from '../../data/swipe-cards';
+import { missedCards, seenCount } from '../../lib/progress';
 import SwipeGame from './SwipeGame';
 import ConceptReader from './ConceptReader';
 import { conceptsFor } from '../../data/study-concepts';
 
 type Draft = { answer: string; checked: boolean[]; reviewed: boolean };
 export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
-  const [mode, setMode] = useState<'menu' | 'concept' | 'problems' | 'choice' | 'written'>('menu');
+  const [mode, setMode] = useState<'menu' | 'concept' | 'problems' | 'choice' | 'missed' | 'written'>('menu');
+  const [retryCards, setRetryCards] = useState<SwipeCard[]>([]);
   const [read, setRead] = useState<string[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
   const lessons = conceptsFor(deck.id);
@@ -23,8 +26,10 @@ export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBa
   };
   useEffect(() => { title.current?.focus(); }, [mode, index]);
   // The parent handles Esc; mode navigation uses explicit buttons.
+  if (mode === 'missed') return <SwipeGame cards={retryCards} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode('problems')} backLabel="← 문제 유형" />;
   if (mode === 'choice') return <SwipeGame cards={choiceCards} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode('problems')} backLabel="← 문제 유형" />;
   const reviewed = questions.filter(item => drafts[item.id]?.reviewed).length;
+  const missed = missedCards(choiceCards);
   return <main className="swipe-app biology-app">
     <div className="biology-study">
       <header className="biology-header glass">
@@ -36,7 +41,7 @@ export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBa
         {deck.id === 'korean' && <p className="study-scope">국어 수업자료가 아직 없어 공통 독해·문학 기초와 기초 연습으로 구성했어요. 특정 시험 범위 정리는 아니에요.</p>}
         <button type="button" className="biology-mode" onClick={() => setMode('concept')}><strong>개념 파트 · {lessons.length}단원</strong><span>핵심 설명 · 비교·예시 · 주의할 점 · 단원 검색</span></button>
         <button type="button" className="biology-mode" onClick={() => { setTopics([]); setMode('problems'); }}><strong>문제 파트 · 객관식 {deck.cards.length} / 서술형 {questions.length}</strong><span>단원별 객관식 · 해설과 오답 재출제 · 서술형 직접 채점</span></button>
-        <p className="biology-note">학습 표시와 답안은 이 파트에 머무는 동안 유지돼요. 새로고침하거나 과목·파트를 나가면 초기화돼요.</p>
+        <p className="biology-note">객관식 정답·오답 기록은 이 기기에 저장돼요. 개념 학습 표시와 서술형 답안은 새로고침하거나 과목·파트를 나가면 초기화돼요.</p>
       </section> : mode === 'concept' ? <ConceptReader read={read} setRead={setRead} lessons={lessons} onPractice={keys => { setTopics(keys); setMode('problems'); }} />
       : mode === 'problems' ? <section className="biology-menu glass" aria-label="문제 유형 선택">
         <h2>문제 파트</h2>
@@ -44,6 +49,8 @@ export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBa
           <option value="">전체 단원</option>{topics.length > 1 && <option value="__related">현재 개념의 관련 단원</option>}{[...new Set(deck.cards.map(card => card.topic))].map(topic => <option key={topic} value={topic}>{topic}</option>)}
         </select></label>
         {choiceCards.length ? <button type="button" className="biology-mode" onClick={() => setMode('choice')}><strong>객관식 {choiceCards.length}문제</strong><span>방향으로 답하기 · 정답과 해설 · 오답 다시 풀기</span></button> : <p className="study-scope">이 단원에 연결된 객관식이 없어요. 전체 단원을 선택해 주세요.</p>}
+        {missed.length > 0 && <button type="button" className="biology-mode" onClick={() => { setRetryCards(missed); setMode('missed'); }}><strong>오답만 다시 · {missed.length}문제</strong><span>이 기기에서 마지막으로 틀렸거나 '모름'이었던 문제만</span></button>}
+        <p className="biology-note">이 기기에서 푼 객관식 {seenCount(choiceCards)} / {choiceCards.length}문제</p>
         {questions.length > 0 && <button type="button" className="biology-mode" onClick={() => setMode('written')}><strong>서술형 전체 {questions.length}문제</strong><span>답안 작성 · 모범답안 · 항목별 직접 채점</span></button>}
         <button type="button" className="glass-button" onClick={() => setMode('concept')}>개념 정리로 돌아가기</button>
       </section> : q && draft && <section className="biology-written glass" aria-label="서술형 연습">

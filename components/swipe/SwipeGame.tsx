@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties, type Poin
 import { swipeCards, type Direction, type SwipeCard } from '../../data/swipe-cards';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playResult, playSwipe } from '../../lib/sound';
+import { recordResult } from '../../lib/progress';
 import { answerCard, getStats, newGame, type AnswerChoice } from '../../lib/swipe-game';
 import LaminatedCard from './LaminatedCard';
 import StreakFlame from './StreakFlame';
@@ -37,6 +38,8 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     clearTimeout(flightTimer.current);
     flightTimer.current = setTimeout(() => setFlight(null), FLIGHT_MS);
     const next = answerCard(current, direction, (now - started.current) / 1000);
+    const answered = next.attempts[next.attempts.length - 1];
+    recordResult(answered.card.id, direction === 'unknown' ? 'u' : answered.correct ? 'c' : 'w');
     playSwipe(flyTo);
     if (direction !== 'unknown') playResult(next.attempts[next.attempts.length - 1].correct);
     gameRef.current = next;
