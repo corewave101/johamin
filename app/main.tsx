@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import AppStatus from '../components/swipe/AppStatus';
 import Backdrop from '../components/swipe/Backdrop';
 import BlessingToggle from '../components/swipe/BlessingToggle';
+import CardSizeControl from '../components/swipe/CardSizeControl';
 import Intro from '../components/swipe/Intro';
 import JumpscareLayer from '../components/swipe/JumpscareLayer';
 import SoundToggle from '../components/swipe/SoundToggle';
@@ -37,6 +38,7 @@ createRoot(document.getElementById('root')!).render(<>
   <Backdrop />
   <SoundToggle />
   <BlessingToggle />
+  <CardSizeControl />
   {isDemo ? <SwipeGame /> : <SubjectPicker />}
   <AppStatus />
   <JumpscareLayer />

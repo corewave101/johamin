@@ -1,4 +1,5 @@
 import { isBlessed } from './blessing';
+import type { LoadedScare, SoundRef } from './theme';
 
 /**
  * 갑툭튀 rules. Numbers match the user's list:
@@ -75,17 +76,26 @@ export function scareForAnswer(state: ScareTracker, e: AnswerEvent, random = Mat
 }
 
 // ─── Showing scares (one overlay listens) ───────────────────────────────
-export interface ScareEvent { id: ScareId; persistent: boolean; key: number }
+export interface ScareEvent { id: string; persistent: boolean; key: number; image: string; sound: SoundRef }
+const haminImage = (id: ScareId) => `scares/${id}.webp`; // relative to the site; the overlay adds the base path
+const show = (event: Omit<ScareEvent, 'key'>) => {
+  const full = { ...event, key: Date.now() + Math.random() };
+  listeners.forEach(listener => listener(full));
+  return true;
+};
 const listeners = new Set<(event: ScareEvent) => void>();
 export function onScare(listener: (event: ScareEvent) => void) {
   listeners.add(listener);
   return () => { listeners.delete(listener); };
 }
+/** 하민의 가호 scares (no-op under any other blessing). */
 export function triggerScare(id: ScareId, persistent = false) {
   if (!isBlessed()) return false;
-  const event = { id, persistent, key: Date.now() + Math.random() };
-  listeners.forEach(listener => listener(event));
-  return true;
+  return show({ id, persistent, image: haminImage(id), sound: id === 'idle' ? { kind: 'none' } : { kind: 'builtin', id } });
+}
+/** A custom blessing's own scare. */
+export function triggerCustomScare(rule: LoadedScare, persistent = false) {
+  return show({ id: rule.id, persistent, image: rule.image, sound: rule.sound });
 }
 
 /** Asks the subject menu to go back to the very first screen. */

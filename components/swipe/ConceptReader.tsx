@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from 'react';
 import type { ConceptLesson } from '../../data/study-concepts';
+import { isTyping } from '../../lib/directions';
 
 export default function ConceptReader({ lessons, onPractice, read, setRead }: { lessons: ConceptLesson[]; onPractice: (topics: string[]) => void; read: string[]; setRead: Dispatch<SetStateAction<string[]>> }) {
   const [query, setQuery] = useState('');
@@ -8,6 +9,19 @@ export default function ConceptReader({ lessons, onPractice, read, setRead }: { 
   const filtered = useMemo(() => lessons.filter(lesson => JSON.stringify(lesson).toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())), [lessons, query]);
   const lesson = filtered.find(item => item.id === selected) ?? filtered[0];
   useEffect(() => { if (lesson) heading.current?.focus(); }, [lesson?.id]);
+  // ← → move between lessons, so reading never needs the mouse.
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (isTyping(event) || (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') || document.querySelector('[aria-modal="true"]')) return;
+      const at = filtered.findIndex(item => item.id === lesson?.id);
+      const next = filtered[at + (event.key === 'ArrowRight' ? 1 : -1)];
+      if (!next) return;
+      event.preventDefault();
+      setSelected(next.id);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [filtered, lesson?.id]);
   return <section className="concept-reader" aria-label="개념 정리">
     <div className="concept-toolbar glass"><label>개념 검색<input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="단원·용어·내용 검색" /></label><span>학습 표시 {read.length} / {lessons.length}단원</span></div>
     <div className="concept-layout">

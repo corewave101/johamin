@@ -11,8 +11,16 @@ const ConceptReader = require('../components/swipe/ConceptReader.tsx').default;
 for (const deck of subjectDecks) {
   const menu = renderToStaticMarkup(React.createElement(SubjectStudy, { deck, onBack: () => {} }));
   if (!deck.cards.length && !deck.writtenQuestions?.length) { assert.ok(menu.includes('아직 자료가 없어요') && !menu.includes('문제 파트'), deck.id); continue; }
-  assert.ok(menu.includes('개념 파트') && menu.includes('문제 파트'), deck.id);
-  assert.ok(menu.includes(`${deck.cards.filter(c=>deck.id !== 'biology-park' || c.topic !== '유전학 핵심 용어').length} / 서술형`), deck.id);
+  if (deck.id === 'biology-park') {
+    // 박상영T: card-style menu (↑ 개념 정리 · ← 문제 풀기 · → 원문 단어장 · ↓ 과목·파트)
+    const general = deck.cards.filter(c => c.topic !== '유전학 핵심 용어').length;
+    const written = deck.writtenQuestions.filter(q => q.topic !== '유전학 핵심 용어').length;
+    assert.ok(menu.includes('↑ 개념 정리') && menu.includes('← 문제 풀기') && menu.includes('→ 원문 단어장') && menu.includes('↓ 과목·파트'), deck.id);
+    assert.ok(menu.includes(`객관식 ${general} · 서술형 ${written}`), deck.id);
+  } else {
+    assert.ok(menu.includes('개념 파트') && menu.includes('문제 파트'), deck.id);
+    assert.ok(menu.includes(`${deck.cards.length} / 서술형`), deck.id);
+  }
   const lessons = conceptsFor(deck.id);
   const markup = renderToStaticMarkup(React.createElement(ConceptReader, { lessons, onPractice: () => {}, read: [lessons[0].id], setRead: () => {} }));
   assert.ok(markup.includes('개념 검색') && markup.includes('관련 문제 연습'), deck.id);

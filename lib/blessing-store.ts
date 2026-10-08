@@ -1,7 +1,13 @@
 // "다른 가호": blessings people make themselves. Kept only on this device (IndexedDB); pictures never go to a server.
 // A blessing can be saved to a file and opened on another device or by a friend.
 
+import type { ScareId } from './jumpscare';
+import { MAX_RULES, normalizeRule, TRIGGERS, type ScareRuleSpec } from './custom-scares';
+
 export interface CardCrop { x: number; y: number; scale: number } // pan in source pixels from centre, zoom over "cover"
+export type ScareSound = { kind: 'none' } | { kind: 'builtin'; id: ScareId } | { kind: 'file'; blob: Blob };
+export interface StoredScare extends ScareRuleSpec { image: Blob; sound: ScareSound }
+export interface CardLayout { x: number; y: number } // 0–100: where the card set sits in the free space of the screen
 export interface BlessingRecord {
   id: string;
   name: string;
@@ -15,6 +21,8 @@ export interface BlessingRecord {
   crop: CardCrop;
   card: Blob;             // the cropped card picture actually shown
   createdAt: number;
+  layout?: CardLayout | null;   // 3.1: where the title, card and arrows sit (none = usual place)
+  scares?: StoredScare[];       // 3.1: the blessing's own jump scares (optional)
 }
 export type BlessingSummary = Pick<BlessingRecord, 'id' | 'name' | 'coinFront' | 'coinBack' | 'color'>;
 
@@ -78,12 +86,20 @@ const blobToDataUrl = (blob: Blob) => new Promise<string>((resolve, reject) => {
 async function dataUrlToBlob(url: string) { return (await fetch(url)).blob(); }
 
 export async function exportBlessing(record: BlessingRecord): Promise<Blob> {
-  const { id: _id, createdAt: _created, background, cardSource, card, ...rest } = record;
-  const file = { type: FILE_TYPE, version: 1, ...rest, background: await blobToDataUrl(background), cardSource: await blobToDataUrl(cardSource), card: await blobToDataUrl(card) };
+  const { id: _id, createdAt: _created, background, cardSource, card, scares = [], ...rest } = record;
+  const scareFiles = await Promise.all(scares.map(async ({ image, sound, ...rule }) => ({
+    ...rule, image: await blobToDataUrl(image),
+    sound: sound.kind === 'file' ? { kind: 'file', data: await blobToDataUrl(sound.blob) } : sound,
+  })));
+  const file = { type: FILE_TYPE, version: 2, ...rest, scares: scareFiles, background: await blobToDataUrl(background), cardSource: await blobToDataUrl(cardSource), card: await blobToDataUrl(card) };
   return new Blob([JSON.stringify(file)], { type: 'application/json' });
 }
 
-type BlessingFile = Omit<BlessingRecord, 'id' | 'createdAt' | 'background' | 'cardSource' | 'card'> & { type: string; version: number; background: string; cardSource: string; card: string };
+type ScareFile = ScareRuleSpec & { image: string; sound: { kind: 'none' } | { kind: 'builtin'; id: ScareId } | { kind: 'file'; data: string } };
+type BlessingFile = Omit<BlessingRecord, 'id' | 'createdAt' | 'background' | 'cardSource' | 'card' | 'scares'> & { type: string; version: number; background: string; cardSource: string; card: string; scares?: ScareFile[] };
+const IMAGE_DATA = /^data:image\/(webp|jpeg|png);base64,/;
+const AUDIO_DATA = /^data:audio\/[\w.+-]+;base64,/;
+const BUILTIN_SOUNDS = ['aria', 'fart', 'impostor', 'crash', 'ya', 'horn', 'scratch', 'ball', 'leave', 'huh'];
 
 /** Checks a loaded file before anything is saved. Returns a reason in Korean when it is not a blessing file. */
 export function checkBlessingFile(data: unknown): string | null {
@@ -92,9 +108,18 @@ export function checkBlessingFile(data: unknown): string | null {
   if (typeof f.name !== 'string' || !f.name.trim() || [...f.name].length > LIMITS.name) return '가호 이름이 올바르지 않아요.';
   if (typeof f.color !== 'string' || !/^#[0-9a-f]{6}$/i.test(f.color)) return '가호 색이 올바르지 않아요.';
   for (const key of ['background', 'cardSource', 'card'] as const) {
-    if (typeof f[key] !== 'string' || !/^data:image\/(webp|jpeg|png);base64,/.test(f[key] as string)) return '사진이 들어 있지 않아요.';
+    if (typeof f[key] !== 'string' || !IMAGE_DATA.test(f[key] as string)) return '사진이 들어 있지 않아요.';
   }
   if (typeof f.focusX !== 'number' || typeof f.focusY !== 'number' || !f.crop || typeof f.crop.scale !== 'number') return '사진 위치 정보가 없어요.';
+  if (f.layout != null && (typeof f.layout.x !== 'number' || typeof f.layout.y !== 'number')) return '카드 위치 정보가 올바르지 않아요.';
+  if (f.scares != null) {
+    if (!Array.isArray(f.scares) || f.scares.length > MAX_RULES) return '갑툭튀 정보가 올바르지 않아요.';
+    for (const s of f.scares) {
+      if (!s || !TRIGGERS[s.trigger] || typeof s.image !== 'string' || !IMAGE_DATA.test(s.image)) return '갑툭튀 정보가 올바르지 않아요.';
+      const sound = s.sound as { kind?: string; id?: string; data?: string } | undefined;
+      if (!sound || !(sound.kind === 'none' || (sound.kind === 'builtin' && BUILTIN_SOUNDS.includes(String(sound.id))) || (sound.kind === 'file' && typeof sound.data === 'string' && AUDIO_DATA.test(sound.data)))) return '갑툭튀 소리 정보가 올바르지 않아요.';
+    }
+  }
   return null;
 }
 
@@ -111,6 +136,12 @@ export async function importBlessing(file: File): Promise<BlessingRecord> {
     focusX: clamp(f.focusX, 0, 100), focusY: clamp(f.focusY, 0, 100),
     crop: { x: Number(f.crop.x) || 0, y: Number(f.crop.y) || 0, scale: clamp(f.crop.scale, 1, 6) },
     background: await dataUrlToBlob(f.background), cardSource: await dataUrlToBlob(f.cardSource), card: await dataUrlToBlob(f.card),
+    layout: f.layout ? { x: clamp(f.layout.x, 0, 100), y: clamp(f.layout.y, 0, 100) } : null,
+    scares: await Promise.all((f.scares ?? []).map(async (s, i) => ({
+      ...normalizeRule({ id: `s${i}${Math.random().toString(36).slice(2, 6)}`, trigger: s.trigger, n: s.n, chance: s.chance }),
+      image: await dataUrlToBlob(s.image),
+      sound: s.sound.kind === 'file' ? { kind: 'file' as const, blob: await dataUrlToBlob(s.sound.data) } : s.sound.kind === 'builtin' ? { kind: 'builtin' as const, id: s.sound.id } : { kind: 'none' as const },
+    }))),
   };
   await saveBlessing(record);
   return record;

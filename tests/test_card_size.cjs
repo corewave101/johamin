@@ -1,0 +1,26 @@
+// 카드 크기: one device setting for every blessing, in fixed steps.
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const ts = require('typescript');
+require.extensions['.ts'] = (m, f) => m._compile(ts.transpileModule(fs.readFileSync(f, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText, f);
+const store = new Map([['johamin-card-size', '7']]);
+global.localStorage = { getItem: k => store.get(k) ?? null, setItem: (k, v) => store.set(k, String(v)) };
+const { cardSize, setCardSize, stepCardSize, onCardSizeChange, CARD_SIZES } = require('../lib/card-size.ts');
+assert.equal(cardSize(), 1, 'A broken saved value falls back to 100%');
+let seen = [];
+const stop = onCardSizeChange(s => seen.push(s));
+stepCardSize(1); stepCardSize(1);
+assert.equal(cardSize(), 1.2);
+assert.equal(store.get('johamin-card-size'), '1.2');
+for (let i = 0; i < 10; i++) stepCardSize(1);
+assert.equal(cardSize(), CARD_SIZES.at(-1), 'Stops at the largest step');
+for (let i = 0; i < 20; i++) stepCardSize(-1);
+assert.equal(cardSize(), CARD_SIZES[0], 'Stops at the smallest step');
+setCardSize(0.33);
+assert.equal(cardSize(), 1, 'Only known steps are accepted');
+stop();
+assert.ok(seen.length >= 3);
+const css = fs.readFileSync('app/swipe.css', 'utf8');
+assert.ok(css.includes('--card-zoom: min(var(--card-scale), 1.2)'), 'Phones stop at 120%');
+assert.ok(fs.readFileSync('components/swipe/SwipeGame.tsx', 'utf8').includes('/ var(--card-zoom, 1)'), 'Dragging follows the finger at any size');
+console.log('PASS: card size steps, limits, saved setting, phone cap and drag correction.');

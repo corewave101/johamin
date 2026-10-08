@@ -72,3 +72,37 @@
   .editor-coin { --size: 80px; }
   .editor-screen.is-pc { width: 120px; height: 75px; }
 }
+
+/* 3.1 (beta): a custom blessing can move the card set (title, card and arrows) anywhere on the screen.
+   --set-x / --set-y (0–1) say where the set sits within the free space. */
+:root[data-layout="custom"] .swipe-app:has(> .swipe-game:not(.has-passage)) { display: flex; flex-direction: column; }
+:root[data-layout="custom"] .swipe-app:has(> .swipe-game:not(.has-passage))::before,
+:root[data-layout="custom"] .swipe-app:has(> .swipe-game:not(.has-passage))::after { content: ''; flex-shrink: 1; flex-basis: 0; }
+:root[data-layout="custom"] .swipe-app:has(> .swipe-game:not(.has-passage))::before { flex-grow: var(--set-y, 0); }
+:root[data-layout="custom"] .swipe-app:has(> .swipe-game:not(.has-passage))::after { flex-grow: calc(1 - var(--set-y, 0)); }
+:root[data-layout="custom"] .swipe-app > .swipe-game:not(.has-passage) { flex: none; width: min(100%, 660px); margin-left: calc((100% - min(100%, 660px)) * var(--set-x, .5)); }
+@media (min-width: 901px) {
+  /* Leave room for the corner buttons when the set is moved to an edge. */
+  :root[data-layout="custom"] .swipe-app:has(> .swipe-game:not(.has-passage)) { padding: 70px 24px 40px; }
+}
+
+/* Editor: card position and own scares */
+.layout-frames { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px; }
+.layout-frames figure { display: grid; justify-items: center; gap: 4px; margin: 0; font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+.layout-frame { position: relative; overflow: hidden; border: 3px solid #2a2420; border-radius: 10px; background: var(--c-deep, #3a4a5a) center / cover no-repeat; touch-action: none; cursor: grab; box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .6); }
+.layout-frame.is-pc { width: min(300px, 74vw); aspect-ratio: 16 / 10; }
+.layout-frame.is-phone { width: 96px; aspect-ratio: 9 / 19.5; border-radius: 16px; }
+.layout-set { position: absolute; display: grid; grid-template-rows: 12% 1fr; gap: 6%; padding: 3%; border-radius: 6px; background: rgba(255, 255, 255, .22); box-shadow: 0 0 0 2px #fff, 0 4px 10px rgba(0, 0, 0, .4); pointer-events: none; }
+.layout-set i { display: block; border-radius: 4px; background: rgba(255, 255, 255, .85); }
+.layout-set i:first-child { width: 60%; justify-self: center; }
+.layout-set i:last-child { width: 46%; justify-self: center; background: linear-gradient(180deg, rgba(255, 255, 255, .9) 55%, rgba(20, 34, 50, .85) 55%); }
+.scare-rules { display: grid; gap: 12px; width: 100%; margin: 0; padding: 0; list-style: none; }
+.scare-rule { display: grid; grid-template-columns: 76px 1fr; gap: 10px 12px; padding: 12px; border-radius: 14px; background: rgba(255, 255, 255, .7); border: 1px solid rgba(120, 90, 50, .18); }
+.scare-thumb { width: 76px; height: 76px; border-radius: 10px; background: #2a2420 center / cover no-repeat; color: #fff; font-size: 12px; font-weight: 700; display: grid; place-items: center; text-align: center; padding: 4px; }
+.scare-fields { display: grid; gap: 8px; min-width: 0; }
+.scare-fields label { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 13px; font-weight: 700; }
+.scare-fields select, .scare-fields input[type="number"] { padding: 6px 8px; border-radius: 9px; border: 1px solid rgba(120, 90, 50, .3); background: #fff; font: inherit; font-size: 14px; color: var(--ink); max-width: 100%; }
+.scare-fields input[type="number"] { width: 72px; }
+.scare-rule-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+.scare-rule-actions .glass-button { padding: 5px 11px; font-size: 12.5px; }
+.editor-beta { margin-left: 6px; padding: 2px 7px; border-radius: 999px; font-size: 11px; font-weight: 800; color: #5a3e05; background: #ffe9a8; vertical-align: 2px; }

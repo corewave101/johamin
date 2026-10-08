@@ -171,7 +171,7 @@ export const parkCards: SwipeCard[] = [
     "id": "biology-park-012",
     "topic": "유전의 기본 원리",
     "subject": "박상영T",
-    "question": "DNA 복제 직후 체세포에서 변하는 것은?",
+    "question": "DNA 복제 직후 체세포의 변화로 옳은 것은?",
     "answers": {
       "up": "DNA 양은 2배, 염색체 수는 동일",
       "left": "염색체 수만 2배",
@@ -224,7 +224,7 @@ export const parkCards: SwipeCard[] = [
       "down": "aa와 aa"
     },
     "correct": "up",
-    "explanation": "자녀에게 각각 a를 전달하면서 정상인 부모는 모두 보인자 Aa이다.",
+    "explanation": "부모 모두 정상이지만 자녀에게 각각 a를 전달했으므로 둘 다 보인자 Aa이다.",
     "sourceNote": "박상영T 필기 · 2쪽"
   },
   {
@@ -404,7 +404,7 @@ export const parkCards: SwipeCard[] = [
       "down": "n−1 네 개"
     },
     "correct": "up",
-    "explanation": "감수 1분열이 정상이라 다른 한 세포의 두 생식세포는 정상이다.",
+    "explanation": "감수 1분열은 정상이므로 비분리가 없는 나머지 세포에서 생긴 두 생식세포는 정상(n)이다.",
     "sourceNote": "박상영T 필기 · 2쪽"
   },
   {
@@ -954,7 +954,7 @@ export const joCards: SwipeCard[] = [
     "id": "biology-jo-017",
     "topic": "전사",
     "subject": "조용민T",
-    "question": "자료의 α-아마니틴에 가장 민감한 효소는?",
+    "question": "자료에서 α-아마니틴에 가장 민감한 효소는?",
     "answers": {
       "up": "RNA 중합효소 II",
       "left": "RNA 중합효소 I",

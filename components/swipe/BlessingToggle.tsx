@@ -122,7 +122,7 @@ function Chooser({ onClose, onReceive, onEdit }: { onClose: () => void; onReceiv
           {items.map(item => <li key={item.id}>
             <button type="button" className="blessing-choice" onClick={() => onReceive(choiceOf(item))}>
               <MiniCoin palette={paletteFrom(item.color)} text={item.coinFront} size={46} />
-              <span><strong>{item.name}</strong><small>받기</small></span>
+              <span><strong>{item.name}</strong><small>받기{item.scares?.length ? ` · 갑툭튀 ${item.scares.length}개` : ''}{item.layout ? ' · 카드 위치' : ''}</small></span>
             </button>
             <div className="blessing-row-actions">
               <button type="button" className="glass-button" onClick={() => onEdit(item)}>고치기</button>

@@ -844,7 +844,7 @@ export const koreanGrammarCards: SwipeCard[] = [
   {
     "id": "korean-grammar-057",
     "topic": "형태에 관한 것",
-    "subject": "그들은 사방으로 ___ 도망쳤다.",
+    "subject": "사람들이 ___ 광장이 텅 비었다.",
     "question": "빈칸의 바른 표기는?",
     "answers": {
       "up": "흩어지고",
@@ -1258,7 +1258,7 @@ export const koreanGrammarCards: SwipeCard[] = [
       "down": "익숙찌 않다"
     },
     "correct": "up",
-    "explanation": "ㄱ 받침 뒤에서 하가 통째로 줄면 거센소리로 적지 않는다(익숙지, 생각건대, 깨끗지).",
+    "explanation": "ㄱ·ㄷ·ㅂ 소리로 나는 받침 뒤에서 하가 통째로 줄면 거센소리로 적지 않는다(익숙지, 생각건대, 깨끗지).",
     "sourceNote": "우리말 바로 쓰기 · 19쪽"
   },
   {
@@ -1303,7 +1303,7 @@ export const koreanGrammarCards: SwipeCard[] = [
       "down": "단위 명사라서"
     },
     "correct": "up",
-    "explanation": "그것 말고는의 뜻을 가진 밖에는 조사다. 조사는 그 앞말에 붙여 쓴다(제41항).",
+    "explanation": "‘그것 말고는’의 뜻을 가진 ‘밖에’는 조사다. 조사는 그 앞말에 붙여 쓴다(제41항).",
     "sourceNote": "우리말 바로 쓰기 · 23쪽"
   },
   {
@@ -1318,7 +1318,7 @@ export const koreanGrammarCards: SwipeCard[] = [
       "down": "부사"
     },
     "correct": "up",
-    "explanation": "실외를 뜻하는 밖은 명사이므로 앞말과 띄어 쓴다. 너밖에의 밖에(조사)와 구별한다.",
+    "explanation": "실외를 뜻하는 ‘밖’은 명사이므로 앞말과 띄어 쓴다. ‘너밖에’의 ‘밖에’(조사)와 구별한다.",
     "sourceNote": "우리말 바로 쓰기 · 23쪽"
   },
   {
@@ -1483,7 +1483,7 @@ export const koreanGrammarCards: SwipeCard[] = [
       "down": "조사–조사"
     },
     "correct": "up",
-    "explanation": "어떤 수준보다 한층 더의 뜻인 보다는 부사라 띄어 쓰고, 비교 대상 체언 뒤의 보다는 조사라 붙여 쓴다.",
+    "explanation": "‘어떤 수준에 비하여 한층 더’라는 뜻의 ‘보다’는 부사라 띄어 쓰고, 비교 대상 체언 뒤의 ‘보다’는 조사라 붙여 쓴다.",
     "sourceNote": "우리말 바로 쓰기 · 27쪽"
   },
   {
@@ -1588,7 +1588,7 @@ export const koreanGrammarCards: SwipeCard[] = [
       "down": "잔돈뿐 이었다"
     },
     "correct": "up",
-    "explanation": "체언 잔돈 뒤의 뿐은 조사이고, 이었다도 조사 이다의 활용형이므로 모두 붙여 쓴다.",
+    "explanation": "체언 ‘잔돈’ 뒤의 ‘뿐’은 조사이고, ‘이었다’도 서술격 조사 ‘이다’의 활용형이므로 모두 붙여 쓴다.",
     "sourceNote": "우리말 바로 쓰기 · 30쪽"
   },
   {
@@ -1693,7 +1693,7 @@ export const koreanGrammarCards: SwipeCard[] = [
       "down": "항상 띄어 씀"
     },
     "correct": "up",
-    "explanation": "같이가 체언 뒤에 쓰여 처럼의 뜻이면 조사이므로 앞말에 붙여 쓴다.",
+    "explanation": "‘같이’가 체언 뒤에 쓰여 ‘처럼’의 뜻이면 조사이므로 앞말에 붙여 쓴다.",
     "sourceNote": "우리말 바로 쓰기 · 30쪽"
   },
   {
@@ -2128,7 +2128,7 @@ export const koreanGrammarCards: SwipeCard[] = [
       "down": "받혔다"
     },
     "correct": "up",
-    "explanation": "밭치다는 구멍이 뚫린 물건 위에 국수·야채 따위를 올려 물기를 빼다는 뜻이다.",
+    "explanation": "밭치다는 밭다(체 따위로 걸러 액체만 받아 내다)를 강조하는 말이다. 국수·채소를 올려 물기를 뺀다는 뜻도 있다.",
     "sourceNote": "우리말 바로 쓰기 · 20쪽"
   },
   {
@@ -2173,7 +2173,7 @@ export const koreanGrammarCards: SwipeCard[] = [
       "down": "부딪첬다"
     },
     "correct": "up",
-    "explanation": "부딪치다는 어떤 것을 다른 것에 맞닿게 하는 능동 표현이다. 목적어 돌을과 능동이라는 조건에 맞는 활용형은 부딪쳤다이다.",
+    "explanation": "부딪치다는 어떤 것을 다른 것에 맞닿게 하는 능동 표현이다. 목적어 ‘돌을’과 능동이라는 조건에 맞는 활용형은 ‘부딪쳤다’이다.",
     "sourceNote": "우리말 바로 쓰기 · 20쪽"
   },
   {
@@ -2713,7 +2713,7 @@ export const koreanGrammarCards: SwipeCard[] = [
       "down": "가느니 보다"
     },
     "correct": "up",
-    "explanation": "-는 사람보다의 뜻이면 의존 명사 이에 조사 보다가 붙은 것이므로 가는 이보다로 쓴다.",
+    "explanation": "‘-는 사람보다’의 뜻이면 의존 명사 ‘이’에 조사 ‘보다’가 붙은 것이므로 ‘가는 이보다’로 띄어 쓴다.",
     "sourceNote": "우리말 바로 쓰기 · 21쪽"
   },
   {

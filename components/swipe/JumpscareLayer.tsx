@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { goHome, onScare, SCARE_IDS, type ScareEvent } from '../../lib/jumpscare';
 import { isBlessed, onBlessedChange } from '../../lib/blessing';
-import { playScare } from '../../lib/scare-sounds';
+import { playSound } from '../../lib/scare-sounds';
 import { preloadImage, trackPromise } from '../../lib/boot';
 
 const image = (id: string) => `${import.meta.env.BASE_URL}scares/${id}.webp`;
@@ -17,7 +17,7 @@ export default function JumpscareLayer() {
     return onBlessedChange(on => { void preload(on); });
   }, []);
 
-  useEffect(() => onScare(event => { setScare(event); playScare(event.id); }), []);
+  useEffect(() => onScare(event => { setScare(event); playSound(event.sound); }), []);
 
   // Clears a fading scare after its one-second fade (also when animations are turned off).
   useEffect(() => {
@@ -41,5 +41,5 @@ export default function JumpscareLayer() {
 
   if (!scare) return null;
   return <div key={scare.key} className={`jumpscare ${scare.persistent ? 'is-stuck' : 'is-fading'}`} aria-hidden="true"
-    style={{ backgroundImage: `url(${image(scare.id)})` }} />;
+    style={{ backgroundImage: `url("${/^(blob:|data:|https?:)/.test(scare.image) ? scare.image : image(scare.image.replace(/^scares\/|\.webp$/g, ''))}")` }} />;
 }

@@ -441,7 +441,7 @@
       "kind": "choice",
       "topic": "전사",
       "badge": "조용민T",
-      "question": "자료의 α-아마니틴에 가장 민감한 효소는?",
+      "question": "자료에서 α-아마니틴에 가장 민감한 효소는?",
       "passage": null,
       "answer": "RNA 중합효소 II",
       "wrong": [
@@ -1387,7 +1387,7 @@
       "kind": "choice",
       "topic": "유전의 기본 원리",
       "badge": "박상영T",
-      "question": "DNA 복제 직후 체세포에서 변하는 것은?",
+      "question": "DNA 복제 직후 체세포의 변화로 옳은 것은?",
       "passage": null,
       "answer": "DNA 양은 2배, 염색체 수는 동일",
       "wrong": [
@@ -1462,7 +1462,7 @@
         "aa와 aa"
       ],
       "criteria": [],
-      "explanation": "자녀에게 각각 a를 전달하면서 정상인 부모는 모두 보인자 Aa이다.",
+      "explanation": "부모 모두 정상이지만 자녀에게 각각 a를 전달했으므로 둘 다 보인자 Aa이다.",
       "source_label": "박상영T 필기",
       "source_page": 2,
       "source_slide": null,
@@ -1726,7 +1726,7 @@
         "n−1 네 개"
       ],
       "criteria": [],
-      "explanation": "감수 1분열이 정상이라 다른 한 세포의 두 생식세포는 정상이다.",
+      "explanation": "감수 1분열은 정상이므로 비분리가 없는 나머지 세포에서 생긴 두 생식세포는 정상(n)이다.",
       "source_label": "박상영T 필기",
       "source_page": 2,
       "source_slide": null,
@@ -2183,7 +2183,7 @@
       "passage": null,
       "answer": "A와 a는 같은 좌위의 대립유전자이다.",
       "wrong": [
-        "한 개체의 모든 유전자 전체",
+        "한 개체가 가진 유전자 전체",
         "한 염색체가 복제된 두 가닥",
         "서로 다른 좌위의 모든 유전자"
       ],
@@ -2203,7 +2203,7 @@
       "badge": "상동염색체",
       "question": "상동염색체에 대한 설명으로 옳은 것은?",
       "passage": null,
-      "answer": "부계와 모계의 염색체가 같은 좌위에 유전자를 가진다.",
+      "answer": "부계·모계에서 온 염색체 쌍으로 유전자 좌위가 같다.",
       "wrong": [
         "한 염색체 복제로 생긴 두 염색분체",
         "모든 염색체가 크기와 형태가 같다",
@@ -2223,7 +2223,7 @@
       "kind": "choice",
       "topic": "유전학 핵심 용어",
       "badge": "형질",
-      "question": "형질에 대한 설명으로 옳은 것은?",
+      "question": "형질에 해당하는 것은?",
       "passage": null,
       "answer": "완두의 종자 모양",
       "wrong": [
@@ -2245,7 +2245,7 @@
       "kind": "choice",
       "topic": "유전학 핵심 용어",
       "badge": "대립형질",
-      "question": "대립형질에 대한 설명으로 옳은 것은?",
+      "question": "대립형질에 해당하는 것은?",
       "passage": null,
       "answer": "둥근 종자와 주름진 종자",
       "wrong": [
@@ -2357,7 +2357,7 @@
       "badge": "분리의 법칙",
       "question": "분리의 법칙에 대한 설명으로 옳은 것은?",
       "passage": null,
-      "answer": "Aa가 A와 a를 각각 가진 생식세포를 만든다",
+      "answer": "Aa는 A 또는 a 하나만 가진 생식세포를 만든다",
       "wrong": [
         "A와 a가 항상 함께 생식세포에 들어간다",
         "모든 유전자가 같은 염색체에 있다",
@@ -2531,7 +2531,7 @@
       "kind": "choice",
       "topic": "유전학 핵심 용어",
       "badge": "뉴클레오타이드",
-      "question": "뉴클레오타이드에 대한 설명으로 옳은 것은?",
+      "question": "뉴클레오타이드의 구성 성분은?",
       "passage": null,
       "answer": "인산·당·염기",
       "wrong": [
@@ -2751,7 +2751,7 @@
       "kind": "written",
       "topic": "사람의 유전",
       "badge": null,
-      "question": "정상 부모 둘 사이에서 상염색체 열성 유전병 자녀가 태어났다. 부모 유전자형과 다음 정상 자녀가 보인자일 확률을 설명하시오.",
+      "question": "정상 부모 둘 사이에서 상염색체 열성 유전병 자녀가 태어났다. 부모 유전자형과 정상인 자녀가 보인자일 확률을 설명하시오.",
       "passage": null,
       "answer": "자녀 aa에게 각각 a를 전달한 정상 부모는 둘 다 Aa이다. Aa × Aa에서 AA:Aa:aa는 1:2:1이며 정상 자녀로 조건을 제한하면 AA와 Aa만 남으므로 보인자일 확률은 2/3이다.",
       "wrong": [],
@@ -2773,9 +2773,9 @@
       "kind": "written",
       "topic": "사람의 유전",
       "badge": null,
-      "question": "X 연관 열성에서 보인자 어머니 XᴬXᵃ와 정상 아버지 XᴬY 사이의 아들 발병 확률과 전체 자녀 발병 확률을 구별하시오. 성비는 1:1이다.",
+      "question": "X 연관 열성에서 보인자 어머니 XᴬXᵃ와 정상 아버지 XᴬY 사이의 아들 중 발병 확률과 전체 자녀 중 발병 확률을 구하시오. 성비는 1:1이다.",
       "passage": null,
-      "answer": "아들은 아버지의 Y와 어머니의 X를 받으므로 아들 중 XᵃY가 될 확률은 1/2이다. 딸은 아버지의 정상 X를 받으므로 발병하지 않는다. 전체 자녀에서 발병 확률은 아들일 확률 1/2 × 발병 X를 받을 확률 1/2 = 1/4이다.",
+      "answer": "아들은 아버지의 Y와 어머니의 X를 받으므로 아들 중 XᵃY가 될 확률은 1/2이다. 딸은 아버지의 정상 X를 받으므로 발병하지 않는다. 전체 자녀에서 발병 확률은 아들일 확률 1/2 × Xᵃ를 받을 확률 1/2 = 1/4이다.",
       "wrong": [],
       "criteria": [
         "아들의 X가 모계 유래",
@@ -2973,7 +2973,7 @@
       "badge": null,
       "question": "A와 a가 대립유전자라고 할 수 있는 이유를 좌위와 유전자 형태를 이용해 설명하시오.",
       "passage": null,
-      "answer": "A와 a는 상동염색체의 같은 좌위에 있는 같은 유전자의 서로 다른 형태이므로 대립유전자이다. 같은 개체에서는 AA·Aa·aa처럼 조합될 수 있다.",
+      "answer": "A와 a는 상동염색체의 같은 좌위에 있는 같은 유전자의 서로 다른 형태이므로 대립유전자이다. 한 개체는 AA·Aa·aa 중 하나의 조합을 가진다.",
       "wrong": [],
       "criteria": [
         "상동염색체의 같은 좌위",
@@ -3081,9 +3081,9 @@
       "kind": "written",
       "topic": "유전학 핵심 용어",
       "badge": null,
-      "question": "유전자형이 같은 식물 두 개의 키가 다른 환경에서 달라질 수 있는 이유를 표현형과 연결해 쓰시오.",
+      "question": "유전자형이 같은 두 식물의 키가 다른 환경에서 달라질 수 있는 이유를 표현형과 연결해 쓰시오.",
       "passage": null,
-      "answer": "표현형은 유전자형뿐 아니라 환경의 영향도 받아 나타난다. 같은 유전자형이어도 빛·물·영양 공급이 달라지면 키가 달라질 수 있다. 키의 차이가 있다고 반드시 유전자형이 다르다고 결론낼 수는 없다.",
+      "answer": "표현형은 유전자형뿐 아니라 환경의 영향도 받아 나타난다. 같은 유전자형이어도 빛·물·영양 공급이 달라지면 키가 달라질 수 있다. 키의 차이가 있다고 반드시 유전자형이 다르다고 결론 내릴 수는 없다.",
       "wrong": [],
       "criteria": [
         "표현형에 환경도 관여",
@@ -4686,7 +4686,7 @@
       "deck_id": "korean-grammar",
       "kind": "choice",
       "topic": "형태에 관한 것",
-      "badge": "그들은 사방으로 ___ 도망쳤다.",
+      "badge": "사람들이 ___ 광장이 텅 비었다.",
       "question": "빈칸의 바른 표기는?",
       "passage": null,
       "answer": "흩어지고",
@@ -5290,7 +5290,7 @@
         "익숙찌 않다"
       ],
       "criteria": [],
-      "explanation": "ㄱ 받침 뒤에서 하가 통째로 줄면 거센소리로 적지 않는다(익숙지, 생각건대, 깨끗지).",
+      "explanation": "ㄱ·ㄷ·ㅂ 소리로 나는 받침 뒤에서 하가 통째로 줄면 거센소리로 적지 않는다(익숙지, 생각건대, 깨끗지).",
       "source_label": "우리말 바로 쓰기",
       "source_page": 19,
       "source_slide": null,
@@ -5356,7 +5356,7 @@
         "단위 명사라서"
       ],
       "criteria": [],
-      "explanation": "그것 말고는의 뜻을 가진 밖에는 조사다. 조사는 그 앞말에 붙여 쓴다(제41항).",
+      "explanation": "‘그것 말고는’의 뜻을 가진 ‘밖에’는 조사다. 조사는 그 앞말에 붙여 쓴다(제41항).",
       "source_label": "우리말 바로 쓰기",
       "source_page": 23,
       "source_slide": null,
@@ -5378,7 +5378,7 @@
         "부사"
       ],
       "criteria": [],
-      "explanation": "실외를 뜻하는 밖은 명사이므로 앞말과 띄어 쓴다. 너밖에의 밖에(조사)와 구별한다.",
+      "explanation": "실외를 뜻하는 ‘밖’은 명사이므로 앞말과 띄어 쓴다. ‘너밖에’의 ‘밖에’(조사)와 구별한다.",
       "source_label": "우리말 바로 쓰기",
       "source_page": 23,
       "source_slide": null,
@@ -5620,7 +5620,7 @@
         "조사–조사"
       ],
       "criteria": [],
-      "explanation": "어떤 수준보다 한층 더의 뜻인 보다는 부사라 띄어 쓰고, 비교 대상 체언 뒤의 보다는 조사라 붙여 쓴다.",
+      "explanation": "‘어떤 수준에 비하여 한층 더’라는 뜻의 ‘보다’는 부사라 띄어 쓰고, 비교 대상 체언 뒤의 ‘보다’는 조사라 붙여 쓴다.",
       "source_label": "우리말 바로 쓰기",
       "source_page": 27,
       "source_slide": null,
@@ -5774,7 +5774,7 @@
         "잔돈뿐 이었다"
       ],
       "criteria": [],
-      "explanation": "체언 잔돈 뒤의 뿐은 조사이고, 이었다도 조사 이다의 활용형이므로 모두 붙여 쓴다.",
+      "explanation": "체언 ‘잔돈’ 뒤의 ‘뿐’은 조사이고, ‘이었다’도 서술격 조사 ‘이다’의 활용형이므로 모두 붙여 쓴다.",
       "source_label": "우리말 바로 쓰기",
       "source_page": 30,
       "source_slide": null,
@@ -5928,7 +5928,7 @@
         "항상 띄어 씀"
       ],
       "criteria": [],
-      "explanation": "같이가 체언 뒤에 쓰여 처럼의 뜻이면 조사이므로 앞말에 붙여 쓴다.",
+      "explanation": "‘같이’가 체언 뒤에 쓰여 ‘처럼’의 뜻이면 조사이므로 앞말에 붙여 쓴다.",
       "source_label": "우리말 바로 쓰기",
       "source_page": 30,
       "source_slide": null,
@@ -6566,7 +6566,7 @@
         "받혔다"
       ],
       "criteria": [],
-      "explanation": "밭치다는 구멍이 뚫린 물건 위에 국수·야채 따위를 올려 물기를 빼다는 뜻이다.",
+      "explanation": "밭치다는 밭다(체 따위로 걸러 액체만 받아 내다)를 강조하는 말이다. 국수·채소를 올려 물기를 뺀다는 뜻도 있다.",
       "source_label": "우리말 바로 쓰기",
       "source_page": 20,
       "source_slide": null,
@@ -6632,7 +6632,7 @@
         "부딪첬다"
       ],
       "criteria": [],
-      "explanation": "부딪치다는 어떤 것을 다른 것에 맞닿게 하는 능동 표현이다. 목적어 돌을과 능동이라는 조건에 맞는 활용형은 부딪쳤다이다.",
+      "explanation": "부딪치다는 어떤 것을 다른 것에 맞닿게 하는 능동 표현이다. 목적어 ‘돌을’과 능동이라는 조건에 맞는 활용형은 ‘부딪쳤다’이다.",
       "source_label": "우리말 바로 쓰기",
       "source_page": 20,
       "source_slide": null,
@@ -7424,7 +7424,7 @@
         "가느니 보다"
       ],
       "criteria": [],
-      "explanation": "-는 사람보다의 뜻이면 의존 명사 이에 조사 보다가 붙은 것이므로 가는 이보다로 쓴다.",
+      "explanation": "‘-는 사람보다’의 뜻이면 의존 명사 ‘이’에 조사 ‘보다’가 붙은 것이므로 ‘가는 이보다’로 띄어 쓴다.",
       "source_label": "우리말 바로 쓰기",
       "source_page": 21,
       "source_slide": null,
@@ -8187,7 +8187,7 @@
       "badge": null,
       "question": "다국적 기업 공장이 개발도상국에 미치는 영향으로 옳지 않은 것은?",
       "passage": null,
-      "answer": "이익이 전부 재투자",
+      "answer": "이익 전부 현지 재투자",
       "wrong": [
         "고용 창출",
         "기술 습득 기회",
@@ -8370,7 +8370,7 @@
         "성공회–가톨릭"
       ],
       "criteria": [],
-      "explanation": "학습지에서 스코틀랜드 갈등 구도는 잉글랜드(성공회) 대 스코틀랜드(장로교)로 정리된다.",
+      "explanation": "스코틀랜드 갈등에는 잉글랜드(성공회)와 스코틀랜드(장로교)의 종교 차이가 얽혀 있다.",
       "source_label": "성신제T · 국제 갈등",
       "source_page": 1,
       "source_slide": null,
@@ -8546,7 +8546,7 @@
         "힌두교"
       ],
       "criteria": [],
-      "explanation": "수단은 이슬람교, 남수단은 크리스트교·토착 신앙이며 석유 자원 문제(다르푸르)도 얽혀 있다.",
+      "explanation": "수단은 이슬람교, 남수단은 크리스트교·토착 신앙이며, 국경 지대의 석유 자원 문제도 얽혀 있다.",
       "source_label": "성신제T · 국제 갈등",
       "source_page": 2,
       "source_slide": null,
@@ -9133,7 +9133,7 @@
       "badge": null,
       "question": "남수단 외과 수술·예멘 의료 지원을 한 NGO X. X의 설립 신념은?",
       "passage": null,
-      "answer": "누구나 의료받을 권리",
+      "answer": "누구나 치료받을 권리",
       "wrong": [
         "핵 없는 세상",
         "고문 추방",
@@ -9573,7 +9573,7 @@
       "badge": null,
       "question": "2024년 세계유산이 된 사도광산에 대해 옳은 태도는?",
       "passage": null,
-      "answer": "전체 역사 설명 계속 확인",
+      "answer": "전체 역사 해설 이행 확인",
       "wrong": [
         "등재로 논쟁 종료",
         "에도 시대만 기억",
@@ -9646,7 +9646,7 @@
         "석도"
       ],
       "criteria": [],
-      "explanation": "칙령 제41호는 울도군의 관할을 울릉 전도·죽도·석도로 규정했고, 석도가 독도를 가리키는지 검토한다.",
+      "explanation": "칙령 제41호는 울도군의 관할을 울릉 전도·죽도·석도로 규정했으며, 석도는 독도를 가리키는 것으로 본다.",
       "source_label": "성신제T · 역사 갈등과 독도",
       "source_page": 3,
       "source_slide": null,
@@ -9771,9 +9771,9 @@
       "badge": null,
       "question": "일본과 가까워 영해를 12해리보다 좁게 적용하는 곳 X. X의 영해는?",
       "passage": null,
-      "answer": "직선 기선서 3해리",
+      "answer": "직선 기선에서 3해리",
       "wrong": [
-        "통상 기선서 12해리",
+        "통상 기선에서 12해리",
         "24해리",
         "200해리"
       ],
@@ -9791,7 +9791,7 @@
       "kind": "choice",
       "topic": "역사·영토 갈등",
       "badge": null,
-      "question": "1998년 협정으로 한·일 사이 A, 한·중 사이 B 수역을 설정했다. A–B는?",
+      "question": "어업 협정으로 한·일 사이 A, 한·중 사이 B 수역을 설정했다. A–B는?",
       "passage": null,
       "answer": "중간 수역–잠정 조치 수역",
       "wrong": [
@@ -9947,11 +9947,11 @@
       "badge": null,
       "question": "니부어의 주장으로 옳지 않은 것은?",
       "passage": null,
-      "answer": "개인 도덕이 집단 결정",
+      "answer": "개인 도덕이 집단 도덕 결정",
       "wrong": [
         "집단은 이기적이 되기 쉬움",
         "개인 도덕성도 필요",
-        "강제력은 도덕 통제"
+        "도덕이 강제력 통제"
       ],
       "criteria": [],
       "explanation": "니부어는 개인의 도덕적 행위가 집단의 도덕성을 결정하지 못하며, 오히려 구조와 제도가 개인 행위의 도덕성을 결정할 수 있다고 보았다.",
@@ -10303,7 +10303,7 @@
       "wrong": [
         "약자 배려 부족",
         "경쟁 과열",
-        "다른 업적 비교 곤란"
+        "서로 다른 업적 비교 곤란"
       ],
       "criteria": [],
       "explanation": "업적에 따른 분배는 결과를 수량화하기 쉬운 것이 장점이다. 약자 배려 부족, 경쟁 과열 등이 단점이다.",
@@ -10605,7 +10605,7 @@
       "kind": "choice",
       "topic": "분배적 정의",
       "badge": null,
-      "question": "왈처에 따르면 회사 급여와 안전·복지에 적용할 분배 기준 A–B는?",
+      "question": "왈처에 따르면 회사 급여는 A, 안전·복지는 B를 기준으로 분배한다. A–B는?",
       "passage": null,
       "answer": "능력·업적–필요",
       "wrong": [
@@ -10979,7 +10979,7 @@
       "kind": "choice",
       "topic": "교정적 정의",
       "badge": null,
-      "question": "벤담에서 일반 예방주의는 사형 A, 특수 예방주의는 사형 B로 이어진다. A–B는?",
+      "question": "벤담의 관점에서 일반 예방주의는 사형 A, 특수 예방주의는 사형 B로 이어진다. A–B는?",
       "passage": null,
       "answer": "찬성–반대",
       "wrong": [
@@ -11331,7 +11331,7 @@
       "kind": "choice",
       "topic": "자유주의 vs 공동체주의",
       "badge": null,
-      "question": "두 정의관의 관계에 대한 설명으로 옳은 것은?",
+      "question": "자유주의·공동체주의 정의관의 관계로 옳은 것은?",
       "passage": null,
       "answer": "상호 보완적 관계",
       "wrong": [
@@ -11622,7 +11622,7 @@
       "answer": "시대·사회마다 달라짐",
       "wrong": [
         "반드시 수적 소수",
-        "스스로는 인식 못함",
+        "스스로는 인식 못 함",
         "신체적 특징만 기준"
       ],
       "criteria": [],
@@ -11771,7 +11771,7 @@
       "kind": "choice",
       "topic": "불평등 완화 노력",
       "badge": null,
-      "question": "강제 가입 원칙에 사전 예방적인 A, 조세로 최저 생활을 보장하는 B는?",
+      "question": "강제 가입 원칙이며 사전 예방적인 A, 조세로 최저 생활을 보장하는 B는?",
       "passage": null,
       "answer": "사회 보험–공공 부조",
       "wrong": [
@@ -12198,7 +12198,7 @@
         "arise · 생기다"
       ],
       "criteria": [],
-      "explanation": "rose는 rise(오르다)의 과거형이다. 목적어를 갖는 raise(올리다, 과거형 raised)와 헷갈리지 않는다.",
+      "explanation": "rose는 rise(오르다)의 과거형이다. 목적어를 갖는 raise(올리다, 과거형 raised)와 헷갈리지 않도록 주의한다.",
       "source_label": "학습지1",
       "source_page": 1,
       "source_slide": null,
@@ -12437,7 +12437,7 @@
       "wrong": [
         "고래",
         "의지",
-        "밀가루"
+        "밀"
       ],
       "criteria": [],
       "explanation": "wheel은 바퀴, 바퀴 달린 수레다. whale(고래), will(의지), wheat(밀)과 소리가 비슷하다.",
@@ -12506,7 +12506,7 @@
         "is full with"
       ],
       "criteria": [],
-      "explanation": "consist of = be composed of(~로 구성되다). consist는 수동태로 쓰지 않으므로 is consisted of는 틀린다.",
+      "explanation": "consist of = be composed of(~로 구성되다). consist는 수동태로 쓰지 않으므로 is consisted of는 틀린 표현이다.",
       "source_label": "학습지1",
       "source_page": 2,
       "source_slide": null,
@@ -13210,7 +13210,7 @@
         "학자와 기술자"
       ],
       "criteria": [],
-      "explanation": "noble은 귀족, priest는 성직자(사제)다. 마추픽추는 많은 인구보다 이들의 거주지였다.",
+      "explanation": "noble은 귀족, priest는 성직자(사제)다. 마추픽추는 많은 사람이 아니라 주로 이들이 살던 곳이었다.",
       "source_label": "학습지1",
       "source_page": 3,
       "source_slide": null,
@@ -14090,7 +14090,7 @@
         "할 수 없습니다"
       ],
       "criteria": [],
-      "explanation": "prefer not to (V) = (V)하지 않는 편을 택하다. 강하게 거부하지 않고 조용히 선택하지 않는 말투다.",
+      "explanation": "prefer not to (V) = (V)하지 않는 편을 택하다. 강하게 거부하지 않고, 하지 않는 쪽을 조용히 택하는 말투다.",
       "source_label": "학습지3",
       "source_page": 1,
       "source_slide": null,
@@ -14838,7 +14838,7 @@
         "되돌아와 읽힘"
       ],
       "criteria": [],
-      "explanation": "never reach their destination = 끝내 목적지에 닿지 못하다. 받을 사람이 죽었거나 주소에 닿지 못한 편지다.",
+      "explanation": "never reach their destination = 끝내 목적지에 닿지 못하다. 받을 사람이 죽었거나 주소를 찾지 못한 편지다.",
       "source_label": "학습지3",
       "source_page": 3,
       "source_slide": null,
@@ -15007,7 +15007,7 @@
       "badge": "I wish I had been born in another country.",
       "question": "이 문장의 뜻은?",
       "passage": "[연습용 문장·표현]\nI wish I had been born in another country.",
-      "answer": "다른 나라에서 태어났더라면",
+      "answer": "다른 나라에서 태어났더라면 좋을 텐데",
       "wrong": [
         "다른 나라에서 태어나서 좋다",
         "다른 나라에 가고 싶다",
@@ -15445,7 +15445,7 @@
       "kind": "choice",
       "topic": "측정의 일관성",
       "badge": "shared rules, allowing for the exchange of information",
-      "question": ", allowing의 의미로 알맞은 것은?",
+      "question": "콤마 뒤 allowing의 의미는?",
       "passage": "To harness the full potential of units of measurement, we need some degree of consistency. Subjective measures contain useful knowledge, but this can be difficult to share, based as it is on an individual’s experience. The historian of science Theodore M. Porter describes measurement as a ʻtechnology of distance’: a tool that uses shared rules to bridge differences of culture and geography, allowing for the exchange of information. Following this logic, if measurement is another sort of language, then just as with words, individual units need reliable definitions in order to communicate. In the earliest societies, these definitions might need to be shared no more widely than a single settlement, meaning that the definition can be no more complex than knowing that a unit was equal to a certain body part. As these communities grew in size, though, the inadequacies of this system would become evident. Imagine a disagreement over trade or tribute: it is a moment of conflict that demands greater consistency in measurement.\n\n[문제의 대상 문장·표현]\nshared rules, allowing for the exchange of information",
       "answer": "~하게 하면서",
       "wrong": [
@@ -15454,7 +15454,7 @@
         "~하게 했지만"
       ],
       "criteria": [],
-      "explanation": "콤마 뒤 분사구문 allowing은 \"그래서 ~을 가능하게 하면서\"라는 결과·부수 동작이다. by allowing으로 풀 수 있다.",
+      "explanation": "콤마 뒤 분사구문 allowing은 \"그래서 ~을 가능하게 하면서\"라는 결과·부수 동작이다. and this allows로 풀 수 있다.",
       "source_label": "학습지4",
       "source_page": 2,
       "source_slide": null,
@@ -15476,7 +15476,7 @@
         "이 논리와 달리"
       ],
       "criteria": [],
-      "explanation": "Following ~은 조건의 분사구문(If we follow this logic)이다. 학습지 메모처럼 가정법이 아니라 그냥 조건이다.",
+      "explanation": "Following ~은 조건의 분사구문(If we follow this logic)이다. 가정법이 아니라 실제 조건을 말하므로 동사를 과거형으로 바꾸지 않는다.",
       "source_label": "학습지4",
       "source_page": 2,
       "source_slide": null,
@@ -15498,7 +15498,7 @@
         "much more complex"
       ],
       "criteria": [],
-      "explanation": "no more A than B = B만큼 A하지 않은(B 정도에 불과한). 신체 부위만큼 단순한 정의라는 뜻이다.",
+      "explanation": "no more A than B = B보다 더 A하지 않은(B 정도에 불과한). 신체 부위만큼 단순한 정의라는 뜻이다.",
       "source_label": "학습지4",
       "source_page": 2,
       "source_slide": null,
@@ -16303,7 +16303,7 @@
       "kind": "choice",
       "topic": "관측 준비",
       "badge": null,
-      "question": "삼각대가 기울어 가대가 흔들린다. 가장 먼저 바꿀 것은?",
+      "question": "삼각대가 기울어 가대가 흔들린다. 가장 먼저 점검할 것은?",
       "passage": null,
       "answer": "바닥의 평탄함",
       "wrong": [
@@ -16950,7 +16950,7 @@
         "안전 너트"
       ],
       "criteria": [],
-      "explanation": "드로튜브 고정 클램프를 풀고 초점 노브를 돌린다. 경통 밴드와 헷갈리지 않는다.",
+      "explanation": "드로튜브 고정 클램프를 풀고 초점 노브를 돌린다. 경통 밴드와 헷갈리지 않도록 한다.",
       "source_label": "황윤환T 슬라이드",
       "source_page": null,
       "source_slide": 25,
@@ -17491,7 +17491,7 @@
       "kind": "choice",
       "topic": "극축",
       "badge": null,
-      "question": "극축 기울기를 위도에 맞췄다. 극축이 수평으로 향할 방향은?",
+      "question": "극축 기울기를 위도에 맞췄다. 극축의 방위는 어느 쪽에 맞출까?",
       "passage": null,
       "answer": "정북",
       "wrong": [
@@ -17931,7 +17931,7 @@
       "kind": "choice",
       "topic": "궤도와 속력",
       "badge": null,
-      "question": "쓸린 면적이 A에서 B의 두 배다. 통과 시간도 몇 배인가?",
+      "question": "A 구간의 쓸린 면적이 B의 2배다. 통과 시간은 몇 배인가?",
       "passage": null,
       "answer": "2배",
       "wrong": [
@@ -18459,7 +18459,7 @@
       "kind": "choice",
       "topic": "천구의 기준",
       "badge": null,
-      "question": "북극과 천정을 함께 지나는 대원이 지평선을 만나는 곳은?",
+      "question": "천구 북극과 천정을 지나는 대원이 지평선을 만나는 곳은?",
       "passage": null,
       "answer": "북점·남점",
       "wrong": [
@@ -18547,7 +18547,7 @@
       "kind": "choice",
       "topic": "좌표 읽기",
       "badge": null,
-      "question": "다른 관측지끼리 같은 별을 찾을 공통 좌표는?",
+      "question": "관측지가 달라도 같은 별을 똑같이 나타내는 좌표는?",
       "passage": null,
       "answer": "적경·적위",
       "wrong": [
@@ -18556,7 +18556,7 @@
         "고도·위도"
       ],
       "criteria": [],
-      "explanation": "적도 좌표는 관측자의 위치와 시각에 따른 지평 좌표의 변화를 피해서 별의 방향을 공유한다.",
+      "explanation": "적도 좌표는 관측 장소나 시각이 달라도 거의 변하지 않아, 여러 관측지에서 별의 위치를 똑같이 나타낼 수 있다.",
       "source_label": "전효진T · 행성우주과학 4번",
       "source_page": 3,
       "source_slide": null,
@@ -18613,7 +18613,7 @@
       "kind": "choice",
       "topic": "좌표 읽기",
       "badge": null,
-      "question": "남쪽 자오선에 있는 천체의 방위각은? 북점 기준이다.",
+      "question": "북점 기준일 때, 남쪽 자오선 위 천체의 방위각은?",
       "passage": null,
       "answer": "180°",
       "wrong": [
@@ -19370,7 +19370,7 @@
         "0h"
       ],
       "criteria": [],
-      "explanation": "자정 남중 별은 태양과 적경이 12h 차이 난다. 18h+12h=30h를 24h로 한 바퀴 접으면 6h다.",
+      "explanation": "자정 남중 별은 태양과 적경이 12h 차이 난다. 18h+12h=30h에서 24h를 빼면 6h다.",
       "source_label": "전효진T · 행성우주과학 6번",
       "source_page": 5,
       "source_slide": null,
@@ -20131,7 +20131,7 @@
       "kind": "choice",
       "topic": "달 관측",
       "badge": null,
-      "question": "지구와 태양 사이 방향에 달이 있다. 지구에서 본 위상은?",
+      "question": "달이 지구와 태양 사이에 있다. 지구에서 본 위상은?",
       "passage": null,
       "answer": "삭",
       "wrong": [

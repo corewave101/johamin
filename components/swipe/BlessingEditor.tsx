@@ -3,6 +3,9 @@ import { clamp, coinDefaults, LIMITS, newBlessingId, saveBlessing, type Blessing
 import { CARD_ASPECT, cropBox, cropCard, resizeImage } from '../../lib/image-tools';
 import { paletteFrom, PRESET_COLORS } from '../../lib/palette';
 import { coinTextScale } from './useTheme';
+import { LayoutPicker, ScareListEditor, type ScareDraft } from './BlessingExtras';
+import { normalizeRule } from '../../lib/custom-scares';
+import type { CardLayout } from '../../lib/blessing-store';
 
 type Props = { record: BlessingRecord | null; onCancel: () => void; onSaved: (record: BlessingRecord) => void };
 
@@ -26,6 +29,9 @@ export default function BlessingEditor({ record, onCancel, onSaved }: Props) {
   const [focus, setFocus] = useState({ x: record?.focusX ?? 50, y: record?.focusY ?? 50 });
   const [cardSource, setCardSource] = useState<Blob | null>(record?.cardSource ?? null);
   const [crop, setCrop] = useState<CardCrop>(record?.crop ?? { x: 0, y: 0, scale: 1 });
+  const [layout, setLayout] = useState<CardLayout | null>(record?.layout ?? null);
+  const [scares, setScares] = useState<ScareDraft[]>(record?.scares ?? []);
+  const backgroundUrl = useBlobUrl(background);
   const [busy, setBusy] = useState('');
   const [error, setError] = useState('');
   const [flip, setFlip] = useState(false);
@@ -54,6 +60,8 @@ export default function BlessingEditor({ record, onCancel, onSaved }: Props) {
     if (!trimmed) return setError('가호 이름을 적어 주세요.');
     if (!background) return setError('배경 사진을 골라 주세요.');
     if (!cardSource) return setError('카드 사진을 골라 주세요.');
+    const missing = scares.findIndex(s => !s.image);
+    if (missing >= 0) return setError(`${missing + 1}번 갑툭튀에 사진을 넣거나 빼 주세요.`);
     setBusy('저장 중…'); setError('');
     try {
       const card = await cropCard(cardSource, crop);
@@ -61,6 +69,7 @@ export default function BlessingEditor({ record, onCancel, onSaved }: Props) {
         id: record?.id ?? newBlessingId(), createdAt: record?.createdAt ?? Date.now(),
         name: trimmed, coinFront, coinBack, color,
         background, focusX: Math.round(focus.x), focusY: Math.round(focus.y), cardSource, crop, card,
+        layout, scares: scares.map(s => ({ ...normalizeRule(s), image: s.image as Blob, sound: s.sound })),
       };
       await saveBlessing(saved);
       onSaved(saved);
@@ -116,11 +125,21 @@ export default function BlessingEditor({ record, onCancel, onSaved }: Props) {
         {cardSource && <CardCropper blob={cardSource} crop={crop} onChange={setCrop} />}
       </section>
 
+      <section className="editor-field">
+        <span className="editor-label"><b>5</b> 카드 위치 <small className="editor-beta">선택 · 베타</small></span>
+        <LayoutPicker value={layout} onChange={setLayout} background={backgroundUrl ? { url: backgroundUrl, x: focus.x, y: focus.y } : null} />
+      </section>
+
+      <section className="editor-field">
+        <span className="editor-label"><b>6</b> 나만의 갑툭튀 <small className="editor-beta">선택 · 베타</small></span>
+        <ScareListEditor value={scares} onChange={setScares} onError={setError} />
+      </section>
+
       {error && <p className="blessing-error" role="alert">{error}</p>}
       <div className="blessing-panel-actions">
         <button type="button" className="blessing-new" disabled={Boolean(busy)} onClick={() => void save()}>{busy || '저장하고 이 가호 받기'}</button>
       </div>
-      <p className="blessing-note">사진은 이 기기에만 저장돼요. 다른 가호에는 갑툭튀가 없어요.</p>
+      <p className="blessing-note">사진과 소리는 이 기기에만 저장돼요. 갑툭튀는 6번에 넣은 것만 나와요.</p>
     </div>
   </div>;
 }

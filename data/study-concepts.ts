@@ -201,7 +201,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "biology-jo-017",
-        "context": "조용민T · 자료의 α-아마니틴에 가장 민감한 효소는?",
+        "context": "조용민T · 자료에서 α-아마니틴에 가장 민감한 효소는?",
         "explanation": "자료에서 II는 매우 저해, I은 저해되지 않으며 III은 약간 저해되는 것으로 제시된다.",
         "sourceNote": "유전자의 발현 수업자료 · 10쪽"
       }
@@ -573,7 +573,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "biology-park-012",
-        "context": "박상영T · DNA 복제 직후 체세포에서 변하는 것은?",
+        "context": "박상영T · DNA 복제 직후 체세포의 변화로 옳은 것은?",
         "explanation": "염색체 수는 동원체를 기준으로 세므로 복제 직후에도 동일하고 DNA 양만 2배이다.",
         "sourceNote": "박상영T 필기 · 1쪽"
       }
@@ -637,7 +637,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "biology-park-015",
         "context": "박상영T · 정상 부모 둘 사이에서 열성 유전병 자녀 aa가 태어났다. 부모 유전자형은?",
-        "explanation": "자녀에게 각각 a를 전달하면서 정상인 부모는 모두 보인자 Aa이다.",
+        "explanation": "부모 모두 정상이지만 자녀에게 각각 a를 전달했으므로 둘 다 보인자 Aa이다.",
         "sourceNote": "박상영T 필기 · 2쪽"
       },
       {
@@ -745,7 +745,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "biology-park-027",
         "context": "박상영T · 감수 2분열의 한 세포에서만 비분리될 때 생식세포는?",
-        "explanation": "감수 1분열이 정상이라 다른 한 세포의 두 생식세포는 정상이다.",
+        "explanation": "감수 1분열은 정상이므로 비분리가 없는 나머지 세포에서 생긴 두 생식세포는 정상(n)이다.",
         "sourceNote": "박상영T 필기 · 2쪽"
       },
       {
@@ -1213,7 +1213,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "social-031",
         "context": "영국 스코틀랜드 갈등에서 잉글랜드는 A, 스코틀랜드는 B다. A–B는?",
-        "explanation": "학습지에서 스코틀랜드 갈등 구도는 잉글랜드(성공회) 대 스코틀랜드(장로교)로 정리된다.",
+        "explanation": "스코틀랜드 갈등에는 잉글랜드(성공회)와 스코틀랜드(장로교)의 종교 차이가 얽혀 있다.",
         "sourceNote": "23_260927_155005.pdf · 1쪽"
       },
       {
@@ -1261,7 +1261,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "social-039",
         "context": "수단·남수단 갈등에서 남수단 쪽 종교로 알맞은 것은?",
-        "explanation": "수단은 이슬람교, 남수단은 크리스트교·토착 신앙이며 석유 자원 문제(다르푸르)도 얽혀 있다.",
+        "explanation": "수단은 이슬람교, 남수단은 크리스트교·토착 신앙이며, 국경 지대의 석유 자원 문제도 얽혀 있다.",
         "sourceNote": "23_260927_155005.pdf · 2쪽"
       },
       {
@@ -1713,7 +1713,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "social-089",
         "context": "1900년 대한제국 칙령 제41호가 울도군 관할에 넣은 섬이 아닌 것은?",
-        "explanation": "칙령 제41호는 울도군의 관할을 울릉 전도·죽도·석도로 규정했고, 석도가 독도를 가리키는지 검토한다.",
+        "explanation": "칙령 제41호는 울도군의 관할을 울릉 전도·죽도·석도로 규정했으며, 석도는 독도를 가리키는 것으로 본다.",
         "sourceNote": "26_260927_155120.pdf · 3쪽"
       },
       {
@@ -1754,7 +1754,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "social-096",
-        "context": "1998년 협정으로 한·일 사이 A, 한·중 사이 B 수역을 설정했다. A–B는?",
+        "context": "어업 협정으로 한·일 사이 A, 한·중 사이 B 수역을 설정했다. A–B는?",
         "explanation": "신한·일 어업 협정으로 한·일 중간 수역, 한·중 어업 협정으로 한·중 잠정 조치 수역을 설정했다.",
         "sourceNote": "26_260927_155120.pdf · 4쪽"
       },
@@ -2048,7 +2048,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "social-133",
-        "context": "왈처에 따르면 회사 급여와 안전·복지에 적용할 분배 기준 A–B는?",
+        "context": "왈처에 따르면 회사 급여는 A, 안전·복지는 B를 기준으로 분배한다. A–B는?",
         "explanation": "왈처는 이윤 추구 회사는 능력·업적으로, 안전과 복지는 필요를 기준으로 분배해야 한다고 보았다.",
         "sourceNote": "29_260927_155223.pdf · 3쪽"
       },
@@ -2186,7 +2186,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "social-150",
-        "context": "벤담에서 일반 예방주의는 사형 A, 특수 예방주의는 사형 B로 이어진다. A–B는?",
+        "context": "벤담의 관점에서 일반 예방주의는 사형 A, 특수 예방주의는 사형 B로 이어진다. A–B는?",
         "explanation": "처벌 예고로 일반인의 범죄를 막는 일반 예방은 찬성 논거가, 재사회화를 중시하는 특수 예방은 반대 논거가 된다.",
         "sourceNote": "210_260927_155229.pdf · 3쪽"
       },
@@ -2318,7 +2318,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "social-166",
-        "context": "두 정의관의 관계에 대한 설명으로 옳은 것은?",
+        "context": "자유주의·공동체주의 정의관의 관계로 옳은 것은?",
         "explanation": "두 정의관은 개인의 행복 추구와 정의로운 사회를 함께 지향한다는 점에서 상호 보완적이다.",
         "sourceNote": "211_261006_215826.pdf · 6쪽"
       }
@@ -2526,7 +2526,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "social-186",
-        "context": "강제 가입 원칙에 사전 예방적인 A, 조세로 최저 생활을 보장하는 B는?",
+        "context": "강제 가입 원칙이며 사전 예방적인 A, 조세로 최저 생활을 보장하는 B는?",
         "explanation": "사회 보험은 강제 가입·보험료 분담으로 사회적 위험에 미리 대비하고, 공공 부조는 조세로 생활이 어려운 계층의 최저 생활을 보장한다.",
         "sourceNote": "212_261007_220432.pdf · 4쪽"
       },
@@ -2688,7 +2688,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "astronomy-jeon-007",
-        "context": "쓸린 면적이 A에서 B의 두 배다. 통과 시간도 몇 배인가?",
+        "context": "A 구간의 쓸린 면적이 B의 2배다. 통과 시간은 몇 배인가?",
         "explanation": "같은 행성의 면적속도는 일정하다. 따라서 쓸린 면적과 통과 시간은 비례한다.",
         "sourceNote": "행성우주과학 3번_260827_101443.pdf · 3쪽"
       },
@@ -2946,7 +2946,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "astronomy-jeon-031",
-        "context": "북극과 천정을 함께 지나는 대원이 지평선을 만나는 곳은?",
+        "context": "천구 북극과 천정을 지나는 대원이 지평선을 만나는 곳은?",
         "explanation": "천구 극과 천정을 지나는 자오선은 지평선과 북점·남점에서 만난다.",
         "sourceNote": "행성우주과학 4번_260909_115826.pdf · 2쪽"
       },
@@ -3006,8 +3006,8 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "astronomy-jeon-035",
-        "context": "다른 관측지끼리 같은 별을 찾을 공통 좌표는?",
-        "explanation": "적도 좌표는 관측자의 위치와 시각에 따른 지평 좌표의 변화를 피해서 별의 방향을 공유한다.",
+        "context": "관측지가 달라도 같은 별을 똑같이 나타내는 좌표는?",
+        "explanation": "적도 좌표는 관측 장소나 시각이 달라도 거의 변하지 않아, 여러 관측지에서 별의 위치를 똑같이 나타낼 수 있다.",
         "sourceNote": "행성우주과학 4번_260909_115826.pdf · 3쪽"
       },
       {
@@ -3024,7 +3024,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "astronomy-jeon-038",
-        "context": "남쪽 자오선에 있는 천체의 방위각은? 북점 기준이다.",
+        "context": "북점 기준일 때, 남쪽 자오선 위 천체의 방위각은?",
         "explanation": "남쪽 자오선의 천체는 정남 방향이다. 북점 기준 방위각은 180°다.",
         "sourceNote": "행성우주과학 4번_260909_115826.pdf · 3쪽"
       },
@@ -3299,7 +3299,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "astronomy-jeon-072",
         "context": "태양 적경이 18h다. 자정 남중 별의 적경은?",
-        "explanation": "자정 남중 별은 태양과 적경이 12h 차이 난다. 18h+12h=30h를 24h로 한 바퀴 접으면 6h다.",
+        "explanation": "자정 남중 별은 태양과 적경이 12h 차이 난다. 18h+12h=30h에서 24h를 빼면 6h다.",
         "sourceNote": "행성우주과학 6번_261001_094634.pdf · 5쪽"
       }
     ],
@@ -3651,7 +3651,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "astronomy-jeon-107",
-        "context": "지구와 태양 사이 방향에 달이 있다. 지구에서 본 위상은?",
+        "context": "달이 지구와 태양 사이에 있다. 지구에서 본 위상은?",
         "explanation": "삭에서는 달이 태양과 거의 같은 방향이다. 햇빛을 받는 쪽 대부분이 지구 반대편이라 잘 보이지 않는다.",
         "sourceNote": "행성우주과학 7번_261001_102238.pdf · 8쪽"
       },
@@ -3825,7 +3825,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "astronomy-008",
-        "context": "삼각대가 기울어 가대가 흔들린다. 가장 먼저 바꿀 것은?",
+        "context": "삼각대가 기울어 가대가 흔들린다. 가장 먼저 점검할 것은?",
         "explanation": "삼각대가 가대를 안정적으로 받치려면 평평하고 단단한 바닥에 세워야 한다.",
         "sourceNote": "수업 슬라이드 3"
       },
@@ -4123,7 +4123,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "astronomy-037",
         "context": "상이 흐려 초점 노브를 돌리려 한다. 그 전에 풀어야 할 것은?",
-        "explanation": "드로튜브 고정 클램프를 풀고 초점 노브를 돌린다. 경통 밴드와 헷갈리지 않는다.",
+        "explanation": "드로튜브 고정 클램프를 풀고 초점 노브를 돌린다. 경통 밴드와 헷갈리지 않도록 한다.",
         "sourceNote": "수업 슬라이드 25"
       },
       {
@@ -4349,7 +4349,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "astronomy-062",
-        "context": "극축 기울기를 위도에 맞췄다. 극축이 수평으로 향할 방향은?",
+        "context": "극축 기울기를 위도에 맞췄다. 극축의 방위는 어느 쪽에 맞출까?",
         "explanation": "북반구에서는 극축을 수평면에 투영한 방향이 정북을 향해야 한다.",
         "sourceNote": "수업 슬라이드 38"
       },
@@ -6227,7 +6227,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "korean-grammar-084",
         "context": "익숙하지 않다 · 준말의 바른 표기는?",
-        "explanation": "ㄱ 받침 뒤에서 하가 통째로 줄면 거센소리로 적지 않는다(익숙지, 생각건대, 깨끗지).",
+        "explanation": "ㄱ·ㄷ·ㅂ 소리로 나는 받침 뒤에서 하가 통째로 줄면 거센소리로 적지 않는다(익숙지, 생각건대, 깨끗지).",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
@@ -6337,13 +6337,13 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "korean-grammar-087",
         "context": "민수야, 너밖에 없어. · ‘밖에’를 붙여 쓴 까닭은?",
-        "explanation": "그것 말고는의 뜻을 가진 밖에는 조사다. 조사는 그 앞말에 붙여 쓴다(제41항).",
+        "explanation": "‘그것 말고는’의 뜻을 가진 ‘밖에’는 조사다. 조사는 그 앞말에 붙여 쓴다(제41항).",
         "sourceNote": "우리말 바로 쓰기 · 23쪽"
       },
       {
         "id": "korean-grammar-088",
         "context": "뭔 소리야? 나 지금 밖에 있는데? · 여기서 ‘밖’의 품사는?",
-        "explanation": "실외를 뜻하는 밖은 명사이므로 앞말과 띄어 쓴다. 너밖에의 밖에(조사)와 구별한다.",
+        "explanation": "실외를 뜻하는 ‘밖’은 명사이므로 앞말과 띄어 쓴다. ‘너밖에’의 ‘밖에’(조사)와 구별한다.",
         "sourceNote": "우리말 바로 쓰기 · 23쪽"
       },
       {
@@ -6409,7 +6409,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "korean-grammar-099",
         "context": "보다 높게 뛰자. / 시보다 소설이 좋다. · 두 ‘보다’의 품사는 차례로?",
-        "explanation": "어떤 수준보다 한층 더의 뜻인 보다는 부사라 띄어 쓰고, 비교 대상 체언 뒤의 보다는 조사라 붙여 쓴다.",
+        "explanation": "‘어떤 수준에 비하여 한층 더’라는 뜻의 ‘보다’는 부사라 띄어 쓰고, 비교 대상 체언 뒤의 ‘보다’는 조사라 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
@@ -6451,7 +6451,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "korean-grammar-106",
         "context": "주머니 안에는 ___. · 바른 띄어쓰기는?",
-        "explanation": "체언 잔돈 뒤의 뿐은 조사이고, 이었다도 조사 이다의 활용형이므로 모두 붙여 쓴다.",
+        "explanation": "체언 ‘잔돈’ 뒤의 ‘뿐’은 조사이고, ‘이었다’도 서술격 조사 ‘이다’의 활용형이므로 모두 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 30쪽"
       },
       {
@@ -6493,7 +6493,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "korean-grammar-113",
         "context": "보석같이 · 너같이 · ‘같이’를 붙여 쓰는 조건은?",
-        "explanation": "같이가 체언 뒤에 쓰여 처럼의 뜻이면 조사이므로 앞말에 붙여 쓴다.",
+        "explanation": "‘같이’가 체언 뒤에 쓰여 ‘처럼’의 뜻이면 조사이므로 앞말에 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 30쪽"
       },
       {
@@ -6838,7 +6838,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "korean-grammar-142",
         "context": "술을 체에 ___. · 빈칸의 바른 표기는?",
-        "explanation": "밭치다는 구멍이 뚫린 물건 위에 국수·야채 따위를 올려 물기를 빼다는 뜻이다.",
+        "explanation": "밭치다는 밭다(체 따위로 걸러 액체만 받아 내다)를 강조하는 말이다. 국수·채소를 올려 물기를 뺀다는 뜻도 있다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
@@ -6856,7 +6856,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "korean-grammar-145",
         "context": "돌을 서로 세게 ___. (능동) · 빈칸의 바른 표기는?",
-        "explanation": "부딪치다는 어떤 것을 다른 것에 맞닿게 하는 능동 표현이다. 목적어 돌을과 능동이라는 조건에 맞는 활용형은 부딪쳤다이다.",
+        "explanation": "부딪치다는 어떤 것을 다른 것에 맞닿게 하는 능동 표현이다. 목적어 ‘돌을’과 능동이라는 조건에 맞는 활용형은 ‘부딪쳤다’이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
@@ -7072,7 +7072,7 @@ export const studyConcepts: ConceptLesson[] = [
       {
         "id": "korean-grammar-181",
         "context": "오는 이가 ___ 많다. (가다) · 빈칸의 바른 표기는?",
-        "explanation": "-는 사람보다의 뜻이면 의존 명사 이에 조사 보다가 붙은 것이므로 가는 이보다로 쓴다.",
+        "explanation": "‘-는 사람보다’의 뜻이면 의존 명사 ‘이’에 조사 ‘보다’가 붙은 것이므로 ‘가는 이보다’로 띄어 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
@@ -7311,13 +7311,13 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "park-term-003",
-        "context": "형질 · 형질에 대한 설명으로 옳은 것은?",
+        "context": "형질 · 형질에 해당하는 것은?",
         "explanation": "생물에서 관찰하거나 측정할 수 있는 특징이다. 완두의 종자 모양처럼 비교하는 특성 자체를 가리킨다.",
         "sourceNote": "박상영T · 유전학용어정리(교사용) · 1쪽"
       },
       {
         "id": "park-term-004",
-        "context": "대립형질 · 대립형질에 대한 설명으로 옳은 것은?",
+        "context": "대립형질 · 대립형질에 해당하는 것은?",
         "explanation": "하나의 형질에서 서로 대비되는 표현 형태다. 예를 들어 종자 모양의 둥근 형태와 주름진 형태가 있다.",
         "sourceNote": "박상영T · 유전학용어정리(교사용) · 1쪽"
       },
@@ -7395,7 +7395,7 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "park-term-017",
-        "context": "뉴클레오타이드 · 뉴클레오타이드에 대한 설명으로 옳은 것은?",
+        "context": "뉴클레오타이드 · 뉴클레오타이드의 구성 성분은?",
         "explanation": "핵산을 구성하는 기본 단위로 인산·당·염기가 1:1:1로 결합한다. DNA의 당은 디옥시리보스, RNA의 당은 리보스다.",
         "sourceNote": "박상영T · 유전학용어정리(교사용) · 3쪽"
       },

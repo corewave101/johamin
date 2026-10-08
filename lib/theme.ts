@@ -3,7 +3,9 @@
 //   none   — 가호 없음: plain blue screen and plain cards, no scares
 //   custom — a blessing someone made: their background and card photo, their colour and coin text, no scares
 import { trackPromise } from './boot';
-import { getBlessing } from './blessing-store';
+import { getBlessing, type CardLayout } from './blessing-store';
+import type { ScareRuleSpec } from './custom-scares';
+import type { ScareId } from './jumpscare';
 import { HAMIN_PALETTE, PLAIN_PALETTE, paletteFrom, type Palette } from './palette';
 
 export type ThemeChoice =
@@ -20,7 +22,11 @@ export interface Theme {
   scares: boolean;         // jump scares only belong to 하민의 가호
   background: { url: string; focusX: number; focusY: number } | null; // custom photo, once loaded
   card: string | null;
+  layout: CardLayout | null;          // custom place for the title, card and arrows
+  customScares: LoadedScare[];        // a custom blessing's own jump scares
 }
+export type SoundRef = { kind: 'none' } | { kind: 'builtin'; id: ScareId } | { kind: 'url'; url: string };
+export interface LoadedScare extends ScareRuleSpec { image: string; sound: SoundRef }
 
 const KEY = 'johamin-theme';
 const LEGACY_KEY = 'johamin-blessing'; // 1.x on/off switch
@@ -36,9 +42,9 @@ function loadChoice(): ThemeChoice {
 }
 
 function describe(choice: ThemeChoice): Theme {
-  if (choice.kind === 'hamin') return { choice, name: '하민의 가호', coinFront: 'JO', coinBack: 'HAMIN!', palette: HAMIN_PALETTE, scares: true, background: null, card: null };
-  if (choice.kind === 'none') return { choice, name: '가호 없음', coinFront: 'JO', coinBack: 'HAMIN!', palette: PLAIN_PALETTE, scares: false, background: null, card: null };
-  return { choice, name: choice.name, coinFront: choice.coinFront, coinBack: choice.coinBack, palette: paletteFrom(choice.color), scares: false, background: null, card: null };
+  if (choice.kind === 'hamin') return { choice, name: '하민의 가호', coinFront: 'JO', coinBack: 'HAMIN!', palette: HAMIN_PALETTE, scares: true, background: null, card: null, layout: null, customScares: [] };
+  if (choice.kind === 'none') return { choice, name: '가호 없음', coinFront: 'JO', coinBack: 'HAMIN!', palette: PLAIN_PALETTE, scares: false, background: null, card: null, layout: null, customScares: [] };
+  return { choice, name: choice.name, coinFront: choice.coinFront, coinBack: choice.coinBack, palette: paletteFrom(choice.color), scares: false, background: null, card: null, layout: null, customScares: [] };
 }
 
 let theme = describe(loadChoice());
@@ -55,6 +61,15 @@ function paint() {
   for (const [name, value] of Object.entries({ light: p.light, soft: p.soft, base: p.base, deep: p.deep, ink: p.ink, glow: p.glow })) root.style.setProperty(`--theme-${name}`, value);
   if (theme.card) root.style.setProperty('--card-image', `url("${theme.card}")`);
   else root.style.removeProperty('--card-image');
+  if (theme.layout) {
+    root.dataset.layout = 'custom';
+    root.style.setProperty('--set-x', String(theme.layout.x / 100));
+    root.style.setProperty('--set-y', String(theme.layout.y / 100));
+  } else {
+    delete root.dataset.layout;
+    root.style.removeProperty('--set-x');
+    root.style.removeProperty('--set-y');
+  }
 }
 
 function publish(next: Theme) {
@@ -78,9 +93,18 @@ function loadPictures(choice: Extract<ThemeChoice, { kind: 'custom' }>) {
     releaseImages();
     const background = URL.createObjectURL(record.background), card = URL.createObjectURL(record.card);
     objectUrls = [background, card];
-    await Promise.all([background, card].map(src => new Promise<void>(resolve => { const image = new Image(); image.onload = image.onerror = () => resolve(); image.src = src; })));
+    const customScares: LoadedScare[] = (record.scares ?? []).map(({ image, sound, ...rule }) => {
+      const url = URL.createObjectURL(image);
+      objectUrls.push(url);
+      if (sound.kind !== 'file') return { ...rule, image: url, sound };
+      const soundUrl = URL.createObjectURL(sound.blob);
+      objectUrls.push(soundUrl);
+      return { ...rule, image: url, sound: { kind: 'url', url: soundUrl } };
+    });
+    // Load every picture now so backgrounds and scares appear instantly.
+    await Promise.all([background, card, ...customScares.map(s => s.image)].map(src => new Promise<void>(resolve => { const image = new Image(); image.onload = image.onerror = () => resolve(); image.src = src; })));
     if (ticket !== loading) return;
-    publish({ ...describe(choice), background: { url: background, focusX: record.focusX, focusY: record.focusY }, card });
+    publish({ ...describe(choice), background: { url: background, focusX: record.focusX, focusY: record.focusY }, card, layout: record.layout ?? null, customScares });
   })();
   trackPromise('blessing', work); // the intro waits for the pictures
 }

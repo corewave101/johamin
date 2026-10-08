@@ -8,7 +8,7 @@ export const geneticsCards: SwipeCard[] = [
     "question": "대립유전자에 대한 설명으로 옳은 것은?",
     "answers": {
       "up": "A와 a는 같은 좌위의 대립유전자이다.",
-      "left": "한 개체의 모든 유전자 전체",
+      "left": "한 개체가 가진 유전자 전체",
       "right": "한 염색체가 복제된 두 가닥",
       "down": "서로 다른 좌위의 모든 유전자"
     },
@@ -22,7 +22,7 @@ export const geneticsCards: SwipeCard[] = [
     "subject": "상동염색체",
     "question": "상동염색체에 대한 설명으로 옳은 것은?",
     "answers": {
-      "up": "부계와 모계의 염색체가 같은 좌위에 유전자를 가진다.",
+      "up": "부계·모계에서 온 염색체 쌍으로 유전자 좌위가 같다.",
       "left": "한 염색체 복제로 생긴 두 염색분체",
       "right": "모든 염색체가 크기와 형태가 같다",
       "down": "대립유전자의 형태가 반드시 같아야 한다"
@@ -35,7 +35,7 @@ export const geneticsCards: SwipeCard[] = [
     "id": "park-term-003",
     "topic": "유전학 핵심 용어",
     "subject": "형질",
-    "question": "형질에 대한 설명으로 옳은 것은?",
+    "question": "형질에 해당하는 것은?",
     "answers": {
       "up": "완두의 종자 모양",
       "left": "둥근 종자와 주름진 종자의 대비",
@@ -50,7 +50,7 @@ export const geneticsCards: SwipeCard[] = [
     "id": "park-term-004",
     "topic": "유전학 핵심 용어",
     "subject": "대립형질",
-    "question": "대립형질에 대한 설명으로 옳은 것은?",
+    "question": "대립형질에 해당하는 것은?",
     "answers": {
       "up": "둥근 종자와 주름진 종자",
       "left": "종자 모양과 꽃의 색",
@@ -127,7 +127,7 @@ export const geneticsCards: SwipeCard[] = [
     "subject": "분리의 법칙",
     "question": "분리의 법칙에 대한 설명으로 옳은 것은?",
     "answers": {
-      "up": "Aa가 A와 a를 각각 가진 생식세포를 만든다",
+      "up": "Aa는 A 또는 a 하나만 가진 생식세포를 만든다",
       "left": "A와 a가 항상 함께 생식세포에 들어간다",
       "right": "모든 유전자가 같은 염색체에 있다",
       "down": "수정 때만 대립유전자가 처음 생긴다"
@@ -245,7 +245,7 @@ export const geneticsCards: SwipeCard[] = [
     "id": "park-term-017",
     "topic": "유전학 핵심 용어",
     "subject": "뉴클레오타이드",
-    "question": "뉴클레오타이드에 대한 설명으로 옳은 것은?",
+    "question": "뉴클레오타이드의 구성 성분은?",
     "answers": {
       "up": "인산·당·염기",
       "left": "인산·아미노산·염기",
@@ -337,7 +337,7 @@ export const geneticsWritten: WrittenQuestion[] = [
     "id": "park-term-written-001",
     "topic": "유전학 핵심 용어",
     "question": "A와 a가 대립유전자라고 할 수 있는 이유를 좌위와 유전자 형태를 이용해 설명하시오.",
-    "modelAnswer": "A와 a는 상동염색체의 같은 좌위에 있는 같은 유전자의 서로 다른 형태이므로 대립유전자이다. 같은 개체에서는 AA·Aa·aa처럼 조합될 수 있다.",
+    "modelAnswer": "A와 a는 상동염색체의 같은 좌위에 있는 같은 유전자의 서로 다른 형태이므로 대립유전자이다. 한 개체는 AA·Aa·aa 중 하나의 조합을 가진다.",
     "criteria": [
       "상동염색체의 같은 좌위",
       "같은 유전자의 서로 다른 형태",
@@ -396,8 +396,8 @@ export const geneticsWritten: WrittenQuestion[] = [
   {
     "id": "park-term-written-006",
     "topic": "유전학 핵심 용어",
-    "question": "유전자형이 같은 식물 두 개의 키가 다른 환경에서 달라질 수 있는 이유를 표현형과 연결해 쓰시오.",
-    "modelAnswer": "표현형은 유전자형뿐 아니라 환경의 영향도 받아 나타난다. 같은 유전자형이어도 빛·물·영양 공급이 달라지면 키가 달라질 수 있다. 키의 차이가 있다고 반드시 유전자형이 다르다고 결론낼 수는 없다.",
+    "question": "유전자형이 같은 두 식물의 키가 다른 환경에서 달라질 수 있는 이유를 표현형과 연결해 쓰시오.",
+    "modelAnswer": "표현형은 유전자형뿐 아니라 환경의 영향도 받아 나타난다. 같은 유전자형이어도 빛·물·영양 공급이 달라지면 키가 달라질 수 있다. 키의 차이가 있다고 반드시 유전자형이 다르다고 결론 내릴 수는 없다.",
     "criteria": [
       "표현형에 환경도 관여",
       "빛·물·영양 등 구체적 예",

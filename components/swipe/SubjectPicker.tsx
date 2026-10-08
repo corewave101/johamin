@@ -85,7 +85,7 @@ export default function SubjectPicker() {
         <div className="swipe-stack">
           <div className="swipe-under swipe-under-two" /><div className="swipe-under swipe-under-one" />
           <LaminatedCard key={current.id} className={`is-current ${pointer.current ? 'is-dragging' : ''}`}
-            style={{ '--tx': `${drag.x}px`, '--ty': `${drag.y}px`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
+            style={{ '--tx': `calc(${drag.x}px / var(--card-zoom, 1))`, '--ty': `calc(${drag.y}px / var(--card-zoom, 1))`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
             topic={path.length ? current.name : '과목 선택'} question={path.length ? '어느 파트?' : '어떤 과목?'}
             onPointerDown={event => { if (!event.isPrimary || event.button !== 0) return; pointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId); }}
             onPointerMove={move} onPointerUp={release} onPointerCancel={resetDrag} onLostPointerCapture={resetDrag}>

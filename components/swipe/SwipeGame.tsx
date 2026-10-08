@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 import { swipeCards, type Direction, type SwipeCard } from '../../data/swipe-cards';
+import { answerView, onAnswerViewChange } from '../../lib/answer-view';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playResult, playSwipe } from '../../lib/sound';
 import { recordResult } from '../../lib/progress';
 import { recordStreak } from '../../lib/best-streak';
-import { IDLE_MS, LEAVE_CHANCE, newTracker, scareForAnswer, triggerScare } from '../../lib/jumpscare';
+import { IDLE_MS, LEAVE_CHANCE, newTracker, scareForAnswer, triggerCustomScare, triggerScare } from '../../lib/jumpscare';
+import { customScareForAnswer, newCustomTracker } from '../../lib/custom-scares';
+import { getTheme } from '../../lib/theme';
 import { answerCard, getStats, newGame, type AnswerChoice } from '../../lib/swipe-game';
 import LaminatedCard from './LaminatedCard';
 import StreakFlame from './StreakFlame';
@@ -17,6 +20,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const [game, setGame] = useState(() => newGame(cards));
   const gameRef = useRef(game);
   const scares = useRef(newTracker());
+  const customScares = useRef(newCustomTracker());
   const idleShown = useRef(false);
   const deck = useRef({ deckId, deckName, onBack });
   deck.current = { deckId, deckName, onBack };
@@ -32,6 +36,15 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const finished = !card;
   const distance = Math.hypot(drag.x, drag.y);
   const activeDirection = distance > 18 ? directionOf(drag.x, drag.y) : null;
+  // 답 보기 = 가리고 밀기: answers stay blurred until pulled toward (or picked once with a key or tap); a ring fills to confirm.
+  const [view, setView] = useState(answerView);
+  useEffect(() => onAnswerViewChange(setView), []);
+  const hidden = view === 'hidden';
+  const [peek, setPeek] = useState<Direction | null>(null);
+  const peekRef = useRef<Direction | null>(null);
+  peekRef.current = peek;
+  const revealed = activeDirection ?? (hidden ? peek : null);
+  const pull = activeDirection ? Math.min(distance / SWIPE_DISTANCE, 1) : peek ? 1 : 0;
 
   const moveCard = (offset: Offset) => { dragRef.current = offset; setDrag(offset); };
 
@@ -46,10 +59,20 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     const next = answerCard(current, direction, (now - started.current) / 1000);
     const answered = next.attempts[next.attempts.length - 1];
     recordResult(answered.card.id, direction === 'unknown' ? 'u' : answered.correct ? 'c' : 'w');
-    const judged = scareForAnswer(scares.current, { correct: answered.correct, unknown: direction === 'unknown', seconds: answered.seconds,
-      streakBefore: current.streak, streakAfter: next.streak, astronomy: Boolean(deck.current.deckId?.startsWith('astronomy')) });
-    scares.current = judged.tracker;
-    if (judged.scare) triggerScare(judged.scare);
+    const event = { correct: answered.correct, unknown: direction === 'unknown', seconds: answered.seconds,
+      streakBefore: current.streak, streakAfter: next.streak, astronomy: Boolean(deck.current.deckId?.startsWith('astronomy')) };
+    const theme = getTheme();
+    if (theme.scares) {
+      const judged = scareForAnswer(scares.current, event);
+      scares.current = judged.tracker;
+      if (judged.scare) triggerScare(judged.scare);
+    } else if (theme.customScares.length) {
+      // A custom blessing's own scares, checked in the order the person listed them.
+      const judged = customScareForAnswer(customScares.current, theme.customScares, event);
+      customScares.current = judged.tracker;
+      const rule = theme.customScares.find(r => r.id === judged.rule);
+      if (rule) triggerCustomScare(rule);
+    }
     if (deck.current.onBack) recordStreak(deck.current.deckName.split(' · ')[0], next.streak);
     playSwipe(flyTo);
     if (direction !== 'unknown') playResult(next.attempts[next.attempts.length - 1].correct);
@@ -57,38 +80,63 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     setGame(next);
     started.current = now;
     pointer.current = null;
+    setPeek(null);
     moveCard({ x: 0, y: 0 });
   }, []);
+  /** In 가리고 밀기, the first press of a direction only brings its answer into focus; the same direction again (or Enter) answers. */
+  const pick = useCallback((direction: Direction) => {
+    if (answerView() === 'hidden' && peekRef.current !== direction) { setPeek(direction); return; }
+    choose(direction);
+  }, [choose]);
 
   useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Enter' && peekRef.current && !isTyping(event) && !(event.target instanceof HTMLButtonElement) && gameRef.current.queue.length) {
+        event.preventDefault();
+        if (!event.repeat) choose(peekRef.current);
+        return;
+      }
       const direction = event.code === 'Space' ? 'unknown' : keyDirections[event.key];
       if (!direction || isTyping(event) || !gameRef.current.queue.length) return;
       event.preventDefault();
-      if (!event.repeat) choose(direction);
+      if (event.repeat) return;
+      if (direction === 'unknown') choose('unknown');
+      else pick(direction);
     };
     window.addEventListener('keydown', handleKey);
     return () => { window.removeEventListener('keydown', handleKey); clearTimeout(flightTimer.current); };
-  }, [choose]);
+  }, [choose, pick]);
 
   // 9: five minutes on one card. 10: leaving a game in progress.
   const cardKey = card ? `${card.id}-${game.attempts.length}` : '';
   useEffect(() => {
     if (!cardKey) return;
-    const timer = setTimeout(() => { idleShown.current = triggerScare('idle', true); }, IDLE_MS);
+    const theme = getTheme();
+    const idleRule = theme.scares ? null : theme.customScares.find(r => r.trigger === 'idle');
+    if (!theme.scares && !idleRule) return;
+    const timer = setTimeout(() => {
+      if (theme.scares) idleShown.current = triggerScare('idle', true);
+      else if (idleRule && Math.random() < idleRule.chance / 100) idleShown.current = triggerCustomScare(idleRule, true);
+    }, idleRule ? idleRule.n * 60 * 1000 : IDLE_MS);
     return () => clearTimeout(timer);
   }, [cardKey]);
   useEffect(() => () => {
     const left = gameRef.current;
-    if (!idleShown.current && left.attempts.length > 0 && left.queue.length > 0 && Math.random() < LEAVE_CHANCE) triggerScare('leave');
+    if (idleShown.current || left.attempts.length === 0 || left.queue.length === 0) return;
+    const theme = getTheme();
+    if (theme.scares) { if (Math.random() < LEAVE_CHANCE) triggerScare('leave'); return; }
+    const leaveRule = theme.customScares.find(r => r.trigger === 'leave');
+    if (leaveRule && Math.random() < leaveRule.chance / 100) triggerCustomScare(leaveRule);
   }, []);
 
   const restart = () => {
     scares.current = newTracker();
+    customScares.current = newCustomTracker();
     const next = newGame(cards);
     gameRef.current = next;
     setGame(next);
     setFlight(null);
+    setPeek(null);
     pointer.current = null;
     moveCard({ x: 0, y: 0 });
     clearTimeout(flightTimer.current);
@@ -138,19 +186,19 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
         </div>
         <button type="button" className="swipe-restart" onClick={restart}>한 판 더</button>
       </section>
-      : <section className="swipe-board" aria-label="방향을 선택해 답하기">
-        {directions.map(direction => <button type="button" key={direction} className={`swipe-option glass swipe-option-${direction} ${activeDirection === direction ? 'is-active' : ''}`} onClick={() => choose(direction)} aria-label={`${arrows[direction]} ${card.answers[direction]}`}><kbd>{arrows[direction]}</kbd><span>{card.answers[direction]}</span></button>)}
+      : <section className={`swipe-board ${hidden ? 'answers-hidden' : ''} ${revealed ? 'is-pulling' : ''}`} aria-label="방향을 선택해 답하기" style={{ '--pull': pull.toFixed(3) } as CSSProperties}>
+        {directions.map(direction => <button type="button" key={direction} className={`swipe-option glass swipe-option-${direction} ${activeDirection === direction ? 'is-active' : ''} ${revealed === direction ? 'is-revealed' : ''}`} onClick={() => pick(direction)} aria-label={`${arrows[direction]} ${card.answers[direction]}`}><kbd>{arrows[direction]}</kbd><span>{card.answers[direction]}</span></button>)}
         <div className="swipe-stack">
           {game.queue.length > 2 && <div className="swipe-under swipe-under-two" />}
           {game.queue.length > 1 && <div className="swipe-under swipe-under-one" />}
           <LaminatedCard key={`${card.id}-${game.attempts.length}`} className={`is-current ${pointer.current ? 'is-dragging' : ''}`}
-            style={{ '--tx': `${drag.x}px`, '--ty': `${drag.y}px`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
+            style={{ '--tx': `calc(${drag.x}px / var(--card-zoom, 1))`, '--ty': `calc(${drag.y}px / var(--card-zoom, 1))`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
             topic={card.topic} subject={card.subject} question={card.question}
             onPointerDown={press} onPointerMove={move} onPointerUp={release} onPointerCancel={cancel}>
-            {activeDirection && <div className={`swipe-drag-label ${distance >= SWIPE_DISTANCE ? 'is-ready' : ''}`}>{arrows[activeDirection]} {card.answers[activeDirection]}</div>}
+            {revealed && <div className={`swipe-drag-label ${(activeDirection ? distance >= SWIPE_DISTANCE : true) ? 'is-ready' : ''}`}>{arrows[revealed]} {card.answers[revealed]}{hidden && <small>{activeDirection ? (distance >= SWIPE_DISTANCE ? '놓으면 선택' : '더 밀면 선택') : `${arrows[revealed]} 한 번 더 · Enter로 선택`}</small>}</div>}
           </LaminatedCard>
           {flight && <LaminatedCard key={flight.id} aria-hidden="true" className={`swipe-flying fly-${flight.direction}`}
-            style={{ '--fx': `${flight.from.x}px`, '--fy': `${flight.from.y}px`, '--fr': `${flight.from.x / 22}deg` } as CSSProperties}
+            style={{ '--fx': `calc(${flight.from.x}px / var(--card-zoom, 1))`, '--fy': `calc(${flight.from.y}px / var(--card-zoom, 1))`, '--fr': `${flight.from.x / 22}deg` } as CSSProperties}
             topic={flight.card.topic} subject={flight.card.subject} question={flight.card.question} />}
         </div>
       </section>}

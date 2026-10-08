@@ -1,80 +1,207 @@
-import { useEffect, useRef, useState } from 'react';
-import { parkVocabulary as terms, vocabularySource } from '../../data/park-vocabulary';
-import { compareAnswer, currentRecord, dayKey, gradeTerm, loadVocabulary, saveVocabulary, streakDays } from '../../lib/vocabulary';
+// 박상영T · 원문 단어장. Menus are cards (↑ ← → choose, ↓ back) so study never switches from keys/swipes to the mouse.
+//   ↑ 카드로 외우기 — flip a word card, → 외웠어 / ← 한 번 더
+//   ← 문장 배치     — put the pieces of the definition back in order
+//   → 쓰기 테스트   — write the definition; one point per key idea (핵심어), word-for-word earns a badge
+// Every mode starts from a fixed set (기본 용어, 유전 법칙 …) so the same few words can be learned together.
+import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 import { geneticsCards } from '../../data/genetics-terms';
+import { parkVocabulary as terms, vocabularySets, vocabularySource, type VocabularyTerm } from '../../data/park-vocabulary';
+import { compareAnswer, currentRecord, dayKey, gradeTerm, loadVocabulary, saveVocabulary, scoreKeywords, scoreMessage, streakDays, type KeywordScore } from '../../lib/vocabulary';
+import MenuCard from './MenuCard';
+import OrderDeck from './OrderDeck';
 import SwipeGame from './SwipeGame';
 
-type Mode = 'list' | 'flash' | 'definition' | 'reverse' | 'test' | 'choice';
-export default function ParkVocabulary({ onBack }: { onBack: () => void }) {
- const [mode,setMode]=useState<Mode>('list');
- const [progress,setProgress]=useState(loadVocabulary);
- const [saved,setSaved]=useState(true);
- const [query,setQuery]=useState(''); const [filter,setFilter]=useState('all');
- const [queue,setQueue]=useState<string[]>([]);const [index,setIndex]=useState(0);
- const [answer,setAnswer]=useState('');const [revealed,setRevealed]=useState(false);
- const [hint,setHint]=useState(0);const [ignoreSpaces,setIgnoreSpaces]=useState(false);
- const [result,setResult]=useState<ReturnType<typeof compareAnswer> | null>(null);
- const [sessionWins,setSessionWins]=useState(0);const [sessionErrors,setSessionErrors]=useState(0);
- const input=useRef<HTMLTextAreaElement>(null);
- useEffect(()=>{setSaved(saveVocabulary(progress));},[progress]);
- const today=dayKey();const learned=terms.filter(t=>currentRecord(progress,t).wins>0).length;
- const due=terms.filter(t=>currentRecord(progress,t).due<=Date.now()).length;
- const filtered=terms.filter(t=>`${t.term} ${t.definition}`.includes(query.trim()) && (filter==='all' || filter==='starred' && currentRecord(progress,t).starred || filter==='missed' && currentRecord(progress,t).mistakes>0 && currentRecord(progress,t).wins===0 || filter==='due' && currentRecord(progress,t).due<=Date.now()));
- const term=terms.find(t=>t.id===queue[index]);const finished=queue.length>0 && !term;
- const clear=()=>{setAnswer('');setRevealed(false);setHint(0);setResult(null);};
- const begin=(next:Mode,all=false)=>{
-  const sorted=[...filtered].sort((a,b)=>currentRecord(progress,a).due-currentRecord(progress,b).due);
-  // Fisher–Yates shuffle for the blind test; learning sessions prioritize due terms.
-  if(next==='test') for(let i=sorted.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[sorted[i],sorted[j]]=[sorted[j],sorted[i]];}
-  setQueue((all?sorted:sorted.slice(0,5)).map(t=>t.id));setIndex(0);setSessionWins(0);setSessionErrors(0);clear();setMode(next);
- };
- useEffect(()=>{if(term && ['definition','reverse','test'].includes(mode)) input.current?.focus();},[index,mode,term]);
- const submit=()=>{
-  if(!term || result || !answer.trim())return;
-  const reverse=mode==='reverse', target=reverse?term.term:term.definition;
-  const checked=compareAnswer(answer,target,mode!=='test' && ignoreSpaces);
-  setResult(checked);
-  setSessionWins(n=>n+(checked.correct?1:0));setSessionErrors(n=>n+(checked.correct?0:1));
-  if(!reverse) setProgress(p=>gradeTerm(p,term,checked.correct,hint===0 && !ignoreSpaces));
-  // A failure returns once later in practice; a test always has a fixed length.
-  if(!checked.correct && mode!=='test' && queue.filter(id=>id===term.id).length<2) setQueue(q=>[...q,term.id]);
- };
- const next=()=>{setIndex(i=>i+1);clear();};
- const star=(id:string)=>{const t=terms.find(x=>x.id===id)!;setProgress(p=>({...p,terms:{...p.terms,[id]:{...currentRecord(p,t),starred:!currentRecord(p,t).starred}}}));};
- const download=()=>{
-  const blob=new Blob([vocabularySource+'\n\n'+terms.map(t=>`${t.term}\n${t.definition}\n출처: ${t.page}쪽`).join('\n\n')],{type:'text/plain;charset=utf-8'});
-  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='박상영T_원문_단어장.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
- };
- if(mode==='choice')return <SwipeGame cards={geneticsCards} deckId="park-vocabulary-choice" deckName="박상영T · 용어 이해 문제" onBack={()=>setMode('list')} backLabel="← 단어장" />;
- return <main className="swipe-app biology-app"><div className="biology-study">
-  <header className="biology-header glass"><button type="button" className="glass-button" onClick={mode==='list'?onBack:()=>{setMode('list');clear();}}>{mode==='list'?'← 박상영T 메뉴':'← 단어장'}</button><h1>박상영T · 원문 단어장</h1></header>
-  <section className="biology-menu glass"><p>{vocabularySource} · 22개 용어</p><p className="study-scope">정의는 교사용 정답지 문구입니다. PDF 줄바꿈은 한 칸 공백으로 연결했습니다. 기본 채점은 조사·문장부호·내부 띄어쓰기까지 비교하며 입력 앞뒤 공백은 제외합니다. 이 화면의 채점은 원문 암기 연습 기준입니다.</p>
-   <div className="biology-progress"><span>원문 성공 {learned} / 22</span><span>오늘 {progress.days[today]?.length ?? 0} / 5개 목표</span><span>{progress.xp} XP · 연속 {streakDays(progress.days)}일</span><span>복습할 용어 {due}개</span></div>
-   {!saved && <p role="alert">이 브라우저에서 저장하지 못했어요. 화면을 닫으면 기록이 사라질 수 있어요.</p>}
-   <p className="biology-note">힌트 없이 원문을 맞히면 용어당 하루 한 번 10 XP를 받아요. 원문 성공 후 1일·3일·7일 뒤 복습을 안내해요. 기록은 이 기기에 저장됩니다. 뜻을 보고 용어 맞히기·객관식은 원문 성공 기록에 포함되지 않아요.</p>
-  </section>
-  {mode==='list'?<section className="biology-menu glass">
-   <div className="concept-toolbar"><label>용어·정의 검색<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="용어 또는 정의" /></label><label>목록 <select value={filter} onChange={e=>setFilter(e.target.value)}><option value="all">전체</option><option value="starred">즐겨찾기</option><option value="due">복습 예정</option><option value="missed">틀린 용어</option></select></label></div>
-   <p>{filtered.length}개 선택됨 · 짧은 연습은 최대 5개씩 시작해요.</p>
-   <button type="button" className="biology-mode" disabled={!filtered.length} onClick={()=>begin('flash')}><strong>카드 암기 · 5개씩</strong><span>용어를 보고 정의 떠올리기 → 뒤집어 확인</span></button>
-   <button type="button" className="biology-mode" disabled={!filtered.length} onClick={()=>begin('definition')}><strong>정의 원문 입력 · 5개씩</strong><span>한 글자씩 비교 · 오답 한 번 더 연습 · 힌트</span></button>
-   <button type="button" className="biology-mode" disabled={!filtered.length} onClick={()=>begin('reverse')}><strong>뜻을 보고 용어 맞히기</strong><span>정의를 먼저 읽고 정확한 용어 입력</span></button>
-   <button type="button" className="biology-mode" disabled={!filtered.length} onClick={()=>{setIgnoreSpaces(false);begin('test');}}><strong>원문 실전 테스트 · 5개</strong><span>무작위 출제 · 힌트 없이 엄격 채점</span></button>
-   <div className="biology-actions"><button type="button" className="glass-button" disabled={!filtered.length} onClick={()=>begin('definition',true)}>선택한 {filtered.length}개 모두 쓰기</button><button type="button" className="glass-button" onClick={()=>setMode('choice')}>용어 이해 객관식 22문제</button><button type="button" className="glass-button" onClick={download}>원문 단어장 내려받기</button></div>
-   {!filtered.length && <p role="status">조건에 맞는 용어가 없어요. 검색어와 목록 조건을 바꿔 주세요.</p>}
-   {filtered.map(t=>{const record=currentRecord(progress,t);return <details className="concept-examples" key={t.id}><summary>{t.term} · {record.wins>0?'원문 성공':'학습 중'}{record.starred?' ★':''}</summary><p>{t.definition}</p><p className="study-source">교사용 정답지 · {t.page}쪽 · 원문 오류 {record.mistakes}회{record.due>0?` · 복습 ${new Date(record.due).toLocaleDateString('ko-KR')}`:''}</p><button type="button" className="glass-button" aria-pressed={record.starred} onClick={()=>star(t.id)}>{record.starred?'즐겨찾기 해제':'즐겨찾기'}</button></details>})}
-  </section>:finished?<section className="biology-written glass" aria-label="연습 결과"><h2>이번 연습 완료</h2><p>정답 {sessionWins}회 · 오답 {sessionErrors}회{mode==='flash'?' · 카드 확인 완료':''}</p><p>힌트·띄어쓰기 완화 없이 정의를 맞힌 기록만 원문 성공에 포함돼요.</p><div className="biology-actions"><button type="button" className="glass-button" onClick={()=>{setFilter('missed');setMode('list');}}>틀린 용어 모아 보기</button><button type="button" className="glass-button" onClick={()=>setMode('list')}>단어장으로</button></div></section>:term?<section className="biology-written glass" aria-label="용어 연습">
-   <div className="biology-progress"><span>{index+1} / {queue.length}{mode==='test'?' · 실전 테스트':''}</span><button type="button" className="glass-button" aria-pressed={currentRecord(progress,term).starred} onClick={()=>star(term.id)}>★ 즐겨찾기</button></div>
-   <h2>{mode==='reverse'?'이 정의의 용어는?':term.term}</h2>
-   {mode==='reverse' && <p>{term.definition}</p>}
-   {mode==='flash'?<><button type="button" className="biology-mode" aria-expanded={revealed} onClick={()=>setRevealed(v=>!v)}>{revealed?term.definition:'정의를 떠올린 뒤 눌러서 확인'}</button>{revealed && <div className="biology-actions"><button type="button" className="glass-button" onClick={()=>{if(queue.filter(id=>id===term.id).length<2)setQueue(q=>[...q,term.id]);next();}}>한 번 더 볼게요</button><button type="button" className="glass-button" onClick={next}>기억했어요 · 다음</button></div>}</>:<>
-    {mode!=='test' && mode!=='reverse' && <label><input type="checkbox" checked={ignoreSpaces} disabled={!!result} onChange={e=>{setIgnoreSpaces(e.target.checked);setResult(null);}} /> 띄어쓰기 제외 연습 (원문 성공·XP 제외)</label>}
-    <form onSubmit={e=>{e.preventDefault();submit();}}><label htmlFor="vocabulary-answer">{mode==='reverse'?'용어 입력':'정답지의 정의 전체를 입력하세요'}<textarea ref={input} id="vocabulary-answer" value={answer} onChange={e=>setAnswer(e.target.value)} rows={mode==='reverse'?2:6} maxLength={1200} disabled={!!result} autoComplete="off" spellCheck={false} /></label><button type="submit" className="glass-button" disabled={!answer.trim() || !!result}>채점하기</button></form>
-    {mode==='definition' && !result && <div className="biology-actions"><button type="button" className="glass-button" onClick={()=>setHint(n=>n+1)}>앞부분 힌트 (원문 성공·XP 제외)</button></div>}
-    {hint>0 && <p>힌트: {term.definition.slice(0,hint*15)}…</p>}
-    {result && <div className="biology-model" role="status"><h3>{result.correct?'정답!':'원문과 달라요'}</h3>{!result.correct && <p>처음 다른 위치: {result.index+1}번째 글자 · 입력: {result.entered===' '?'[공백]':result.entered || '[끝]'} · 원문: {result.expected===' '?'[공백]':result.expected || '[끝]'}</p>}<p>{mode==='reverse'?term.term:term.definition}</p>{!result.correct && mode!=='reverse' && <details><summary>틀린 위치부터 원문 다시 보기</summary><p>{result.expectedRest}</p></details>}<p>{result.correct && (hint>0 || ignoreSpaces)?'보조 연습 정답입니다. 원문 성공과 XP에는 포함되지 않아요.':''}</p><button type="button" className="glass-button" onClick={next}>다음 용어 →</button></div>}
-   </>}
-   <p className="study-source">교사용 정답지 · {term.page}쪽</p>
-  </section>:<section className="biology-menu glass"><p>연습할 용어가 없어요.</p></section>}
- </div></main>;
+type Mode = 'flash' | 'order' | 'write' | 'reverse';
+type Screen = 'home' | 'sets' | Mode | 'done' | 'list' | 'choice';
+type Done = { id: string; got: number; total: number; perfect?: boolean; firstTry?: boolean };
+const MODE_NAME: Record<Mode, string> = { flash: '카드로 외우기', order: '문장 배치', write: '쓰기 테스트', reverse: '뜻 보고 용어 맞히기' };
+const byName = new Map(terms.map(t => [t.term, t]));
+
+/** "같○ ○○" — the first letter of each word of a key idea, for a hint. */
+const initials = (label: string) => label.replace(/[^\s·()/:,0-9A-Za-z–]/gu, (ch, at: number, all: string) => (at === 0 || /[\s·(/]/.test(all[at - 1]) ? ch : '○'));
+
+export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => void; escapeRef?: MutableRefObject<(() => boolean) | null> }) {
+  const [screen, setScreen] = useState<Screen>('home');
+  const [mode, setMode] = useState<Mode>('flash');
+  const [progress, setProgress] = useState(loadVocabulary);
+  const [saved, setSaved] = useState(true);
+  const [setAt, setSetAt] = useState(0);
+  const [queue, setQueue] = useState<string[]>([]);
+  const [index, setIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [answer, setAnswer] = useState('');
+  const [score, setScore] = useState<KeywordScore | null>(null);
+  const [reverseResult, setReverseResult] = useState<boolean | null>(null);
+  const [hint, setHint] = useState(false);
+  const [done, setDone] = useState<Done[]>([]);
+  const [xpAtStart, setXpAtStart] = useState(0);
+  const [query, setQuery] = useState(''); const [filter, setFilter] = useState('all');
+  const input = useRef<HTMLTextAreaElement>(null);
+  const nextButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => { setSaved(saveVocabulary(progress)); }, [progress]);
+
+  const now = Date.now(), today = dayKey();
+  const learned = terms.filter(t => currentRecord(progress, t).wins > 0).length;
+  const review = terms.filter(t => { const r = currentRecord(progress, t); return (r.mistakes > 0 && r.wins === 0) || (r.wins > 0 && r.due <= now); });
+  const starred = terms.filter(t => currentRecord(progress, t).starred);
+  const sets = [
+    ...vocabularySets.map(s => ({ id: s.id, name: s.name, list: s.terms.map(n => byName.get(n)!).filter(Boolean) })),
+    ...(review.length ? [{ id: 'review', name: '다시 볼 용어', list: review }] : []),
+    ...(starred.length ? [{ id: 'starred', name: '즐겨찾기', list: starred }] : []),
+    { id: 'all', name: '전체 22개', list: terms },
+  ];
+  const chosenSet = sets[Math.min(setAt, sets.length - 1)];
+  const term: VocabularyTerm | undefined = terms.find(t => t.id === queue[index]);
+
+  const clear = () => { setAnswer(''); setScore(null); setReverseResult(null); setHint(false); setFlipped(false); };
+  const openSets = (next: Mode) => { setMode(next); setScreen('sets'); };
+  const begin = () => { setQueue(chosenSet.list.map(t => t.id)); setIndex(0); setDone([]); setXpAtStart(progress.xp); clear(); setScreen(mode); };
+  const advance = () => { clear(); if (index + 1 < queue.length) setIndex(index + 1); else setScreen('done'); };
+  const again = (id: string) => { if (queue.filter(x => x === id).length < 2) setQueue(q => [...q, id]); };
+  const star = (id: string) => { const t = terms.find(x => x.id === id)!; setProgress(p => ({ ...p, terms: { ...p.terms, [id]: { ...currentRecord(p, t), starred: !currentRecord(p, t).starred } } })); };
+
+  // Esc: one step back. Returns false at the top so the 박상영T menu takes over.
+  const back = () => {
+    if (screen === 'home') return false;
+    if (screen === 'sets' || screen === 'list' || screen === 'choice') setScreen('home');
+    else setScreen('sets');
+    clear();
+    return true;
+  };
+  if (escapeRef) escapeRef.current = back;
+
+  useEffect(() => { if (term && (screen === 'write' || screen === 'reverse')) input.current?.focus(); }, [index, screen, term]);
+  useEffect(() => { if (score || reverseResult !== null) nextButton.current?.focus(); }, [score, reverseResult]);
+
+  const submit = () => {
+    if (!term || !answer.trim() || score || reverseResult !== null) return;
+    if (screen === 'reverse') { setReverseResult(compareAnswer(answer, term.term, true).correct); return; }
+    const result = scoreKeywords(answer, term);
+    setScore(result);
+    setProgress(p => gradeTerm(p, term, result, !hint));
+    setDone(d => [...d, { id: term.id, got: result.got, total: result.total, perfect: result.perfect }]);
+    if (result.got < result.total) again(term.id);
+  };
+  const download = () => {
+    const blob = new Blob([vocabularySource + '\n\n' + terms.map(t => `${t.term}\n${t.definition}\n핵심어: ${t.keywords.map(k => k.label).join(', ')}\n출처: ${t.page}쪽`).join('\n\n')], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = 'park-vocabulary.txt'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  const keywordChips = (t: VocabularyTerm, hits?: boolean[]) => <ul className="keyword-chips" aria-label="핵심어">
+    {t.keywords.map((k, i) => <li key={k.label} className={hits ? (hits[i] ? 'is-hit' : 'is-miss') : ''}>{hits ? (hits[i] ? '✓ ' : '· ') : ''}{k.label}</li>)}
+  </ul>;
+
+  if (screen === 'choice') return <SwipeGame cards={geneticsCards} deckId="park-vocabulary-choice" deckName="박상영T · 용어 이해 문제" onBack={() => setScreen('home')} backLabel="← 단어장" />;
+
+  if (screen === 'home') return <MenuCard cardKey="vocab-home" topic="박상영T · 원문 단어장" subject={`외운 용어 ${learned} / 22`} question={`오늘 ${progress.days[today]?.length ?? 0} / 5개 · ${progress.xp} XP · 연속 ${streakDays(progress.days)}일`} onBack={onBack} backLabel="박상영T"
+    up={{ label: '카드로 외우기', note: '뒤집어 확인', onChoose: () => openSets('flash') }}
+    left={{ label: '문장 배치', note: '정의 조각 순서', onChoose: () => openSets('order') }}
+    right={{ label: '쓰기 테스트', note: '핵심어 채점', onChoose: () => openSets('write') }}>
+    <div className="menu-extras">
+      <button type="button" className="glass-button" onClick={() => setScreen('list')}>용어 목록 · 즐겨찾기</button>
+      <button type="button" className="glass-button" onClick={() => openSets('reverse')}>뜻 보고 용어 맞히기</button>
+      <button type="button" className="glass-button" onClick={() => setScreen('choice')}>용어 이해 객관식 22문제</button>
+    </div>
+    {!saved && <p className="menu-hint glass" role="alert">이 브라우저에서 저장하지 못했어요. 화면을 닫으면 기록이 사라질 수 있어요.</p>}
+  </MenuCard>;
+
+  if (screen === 'sets') {
+    const step = (d: number) => setSetAt(i => (Math.min(i, sets.length - 1) + d + sets.length) % sets.length);
+    const names = chosenSet.list.map(t => t.term);
+    return <MenuCard cardKey={`vocab-set-${chosenSet.id}`} topic={`${MODE_NAME[mode]} · 묶음 ${Math.min(setAt, sets.length - 1) + 1} / ${sets.length}`} subject={chosenSet.name}
+      question={names.length > 6 ? `${names.slice(0, 5).join(', ')} 외 ${names.length - 5}개` : names.join(', ')} onBack={() => setScreen('home')} backLabel="단어장"
+      up={{ label: '이 묶음 시작', note: `${names.length}개`, onChoose: begin }}
+      left={{ label: '이전 묶음', onChoose: () => step(-1) }} right={{ label: '다음 묶음', onChoose: () => step(1) }}>
+      <p className="menu-hint glass">← → 로 묶음을 고르고 ↑ 로 시작해요. 같은 묶음을 며칠 반복하면 잘 외워져요.</p>
+    </MenuCard>;
+  }
+
+  if (screen === 'done') {
+    const xp = progress.xp - xpAtStart;
+    const best = new Map<string, Done>();
+    for (const d of done) { const prev = best.get(d.id); if (!prev || d.got / d.total > prev.got / prev.total) best.set(d.id, d); }
+    const scored = [...best.values()];
+    const got = scored.reduce((n, d) => n + d.got, 0), total = scored.reduce((n, d) => n + d.total, 0);
+    return <MenuCard cardKey="vocab-done" topic={`${MODE_NAME[mode]} · ${chosenSet.name}`} subject="한 묶음 끝!"
+      question={mode === 'write' ? `핵심어 ${got} / ${total} · +${xp} XP` : mode === 'order' ? `한 번에 맞춘 정의 ${done.filter(d => d.firstTry).length} / ${new Set(queue).size}` : `${new Set(queue).size}개 확인`}
+      onBack={() => setScreen('home')} backLabel="단어장"
+      up={{ label: '한 번 더', onChoose: begin }} right={{ label: '다른 묶음', onChoose: () => setScreen('sets') }}
+      left={mode !== 'write' ? { label: '쓰기 테스트로', onChoose: () => { setMode('write'); setScreen('sets'); } } : undefined}>
+      {mode === 'write' && scored.length > 0 && <ul className="menu-hint glass vocab-summary">
+        {scored.map(d => { const t = terms.find(x => x.id === d.id)!; return <li key={d.id}><strong>{t.term}</strong> {d.got} / {d.total}{d.perfect ? ' · 원문 완벽 ✦' : d.got === d.total ? ' · 전부!' : ''}</li>; })}
+      </ul>}
+    </MenuCard>;
+  }
+
+  if (screen === 'flash' && term) {
+    const repeat = queue.filter(x => x === term.id).length > 1;
+    return <MenuCard cardKey={`flash-${term.id}-${index}`} topic={`${chosenSet.name} · ${index + 1} / ${queue.length}`} subject={term.term}
+      question={flipped ? '맞게 떠올렸나요?' : '정의를 떠올려 보세요 · 눌러서 뒤집기'} onBack={() => setScreen('sets')} backLabel="그만"
+      onTap={() => setFlipped(f => !f)}
+      up={{ label: flipped ? '다시 덮기' : '뒤집기', note: 'Space', onChoose: () => setFlipped(f => !f) }}
+      left={{ label: '한 번 더', note: repeat ? '이미 한 번 더 나와요' : '뒤에 다시', onChoose: () => { again(term.id); advance(); } }}
+      right={{ label: '외웠어', onChoose: () => { setDone(d => [...d, { id: term.id, got: 1, total: 1 }]); advance(); } }}>
+      {flipped ? <div className="flash-back glass" aria-live="polite"><p>{term.definition}</p>{keywordChips(term)}<small>쓰기 테스트는 이 핵심어로 채점해요 · 정답지 {term.page}쪽</small></div>
+        : <p className="menu-hint glass">카드를 누르거나 ↑·Space로 뒤집어요.</p>}
+    </MenuCard>;
+  }
+
+  if (screen === 'order' && term) return <main className="swipe-app biology-app"><div className="biology-study">
+    <header className="biology-header glass"><button type="button" className="glass-button" onClick={() => setScreen('sets')}>← 묶음</button><h1>{MODE_NAME.order}</h1></header>
+    <OrderDeck pieces={term.pieces} title={term.term} prompt="정의 조각을 순서대로 쌓아 보세요." step={`${chosenSet.name} · ${index + 1} / ${queue.length}`}
+      nextLabel={index + 1 < queue.length ? '다음 용어 →' : '결과 보기'}
+      onNext={result => { setDone(d => [...d, { id: term.id, got: result.right, total: result.total, firstTry: result.firstTry }]); advance(); }} />
+  </div></main>;
+
+  if ((screen === 'write' || screen === 'reverse') && term) {
+    const reverse = screen === 'reverse';
+    return <main className="swipe-app biology-app"><div className="biology-study">
+      <header className="biology-header glass"><button type="button" className="glass-button" onClick={() => setScreen('sets')}>← 묶음</button><h1>{MODE_NAME[screen]}</h1></header>
+      <section className="biology-written glass vocab-write" aria-label="용어 쓰기">
+        <div className="biology-progress"><span>{chosenSet.name} · {index + 1} / {queue.length}</span><button type="button" className="glass-button" aria-pressed={currentRecord(progress, term).starred} onClick={() => star(term.id)}>★ 즐겨찾기</button></div>
+        <h2>{reverse ? '이 정의의 용어는?' : term.term}</h2>
+        {reverse ? <p>{term.definition}</p> : <p className="biology-note">정의를 써 보세요. 핵심어 {term.keywords.length}개가 들어가면 만점이에요. 순서·띄어쓰기·조사는 상관없어요.</p>}
+        <form onSubmit={e => { e.preventDefault(); submit(); }}>
+          <label htmlFor="vocabulary-answer" className="sr-only">{reverse ? '용어 입력' : '정의 입력'}</label>
+          <textarea ref={input} id="vocabulary-answer" value={answer} onChange={e => setAnswer(e.target.value)} rows={reverse ? 2 : 5} maxLength={1200} disabled={Boolean(score) || reverseResult !== null} autoComplete="off" spellCheck={false}
+            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); submit(); } }} placeholder={reverse ? '용어' : '예) 상동염색체의 같은 위치에 있으며 …'} />
+          {!score && reverseResult === null && <div className="biology-actions">
+            <button type="submit" className="glass-button is-primary" disabled={!answer.trim()}>채점하기 <kbd>Enter</kbd></button>
+            {!reverse && !hint && <button type="button" className="glass-button" onClick={() => setHint(true)}>핵심어 힌트 (XP 없음)</button>}
+            <button type="button" className="glass-button" onClick={() => { if (!reverse) { setDone(d => [...d, { id: term.id, got: 0, total: term.keywords.length }]); setProgress(p => gradeTerm(p, term, { got: 0, total: term.keywords.length, perfect: false }, false)); again(term.id); } advance(); }}>모르겠어요</button>
+          </div>}
+        </form>
+        {hint && !score && <p className="vocab-hint">핵심어 {term.keywords.length}개: {term.keywords.map(k => initials(k.label)).join(' · ')}</p>}
+        {score && <div className={`biology-model vocab-result ${score.got === score.total ? 'is-full' : ''}`} role="status">
+          <h3>{scoreMessage(score)} <span className="vocab-score">{score.got} / {score.total}</span>{score.perfect && <span className="vocab-badge">원문 완벽 ✦</span>}</h3>
+          {keywordChips(term, score.hits)}
+          <p>{term.definition}</p>
+          {score.got < score.total && <p className="biology-note">빠진 핵심어가 있는 용어는 이 묶음 끝에 한 번 더 나와요.</p>}
+          <button type="button" ref={nextButton} className="glass-button is-primary" onClick={advance}>{index + 1 < queue.length ? '다음 용어' : '결과 보기'} <kbd>Enter</kbd></button>
+        </div>}
+        {reverseResult !== null && <div className="biology-model" role="status">
+          <h3>{reverseResult ? '정답!' : `정답은 ‘${term.term}’`}</h3>
+          <button type="button" ref={nextButton} className="glass-button is-primary" onClick={() => { if (!reverseResult) again(term.id); advance(); }}>{index + 1 < queue.length ? '다음' : '결과 보기'} <kbd>Enter</kbd></button>
+        </div>}
+        <p className="study-source">교사용 정답지 · {term.page}쪽</p>
+      </section>
+    </div></main>;
+  }
+
+  // 용어 목록
+  const filtered = terms.filter(t => `${t.term} ${t.definition}`.includes(query.trim()) && (filter === 'all' || (filter === 'starred' && currentRecord(progress, t).starred) || (filter === 'review' && review.includes(t))));
+  return <main className="swipe-app biology-app"><div className="biology-study">
+    <header className="biology-header glass"><button type="button" className="glass-button" onClick={() => setScreen('home')}>← 단어장</button><h1>박상영T · 용어 목록</h1></header>
+    <section className="biology-menu glass">
+      <p className="study-scope">{vocabularySource}. 정의는 정답지 문구 그대로예요. 쓰기 테스트는 아래 핵심어로 채점해요(순서·띄어쓰기·조사 무관). 정의를 글자까지 똑같이 쓰면 ‘원문 완벽’ 배지가 붙어요. 기록은 이 기기에 저장돼요.</p>
+      <div className="concept-toolbar"><label>용어·정의 검색<input type="search" value={query} onChange={e => setQuery(e.target.value)} placeholder="용어 또는 정의" /></label><label>목록 <select value={filter} onChange={e => setFilter(e.target.value)}><option value="all">전체</option><option value="starred">즐겨찾기</option><option value="review">다시 볼 용어</option></select></label></div>
+      {!filtered.length && <p role="status">조건에 맞는 용어가 없어요.</p>}
+      {filtered.map(t => { const r = currentRecord(progress, t); return <details className="concept-examples" key={t.id}>
+        <summary>{t.term} · {r.wins > 0 ? '외움' : '학습 중'}{r.perfect ? ' ✦' : ''}{r.starred ? ' ★' : ''}</summary>
+        <p>{t.definition}</p>{keywordChips(t)}
+        <p className="study-source">교사용 정답지 · {t.page}쪽 · 빠뜨린 횟수 {r.mistakes}{r.wins > 0 && r.due > 0 ? ` · 다음 복습 ${new Date(r.due).toLocaleDateString('ko-KR')}` : ''}</p>
+        <button type="button" className="glass-button" aria-pressed={r.starred} onClick={() => star(t.id)}>{r.starred ? '즐겨찾기 해제' : '즐겨찾기'}</button>
+      </details>; })}
+      <div className="biology-actions"><button type="button" className="glass-button" onClick={download}>단어장 내려받기 (핵심어 포함)</button></div>
+    </section>
+  </div></main>;
 }

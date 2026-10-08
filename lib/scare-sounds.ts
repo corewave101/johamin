@@ -1,5 +1,6 @@
 import type { ScareId } from './jumpscare';
 import { audio, isMuted, noiseBuffer } from './sound';
+import type { SoundRef } from './theme';
 
 /**
  * Real sound files win over the synthesized placeholders.
@@ -118,4 +119,11 @@ export function playScare(id: ScareId) {
 function synthScare(id: ScareId) {
   const ctx = audio();
   if (ctx) synth[id](ctx, ctx.currentTime + 0.01);
+}
+
+/** Plays whatever sound a scare carries: a built-in one, a file the person added, or nothing. */
+export function playSound(sound: SoundRef) {
+  if (isMuted() || sound.kind === 'none') return;
+  if (sound.kind === 'builtin') { playScare(sound.id); return; }
+  void new Audio(sound.url).play().catch(() => { /* blocked or broken file: stay silent */ });
 }
