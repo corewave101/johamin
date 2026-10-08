@@ -520,39 +520,41 @@
 }
 @media (prefers-reduced-motion: reduce) { .swipe-feedback-face { animation: none !important; } }
 
-/* ===== 베타 · 카드 펼쳐 고르기 (components/swipe/DeckSpread.tsx) ===== */
-.spread { width: min(100%, 1100px); margin: 0 auto; display: grid; justify-items: center; gap: 10px; }
-.spread-app { justify-items: center !important; padding-left: 20px !important; }
-.spread-lead { margin: 6px 0 4px; padding: 8px 18px; border-radius: 999px; font-size: 15px; font-weight: 700; color: var(--ink); }
-.spread-lead > * { position: relative; }
-.spread-beta { margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; background: var(--theme-base, #e8b931); color: var(--theme-ink, #4a2b00); }
-.spread-group { width: 100%; display: grid; justify-items: center; margin-top: 2px; }
-.spread-group h2 { margin-bottom: 4px; padding: 3px 14px; border-radius: 999px; font-size: 14px; font-weight: 800; color: #fff; background: rgba(20, 28, 40, .38); text-shadow: 0 1px 2px rgba(0, 0, 0, .4); }
-.spread-row { display: flex; justify-content: center; flex-wrap: wrap; padding: 8px 24px 12px; }
-.spread-card { --w: clamp(104px, min(11vw, 17svh), 146px); position: relative; width: var(--w); aspect-ratio: 300 / 370; margin: 0 -10px; border-radius: 16px; overflow: hidden; text-align: left; cursor: pointer;
-  background: linear-gradient(155deg, rgba(255, 255, 255, .62), rgba(255, 250, 242, .22));
-  -webkit-backdrop-filter: blur(8px) saturate(140%); backdrop-filter: blur(8px) saturate(140%); border: 1px solid rgba(255, 255, 255, .9);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .95), 0 18px 32px -18px rgba(70, 36, 10, .7), 0 6px 12px -6px rgba(70, 36, 10, .35);
-  transform: rotate(calc(var(--i, 0) * 5deg)) translateY(calc(var(--i, 0) * var(--i, 0) * 5px));
-  transition: transform .25s cubic-bezier(.2, 1.3, .4, 1), box-shadow .25s; animation: spread-deal .5s cubic-bezier(.2, .9, .3, 1) backwards; animation-delay: calc((var(--i, 0) + 3) * 40ms); }
-.spread-card .card-art { inset: 5px; border-radius: 12px; }
-.spread-card:hover, .spread-card:focus-visible { z-index: 3; transform: translateY(-14px) scale(1.07); box-shadow: inset 0 1px 0 #fff, 0 26px 40px -18px rgba(70, 36, 10, .75), 0 0 0 3px var(--theme-base, #e8b931); outline: none; }
-.spread-card.is-pending { filter: saturate(.4) brightness(.92); }
-.spread-caption { position: absolute; left: 8px; right: 8px; bottom: 8px; display: grid; gap: 1px; padding: 8px 9px 9px; border-radius: 10px; color: #fff8ec;
-  background: linear-gradient(180deg, rgba(22, 38, 54, .55), rgba(14, 27, 41, .85)); border: 1px solid rgba(255, 255, 255, .22); }
-.spread-caption small { font-size: 10.5px; font-weight: 700; color: #f6c37f; }
-.spread-caption strong { font-size: 16px; font-weight: 800; line-height: 1.25; color: #ffe3b0; word-break: keep-all; }
-.spread-caption em { font-style: normal; font-size: 11px; color: rgba(255, 248, 236, .8); }
-.spread-classic { margin-top: 10px; }
-@keyframes spread-deal { from { opacity: 0; transform: translateY(40px) rotate(0deg) scale(.9); } }
-@media (max-width: 600px) {
-  .spread-row { padding: 8px 4px 12px; gap: 8px 0; }
-  .spread-card { --w: calc((100vw - 80px) / 3); margin: 0 4px; transform: rotate(calc(var(--i, 0) * 2deg)); }
-  .spread-caption strong { font-size: 14px; }
-}
-
 /* 업데이트 기록 · 베타 스위치 */
 .update-log-beta { display: inline-block; padding: 4px 12px; border-radius: 999px; font: inherit; font-weight: 800; color: #1d4f8f; text-decoration: underline; text-underline-offset: 3px; background: rgba(29, 79, 143, .08); cursor: pointer; }
 .update-log-beta:hover { background: rgba(29, 79, 143, .16); }
 .update-log-beta.is-on { color: #8a2a1d; background: rgba(179, 38, 58, .1); }
 .app-version-beta { font-weight: 900; color: var(--theme-soft, #f6d266); }
+
+/* ===== 베타 · 카드 패 (components/swipe/CardHand.tsx): a subject's menu as a fanned hand of laminated cards ===== */
+.hand-game { display: grid; justify-items: center; }
+.hand-game .swipe-deck-bar { width: 100%; }
+.hand-beta { margin-left: auto; padding: 1px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; background: var(--theme-base, #e8b931); color: var(--theme-ink, #4a2b00); position: relative; }
+.hand-prompt { margin: 14px 0 0; padding: 4px 14px; border-radius: 999px; font-size: 15px; font-weight: 800; color: #fff; background: rgba(20, 28, 40, .36); text-shadow: 0 1px 2px rgba(0, 0, 0, .4); }
+.hand { --card-h: calc(var(--card-w) * 370 / 300); position: relative; width: 100%; height: calc(var(--card-h) + 110px); margin-top: 34px; touch-action: pan-y; user-select: none; -webkit-user-select: none; zoom: var(--card-zoom, 1); }
+.hand-card { position: absolute; left: 50%; bottom: 52px; width: var(--card-w); height: var(--card-h); margin-left: calc(var(--card-w) / -2); z-index: var(--z);
+  transform: translateX(var(--x)) translateY(var(--y)) rotate(var(--r)); transform-origin: 50% 130%; cursor: pointer;
+  transition: transform .32s cubic-bezier(.2, 1.25, .35, 1), opacity .26s, filter .2s; animation: hand-deal .5s cubic-bezier(.2, .9, .3, 1) backwards; }
+.hand-card:nth-child(2) { animation-delay: 40ms; } .hand-card:nth-child(3) { animation-delay: 80ms; } .hand-card:nth-child(4) { animation-delay: 120ms; }
+.hand-card:nth-child(5) { animation-delay: 160ms; } .hand-card:nth-child(n+6) { animation-delay: 200ms; }
+.hand-card.is-lifted { transform: translateX(var(--x)) translateY(calc(var(--y) - 38px)) rotate(calc(var(--r) * .35)) scale(1.07); }
+.hand-card.is-lifted .hand-face { box-shadow: inset 0 1px 0 #fff, 0 0 0 3px var(--theme-base, #e8b931), 0 30px 50px -22px rgba(70, 36, 10, .75); }
+.hand-card.is-played { transform: translateX(0) translateY(-180px) rotate(0) scale(1.12); opacity: 0; transition: transform .26s cubic-bezier(.4, 0, .6, 1), opacity .26s ease-in; }
+.hand-card.is-disabled { filter: saturate(.3) brightness(.85); cursor: default; }
+.hand-face { cursor: inherit; animation: none; border-radius: 18px; }
+.hand-face .card-art { inset: 6px; border-radius: 13px; }
+.hand-face .card-caption { left: 10px; right: 10px; bottom: 10px; padding: 9px 11px 10px; border-radius: 11px; display: grid; gap: 2px; }
+.hand-face .card-topic { font-size: 11px; margin: 0; }
+.hand-title { font-size: 18px; font-weight: 800; line-height: 1.3; color: #ffe3b0; word-break: keep-all; overflow-wrap: anywhere; }
+.hand-note { font-size: 12px; color: rgba(255, 248, 236, .82); }
+.hand-corner { position: absolute; top: 12px; left: 12px; max-width: 34%; padding: 4px 6px; border-radius: 8px; font-size: 11px; font-weight: 800; line-height: 1.25; color: #fff8ec;
+  background: rgba(14, 27, 41, .72); word-break: keep-all; overflow-wrap: anywhere; box-shadow: 0 2px 6px rgba(0, 0, 0, .3); }
+.hand-card.is-lifted .hand-corner { opacity: 0; }
+@keyframes hand-deal { from { opacity: 0; transform: translateX(0) translateY(140px) rotate(0) scale(.85); } }
+.hand-actions { display: flex; align-items: center; gap: 10px; margin-top: 2px; }
+.hand-actions .glass-button { min-width: 44px; min-height: 40px; font-size: 16px; }
+.hand-play { padding: 8px 20px !important; font-size: 15px !important; }
+.hand-play kbd { margin-left: 6px; padding: 1px 6px; border-radius: 6px; font-size: 11px; background: rgba(0, 0, 0, .08); }
+.hand-hint { margin-top: 10px; font-size: 12px; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, .55); text-align: center; word-break: keep-all; }
+@media (max-width: 600px) { .hand { height: calc(var(--card-h) + 100px); } .hand-title { font-size: 15px; } .hand-corner { font-size: 10px; max-width: 40%; } }
+@media (prefers-reduced-motion: reduce) { .hand-card { animation: none; } }

@@ -27,7 +27,7 @@
 | 폴더·파일 | 내용 |
 |---|---|
 | `app/` | 시작점 `main.tsx`, CSS(`swipe.css`가 대부분) |
-| `components/swipe/` | 화면. `SwipeGame`(문제 카드), `SubjectPicker`(과목 고르기), `SubjectStudy`(개념·문제 메뉴), `ParkStudy`·`ParkVocabulary`(박상영T 전용), `MenuCard`(카드형 메뉴), `OrderDeck`(문장 배치), `BlessingToggle`·`BlessingEditor`(가호) |
+| `components/swipe/` | 화면. `SwipeGame`(문제 카드), `SubjectPicker`(과목 고르기), `SubjectStudy`(개념·문제 메뉴), `ParkStudy`·`ParkVocabulary`(박상영T 전용), `MenuCard`(카드형 메뉴), `CardHand`(베타 · 카드 패 메뉴), `OrderDeck`(문장 배치), `BlessingToggle`·`BlessingEditor`(가호) |
 | `lib/` | 로직. `card-store.ts`(DB 읽기·캐시), `swipe-game.ts`, `vocabulary.ts`, `theme.ts`, `jumpscare.ts` … |
 | `data/` | 코드에 들어 있는 카드(번들). `swipe-subjects.ts`가 과목·덱 목록 |
 | `db/` | DB 표 정의와 카드 사본(`cards.json`, `seed.sql`) |
@@ -150,6 +150,8 @@ DB와 테스트가 검사하는 것(어기면 저장·합치기가 막힌다):
 - 화면 오른쪽 아래 버전을 누르면 이 기록이 그대로 보인다. **사용자가 읽는 글**이니 쉬운 한국어로, 코드 이름 대신 화면에 보이는 이름으로 쓴다.
 - `tests/test_changelog.cjs`가 "CHANGELOG 맨 위 버전 = package.json 버전"을 검사한다.
 - 문서·테스트만 바꾼 PR은 버전을 안 올려도 된다.
+- 베타 버전은 `3.3.0-beta.1`처럼 쓴다(화면에는 "3.3.0 베타.1"). 정식으로 낼 때 `3.3.0`으로.
+- 베타 기능은 `lib/beta.ts`의 스위치로 감싼다(업데이트 기록 맨 아래 v0.0.-1에서 켜고 끔). 꺼져 있을 때 화면은 그대로여야 한다.
 
 ---
 
