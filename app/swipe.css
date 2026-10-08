@@ -499,7 +499,7 @@
     background: linear-gradient(160deg, rgba(255, 253, 248, .9), rgba(250, 244, 233, .82));
     border: 1px solid rgba(255, 255, 255, .95);
     box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(120, 76, 36, .08), 0 28px 50px -24px rgba(70, 36, 10, .6), 0 8px 18px -8px rgba(70, 36, 10, .3); }
-  .swipe-game.is-beta:not(.has-passage) .swipe-feedback.is-idle { opacity: 1; display: grid; place-items: center;
+  .swipe-game.is-beta:not(.has-passage) .swipe-feedback.is-idle { opacity: 1; display: grid; place-items: center; -webkit-backdrop-filter: none; backdrop-filter: none;
     background: rgba(255, 255, 255, .16); border: 2px dashed rgba(255, 255, 255, .7); box-shadow: none; }
   .swipe-game.is-beta:not(.has-passage) .swipe-feedback-placeholder { display: block; text-align: center; font-size: 15px; font-weight: 700; line-height: 1.7; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, .5); }
   .swipe-game.is-beta:not(.has-passage) .swipe-feedback-face { transform-origin: left center; animation: back-flip .55s cubic-bezier(.2, .9, .25, 1) both; }
@@ -531,7 +531,7 @@
 .hand-game .swipe-deck-bar { width: 100%; }
 .hand-beta { margin-left: auto; padding: 1px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; background: var(--theme-base, #e8b931); color: var(--theme-ink, #4a2b00); position: relative; }
 .hand-prompt { margin: 14px 0 0; padding: 4px 14px; border-radius: 999px; font-size: 15px; font-weight: 800; color: #fff; background: rgba(20, 28, 40, .36); text-shadow: 0 1px 2px rgba(0, 0, 0, .4); }
-.hand { --card-h: calc(var(--card-w) * 370 / 300); position: relative; width: 100%; height: calc(var(--card-h) + 110px); margin-top: 34px; touch-action: pan-y; user-select: none; -webkit-user-select: none; zoom: var(--card-zoom, 1); }
+.hand { --card-h: calc(var(--card-w) * 370 / 300); position: relative; width: 100%; height: calc(var(--card-h) + var(--rows-extra, 0px) + 110px); margin-top: 34px; touch-action: pan-y; user-select: none; -webkit-user-select: none; zoom: var(--card-zoom, 1); }
 .hand-card { position: absolute; left: 50%; bottom: 52px; width: var(--card-w); height: var(--card-h); margin-left: calc(var(--card-w) / -2); z-index: var(--z);
   transform: translateX(var(--x)) translateY(var(--y)) rotate(var(--r)); transform-origin: 50% 130%; cursor: pointer;
   transition: transform .32s cubic-bezier(.2, 1.25, .35, 1), opacity .26s, filter .2s; animation: hand-deal .5s cubic-bezier(.2, .9, .3, 1) backwards; }
@@ -556,5 +556,12 @@
 .hand-play { padding: 8px 20px !important; font-size: 15px !important; }
 .hand-play kbd { margin-left: 6px; padding: 1px 6px; border-radius: 6px; font-size: 11px; background: rgba(0, 0, 0, .08); }
 .hand-hint { margin-top: 10px; font-size: 12px; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, .55); text-align: center; word-break: keep-all; }
-@media (max-width: 600px) { .hand { height: calc(var(--card-h) + 100px); } .hand-title { font-size: 15px; } .hand-corner { font-size: 10px; max-width: 40%; } }
+@media (max-width: 600px) { .hand { height: calc(var(--card-h) + var(--rows-extra, 0px) + 100px); } .hand-title { font-size: 15px; } .hand-corner { font-size: 10px; max-width: 40%; } }
 @media (prefers-reduced-motion: reduce) { .hand-card { animation: none; } }
+
+/* The drag sticker sits a little higher and smaller so the card face stays visible. */
+.swipe-drag-label { top: 8px; padding: 5px 13px; font-size: 15px; box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .45); }
+@media (max-width: 600px) { .swipe-drag-label { top: 6px; font-size: 13px; } }
+/* 답 가리기: a key/tap preview shows its hint on the answer itself, not on the card. */
+.peek-hint { display: block; margin-top: 2px; font-size: 11px; font-weight: 700; color: var(--ink-soft); position: relative; }
+.swipe-option-left .peek-hint, .swipe-option-right .peek-hint { margin-top: 0; }

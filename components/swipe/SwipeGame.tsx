@@ -190,7 +190,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
         <button type="button" className="swipe-restart" onClick={restart}>한 판 더</button>
       </section>
       : <section className={`swipe-board ${hidden ? 'answers-hidden' : ''} ${revealed ? 'is-pulling' : ''}`} aria-label="방향을 선택해 답하기" style={{ '--pull': pull.toFixed(3) } as CSSProperties}>
-        {directions.map(direction => <button type="button" key={direction} className={`swipe-option glass swipe-option-${direction} ${activeDirection === direction ? 'is-active' : ''} ${revealed === direction ? 'is-revealed' : ''}`} onClick={() => pick(direction)} aria-label={`${arrows[direction]} ${card.answers[direction]}`}><kbd>{arrows[direction]}</kbd><span>{card.answers[direction]}</span></button>)}
+        {directions.map(direction => <button type="button" key={direction} className={`swipe-option glass swipe-option-${direction} ${activeDirection === direction ? 'is-active' : ''} ${revealed === direction ? 'is-revealed' : ''}`} onClick={() => pick(direction)} aria-label={`${arrows[direction]} ${card.answers[direction]}`}><kbd>{arrows[direction]}</kbd><span>{card.answers[direction]}</span>{hidden && peek === direction && !activeDirection && <small className="peek-hint">한 번 더 · Enter</small>}</button>)}
         <div className="swipe-stack">
           {game.queue.length > 2 && <div className="swipe-under swipe-under-two" />}
           {game.queue.length > 1 && <div className="swipe-under swipe-under-one" />}
@@ -198,7 +198,8 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
             style={{ '--tx': `calc(${drag.x}px / var(--card-zoom, 1))`, '--ty': `calc(${drag.y}px / var(--card-zoom, 1))`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
             topic={card.topic} subject={card.subject} question={card.question}
             onPointerDown={press} onPointerMove={move} onPointerUp={release} onPointerCancel={cancel}>
-            {revealed && <div className={`swipe-drag-label ${(activeDirection ? distance >= SWIPE_DISTANCE : true) ? 'is-ready' : ''}`}>{arrows[revealed]} {card.answers[revealed]}{hidden && <small>{activeDirection ? (distance >= SWIPE_DISTANCE ? '놓으면 선택' : '더 밀면 선택') : `${arrows[revealed]} 한 번 더 · Enter로 선택`}</small>}</div>}
+            {/* The sticker shows only while dragging; a key or tap preview shows its hint on the answer instead (so the card face stays clear). */}
+            {activeDirection && <div className={`swipe-drag-label ${distance >= SWIPE_DISTANCE ? 'is-ready' : ''}`}>{arrows[activeDirection]} {card.answers[activeDirection]}{hidden && <small>{distance >= SWIPE_DISTANCE ? '놓으면 선택' : '더 밀면 선택'}</small>}</div>}
           </LaminatedCard>
           {flight && <LaminatedCard key={flight.id} aria-hidden="true" className={`swipe-flying fly-${flight.direction}`}
             style={{ '--fx': `calc(${flight.from.x}px / var(--card-zoom, 1))`, '--fy': `calc(${flight.from.y}px / var(--card-zoom, 1))`, '--fr': `${flight.from.x / 22}deg` } as CSSProperties}
