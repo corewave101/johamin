@@ -55,16 +55,20 @@ export default function CardHand({ deckName, prompt, cards, onBack, backLabel, s
   }, [at, play, step, onBack]);
 
   // Fan: spacing shrinks as the hand grows so it always fits; the angle shrinks too.
+  // More than 10 cards → two rows, then one more row for every 7 cards. Back rows sit higher and behind.
   const n = cards.length;
+  const rows = n > 10 ? Math.ceil(n / 7) : 1;
+  const perRow = Math.ceil(n / rows);
   const cardW = Math.min(CARD_W, width * 0.42);
-  const gap = n > 1 ? Math.min(cardW * 0.78, (width * 0.9 - cardW) / (n - 1)) : 0;
-  const angle = Math.min(6, 30 / Math.max(n, 1));
-  const drop = Math.min(angle * 0.9, 46 / Math.max(1, ((n - 1) / 2) ** 2)); // how far the outer cards sink along the arc
-  const indexAt = (x: number) => {
-    const rect = hand.current?.getBoundingClientRect();
-    if (!rect || n < 2) return 0;
-    const left = rect.left + (rect.width - (cardW + gap * (n - 1))) / 2;
-    return Math.min(n - 1, Math.max(0, Math.round((x - left - cardW / 2) / gap)));
+  const cardH = cardW * 370 / 300;
+  const rowStep = cardH * 0.56;
+  const gap = perRow > 1 ? Math.min(cardW * 0.78, (width * 0.9 - cardW) / (perRow - 1)) : 0;
+  const angle = Math.min(6, 30 / Math.max(perRow, 1));
+  const drop = Math.min(angle * 0.9, 46 / Math.max(1, ((perRow - 1) / 2) ** 2)); // how far the outer cards sink along the arc
+  /** The card under a point (the lifted one wins where cards overlap). */
+  const indexAt = (x: number, y: number) => {
+    const el = document.elementFromPoint(x, y)?.closest<HTMLElement>('[data-i]');
+    return el ? Number(el.dataset.i) : null;
   };
 
   const down = (event: PointerEvent<HTMLDivElement>) => {
@@ -79,7 +83,7 @@ export default function CardHand({ deckName, prompt, cards, onBack, backLabel, s
     const dx = event.clientX - d.x, dy = event.clientY - d.y;
     if (Math.hypot(dx, dy) > 10) d.moved = true;
     // Sliding sideways scrubs through the hand.
-    if (d.moved && Math.abs(dx) > Math.abs(dy)) setAt(indexAt(event.clientX));
+    if (d.moved && Math.abs(dx) > Math.abs(dy)) { const i = indexAt(event.clientX, event.clientY); if (i !== null) setAt(i); }
   };
   const up = (event: PointerEvent<HTMLDivElement>) => {
     const d = drag.current;
@@ -88,7 +92,8 @@ export default function CardHand({ deckName, prompt, cards, onBack, backLabel, s
     const dx = event.clientX - d.x, dy = event.clientY - d.y;
     if (dy < -60 && Math.abs(dy) > Math.abs(dx)) { play(at); return; }          // flick up: play the lifted card
     if (d.moved) return;
-    const i = d.i ?? indexAt(event.clientX);
+    const i = d.i ?? indexAt(event.clientX, event.clientY);
+    if (i === null) return;
     if (d.type === 'mouse' || i === at) play(i); else setAt(i);                // touch: first tap lifts, second plays
   };
 
@@ -103,12 +108,15 @@ export default function CardHand({ deckName, prompt, cards, onBack, backLabel, s
       </div>
       <p className="hand-prompt">{prompt}</p>
       <div className="hand" ref={hand} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={() => { drag.current = null; }}
-        style={{ '--card-w': `${cardW}px` } as CSSProperties} role="listbox" aria-label={prompt} aria-activedescendant={current ? `hand-${current.id}` : undefined}>
+        style={{ '--card-w': `${cardW}px`, '--rows-extra': `${(rows - 1) * rowStep}px` } as CSSProperties} role="listbox" aria-label={prompt} aria-activedescendant={current ? `hand-${current.id}` : undefined}>
         {cards.map((card, i) => {
-          const offset = i - (n - 1) / 2;
+          const row = Math.floor(i / perRow), col = i % perRow;
+          const inRow = Math.min(perRow, n - row * perRow);
+          const offset = col - (inRow - 1) / 2;
           const lifted = i === at;
           const style = {
-            '--x': `${(i - (n - 1) / 2) * gap}px`, '--r': `${offset * angle}deg`, '--y': `${offset * offset * drop}px`, '--z': lifted ? 50 : i,
+            '--x': `${offset * gap}px`, '--r': `${offset * angle}deg`,
+            '--y': `${offset * offset * drop - (rows - 1 - row) * rowStep}px`, '--z': lifted ? 100 : row * 20 + col,
           } as CSSProperties;
           return <div key={card.id} id={`hand-${card.id}`} data-i={i} role="option" aria-selected={lifted} aria-disabled={card.disabled || undefined}
             className={`hand-card ${lifted ? 'is-lifted' : ''} ${played === i ? 'is-played' : ''} ${card.disabled ? 'is-disabled' : ''}`} style={style}>
