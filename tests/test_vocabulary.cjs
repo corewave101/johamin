@@ -1,0 +1,21 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),ts=require('typescript');
+for(const ext of ['.ts','.tsx'])require.extensions[ext]=(m,f)=>m._compile(ts.transpileModule(fs.readFileSync(f,'utf8'),{compilerOptions:{module:1,target:ts.ScriptTarget.ES2022,jsx:4,esModuleInterop:true}}).outputText,f);
+const {parkVocabulary:terms}=require('../data/park-vocabulary.ts');
+const {compareAnswer,blankProgress,gradeTerm,currentRecord,streakDays,dayKey}=require('../lib/vocabulary.ts');
+assert.equal(terms.length,22);assert.equal(new Set(terms.map(t=>t.id)).size,22);
+assert.equal(terms[0].definition,'상동염색체의 특정한 같은 위치에 존재하며, 하나의 유전 형질을 결정하는 서로 다른 유전자이다. 상동염색체 위에 쌍으로 존재하는 대립유전자는 같을 수도 있고 다를 수도 있다.');
+for(const t of terms){assert.ok(compareAnswer(t.definition,t.definition).correct);assert.ok(!compareAnswer(t.definition.slice(0,-1),t.definition).correct);assert.ok(!compareAnswer(t.definition.replace(' ','  '),t.definition).correct);assert.ok(compareAnswer(t.definition.replace(/ /g,''),t.definition,true).correct);}
+assert.ok(compareAnswer('가','가').correct);assert.equal(compareAnswer('상동염색체는','상동염색체의').index,5);
+const t=terms[0],now=new Date('2026-10-08T12:00:00').getTime();let p=blankProgress();
+p=gradeTerm(p,t,true,false,now);assert.equal(p.xp,0);assert.equal(currentRecord(p,t).wins,0);
+p=gradeTerm(p,t,true,true,now);assert.equal(p.xp,10);assert.equal(p.days[dayKey(new Date(now))].length,1);assert.equal(currentRecord(p,t).due,now+86400000);
+p=gradeTerm(p,t,true,true,now);assert.equal(p.xp,10);
+p=gradeTerm(p,t,false,true,now);assert.equal(currentRecord(p,t).wins,0);assert.equal(currentRecord(p,t).due,now);
+assert.equal(currentRecord(p,{...t,definition:t.definition+'변경'}).wins,0);
+assert.equal(streakDays({ '2026-10-07':['a'],'2026-10-08':['b'] },new Date(now)),2);
+assert.equal(streakDays({ '2026-10-07':['a'] },new Date(now)),1);
+const React=require('react'),{renderToStaticMarkup}=require('react-dom/server');
+const {subjectDecks}=require('../data/swipe-subjects.ts');const SubjectStudy=require('../components/swipe/SubjectStudy.tsx').default;
+const html=renderToStaticMarkup(React.createElement(SubjectStudy,{deck:subjectDecks.find(d=>d.id==='biology-park'),onBack:()=>{}}));
+assert.ok(html.includes('원문 단어장 · 22개'));assert.ok(html.includes('객관식 47 / 서술형 14'));
+console.log('PASS: 22 source definitions, exact spelling/punctuation/spacing, optional practice, XP de-duplication, review scheduling, source-version reset and separate menu.');
