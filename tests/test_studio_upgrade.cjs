@@ -26,23 +26,20 @@ for (const q of [...jo.cards,...jo.writtenQuestions]) assert.ok(Number(q.sourceN
 assert.ok(!/오페론|lac |CAP|cAMP/.test(joContent.replaceAll('오페론부터 제외', '범위 제외')));
 for (const q of [...englishCards,...englishWritten]) assert.ok(q.passage && q.passage.length > 20,q.id);
 assert.ok(englishCards.filter(q=>q.topic==='Chichén Itzá').every(q=>q.passage.includes('Chichén')));
-// Simulate a stale database: removed slides must stay removed; missing passages and terms are restored.
-const stale = withLiveCards(subjectMenu, {
- 'biology-jo': { cards:[{...jo.cards[0],id:'biology-jo-099',sourceNote:'유전자의 발현 · 44쪽'}],written:[] },
- 'biology-park': { cards:park.cards.filter(q=>!q.id.startsWith('park-term-')),written:[] },
- english: { cards:englishCards.map(q=>({...q,passage:undefined})),written:[] },
-});
+// The database is the source of truth again: a deck found in the database uses exactly the database cards.
 const flatten = g=>g.children.flatMap(n=>n.kind==='group'?flatten(n):[n]);
-const merged=flatten(stale);
-assert.equal(merged.find(d=>d.id===jo.id).cards.length,jo.cards.length);
-assert.equal(merged.find(d=>d.id===park.id).cards.length,park.cards.length);
-assert.ok(merged.find(d=>d.id==='english').cards.every(q=>q.passage));
+const fromDb = flatten(withLiveCards(subjectMenu, { english: { cards: englishCards.slice(0, 3), written: [] } }));
+assert.equal(fromDb.find(d=>d.id==='english').cards.length, 3);
+assert.equal(fromDb.find(d=>d.id==='english').writtenQuestions.length, englishWritten.length, 'No written rows in the DB keeps the bundled ones');
+assert.equal(fromDb.find(d=>d.id===jo.id).cards, jo.cards, 'Decks missing from the DB keep the bundled cards');
+// The exported DB copy matches the bundled cards, so the live site shows the same scope and passages.
+const dbFile = JSON.parse(fs.readFileSync('db/cards.json', 'utf8'));
+assert.ok(!dbFile.cards.some(c => c.deck_id === 'biology-jo' && c.source_page > 25), 'Operon cards are not in the DB copy');
+assert.equal(dbFile.cards.filter(c => c.deck_id === 'english' && c.passage).length, englishCards.length + englishWritten.length);
 const { koreanGrammarCards } = require('../data/korean-cards.ts');
 const ambiguous = koreanGrammarCards.find(q => q.id === 'korean-grammar-187');
 assert.ok(ambiguous.subject.includes('수단') && ambiguous.explanation.includes('이유'));
 assert.ok(koreanGrammarCards.find(q => q.id === 'korean-grammar-183').subject.includes('지방으로 ___'));
-const cached = flatten(withLiveCards(subjectMenu, {'korean-grammar': {cards: koreanGrammarCards.map(q=>({...q,subject:'과거의 어색한 문장'})),written:[]}}));
-assert.equal(cached.find(d=>d.id==='korean-grammar').cards[0].subject,koreanGrammarCards[0].subject);
 const { studyConcepts } = require('../data/study-concepts.ts');
 for (const deck of subjectDecks.filter(d=>d.cards.length)) assert.ok(conceptsFor(deck.id).some(l=>l.resources?.length),deck.id);
 for (const l of studyConcepts) for (const resource of l.resources ?? []) assert.ok(resource.url.startsWith('https://') && resource.publisher && resource.note);
@@ -50,4 +47,4 @@ assert.ok(!JSON.stringify(englishCards).includes('even though = even if'));
 assert.ok(!fs.readFileSync('app/main.tsx','utf8').includes("import './studio.css'"));
 const html=renderToStaticMarkup(React.createElement(Card,{topic:'국어',question:'관련 개념을 확인하세요'}));
 assert.ok(!html.includes('portrait-credit'));
-console.log('PASS: scope/cache fixes, natural Korean conditions, official supplemental sources, English distinction and original card design.');
+console.log('PASS: scope fixes kept in the DB copy, DB-first cards, natural Korean conditions, official supplemental sources, English distinction and original card design.');

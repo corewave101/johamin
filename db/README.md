@@ -2,7 +2,7 @@
 
 카드를 한 장씩 표로 관리하는 DB입니다. 아직 앱은 DB를 읽지 않고 `data/*.ts`의 내장 카드를 씁니다.
 
-**현재 상태:** Supabase 프로젝트(서울, `vlmwrkalgjaduagxavhb`)에 표·권한 규칙이 적용되었고 덱 9개·카드 903장이 들어 있습니다. 앱에서 쓸 주소와 공개 키는 `lib/supabase-config.ts`에 있습니다.
+**현재 상태:** Supabase 프로젝트(서울, `vlmwrkalgjaduagxavhb`)에 표·권한 규칙이 적용되었고 덱 9개·카드 926장이 들어 있습니다. 앱에서 쓸 주소와 공개 키는 `lib/supabase-config.ts`에 있습니다.
 
 ## 카드 고치기 (지금 방법)
 
@@ -16,7 +16,7 @@
 | 파일 | 내용 |
 |---|---|
 | `schema.sql` | 표·권한 규칙·수정 이력. Supabase SQL Editor에서 한 번 실행 |
-| `seed.sql` | 지금 있는 카드 전부(덱 9개, 카드 903장). 새 프로젝트에서 `schema.sql` 다음에 실행 |
+| `seed.sql` | 지금 있는 카드 전부(덱 9개, 카드 926장). 새 프로젝트에서 `schema.sql` 다음에 실행 |
 | `cards.json` | `seed.sql`과 같은 내용을 사람이 읽기 쉽게 정리한 사본 |
 | `../scripts/export-cards.cjs` | `data/*.ts`에서 위 두 파일을 다시 만드는 스크립트 |
 
