@@ -482,3 +482,77 @@
 .answer-view-toggle.is-hidden { background: var(--theme-soft, #f6e3b0); box-shadow: inset 0 0 0 1.5px var(--theme-base, #e7b54a); }
 .answer-view-toggle.is-hidden .answer-view-icon { background: var(--theme-base, #e7b54a); color: var(--theme-ink, #3b2508); }
 @media (max-width: 600px) { .answer-view-toggle { padding: 5px 12px 5px 9px; font-size: 13px; } .swipe-actions { margin-top: 14px; } }
+
+/* The left column of a game. Invisible to layout except in 베타 · 가로 화면 해설 카드. */
+.swipe-main { display: contents; }
+.swipe-feedback-placeholder { display: none; }
+
+/* ===== 베타 · 가로 화면 해설 카드: the answered card flips to its back (explanation) on the right ===== */
+@media (orientation: landscape) and (min-width: 1000px) {
+  :root body .swipe-app > .swipe-game.is-beta:not(.has-passage) {
+    width: min(100%, 1120px); margin-left: 0; display: grid; align-items: center;
+    grid-template-columns: minmax(0, 660px) calc(330px * var(--card-zoom, 1)); column-gap: clamp(24px, 3.5vw, 56px); }
+  .swipe-game.is-beta:not(.has-passage) .swipe-main { display: block; min-width: 0; }
+  .swipe-game.is-beta:not(.has-passage) .swipe-feedback {
+    width: 100%; min-height: calc(390px * var(--card-zoom, 1)); max-height: calc(100svh - 120px); margin: 0; overflow-y: auto;
+    padding: 22px 22px 20px; border-radius: 22px; perspective: 1200px;
+    background: linear-gradient(160deg, rgba(255, 253, 248, .9), rgba(250, 244, 233, .82));
+    border: 1px solid rgba(255, 255, 255, .95);
+    box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(120, 76, 36, .08), 0 28px 50px -24px rgba(70, 36, 10, .6), 0 8px 18px -8px rgba(70, 36, 10, .3); }
+  .swipe-game.is-beta:not(.has-passage) .swipe-feedback.is-idle { opacity: 1; display: grid; place-items: center;
+    background: rgba(255, 255, 255, .16); border: 2px dashed rgba(255, 255, 255, .7); box-shadow: none; }
+  .swipe-game.is-beta:not(.has-passage) .swipe-feedback-placeholder { display: block; text-align: center; font-size: 15px; font-weight: 700; line-height: 1.7; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, .5); }
+  .swipe-game.is-beta:not(.has-passage) .swipe-feedback-face { transform-origin: left center; animation: back-flip .55s cubic-bezier(.2, .9, .25, 1) both; }
+  .swipe-game.is-beta:not(.has-passage) .swipe-feedback-top { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px dashed rgba(90, 60, 30, .25); }
+  .swipe-game.is-beta:not(.has-passage) .swipe-feedback-top strong { font-size: 18px; line-height: 1.4; }
+  .swipe-game.is-beta:not(.has-passage) .swipe-result-icon { width: 30px; height: 30px; font-size: 15px; }
+  .swipe-game.is-beta:not(.has-passage) .swipe-previous { margin-top: 0; font-size: 14px; line-height: 1.55; }
+  .swipe-game.is-beta:not(.has-passage) .swipe-explanation { margin-top: 12px; font-size: 16px; line-height: 1.75; color: #2b2118; }
+  .swipe-game.is-beta:not(.has-passage) .swipe-source { margin-top: 14px; }
+  .swipe-game.is-beta:not(.has-passage) .swipe-feedback.is-correct { border-top: 5px solid #3f8f5a; }
+  .swipe-game.is-beta:not(.has-passage) .swipe-feedback.is-wrong { border-top: 5px solid #b3263a; }
+  .swipe-game.is-beta:not(.has-passage) .swipe-feedback.is-unknown { border-top: 5px solid #8a7a66; }
+}
+@keyframes back-flip {
+  0% { opacity: 0; transform: translateX(-46%) rotateY(-95deg) scale(.88); }
+  55% { opacity: 1; }
+  100% { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .swipe-feedback-face { animation: none !important; } }
+
+/* ===== 베타 · 카드 펼쳐 고르기 (components/swipe/DeckSpread.tsx) ===== */
+.spread { width: min(100%, 1100px); margin: 0 auto; display: grid; justify-items: center; gap: 10px; }
+.spread-app { justify-items: center !important; padding-left: 20px !important; }
+.spread-lead { margin: 6px 0 4px; padding: 8px 18px; border-radius: 999px; font-size: 15px; font-weight: 700; color: var(--ink); }
+.spread-lead > * { position: relative; }
+.spread-beta { margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; background: var(--theme-base, #e8b931); color: var(--theme-ink, #4a2b00); }
+.spread-group { width: 100%; display: grid; justify-items: center; margin-top: 2px; }
+.spread-group h2 { margin-bottom: 4px; padding: 3px 14px; border-radius: 999px; font-size: 14px; font-weight: 800; color: #fff; background: rgba(20, 28, 40, .38); text-shadow: 0 1px 2px rgba(0, 0, 0, .4); }
+.spread-row { display: flex; justify-content: center; flex-wrap: wrap; padding: 8px 24px 12px; }
+.spread-card { --w: clamp(104px, min(11vw, 17svh), 146px); position: relative; width: var(--w); aspect-ratio: 300 / 370; margin: 0 -10px; border-radius: 16px; overflow: hidden; text-align: left; cursor: pointer;
+  background: linear-gradient(155deg, rgba(255, 255, 255, .62), rgba(255, 250, 242, .22));
+  -webkit-backdrop-filter: blur(8px) saturate(140%); backdrop-filter: blur(8px) saturate(140%); border: 1px solid rgba(255, 255, 255, .9);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .95), 0 18px 32px -18px rgba(70, 36, 10, .7), 0 6px 12px -6px rgba(70, 36, 10, .35);
+  transform: rotate(calc(var(--i, 0) * 5deg)) translateY(calc(var(--i, 0) * var(--i, 0) * 5px));
+  transition: transform .25s cubic-bezier(.2, 1.3, .4, 1), box-shadow .25s; animation: spread-deal .5s cubic-bezier(.2, .9, .3, 1) backwards; animation-delay: calc((var(--i, 0) + 3) * 40ms); }
+.spread-card .card-art { inset: 5px; border-radius: 12px; }
+.spread-card:hover, .spread-card:focus-visible { z-index: 3; transform: translateY(-14px) scale(1.07); box-shadow: inset 0 1px 0 #fff, 0 26px 40px -18px rgba(70, 36, 10, .75), 0 0 0 3px var(--theme-base, #e8b931); outline: none; }
+.spread-card.is-pending { filter: saturate(.4) brightness(.92); }
+.spread-caption { position: absolute; left: 8px; right: 8px; bottom: 8px; display: grid; gap: 1px; padding: 8px 9px 9px; border-radius: 10px; color: #fff8ec;
+  background: linear-gradient(180deg, rgba(22, 38, 54, .55), rgba(14, 27, 41, .85)); border: 1px solid rgba(255, 255, 255, .22); }
+.spread-caption small { font-size: 10.5px; font-weight: 700; color: #f6c37f; }
+.spread-caption strong { font-size: 16px; font-weight: 800; line-height: 1.25; color: #ffe3b0; word-break: keep-all; }
+.spread-caption em { font-style: normal; font-size: 11px; color: rgba(255, 248, 236, .8); }
+.spread-classic { margin-top: 10px; }
+@keyframes spread-deal { from { opacity: 0; transform: translateY(40px) rotate(0deg) scale(.9); } }
+@media (max-width: 600px) {
+  .spread-row { padding: 8px 4px 12px; gap: 8px 0; }
+  .spread-card { --w: calc((100vw - 80px) / 3); margin: 0 4px; transform: rotate(calc(var(--i, 0) * 2deg)); }
+  .spread-caption strong { font-size: 14px; }
+}
+
+/* 업데이트 기록 · 베타 스위치 */
+.update-log-beta { display: inline-block; padding: 4px 12px; border-radius: 999px; font: inherit; font-weight: 800; color: #1d4f8f; text-decoration: underline; text-underline-offset: 3px; background: rgba(29, 79, 143, .08); cursor: pointer; }
+.update-log-beta:hover { background: rgba(29, 79, 143, .16); }
+.update-log-beta.is-on { color: #8a2a1d; background: rgba(179, 38, 58, .1); }
+.app-version-beta { font-weight: 900; color: var(--theme-soft, #f6d266); }
