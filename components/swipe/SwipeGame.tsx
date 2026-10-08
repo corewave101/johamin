@@ -127,7 +127,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
           <span className="swipe-progress-row">{game.mastered.length} / {cards.length}</span>
         </div>
       </div>
-      {card?.passage && <details key={card.id} open className="swipe-reading glass"><summary>READ & SOLVE · 문제 지문</summary><small>본문을 읽고 아래 카드의 문장·표현을 확인하세요.</small><p lang="en">{card.passage}</p></details>}
+      {card?.passage && <details key={card.id} open className="swipe-reading glass" onKeyDown={e => { if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) e.stopPropagation(); }}><summary>READ & SOLVE · 문제 지문</summary><small>지문 안에서 스크롤해 끝까지 읽고 카드의 문장·표현을 확인하세요.</small><p lang="en" tabIndex={0} aria-label="영어 문제 지문">{card.passage}</p></details>}
       {finished ? <section className="swipe-complete glass" aria-label="최종 결과">
         <h2>깔끔하게 털었다!</h2>
         <p>{cards.length}장 완료 · 총 {game.attempts.length}번 선택</p>
