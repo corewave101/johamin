@@ -45,14 +45,14 @@ const keys = { up: 'ArrowUp', left: 'ArrowLeft', right: 'ArrowRight', down: 'Arr
     await page.goto(base + '/#johamin'); await enter();
     await menu('과목 선택').waitFor();
     await page.keyboard.press('ArrowLeft');
-    await menu('인문(국,사,영)').waitFor();
+    await menu('인문').waitFor();
     // 국어 is a group of three parts: 문법 has cards, 뉴욕제과점 and 고전 시가 are waiting for material.
     await page.keyboard.press('ArrowUp'); await menu('국어').waitFor();
     await page.keyboard.press('ArrowUp'); await page.getByRole('heading', { name: '국어(문법)' }).waitFor();
     await page.keyboard.press('Escape'); await menu('국어').waitFor();
     await page.keyboard.press('ArrowLeft'); await page.getByText('아직 자료가 없어요').waitFor();
     await page.keyboard.press('Escape'); await menu('국어').waitFor();
-    await page.keyboard.press('ArrowDown'); await menu('인문(국,사,영)').waitFor();
+    await page.keyboard.press('ArrowDown'); await menu('인문').waitFor();
     await page.keyboard.press('ArrowRight'); await page.getByRole('region', { name: '학습 메뉴' }).waitFor();
     await page.keyboard.press('Escape');
     await page.keyboard.press('ArrowLeft');
@@ -60,10 +60,12 @@ const keys = { up: 'ArrowUp', left: 'ArrowLeft', right: 'ArrowRight', down: 'Arr
     await page.getByRole('button', { name: /^객관식/ }).click();
     await page.locator('.swipe-deck-bar strong').filter({ hasText: '사회(성신제)' }).waitFor();
     await page.keyboard.press('Escape');
-    await menu('인문(국,사,영)').waitFor();
+    await menu('인문').waitFor();
     await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('ArrowRight');
-    await menu('행성우주과학').waitFor();
+    await page.keyboard.press('ArrowUp');
+    await menu('과학').waitFor();
+    await page.keyboard.press('ArrowLeft');
+    await menu('지구과학').waitFor();
     await page.keyboard.press('ArrowRight');
     await page.getByRole('button', { name: /문제 파트/ }).click();
     await page.getByRole('button', { name: /^객관식/ }).click();
@@ -110,7 +112,9 @@ const keys = { up: 'ArrowUp', left: 'ArrowLeft', right: 'ArrowRight', down: 'Arr
     await page.screenshot({ path: 'artifacts/astronomy-compact-mobile.png', fullPage: true });
     await page.getByRole('button', { name: /^모름/ }).click();
     await page.keyboard.press('Escape');
-    await menu('행성우주과학').waitFor();
+    await menu('지구과학').waitFor();
+    await page.keyboard.press('Escape');
+    await menu('과학').waitFor();
     await page.keyboard.press('Escape');
     await menu('과목 선택').waitFor();
     await page.goto(base + '/#johamin/demo'); await page.reload(); await enter();

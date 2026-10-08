@@ -6,7 +6,7 @@ const { parkCards, joCards } = require('../data/biology-cards.ts');
 const { parkWritten, joWritten } = require('../data/biology-written.ts');
 const { subjectDecks, subjectMenu } = require('../data/swipe-subjects.ts');
 const { newGame, answerCard } = require('../lib/swipe-game.ts');
-assert.equal(subjectMenu.children.find(x => x.id === 'biology').kind, 'group');
+assert.equal(subjectMenu.children.find(x => x.id === 'science').children.find(x => x.id === 'biology').kind, 'group');
 const ids = new Set();
 for (const [id, cards, written, maxPage] of [['biology-park', parkCards, parkWritten, 3], ['biology-jo', joCards, joWritten, 25]]) {
   const deck = subjectDecks.find(x => x.id === id);

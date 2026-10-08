@@ -1,0 +1,8 @@
+.observation-panel svg { display:block; width: min(100%, 360px); margin: 1rem auto; stroke:var(--theme-ink); color:var(--theme-ink); stroke-width:2; }
+.observation-panel svg circle:not([fill]), .observation-panel svg text { fill:var(--theme-ink); }
+.observation-panel svg text { stroke:none; font-size:11px; }
+.observation-control { display:block; margin:1rem 0; font-weight:600; }
+.observation-control input { display:block; width:100%; margin-top:.5rem; accent-color:var(--theme-ink); }
+.observation-control output { float:right; }
+.observation-note { padding:1rem; max-width:36rem; margin:0 auto; }
+.observation-panel p, .observation-note p { overflow-wrap:anywhere; }

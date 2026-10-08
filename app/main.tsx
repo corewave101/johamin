@@ -1,3 +1,4 @@
+import '../components/swipe/observation.css';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import AppStatus from '../components/swipe/AppStatus';

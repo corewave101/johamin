@@ -4,6 +4,10 @@
 
 **현재 상태:** Supabase 프로젝트(서울, `vlmwrkalgjaduagxavhb`)에 표·권한 규칙이 적용되었고 덱 9개·카드 926장이 들어 있습니다. 앱에서 쓸 주소와 공개 키는 `lib/supabase-config.ts`에 있습니다.
 
+## 물리학Ⅱ 추가 브랜치
+
+`db/physics-release.sql`은 기존 926개 카드 내용을 변경하지 않고 새 물리학Ⅱ 90개 카드만 추가합니다. **DB 반영은 아직 실행하지 않았습니다.** 팀 멤버가 SQL Editor에서 검토·실행한 뒤 PR을 병합해야 합니다. 상세 절차는 `docs/science-study.md`를 보세요.
+
 ## 카드 고치기 (지금 방법)
 
 1. supabase.com 로그인 → 프로젝트 → **Table Editor** → `cards`
