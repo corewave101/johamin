@@ -10,6 +10,7 @@ import { customScareForAnswer, newCustomTracker } from '../../lib/custom-scares'
 import { getTheme } from '../../lib/theme';
 import { answerCard, getStats, newGame, type AnswerChoice } from '../../lib/swipe-game';
 import LaminatedCard from './LaminatedCard';
+import { useBeta } from './useBeta';
 import StreakFlame from './StreakFlame';
 
 type Offset = { x: number; y: number };
@@ -40,6 +41,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const [view, setView] = useState(answerView);
   useEffect(() => onAnswerViewChange(setView), []);
   const hidden = view === 'hidden';
+  const beta = useBeta(); // 베타 · 가로 화면 해설 카드 (CSS: wide landscape only)
   const [peek, setPeek] = useState<Direction | null>(null);
   const peekRef = useRef<Direction | null>(null);
   peekRef.current = peek;
@@ -165,7 +167,8 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
 
   return <main className={`swipe-app ${onBack ? 'swipe-study' : ''}`}>
     <StreakFlame streak={game.streak} />
-    <div className={`swipe-game ${card?.passage ? 'has-passage' : ''}`}>
+    <div className={`swipe-game ${card?.passage ? 'has-passage' : ''} ${beta ? 'is-beta' : ''}`}>
+      <div className="swipe-main">
       <header className="swipe-heading"><h1 className="glass">조하민<span>레츠고</span></h1></header>
       <div className="swipe-deck-bar glass">
         {onBack && <button type="button" className="glass-button" onClick={onBack}>{backLabel}</button>}
@@ -211,15 +214,17 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
           <span>{hidden ? '답 가리기 켜짐' : '답 가리기'}<small>{hidden ? '밀면 보여요 · 눌러서 끄기' : '눌러서 켜기'}</small></span>
         </button>
       </div>}
+      </div>
       <section className={`swipe-feedback glass ${tone}`} aria-label="결과창" aria-live="polite" aria-atomic="true">
-        {last && <>
+        {!last && beta && <p className="swipe-feedback-placeholder">답을 고르면 카드가 뒤집혀서<br />이 자리에 해설 면이 놓여요</p>}
+        {last && <div className="swipe-feedback-face" key={game.attempts.length}>
           <div className="swipe-feedback-top"><span className="swipe-result-icon" aria-hidden="true">{last.direction === 'unknown' ? '?' : last.correct ? '✓' : '✕'}</span><strong>{verdict}</strong></div>
           <p className="swipe-previous">{last.card.subject ? `${last.card.subject} · ` : ''}{last.card.question}</p>
           <p className="swipe-explanation">{last.card.explanation}</p>
           {last.card.sourceNote && <div className="swipe-source">{last.card.sourceNote}</div>}
           {last.card.sourceSlide && <div className="swipe-source">황윤환T · 슬라이드 {last.card.sourceSlide}</div>}
           {last.card.source && <div className="swipe-source">{last.card.source.teacher && `${last.card.source.teacher} · `}<a href={last.card.source.url} target="_blank" rel="noreferrer">{last.card.source.label ?? last.card.source.title.split('_')[0]} · PDF {last.card.source.page}쪽 ↗</a></div>}
-        </>}
+        </div>}
       </section>
     </div>
   </main>;

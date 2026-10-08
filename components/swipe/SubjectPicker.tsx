@@ -4,7 +4,9 @@ import type { SubjectDeck, SubjectGroup } from '../../data/swipe-subjects';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playTick } from '../../lib/sound';
 import LaminatedCard from './LaminatedCard';
+import DeckSpread from './DeckSpread';
 import SubjectStudy from './SubjectStudy';
+import { useBeta } from './useBeta';
 import { findGroup, useLiveMenu } from './useLiveMenu';
 
 export default function SubjectPicker() {
@@ -14,6 +16,10 @@ export default function SubjectPicker() {
   const pointer = useRef<{ id: number; x: number; y: number } | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const menu = useLiveMenu();
+  // 베타 · 카드 펼쳐 고르기: the first screen lays every part out instead of the swipe menu (until "한 장씩 넘겨서 고르기").
+  const beta = useBeta();
+  const [classic, setClassic] = useState(false);
+  const spread = beta && !classic && !subject && path.length === 0;
   const current = findGroup(menu, path.at(-1)?.id) ?? menu;
   const resetDrag = useCallback(() => { pointer.current = null; setDrag({ x: 0, y: 0 }); }, []);
   const back = useCallback(() => {
@@ -34,7 +40,7 @@ export default function SubjectPicker() {
     resetDrag();
   }, [subject, path.length, current, back, resetDrag]);
   useEffect(() => {
-    const home = () => { setSubject(null); setPath([]); resetDrag(); };
+    const home = () => { setSubject(null); setPath([]); setClassic(false); resetDrag(); };
     window.addEventListener('johamin:home', home);
     return () => window.removeEventListener('johamin:home', home);
   }, [resetDrag]);
@@ -43,7 +49,7 @@ export default function SubjectPicker() {
   }, [subject, current]);
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (isTyping(event)) return;
+      if (isTyping(event) || spread) return; // the spread handles its own keys
       if (event.key === 'Escape' && (subject || path.length)) { event.preventDefault(); if (!event.repeat) back(); return; }
       if (!keyDirections[event.key] || subject) return;
       event.preventDefault();
@@ -51,7 +57,7 @@ export default function SubjectPicker() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [choose, back, subject, path.length]);
+  }, [choose, back, subject, path.length, spread]);
   const move = (event: PointerEvent<HTMLElement>) => {
     if (!pointer.current || pointer.current.id !== event.pointerId) return;
     setDrag({ x: event.clientX - pointer.current.x, y: event.clientY - pointer.current.y });
@@ -71,6 +77,7 @@ export default function SubjectPicker() {
   const activeDirection = distance > 18 ? directionOf(drag.x, drag.y) : null;
   const highlighted = options.find(item => item.direction === activeDirection && item.enabled);
   if (subject) return <SubjectStudy key={subject.id} deck={subject} onBack={back} />;
+  if (spread) return <DeckSpread menu={menu} onPick={deck => { playTick(); setSubject(deck); }} onClassic={() => setClassic(true)} />;
 
   return <main className="swipe-app subject-app">
     <div className="swipe-game">
