@@ -28,9 +28,10 @@ function offline(): Plugin {
       walk(outDir);
       // index.html is saved as the app shell; the large original card PNG is not used by the app.
       const precache = files.filter(file => !['sw.js', 'index.html'].includes(file) && !/^images\/.*\.png$/.test(file)).sort();
-      const hash = createHash('sha256');
-      for (const file of [...precache, 'index.html']) hash.update(file).update(readFileSync(join(outDir, file)));
       const swPath = join(outDir, 'sw.js');
+      const hash = createHash('sha256');
+      hash.update(readFileSync(swPath)); // Worker changes also need their own cache version.
+      for (const file of [...precache, 'index.html']) hash.update(file).update(readFileSync(join(outDir, file)));
       const sw = readFileSync(swPath, 'utf8')
         .replace("'__BUILD__'", JSON.stringify(`${version}-${hash.digest('hex').slice(0, 10)}`))
         .replace('const PRECACHE = [];', `const PRECACHE = ${JSON.stringify(precache.map(file => `./${file}`))};`);

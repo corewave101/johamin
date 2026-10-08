@@ -10,7 +10,15 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
     // Skip the browser's HTTP cache so a new version never stores stale files.
-    await cache.addAll([SHELL, ...PRECACHE].map(url => new Request(url, { cache: 'reload' })));
+    // Code and the shell are essential. One unavailable picture/video must not disable offline learning.
+    const essential = PRECACHE.filter(url => /\.(?:js|css|webmanifest|woff2?)$/.test(url) || url.includes('/icons/'));
+    await cache.addAll([SHELL, ...essential].map(url => new Request(url, { cache: 'reload' })));
+    await Promise.allSettled(PRECACHE.filter(url => !essential.includes(url)).map(async url => {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 20000);
+      try { const response = await fetch(new Request(url, { cache: 'reload', signal: controller.signal })); if(response.ok) await cache.put(url,response); }
+      finally { clearTimeout(timeout); }
+    }));
     await self.skipWaiting();
   })());
 });

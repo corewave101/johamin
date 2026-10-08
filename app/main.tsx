@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import AppStatus from '../components/swipe/AppStatus';
 import Backdrop from '../components/swipe/Backdrop';
 import BlessingToggle from '../components/swipe/BlessingToggle';
 import Intro from '../components/swipe/Intro';
@@ -17,7 +18,8 @@ import './blessing.css';
 const isDemo = ['#demo', '#johamin/demo'].includes(window.location.hash);
 // Offline support: the service worker keeps the app on this device after the first visit (only in the built site).
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-  window.addEventListener('load', () => { navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => { /* the site still works online */ }); });
+  // Start without waiting for every external font or video to finish loading.
+  navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => { /* the site still works online */ });
 }
 
 /** The JO intro; shown again whenever the blessing changes. */
@@ -36,6 +38,7 @@ createRoot(document.getElementById('root')!).render(<>
   <SoundToggle />
   <BlessingToggle />
   {isDemo ? <SwipeGame /> : <SubjectPicker />}
+  <AppStatus />
   <JumpscareLayer />
   <IntroHost />
   <span className="app-version">v{__APP_VERSION__}</span>
