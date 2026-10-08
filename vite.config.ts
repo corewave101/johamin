@@ -44,7 +44,7 @@ function offline(): Plugin {
 export default defineConfig({
   // GitHub Pages serves the site under /johamin/; local dev and build stay at /.
   base: process.env.PAGES_BASE ?? '/',
-  define: { __APP_VERSION__: JSON.stringify(version) },
+  define: { __APP_VERSION__: JSON.stringify(version), __CHANGELOG__: JSON.stringify(readFileSync(new URL('./CHANGELOG.md', import.meta.url), 'utf8')) },
   plugins: [react(), offline()],
   server: { host: '127.0.0.1', port: 5175, strictPort: true },
   build: { outDir: 'dist' },

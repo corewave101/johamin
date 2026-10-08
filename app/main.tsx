@@ -9,6 +9,7 @@ import JumpscareLayer from '../components/swipe/JumpscareLayer';
 import SoundToggle from '../components/swipe/SoundToggle';
 import SubjectPicker from '../components/swipe/SubjectPicker';
 import SwipeGame from '../components/swipe/SwipeGame';
+import UpdateLog from '../components/swipe/UpdateLog';
 import './globals.css';
 import './scene.css';
 import './swipe.css';
@@ -43,5 +44,5 @@ createRoot(document.getElementById('root')!).render(<>
   <AppStatus />
   <JumpscareLayer />
   <IntroHost />
-  <span className="app-version">v{__APP_VERSION__}</span>
+  <UpdateLog version={__APP_VERSION__} changelog={__CHANGELOG__} />
 </>);

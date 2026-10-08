@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 import { swipeCards, type Direction, type SwipeCard } from '../../data/swipe-cards';
-import { answerView, onAnswerViewChange } from '../../lib/answer-view';
+import { answerView, onAnswerViewChange, setAnswerView } from '../../lib/answer-view';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playResult, playSwipe } from '../../lib/sound';
 import { recordResult } from '../../lib/progress';
@@ -202,7 +202,15 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
             topic={flight.card.topic} subject={flight.card.subject} question={flight.card.question} />}
         </div>
       </section>}
-      {!finished && <button type="button" className="swipe-skip glass" onClick={() => choose('unknown')}>모름 <kbd>Space</kbd></button>}
+      {!finished && <div className="swipe-actions">
+        <button type="button" className="swipe-skip glass" onClick={() => choose('unknown')}>모름 <kbd>Space</kbd></button>
+        {/* 답 보기: all answers written out, or blurred until you pull toward one (a ring fills to confirm). */}
+        <button type="button" className={`answer-view-toggle glass ${hidden ? 'is-hidden' : ''}`} aria-pressed={hidden} onClick={() => { setPeek(null); setAnswerView(hidden ? 'open' : 'hidden'); }}
+          title={hidden ? '답이 가려져 있어요. 미는 쪽 답만 또렷해져요. 방향키·버튼은 한 번 = 미리 보기, 한 번 더나 Enter = 선택' : '답을 가리고, 밀 때만 보이게 바꿔요'}>
+          <span className="answer-view-icon" aria-hidden="true">{hidden ? '◐' : '◯'}</span>
+          <span>{hidden ? '답 가리기 켜짐' : '답 가리기'}<small>{hidden ? '밀면 보여요 · 눌러서 끄기' : '눌러서 켜기'}</small></span>
+        </button>
+      </div>}
       <section className={`swipe-feedback glass ${tone}`} aria-label="결과창" aria-live="polite" aria-atomic="true">
         {last && <>
           <div className="swipe-feedback-top"><span className="swipe-result-icon" aria-hidden="true">{last.direction === 'unknown' ? '?' : last.correct ? '✓' : '✕'}</span><strong>{verdict}</strong></div>

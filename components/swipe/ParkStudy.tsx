@@ -47,7 +47,7 @@ export default function ParkStudy({ deck, onBack }: { deck: SubjectDeck; onBack:
 
   const name = deck.fullName ?? deck.name;
   if (screen === 'vocab') return <ParkVocabulary onBack={() => setScreen('home')} escapeRef={vocabBack} />;
-  if (screen === 'choice' && game) return <SwipeGame cards={game.cards} deckId={deck.id} deckName={game.name} onBack={backFrom.choice} backLabel={game.back === 'concept' ? '← 개념' : '← 문제 풀기'} />;
+  if (screen === 'choice' && game) return <SwipeGame cards={game.cards} deckId={deck.id} deckName={game.name} onBack={backFrom.choice} backLabel={game.back === 'concept' ? '← 개념' : '← 문제'} />;
 
   if (screen === 'home') return <MenuCard cardKey="park-home" topic={name} question="무엇을 할까?" onBack={onBack} backLabel="과목·파트"
     up={{ label: '개념 정리', note: `${lessons.length}단원`, onChoose: () => setScreen('concept') }}

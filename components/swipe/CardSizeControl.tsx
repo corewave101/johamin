@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
-import { answerView, onAnswerViewChange, setAnswerView } from '../../lib/answer-view';
 import { CARD_SIZES, cardSize, onCardSizeChange, setCardSize, stepCardSize } from '../../lib/card-size';
 
-/** Bottom-right corner: card size and how answers show. Works the same under every blessing. */
+/** Bottom-right corner: make the card set smaller or bigger. Works the same under every blessing. */
 export default function CardSizeControl() {
   const [size, setSize] = useState(cardSize);
-  const [view, setView] = useState(answerView);
   const [open, setOpen] = useState(false);
   useEffect(() => onCardSizeChange(setSize), []);
-  useEffect(() => onAnswerViewChange(setView), []);
   useEffect(() => {
     if (!open) return;
     const close = (event: KeyboardEvent) => { if (event.key === 'Escape') setOpen(false); };
@@ -28,16 +25,10 @@ export default function CardSizeControl() {
       <button type="button" onClick={() => { if (size < max) stepCardSize(1); }} disabled={shown >= max} aria-label="카드 크게">+</button>
       {size !== 1 && <button type="button" className="card-size-reset" onClick={() => setCardSize(1)}>기본</button>}
      </div>
-     <div className="card-size-row" role="radiogroup" aria-label="답 보기">
-      <span className="card-size-label">답</span>
-      <button type="button" role="radio" aria-checked={view === 'open'} className="card-size-choice" onClick={() => setAnswerView('open')}>다 보이기</button>
-      <button type="button" role="radio" aria-checked={view === 'hidden'} className="card-size-choice" onClick={() => setAnswerView('hidden')}>가리고 밀기</button>
-     </div>
-     {view === 'hidden' && <p className="card-size-help">답이 흐리게 가려져요. 카드를 밀거나 방향키·답을 한 번 누르면 그 답만 또렷해지고, 링이 차면 확정이에요. 같은 방향을 한 번 더 누르거나 Enter로 골라요.</p>}
     </div>}
-    <button type="button" className="card-size-toggle glass" aria-expanded={open} onClick={() => setOpen(!open)} title="카드 크기 · 답 보기">
+    <button type="button" className="card-size-toggle glass" aria-expanded={open} onClick={() => setOpen(!open)} title="카드 크기">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3.5" width="12" height="17" rx="2.5" /><path d="M2.5 9v6M21.5 9v6" /></svg>
-      <span>{percent === 100 ? '보기' : `${percent}%`}</span>
+      <span>{percent === 100 ? '크기' : `${percent}%`}</span>
     </button>
   </div>;
 }
