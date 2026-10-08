@@ -52,12 +52,12 @@ export function withLiveCards(menu: SubjectGroup, live: LiveDecks): SubjectGroup
     const incoming = live[node.id];
     if (!incoming) return node;
     // Published scope/passage fixes must survive a stale database or device cache.
-    if (['biology-jo', 'biology-park', 'english'].includes(node.id)) {
+    if (['biology-jo', 'biology-park', 'english', 'korean-grammar', 'astronomy-jeon'].includes(node.id)) {
       const merge = <T extends { id: string }>(bundled: T[], remote: T[]) => {
         const known = new Set(bundled.map(q => q.id));
         return [...bundled, ...remote.filter(q => !known.has(q.id) && (node.id !== 'biology-jo' || !/^biology-jo-|^jo-written-/.test(q.id)))];
       };
-      const inScope = <T extends { sourceNote?: string; source?: { page: number } }>(q: T) => node.id !== 'biology-jo' || (q.source?.page ?? Number(q.sourceNote?.match(/(\d+)쪽/)?.[1] ?? 0)) <= 29;
+      const inScope = <T extends { sourceNote?: string; source?: { page: number } }>(q: T) => node.id !== 'biology-jo' || (q.source?.page ?? Number(q.sourceNote?.match(/(\d+)쪽/)?.[1] ?? 0)) <= 25;
       return { ...node, cards: merge(node.cards, incoming.cards.filter(inScope)), writtenQuestions: merge(node.writtenQuestions ?? [], incoming.written.filter(inScope)) };
     }
     return { ...node, cards: incoming.cards, writtenQuestions: incoming.written.length ? incoming.written : node.writtenQuestions };

@@ -75,7 +75,6 @@ export default function SubjectPicker() {
   return <main className="swipe-app subject-app">
     <div className="swipe-game">
       <header className="swipe-heading"><h1 className="glass" ref={heading} tabIndex={-1}>조하민<span>레츠고</span></h1></header>
-      <div className="studio-intro"><span className="edition-badge">STUDY STUDIO · 3.0</span><h2>읽고. 이해하고.<br /><em>한 장씩 완성.</em></h2><p>개념 노트 · 지문 독해 · 객관식 · 서술형</p></div>
       <section className="swipe-board" aria-label={`${current.name} 메뉴`}>
         {options.map(({ direction, node, enabled, label }) => <button type="button" key={direction} disabled={!enabled}
           className={`swipe-option swipe-option-${direction} ${enabled ? 'glass' : 'swipe-empty-option'} ${activeDirection === direction && enabled ? 'is-active' : ''}`}
@@ -87,7 +86,7 @@ export default function SubjectPicker() {
           <div className="swipe-under swipe-under-two" /><div className="swipe-under swipe-under-one" />
           <LaminatedCard key={current.id} className={`is-current ${pointer.current ? 'is-dragging' : ''}`}
             style={{ '--tx': `${drag.x}px`, '--ty': `${drag.y}px`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
-            topic={path.length ? current.name : '과목 선택'} portraitKey={current.id} question={path.length ? '어느 파트?' : '어떤 과목?'}
+            topic={path.length ? current.name : '과목 선택'} question={path.length ? '어느 파트?' : '어떤 과목?'}
             onPointerDown={event => { if (!event.isPrimary || event.button !== 0) return; pointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId); }}
             onPointerMove={move} onPointerUp={release} onPointerCancel={resetDrag} onLostPointerCapture={resetDrag}>
             {highlighted && <div className={`swipe-drag-label ${distance >= SWIPE_DISTANCE ? 'is-ready' : ''}`}>{arrows[highlighted.direction]} {highlighted.label}</div>}

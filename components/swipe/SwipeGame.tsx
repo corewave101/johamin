@@ -145,13 +145,13 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
           {game.queue.length > 1 && <div className="swipe-under swipe-under-one" />}
           <LaminatedCard key={`${card.id}-${game.attempts.length}`} className={`is-current ${pointer.current ? 'is-dragging' : ''}`}
             style={{ '--tx': `${drag.x}px`, '--ty': `${drag.y}px`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
-            topic={card.topic} subject={card.subject} question={card.question} portraitKey={deckId}
+            topic={card.topic} subject={card.subject} question={card.question}
             onPointerDown={press} onPointerMove={move} onPointerUp={release} onPointerCancel={cancel}>
             {activeDirection && <div className={`swipe-drag-label ${distance >= SWIPE_DISTANCE ? 'is-ready' : ''}`}>{arrows[activeDirection]} {card.answers[activeDirection]}</div>}
           </LaminatedCard>
           {flight && <LaminatedCard key={flight.id} aria-hidden="true" className={`swipe-flying fly-${flight.direction}`}
             style={{ '--fx': `${flight.from.x}px`, '--fy': `${flight.from.y}px`, '--fr': `${flight.from.x / 22}deg` } as CSSProperties}
-            topic={flight.card.topic} subject={flight.card.subject} question={flight.card.question} portraitKey={deckId} />}
+            topic={flight.card.topic} subject={flight.card.subject} question={flight.card.question} />}
         </div>
       </section>}
       {!finished && <button type="button" className="swipe-skip glass" onClick={() => choose('unknown')}>모름 <kbd>Space</kbd></button>}

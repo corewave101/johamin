@@ -8,11 +8,11 @@ const { subjectDecks, subjectMenu } = require('../data/swipe-subjects.ts');
 const { newGame, answerCard } = require('../lib/swipe-game.ts');
 assert.equal(subjectMenu.children.find(x => x.id === 'biology').kind, 'group');
 const ids = new Set();
-for (const [id, cards, written, maxPage] of [['biology-park', parkCards, parkWritten, 3], ['biology-jo', joCards, joWritten, 29]]) {
+for (const [id, cards, written, maxPage] of [['biology-park', parkCards, parkWritten, 3], ['biology-jo', joCards, joWritten, 25]]) {
   const deck = subjectDecks.find(x => x.id === id);
   assert.deepEqual(deck.cards.filter(q => !q.id.startsWith('park-term-')), cards);
   assert.deepEqual(deck.writtenQuestions.filter(q => !q.id.startsWith('park-term-')), written);
-  assert.ok(cards.length >= 40 && written.length >= 10);
+  assert.ok(cards.length >= (id === 'biology-jo' ? 38 : 40) && written.length >= 10);
   assert.equal(new Set(cards.map(x => x.question)).size, cards.length);
   for (const q of [...cards, ...written]) {
     assert.ok(!ids.has(q.id), q.id); ids.add(q.id);

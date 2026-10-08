@@ -22,8 +22,8 @@ const glossary = conceptsFor(park.id).find(l => l.id === 'biology-park-terms');
 assert.equal(glossary.sections.flatMap(s => s.table?.rows ?? []).length,22);
 const joContent = JSON.stringify([jo.cards,jo.writtenQuestions,conceptsFor(jo.id)]);
 assert.ok(!/선택적 스플라이싱|히스톤 아세틸화|인핸서|MyoD|Hox|iPS|세포 분화와 발생/.test(joContent));
-for (const q of [...jo.cards,...jo.writtenQuestions]) assert.ok(Number(q.sourceNote.match(/(\d+)쪽/)[1]) <= 29);
-assert.ok(jo.cards.some(q => q.question.includes('오페론')));
+for (const q of [...jo.cards,...jo.writtenQuestions]) assert.ok(Number(q.sourceNote.match(/(\d+)쪽/)[1]) <= 25);
+assert.ok(!/오페론|lac |CAP|cAMP/.test(joContent.replaceAll('오페론부터 제외', '범위 제외')));
 for (const q of [...englishCards,...englishWritten]) assert.ok(q.passage && q.passage.length > 20,q.id);
 assert.ok(englishCards.filter(q=>q.topic==='Chichén Itzá').every(q=>q.passage.includes('Chichén')));
 // Simulate a stale database: removed slides must stay removed; missing passages and terms are restored.
@@ -37,12 +37,17 @@ const merged=flatten(stale);
 assert.equal(merged.find(d=>d.id===jo.id).cards.length,jo.cards.length);
 assert.equal(merged.find(d=>d.id===park.id).cards.length,park.cards.length);
 assert.ok(merged.find(d=>d.id==='english').cards.every(q=>q.passage));
-assert.notEqual(portraitFor('korean-grammar').image,portraitFor('english').image);
-assert.equal(portraitFor('english','공통 문법·독해'),portraits.english);
-assert.notEqual(portraitFor('biology-park').image,portraitFor('astronomy-hwang').image);
-for(const [key,p] of Object.entries(portraits)) {
- assert.ok(p.remoteImage.startsWith('https://upload.wikimedia.org/') && p.source.startsWith('https://commons.wikimedia.org/'));
- const html=renderToStaticMarkup(React.createElement(Card,{topic:key,portraitKey:key,question:'관련 개념을 확인하세요'}));
- assert.ok(html.includes('인물 초상') && html.includes('Commons / PD') && html.includes('portrait-credit'));
-}
-console.log('PASS: 22 glossary choices + 22 applied essays; operon scope in concepts/practice/cache; all English passages; subject portraits and attribution.');
+const { koreanGrammarCards } = require('../data/korean-cards.ts');
+const ambiguous = koreanGrammarCards.find(q => q.id === 'korean-grammar-187');
+assert.ok(ambiguous.subject.includes('수단') && ambiguous.explanation.includes('이유'));
+assert.ok(koreanGrammarCards.find(q => q.id === 'korean-grammar-183').subject.includes('지방으로 ___'));
+const cached = flatten(withLiveCards(subjectMenu, {'korean-grammar': {cards: koreanGrammarCards.map(q=>({...q,subject:'과거의 어색한 문장'})),written:[]}}));
+assert.equal(cached.find(d=>d.id==='korean-grammar').cards[0].subject,koreanGrammarCards[0].subject);
+const { studyConcepts } = require('../data/study-concepts.ts');
+for (const deck of subjectDecks.filter(d=>d.cards.length)) assert.ok(conceptsFor(deck.id).some(l=>l.resources?.length),deck.id);
+for (const l of studyConcepts) for (const resource of l.resources ?? []) assert.ok(resource.url.startsWith('https://') && resource.publisher && resource.note);
+assert.ok(!JSON.stringify(englishCards).includes('even though = even if'));
+assert.ok(!fs.readFileSync('app/main.tsx','utf8').includes("import './studio.css'"));
+const html=renderToStaticMarkup(React.createElement(Card,{topic:'국어',question:'관련 개념을 확인하세요'}));
+assert.ok(!html.includes('portrait-credit'));
+console.log('PASS: scope/cache fixes, natural Korean conditions, official supplemental sources, English distinction and original card design.');

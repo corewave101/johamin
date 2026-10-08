@@ -7,6 +7,7 @@ export interface ConceptSection {
 export interface ConceptLesson {
   id: string; deckId: string; title: string; summary: string; sections: ConceptSection[];
   sourceNote: string; topicKeys: string[];
+  resources?: { title: string; url: string; publisher: string; note: string }[];
   examples?: { id: string; context: string; explanation: string; sourceNote: string }[];
 }
 export const studyConcepts: ConceptLesson[] = [
@@ -37,9 +38,15 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "모든 RNA가 단백질을 암호화한다고 생각하지 않는다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
-    "sourceNote": "조용민T · 유전자의 발현 PPT · 오페론까지(29쪽)",
+    "sourceNote": "조용민T · 유전자의 발현 PPT · 번역까지(25쪽), 오페론부터 제외",
     "examples": [
       {
         "id": "biology-jo-001",
@@ -86,6 +93,20 @@ export const studyConcepts: ConceptLesson[] = [
     ],
     "topicKeys": [
       "중심원리와 RNA"
+    ],
+    "resources": [
+      {
+        "title": "전사: DNA 정보를 RNA로 옮기는 과정",
+        "url": "https://www.genome.gov/genetics-glossary/Transcription",
+        "publisher": "NHGRI",
+        "note": "DNA→RNA의 정보 흐름을 확인하세요."
+      },
+      {
+        "title": "번역: mRNA와 리보솜",
+        "url": "https://www.genome.gov/genetics-glossary/Translation",
+        "publisher": "NHGRI",
+        "note": "번역의 주형과 산물을 구별하세요."
+      }
     ]
   },
   {
@@ -114,9 +135,15 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "주형 가닥과 암호화 가닥을 혼동하거나 RNA에 T를 넣지 않는다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
-    "sourceNote": "조용민T · 유전자의 발현 PPT · 오페론까지(29쪽)",
+    "sourceNote": "조용민T · 유전자의 발현 PPT · 번역까지(25쪽), 오페론부터 제외",
     "examples": [
       {
         "id": "biology-jo-008",
@@ -181,6 +208,20 @@ export const studyConcepts: ConceptLesson[] = [
     ],
     "topicKeys": [
       "전사"
+    ],
+    "resources": [
+      {
+        "title": "전사: DNA 정보를 RNA로 옮기는 과정",
+        "url": "https://www.genome.gov/genetics-glossary/Transcription",
+        "publisher": "NHGRI",
+        "note": "DNA→RNA의 정보 흐름을 확인하세요."
+      },
+      {
+        "title": "번역: mRNA와 리보솜",
+        "url": "https://www.genome.gov/genetics-glossary/Translation",
+        "publisher": "NHGRI",
+        "note": "번역의 주형과 산물을 구별하세요."
+      }
     ]
   },
   {
@@ -209,9 +250,15 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "UTR을 모두 인트론이라고 하거나 poly-A를 DNA의 T 연속 구간을 그대로 전사한 것으로 보지 않는다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
-    "sourceNote": "조용민T · 유전자의 발현 PPT · 오페론까지(29쪽)",
+    "sourceNote": "조용민T · 유전자의 발현 PPT · 번역까지(25쪽), 오페론부터 제외",
     "examples": [
       {
         "id": "biology-jo-018",
@@ -246,6 +293,20 @@ export const studyConcepts: ConceptLesson[] = [
     ],
     "topicKeys": [
       "RNA 가공"
+    ],
+    "resources": [
+      {
+        "title": "전사: DNA 정보를 RNA로 옮기는 과정",
+        "url": "https://www.genome.gov/genetics-glossary/Transcription",
+        "publisher": "NHGRI",
+        "note": "DNA→RNA의 정보 흐름을 확인하세요."
+      },
+      {
+        "title": "번역: mRNA와 리보솜",
+        "url": "https://www.genome.gov/genetics-glossary/Translation",
+        "publisher": "NHGRI",
+        "note": "번역의 주형과 산물을 구별하세요."
+      }
     ]
   },
   {
@@ -276,9 +337,15 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "종결 코돈을 읽는 전용 tRNA가 있다고 하거나 단백질 방향을 5′→3′이라고 쓰지 않는다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
-    "sourceNote": "조용민T · 유전자의 발현 PPT · 오페론까지(29쪽)",
+    "sourceNote": "조용민T · 유전자의 발현 PPT · 번역까지(25쪽), 오페론부터 제외",
     "examples": [
       {
         "id": "biology-jo-024",
@@ -379,77 +446,20 @@ export const studyConcepts: ConceptLesson[] = [
     ],
     "topicKeys": [
       "유전 암호와 번역"
-    ]
-  },
-  {
-    "id": "biology-jo-concept-5",
-    "deckId": "biology-jo",
-    "title": "유전자 발현 조절",
-    "summary": "오페론은 프로모터·작동자·구조 유전자들이 함께 작동하는 원핵생물의 유전자 발현 조절 단위다. lac 오페론의 발현은 젖당과 포도당의 유무에 따라 달라진다.",
-    "sections": [
-      {
-        "heading": "핵심 개념",
-        "points": [
-          "젖당 없음: 억제 단백질이 작동자 결합",
-          "젖당 있음: 유도물질이 억제 단백질 작용 약화",
-          "포도당 낮음: cAMP 증가·CAP 활성화",
-          "젖당 있음+포도당 없음: 최대 발현"
-        ]
-      },
-      {
-        "heading": "적용 예",
-        "paragraphs": [
-          "젖당과 포도당이 모두 있으면 억제는 풀려도 CAP 활성화가 약하므로 최대 발현이 아니다."
-        ]
-      },
-      {
-        "heading": "헷갈리기 쉬운 점",
-        "paragraphs": [
-          "젖당 유무만으로 최대 발현을 결정하지 않는다. 억제 단백질의 해제와 cAMP–CAP의 활성화를 함께 확인한다."
-        ]
-      }
     ],
-    "sourceNote": "조용민T · 유전자의 발현 PPT · 오페론까지(29쪽)",
-    "examples": [
+    "resources": [
       {
-        "id": "biology-jo-040",
-        "context": "조용민T · 자료의 오페론 구성 요소에 포함되지 않는 것은?",
-        "explanation": "조절 유전자는 억제 단백질 등을 만들지만 자료에서는 오페론 자체의 구성 요소와 구별된다.",
-        "sourceNote": "유전자의 발현 수업자료 · 27쪽"
+        "title": "전사: DNA 정보를 RNA로 옮기는 과정",
+        "url": "https://www.genome.gov/genetics-glossary/Transcription",
+        "publisher": "NHGRI",
+        "note": "DNA→RNA의 정보 흐름을 확인하세요."
       },
       {
-        "id": "biology-jo-041",
-        "context": "조용민T · 젖당이 없을 때 lac 억제 단백질은?",
-        "explanation": "억제 단백질이 작동자에 결합해 구조 유전자 전사를 억제한다.",
-        "sourceNote": "유전자의 발현 수업자료 · 28쪽"
-      },
-      {
-        "id": "biology-jo-042",
-        "context": "조용민T · 젖당 존재가 lac 억제를 풀어 주는 방식은?",
-        "explanation": "젖당에서 유래한 알로락토스가 억제 단백질에 결합하여 작동자 결합을 약화시킨다.",
-        "sourceNote": "유전자의 발현 수업자료 · 28쪽"
-      },
-      {
-        "id": "biology-jo-043",
-        "context": "조용민T · lac 오페론이 가장 강하게 발현되는 조건은?",
-        "explanation": "억제가 풀리고 높은 cAMP에 의해 CAP가 활성화되어 RNA 중합효소의 프로모터 결합을 촉진한다.",
-        "sourceNote": "유전자의 발현 수업자료 · 29쪽"
-      },
-      {
-        "id": "biology-jo-044",
-        "context": "조용민T · 포도당 농도가 낮을 때 일반적으로 cAMP와 CAP의 상태는?",
-        "explanation": "포도당 감소 시 cAMP가 증가하고 cAMP–CAP 복합체가 전사를 촉진한다.",
-        "sourceNote": "유전자의 발현 수업자료 · 29쪽"
-      },
-      {
-        "id": "biology-jo-045",
-        "context": "조용민T · 젖당과 포도당이 모두 있을 때 lac 발현은?",
-        "explanation": "젖당으로 억제가 풀려도 포도당이 있으면 CAP에 의한 활성화가 약해 발현이 낮다.",
-        "sourceNote": "유전자의 발현 수업자료 · 29쪽"
+        "title": "번역: mRNA와 리보솜",
+        "url": "https://www.genome.gov/genetics-glossary/Translation",
+        "publisher": "NHGRI",
+        "note": "번역의 주형과 산물을 구별하세요."
       }
-    ],
-    "topicKeys": [
-      "유전자 발현 조절"
     ]
   },
   {
@@ -479,6 +489,18 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "우성을 더 우수하거나 더 흔한 형질이라고 해석하지 않는다. 독립 조건 없는 교배에 확률 곱을 무조건 적용하지 않는다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
+      },
+      {
+        "heading": "유전 확률 문항의 전제",
+        "paragraphs": [
+          "Aa×Aa에서 AA:Aa:aa=1:2:1은 각 부모가 A와 a를 같은 확률로 전달하고 수정이 무작위로 일어난다는 전제의 기대 비율이다. 실제 자손 수가 적으면 관찰 비율이 반드시 1:2:1이 되는 것은 아니다. 완전 우성일 때만 이를 우성:열성 표현형 3:1로 연결한다."
+        ]
       }
     ],
     "sourceNote": "기존 저장소의 해당 파트 수업자료 기반 문항·해설을 재구성",
@@ -503,8 +525,8 @@ export const studyConcepts: ConceptLesson[] = [
       },
       {
         "id": "biology-park-004",
-        "context": "박상영T · Aa × Aa의 자손에서 유전자형 비율은?",
-        "explanation": "각 부모가 A와 a 생식세포를 같은 확률로 만들어 AA 1/4, Aa 1/2, aa 1/4이다.",
+        "context": "박상영T · 각 대립유전자가 같은 확률로 전달될 때 Aa × Aa 자손의 기대 유전자형 비율은?",
+        "explanation": "각 부모가 A와 a를 같은 확률로 전달하고 무작위로 수정된다고 가정하면 AA 1/4, Aa 1/2, aa 1/4이다. 이는 기대 확률이며, 적은 수의 실제 자손이 반드시 같은 비율로 나오는 것은 아니다.",
         "sourceNote": "박상영T 필기 · 1쪽"
       },
       {
@@ -558,6 +580,14 @@ export const studyConcepts: ConceptLesson[] = [
     ],
     "topicKeys": [
       "유전의 기본 원리"
+    ],
+    "resources": [
+      {
+        "title": "대립유전자와 유전자 좌위",
+        "url": "https://www.genome.gov/genetics-glossary/Allele",
+        "publisher": "NHGRI",
+        "note": "같은 좌위에서 DNA 서열의 형태가 달라질 수 있다는 점을 확인하세요."
+      }
     ]
   },
   {
@@ -906,6 +936,18 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "사례 이름만 외우지 말고 무엇을 변화·표시·브랜드화했는지 판단한다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
+      },
+      {
+        "heading": "선택지 판단 기준",
+        "paragraphs": [
+          "상품의 원산지와 그 지역에서 비롯된 특성이 핵심이면 지리적 표시를 먼저 검토한다. 도시 전체의 이미지를 만드는 전략과는 구별한다. 단순히 지역 이름이 붙어 있다는 이유만으로 지리적 표시라고 판단하지 않는다."
+        ]
       }
     ],
     "sourceNote": "기존 저장소의 해당 파트 수업자료 기반 문항·해설을 재구성",
@@ -985,6 +1027,14 @@ export const studyConcepts: ConceptLesson[] = [
     ],
     "topicKeys": [
       "세계화와 지역화"
+    ],
+    "resources": [
+      {
+        "title": "지리적 표시의 뜻과 요건",
+        "url": "https://www.wipo.int/en/web/geographical-indications/faq_geographicalindications",
+        "publisher": "WIPO",
+        "note": "상품의 특성과 지리적 원산지 사이의 연결을 확인하세요. 국내 개별 등록 여부는 수업자료를 기준으로 구별하세요."
+      }
     ]
   },
   {
@@ -1493,6 +1543,14 @@ export const studyConcepts: ConceptLesson[] = [
     ],
     "topicKeys": [
       "평화와 행위 주체"
+    ],
+    "resources": [
+      {
+        "title": "세계인권선언 원문",
+        "url": "https://www.un.org/en/about-us/universal-declaration-of-human-rights",
+        "publisher": "United Nations",
+        "note": "인권의 보편성과 평등을 다루는 1·2조, 교육권을 다루는 26조를 확인하세요."
+      }
     ]
   },
   {
@@ -2576,6 +2634,18 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "태양을 타원의 중심에 두거나 거리와 속력을 같은 비례로 놓지 않는다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
+      },
+      {
+        "heading": "문항 조건 확인",
+        "paragraphs": [
+          "가까울수록 빠르다는 설명은 같은 행성이 같은 타원 궤도를 도는 경우의 비교다. 서로 다른 궤도나 다른 중심 천체를 도는 물체는 거리 하나만 보고 속력이나 주기를 비교하면 안 된다."
+        ]
       }
     ],
     "sourceNote": "기존 저장소의 해당 파트 수업자료 기반 문항·해설을 재구성",
@@ -2631,6 +2701,14 @@ export const studyConcepts: ConceptLesson[] = [
     ],
     "topicKeys": [
       "궤도와 속력"
+    ],
+    "resources": [
+      {
+        "title": "케플러 법칙과 궤도",
+        "url": "https://science.nasa.gov/solar-system/orbits-and-keplers-laws/",
+        "publisher": "NASA",
+        "note": "타원 궤도, 면적 속도, 공전 주기의 관계를 구별하세요."
+      }
     ]
   },
   {
@@ -3693,6 +3771,12 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "주망원경뿐 아니라 파인더로도 태양을 직접 보지 않는다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
     "sourceNote": "기존 저장소의 해당 파트 수업자료 기반 문항·해설을 재구성",
@@ -3757,6 +3841,14 @@ export const studyConcepts: ConceptLesson[] = [
       "관측 준비",
       "구조",
       "안전"
+    ],
+    "resources": [
+      {
+        "title": "망원경의 원리와 배율 활동 PDF",
+        "url": "https://www.nasa.gov/wp-content/uploads/2015/01/yoss_act_16.pdf",
+        "publisher": "NASA",
+        "note": "대물렌즈와 접안렌즈의 역할, 초점거리와 배율의 관계를 확인하세요. EM-200의 조립 절차는 수업자료를 따르세요."
+      }
     ]
   },
   {
@@ -4456,11 +4548,25 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "Chichén Itzá was a major city of the Maya Empire from A.D. 750 to 1200. Made of stepped pyramids, temples, and other stone structures, the ancient city is now one of Mexico’s most visited tourist destinations. The largest building in Chichén Itzá is the Temple of Kukulkan ―a pyramid with 365 steps. A kind of calendar, the temple shows the change of seasons. On the spring and autumn equinoxes each year, a shadow falls on the pyramid in the shape of a snake. As the sun sets, this shadowy snake goes down the steps to eventually join a carved snake head on the pyramid’s side. The Mayans constructed the pyramids with carved stone. Amazingly, they worked without wheels or metal tools. To build a pyramid, Mayan workers created a base and added smaller and smaller levels as the structure rose. Building the pyramids required many workers. Some pyramids took hundreds of years to complete. Chichén Itzá was both an advanced city center and a religious site. Spanish records show that the Mayans made human sacrifices to a rain god here. Archaeologists have found bones, jewelry, and other objects that people wore when they were sacrificed. Experts also know that the Mayans were knowledgeable astronomers. They used the tops of the pyramids to view Venus and other planets."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
     "sourceNote": "학습지1 · 1쪽 / 학습지1 변형문제 / 건축물 추가 변형",
     "topicKeys": [
       "Chichén Itzá"
+    ],
+    "resources": [
+      {
+        "title": "치첸이트사 유적 소개",
+        "url": "https://whc.unesco.org/en/list/483/",
+        "publisher": "UNESCO World Heritage Centre",
+        "note": "유적 배경을 읽는 참고 자료입니다. 문제의 정답은 수업 지문에서 찾으세요."
+      }
     ]
   },
   {
@@ -4978,11 +5084,25 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "가정법 과거의 과거형을 무조건 과거 시간으로 번역하지 않는다. 주절 have와 수동태 been을 빠뜨리지 않는다."
         ]
+      },
+      {
+        "heading": "시간을 먼저 구별하기",
+        "paragraphs": [
+          "If Mina had left earlier, she would have arrived on time.은 과거에 출발 시각을 바꾸었을 경우의 과거 결과를 상상한다. If Mina had left earlier, she would be here now.는 과거 조건이 현재 결과에 영향을 주는 혼합 가정법이다. 동사 모양만 외우지 말고 earlier와 now 같은 시간 단서를 확인한다."
+        ]
       }
     ],
     "sourceNote": "학습지3 · 1·4쪽 / Bartleby 변형문제",
     "topicKeys": [
       "가정법과 시제"
+    ],
+    "resources": [
+      {
+        "title": "가정법 과거완료와 혼합 가정법",
+        "url": "https://learnenglish.britishcouncil.org/free-resources/grammar/b1-b2/conditionals-third-mixed",
+        "publisher": "British Council",
+        "note": "조건절과 주절이 가리키는 시간을 구별하세요."
+      }
     ]
   },
   {
@@ -5215,11 +5335,25 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "철자가 같은 -ed와 -ing도 역할이 다르다. 긴 선지의 익숙한 단어보다 주장 강도와 근거를 확인한다."
         ]
+      },
+      {
+        "heading": "사실과 가정의 양보 구별",
+        "paragraphs": [
+          "Even though it was raining, we went out.에서는 비가 왔다는 사실을 인정한다. Even if it rains, we will go out.에서는 비가 올지 여부와 관계없이 외출하겠다는 뜻이다. 두 표현을 무조건 같은 뜻으로 바꿔 쓰지 않는다."
+        ]
       }
     ],
     "sourceNote": "영어 학습지1–4와 제공된 모든 변형 자료",
     "topicKeys": [
       "공통 문법·독해"
+    ],
+    "resources": [
+      {
+        "title": "even though와 even if 설명 PDF",
+        "url": "https://downloads.bbc.co.uk/learningenglish/eiam/unit-1/181026_even_though_vs_even_if.pdf",
+        "publisher": "BBC Learning English",
+        "note": "사실의 양보와 가정 조건의 양보를 비교하세요."
+      }
     ]
   },
   {
@@ -5280,85 +5414,105 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "지붕(집+웅), 이파리(잎+아리), 노름(놀-+-음)처럼 형태소가 보이더라도 원형을 밝히지 않고 소리대로 적는 말이 있다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
     "sourceNote": "우리말 바로 쓰기 학습지(교과서 17~30쪽) 기반",
     "examples": [
       {
         "id": "korean-grammar-001",
-        "context": "한글 맞춤법 제1항 — 맞춤법이 적는 대상은?",
+        "context": "한글 맞춤법 제1항 · 한글 맞춤법의 표기 대상은?",
         "explanation": "제1항 \"한글 맞춤법은 표준어를 소리대로 적되, 어법에 맞도록 함을 원칙으로 한다.\" 적는 대상은 표준어이고 방언은 제외된다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-002",
-        "context": "표준어를 소리대로 적는다 — 이 원칙이 따르는 것은?",
+        "context": "표준어를 소리대로 적는다 · 이 원칙이 따르는 것은?",
         "explanation": "소리대로 적는 것은 발음 형태대로 적는 표음주의로, 표음 문자인 한글의 특성을 살려 쓰기의 편의를 도모한다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-003",
-        "context": "어법에 맞도록 적는다 — 이 원칙의 목적은?",
+        "context": "어법에 맞도록 적는다 · 이 원칙의 목적은?",
         "explanation": "어법에 맞도록 적는 것은 각 형태소의 본 모양을 밝혀 적어 단어의 뜻을 쉽게 파악하게 하려는 것(표의주의·형태주의)이다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-004",
-        "context": "넓고 [널꼬] · 찾으래 [차즈래] · 얼음 [어름] — 이렇게 적는 원리는?",
+        "context": "넓고 [널꼬] · 찾으래 [차즈래] · 얼음 [어름] · 이렇게 적는 원리는?",
         "explanation": "소리 나는 대로 적으면 뜻을 파악하기 어려워 어간 형태를 고정해 원형을 밝혀 적는다. 어법에 맞도록 적는 원리다.",
         "sourceNote": "우리말 바로 쓰기 · 22쪽"
       },
       {
         "id": "korean-grammar-005",
-        "context": "거위 · 바다 · 구름 · 설거지 — 이렇게 적는 원리는?",
+        "context": "거위 · 바다 · 구름 · 설거지 · 이렇게 적는 원리는?",
         "explanation": "형태소가 나뉘지 않거나 원형과 상관없이 발음대로 적는 단어로, 소리대로 적는 원리를 따른다.",
         "sourceNote": "우리말 바로 쓰기 · 22쪽"
       },
       {
         "id": "korean-grammar-006",
-        "context": "믿음 · 지붕 · 낚시 · 놓다 · 늦잠 — 표기 원칙이 다른 하나는?",
+        "context": "믿음 · 지붕 · 낚시 · 놓다 · 늦잠 · 표기 원칙이 다른 하나는?",
         "explanation": "지붕은 집+웅이지만 원형을 밝히지 않고 소리대로 적는다. 믿음·낚시·놓다·늦잠은 원형을 밝혀 어법에 맞도록 적었다.",
         "sourceNote": "우리말 바로 쓰기 · 24쪽"
       },
       {
         "id": "korean-grammar-007",
-        "context": "빛 · 날다 · 오리 · 하늘 · 푸르다 — 적용된 원리가 다른 하나는?",
+        "context": "빛 · 날다 · 오리 · 하늘 · 푸르다 · 적용된 원리가 다른 하나는?",
         "explanation": "빛은 [빋]·[비치]·[빈만]처럼 환경에 따라 달리 발음되지만 형태를 고정해 어법에 맞도록 적는다. 나머지는 소리대로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 28쪽"
       },
       {
         "id": "korean-grammar-008",
-        "context": "빛 → [빋] [비치] [빈만] — 소리대로만 적으면 생기는 문제는?",
+        "context": "빛 → [빋] [비치] [빈만] · 소리대로만 적으면 생기는 문제는?",
         "explanation": "소리대로만 적으면 한 단어가 환경에 따라 여러 형태로 적혀 뜻을 파악하기 어렵다. 그래서 어법에 맞도록 적는 원칙을 붙였다.",
         "sourceNote": "우리말 바로 쓰기 · 24쪽"
       },
       {
         "id": "korean-grammar-009",
-        "context": "꽃이다? 꼬치다? 꼿이다? — 맞춤법을 정한 이유는?",
+        "context": "꽃이다? 꼬치다? 꼿이다? · 맞춤법을 정한 까닭은?",
         "explanation": "사람마다 다르게 적으면 의사소통이 제대로 되지 않으므로, 우리말을 한글로 적을 때 지킬 약속으로 한글 맞춤법을 정했다.",
         "sourceNote": "우리말 바로 쓰기 · 28쪽"
       },
       {
         "id": "korean-grammar-010",
-        "context": "한글 맞춤법 제2항 — 띄어쓰기의 기본 단위는?",
+        "context": "한글 맞춤법 제2항 · 띄어쓰기의 기본 단위는?",
         "explanation": "제2항 \"문장의 각 단어는 띄어 씀을 원칙으로 한다.\" 독립적으로 쓰이는 말의 단위인 단어를 기준으로 띄어 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-011",
-        "context": "형태소 원형을 밝혀 적기 — 이 방식에 대한 설명으로 옳지 않은 것은?",
+        "context": "형태소 원형을 밝혀 적기 · 이 방식에 대한 설명으로 옳지 않은 것은?",
         "explanation": "형태소의 원형을 밝혀 적으면 뜻을 얼른 파악하기 쉽다. 뜻을 파악하기 어렵다는 것은 반대 설명이다.",
         "sourceNote": "우리말 바로 쓰기 · 24쪽"
       },
       {
         "id": "korean-grammar-012",
-        "context": "앉고 · 앉으니 · 앉아서 — 이렇게 적는 까닭은?",
+        "context": "앉고 · 앉으니 · 앉아서 · 이렇게 적는 까닭은?",
         "explanation": "[안꼬], [안즈니], [안자서]로 소리 나도 어간 앉-의 형태를 밝혀 적는다. 어법에 맞도록 적는 원리다.",
         "sourceNote": "우리말 바로 쓰기 · 28쪽"
       }
     ],
     "topicKeys": [
       "맞춤법의 원리"
+    ],
+    "resources": [
+      {
+        "title": "한글 맞춤법·표준어 규정·외래어 표기법",
+        "url": "https://korean.go.kr/kornorms/m/m_regltn.do",
+        "publisher": "국립국어원",
+        "note": "해당 문항의 규정 번호와 해설을 함께 찾아 읽으세요."
+      },
+      {
+        "title": "어문 규정집 내려받기",
+        "url": "https://korean.go.kr/kornorms/refr/refrList.do",
+        "publisher": "국립국어원",
+        "note": "규정과 해설 PDF를 내려받을 수 있는 공식 자료 목록입니다."
+      }
     ]
   },
   {
@@ -5419,103 +5573,123 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "두음 법칙은 단어의 첫머리에서만 적용된다. 구개음화는 소리만 바뀌고 표기는 원형(ㄷ·ㅌ)을 지킨다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
     "sourceNote": "우리말 바로 쓰기 학습지(교과서 17~30쪽) 기반",
     "examples": [
       {
         "id": "korean-grammar-013",
-        "context": "소쩍새 · 어깨 · 오빠 · 기쁘다 — 된소리로 적는 까닭은?",
+        "context": "소쩍새 · 어깨 · 오빠 · 기쁘다 · 된소리로 적는 까닭은?",
         "explanation": "제5항: 한 단어 안에서 뚜렷한 까닭 없이 나는 된소리는 된소리로 적는다. 두 모음 사이에서 나는 된소리가 그 하나다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-014",
-        "context": "산뜻하다 · 잔뜩 · 살짝 · 엉뚱하다 — 된소리로 적는 까닭은?",
+        "context": "산뜻하다 · 잔뜩 · 살짝 · 엉뚱하다 · 된소리로 적는 까닭은?",
         "explanation": "제5항 2: ㄴ·ㄹ·ㅁ·ㅇ 받침 뒤에서 뚜렷한 까닭 없이 나는 된소리는 다음 음절 첫소리를 된소리로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-015",
-        "context": "깍두기 · 국수 · 접시 · 싹둑 — 된소리로 적지 않는 까닭은?",
+        "context": "깍두기 · 국수 · 접시 · 싹둑 · 된소리로 적지 않는 까닭은?",
         "explanation": "ㄱ·ㅂ 받침 뒤에서는 필연적으로 된소리가 나므로 일반적 음운 변동으로 설명된다. 그래서 원래 형태대로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 22쪽"
       },
       {
         "id": "korean-grammar-016",
-        "context": "딱딱 · 쌉쌀하다 · 씁쓸하다 — ㄱ·ㅂ 받침 뒤인데 된소리로 적는 까닭은?",
+        "context": "딱딱 · 쌉쌀하다 · 씁쓸하다 · ㄱ·ㅂ 받침 뒤인데 된소리로 적는 까닭은?",
         "explanation": "제5항 다만: ㄱ·ㅂ 받침 뒤 된소리는 같은 음절이나 비슷한 음절이 겹쳐 나는 경우가 아니면 된소리로 적지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 25쪽"
       },
       {
         "id": "korean-grammar-017",
-        "context": "큰집에서 음식을 ___ 먹었다. — 빈칸의 바른 표기는?",
+        "context": "큰집에서 음식을 ___ 먹었다. · 빈칸의 바른 표기는?",
         "explanation": "잔뜩은 ㄴ 받침 뒤에서 뚜렷한 까닭 없이 된소리가 나므로 된소리로 적는다(제5항).",
         "sourceNote": "우리말 바로 쓰기 · 25쪽"
       },
       {
         "id": "korean-grammar-018",
-        "context": "쉬는 시간에는 교실이 ___하다. — 빈칸의 바른 표기는?",
+        "context": "쉬는 시간에는 교실이 ___하다. · 빈칸의 바른 표기는?",
         "explanation": "ㄱ 받침 뒤에서 필연적으로 나는 된소리는 된소리로 적지 않는다. 그래서 시끌벅적으로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 25쪽"
       },
       {
         "id": "korean-grammar-019",
-        "context": "올 겨울에 담근 ___가 잘 익었다. — 빈칸의 바른 표기는?",
+        "context": "이번 겨울에 담근 ___가 잘 익었다. · 빈칸의 바른 표기는?",
         "explanation": "[깍뚜기]로 소리 나지만 ㄱ 받침 뒤 필연적 된소리이므로 깍두기로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 25쪽"
       },
       {
         "id": "korean-grammar-020",
-        "context": "날씨가 더워 머리를 ___ 잘랐다. — 빈칸의 바른 표기는?",
+        "context": "날씨가 더워 머리를 ___ 잘랐다. · 빈칸의 바른 표기는?",
         "explanation": "싹둑[싹뚝]은 ㄱ 받침 뒤 필연적 된소리라 된소리로 적지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 22쪽"
       },
       {
         "id": "korean-grammar-021",
-        "context": "맏이 · 해돋이 · 굳이 · 같이 — [마지] [해도지]로 나도 ㄷ·ㅌ으로 적는 까닭은?",
+        "context": "맏이 · 해돋이 · 굳이 · 같이 · 구개음화가 일어나도 원형을 적는 까닭은?",
         "explanation": "제6항(구개음화): ㄷ·ㅌ 받침 뒤에 종속적 관계의 -이(-)나 -히-가 올 때 ㅈ·ㅊ으로 소리 나도 ㄷ·ㅌ으로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-022",
-        "context": "닫히다 [다치다] · 붙이다 [부치다] — 이 발음에 나타난 음운 현상은?",
+        "context": "닫히다 [다치다] · 붙이다 [부치다] · 이 발음에 나타난 음운 현상은?",
         "explanation": "ㄷ·ㅌ이 -이(-)·-히-와 만나 ㅈ·ㅊ으로 소리 나는 현상은 구개음화다. 표기는 원형대로 ㄷ·ㅌ으로 한다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-023",
-        "context": "제6항의 ‘종속적 관계’ — 이것이 뜻하는 결합은?",
+        "context": "제6항의 ‘종속적 관계’ · 이것이 뜻하는 결합은?",
         "explanation": "종속적 관계란 체언·어근·용언 어간 같은 실질 형태소에 조사·접미사·어미 같은 형식 형태소가 결합하는 관계다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-024",
-        "context": "女子 (단어 첫머리) — 두음 법칙에 맞는 표기는?",
+        "context": "女子 (단어 첫머리) · 두음 법칙에 맞는 표기는?",
         "explanation": "제10항: 한자음 녀·뇨·뉴·니가 단어 첫머리에 올 때는 두음 법칙에 따라 여·요·유·이로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-025",
-        "context": "歷史 (단어 첫머리) — 두음 법칙에 맞는 표기는?",
+        "context": "歷史 (단어 첫머리) · 두음 법칙에 맞는 표기는?",
         "explanation": "제11항: 한자음 랴·려·례·료·류·리가 단어 첫머리에 올 때는 야·여·예·요·유·이로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-026",
-        "context": "樂園 (단어 첫머리) — 두음 법칙에 맞는 표기는?",
+        "context": "樂園 (단어 첫머리) · 두음 법칙에 맞는 표기는?",
         "explanation": "제12항: 한자음 라·래·로·뢰·루·르가 단어 첫머리에 올 때는 나·내·노·뇌·누·느로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-027",
-        "context": "여자 · 굳이 · 어깨 · 닫히다 · 똑똑하다 — 두음 법칙이 적용된 단어는?",
+        "context": "여자 · 굳이 · 어깨 · 닫히다 · 똑똑하다 · 두음 법칙이 적용된 단어는?",
         "explanation": "여자(女子)는 녀자의 녀가 첫머리에서 여로 바뀐 두음 법칙 예다. 굳이·닫히다는 구개음화, 어깨는 된소리 표기다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       }
     ],
     "topicKeys": [
       "소리에 관한 것"
+    ],
+    "resources": [
+      {
+        "title": "한글 맞춤법·표준어 규정·외래어 표기법",
+        "url": "https://korean.go.kr/kornorms/m/m_regltn.do",
+        "publisher": "국립국어원",
+        "note": "해당 문항의 규정 번호와 해설을 함께 찾아 읽으세요."
+      },
+      {
+        "title": "어문 규정집 내려받기",
+        "url": "https://korean.go.kr/kornorms/refr/refrList.do",
+        "publisher": "국립국어원",
+        "note": "규정과 해설 PDF를 내려받을 수 있는 공식 자료 목록입니다."
+      }
     ]
   },
   {
@@ -5549,211 +5723,231 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "마중은 어간 뜻과 멀어져서가 아니라 -이·-음 이외의 접미사 -웅이 붙어서 원형을 밝히지 않는다. 목거리(병)와 목걸이(장식)를 구별한다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
     "sourceNote": "우리말 바로 쓰기 학습지(교과서 17~30쪽) 기반",
     "examples": [
       {
         "id": "korean-grammar-028",
-        "context": "“밥 먹었니?” “___, 아직이요.” — 빈칸의 바른 표기는?",
+        "context": "“밥 먹었니?” “___, 아직 안 먹었어요.” · 빈칸의 바른 표기는?",
         "explanation": "묻는 말에 부정으로 대답하는 감탄사는 아니요(준말 아뇨)다. 아니오는 아니다의 활용형으로 서술어로 쓰인다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-029",
-        "context": "이것은 책이오. / 그것은 책이 아니오. — 이 문장의 ‘-오’는?",
+        "context": "이것은 책이오. / 그것은 책이 아니오. · 이 문장의 ‘-오’는?",
         "explanation": "제15항 붙임: 서술어의 종결 어미 ‘-오’는 단어의 일부라 생략할 수 없다. 독립성 있는 조사 ‘요’는 생략할 수 있다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-030",
-        "context": "이것은 책이요, 그것은 붓이다. — 여기의 ‘-요’는?",
+        "context": "이것은 책이요, 그것은 붓이다. · 여기의 ‘-요’는?",
         "explanation": "‘이다’, ‘아니다’의 어간 뒤에 붙어 다음 말과 이어 주는 연결 어미는 ‘-요’로 적고 생략할 수 없다.",
         "sourceNote": "우리말 바로 쓰기 · 17쪽"
       },
       {
         "id": "korean-grammar-031",
-        "context": "길이 · 믿음 · 같이 · 밝히 — 이렇게 적는 규정은?",
+        "context": "높이 · 믿음 · 같이 · 굳이 · 이렇게 적는 규정은?",
         "explanation": "제19항: 어간에 -이·-음/-ㅁ이 붙어 명사가 되거나 -이·-히가 붙어 부사가 된 말은 어간의 원형을 밝혀 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-032",
-        "context": "귀머거리 · 너머 · 마감 · 무덤 — 어간 원형을 밝히지 않는 까닭은?",
+        "context": "귀머거리 · 너머 · 마감 · 무덤 · 어간 원형을 밝히지 않는 까닭은?",
         "explanation": "제19항 붙임: 어간에 -이·-음 이외의 모음으로 시작된 접미사가 붙어 다른 품사로 바뀐 것은 원형을 밝혀 적지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-033",
-        "context": "마주 · 도로 · 비로소 · 자주 — 원형을 밝히지 않은 이 말들의 품사는?",
+        "context": "마주 · 도로 · 비로소 · 자주 · 원형을 밝히지 않은 이 말들의 품사는?",
         "explanation": "맞+우, 돌+오, 비롯+오, 잦+우처럼 -이·-음 외 모음 접미사가 붙어 부사로 바뀐 것은 원형을 밝혀 적지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-034",
-        "context": "~나마 · ~부터 · ~조차 — 원형을 밝히지 않는 까닭은?",
+        "context": "~나마 · ~부터 · ~조차 · 원형을 밝히지 않는 까닭은?",
         "explanation": "용언에 접미사가 붙어 조사로 바뀌어 뜻이 달라진 것은 원형을 밝혀 적지 않는다(붙다→부터, 좇다→조차).",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-035",
-        "context": "산 너머에 있는 마을 (넘- + -어) — ‘넘어’로 적지 않는 까닭은?",
+        "context": "산 너머에 있는 마을 (넘- + -어) · ‘넘어’로 적지 않는 까닭은?",
         "explanation": "너머는 넘-에 -이·-음 이외의 모음 접미사 -어가 붙어 명사가 되었으므로 원형을 밝히지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 26쪽"
       },
       {
         "id": "korean-grammar-036",
-        "context": "먹이 · 높이 · 익히 · 너머 — 어간 원형을 밝혀 적지 않은 것은?",
+        "context": "먹이 · 높이 · 익히 · 너머 · 어간 원형을 밝혀 적지 않은 것은?",
         "explanation": "먹이·높이·익히는 -이·-히가 붙어 원형을 밝혔다. 너머는 -이·-음 외 접미사가 붙어 소리대로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 26쪽"
       },
       {
         "id": "korean-grammar-037",
-        "context": "믿음 · 웃음 · 무덤 · 굳이 · 익히 — 형태소 원형을 밝혀 적지 않은 것은?",
+        "context": "믿음 · 웃음 · 무덤 · 굳이 · 익히 · 형태소 원형을 밝혀 적지 않은 것은?",
         "explanation": "무덤은 묻-에 -엄이 붙은 말로, -이·-음 외 접미사가 붙었으므로 원형을 밝혀 적지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-038",
-        "context": "마중 (맞- + -웅) — 원형을 밝혀 적지 않는 까닭은?",
+        "context": "마중 (맞- + -웅) · 원형을 밝혀 적지 않는 까닭은?",
         "explanation": "마중은 맞-에 -이·-음 이외의 모음 접미사 -웅이 붙은 것이다. 어간 뜻과 멀어졌기 때문이 아니다.",
         "sourceNote": "우리말 바로 쓰기 · 29쪽"
       },
       {
         "id": "korean-grammar-039",
-        "context": "목거리 (목이 붓고 아픈 병) — ‘목걸이’와 달리 소리대로 적는 까닭은?",
+        "context": "목거리 (목이 붓고 아픈 병) · ‘목걸이’와 달리 소리대로 적는 까닭은?",
         "explanation": "제19항 다만: -이·-음이 붙어 명사가 되었더라도 그 어간의 뜻과 멀어진 것은 원형을 밝혀 적지 않는다(목거리, 노름).",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-040",
-        "context": "노름판이 벌어졌다. / 즐거운 놀음 — ‘노름’을 소리대로 적는 까닭은?",
+        "context": "노름판이 벌어졌다. / 즐거운 놀음 · ‘노름’을 소리대로 적는 까닭은?",
         "explanation": "노름(도박)은 놀-+-음이지만 본뜻에서 멀어져 소리대로 적는다. 놀음(놀이)은 원형을 밝혀 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-041",
-        "context": "곳곳이 · 바둑이 · 삼발이 · 절뚝발이 — 이렇게 적는 규정은?",
+        "context": "곳곳이 · 바둑이 · 삼발이 · 절뚝발이 · 이렇게 적는 규정은?",
         "explanation": "제20항: 명사 뒤에 -이가 붙어서 된 말은 그 명사의 원형을 밝혀 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-042",
-        "context": "꼬락서니 · 모가지 · 바가지 · 이파리 — 명사 원형을 밝히지 않는 까닭은?",
+        "context": "꼬락서니 · 모가지 · 바가지 · 이파리 · 명사 원형을 밝히지 않는 까닭은?",
         "explanation": "제20항 붙임: -이 이외의 모음으로 시작된 접미사가 붙어서 된 말은 명사의 원형을 밝혀 적지 않는다(꼴+악서니, 목+아지).",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-043",
-        "context": "꼴 + -악서니 — 바른 표기는?",
+        "context": "꼴 + -악서니 · 바른 표기는?",
         "explanation": "-이 이외의 모음 접미사 -악서니가 붙었으므로 명사 꼴의 원형을 밝히지 않고 꼬락서니로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 29쪽"
       },
       {
         "id": "korean-grammar-044",
-        "context": "값지다 · 넋두리 · 빛깔 · 낚시 · 늙정이 — 이렇게 적는 규정은?",
+        "context": "값지다 · 넋두리 · 빛깔 · 낚시 · 늙정이 · 이렇게 적는 규정은?",
         "explanation": "제21항: 명사나 용언 어간 뒤에 자음으로 시작된 접미사가 붙어서 된 말은 그 명사나 어간의 원형을 밝혀 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-045",
-        "context": "넓적하다 vs 널따랗다 — ‘널따랗다’를 소리대로 적는 까닭은?",
+        "context": "넓적하다 vs 널따랗다 · ‘널따랗다’를 소리대로 적는 까닭은?",
         "explanation": "제21항 다만: 겹받침의 끝소리가 드러나지 않으면 소리대로 적는다. 넓적하다는 ㅂ이 드러나 원형을 밝혀 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-046",
-        "context": "곰곰이 · 더욱이 · 생긋이 · 일찍이 — 이 말들이 만들어진 방식은?",
+        "context": "곰곰이 · 더욱이 · 생긋이 · 일찍이 · 이 말들이 만들어진 방식은?",
         "explanation": "제25항 2: 부사에 -이가 붙어서 역시 부사가 되는 경우에는 그 부사의 원형을 밝혀 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-047",
-        "context": "급히 · 꾸준히 · 딱히 · 깨끗이 — 이 말들이 만들어진 방식은?",
+        "context": "급히 · 꾸준히 · 딱히 · 깨끗이 · 이 말들이 만들어진 방식은?",
         "explanation": "제25항 1: -하다가 붙는 어근에 -히나 -이가 붙어서 부사가 되면 그 어근의 원형을 밝혀 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-048",
-        "context": "꽃잎 · 물난리 · 헛웃음 · 빗나가다 — 원형을 밝혀 적는 까닭은?",
+        "context": "꽃잎 · 물난리 · 헛웃음 · 빗나가다 · 원형을 밝혀 적는 까닭은?",
         "explanation": "제27항: 둘 이상의 단어가 어울리거나 접두사가 붙어서 이루어진 말은 각각 그 원형을 밝혀 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-049",
-        "context": "골병 · 며칠 · 오라비 · 부리나케 — 원형을 밝히지 않는 까닭은?",
+        "context": "골병 · 며칠 · 오라비 · 부리나케 · 원형을 밝히지 않는 까닭은?",
         "explanation": "제27항 붙임 2: 어원이 분명하지 아니한 것은 원형을 밝혀 적지 아니한다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-050",
-        "context": "몇 월 며칠 / 오늘이 ___이지? — 바른 표기는?",
+        "context": "몇 월 며칠 / 오늘이 ___이지? · 바른 표기는?",
         "explanation": "며칠은 어원이 분명하지 않아 원형을 밝히지 않고 소리대로 적는다. 몇일은 틀린 표기다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-051",
-        "context": "반짇고리 · 사흗날 · 섣달 · 숟가락 — ㄷ으로 적는 까닭은?",
+        "context": "반짇고리 · 사흗날 · 섣달 · 숟가락 · ㄷ으로 적는 까닭은?",
         "explanation": "제29항: 끝소리가 ㄹ인 말과 딴 말이 어울릴 때 ㄹ 소리가 ㄷ 소리로 나는 것은 ㄷ으로 적는다(바느질, 사흘, 설, 술).",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-052",
-        "context": "베풀- + -ㅁ — 바른 명사형은?",
+        "context": "베풀- + -ㅁ · 바른 명사형은?",
         "explanation": "용언의 어간과 어미는 구별하여 적는다. 어간 베풀-에 명사형 어미 -ㅁ이 붙으면 베풂이다.",
         "sourceNote": "우리말 바로 쓰기 · 22쪽"
       },
       {
         "id": "korean-grammar-053",
-        "context": "넓- + -으니 — 바른 표기는?",
+        "context": "넓- + -으니 · 바른 표기는?",
         "explanation": "용언의 어간과 어미는 구별해 적으므로 어간 넓-에 어미 -으니를 붙여 넓으니로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 25쪽"
       },
       {
         "id": "korean-grammar-054",
-        "context": "늘어나다 vs 쓰러지다 — ‘쓰러지다’를 소리대로 적는 까닭은?",
+        "context": "늘어나다 vs 쓰러지다 · ‘쓰러지다’를 소리대로 적는 까닭은?",
         "explanation": "두 용언이 어울려 한 용언이 될 때 앞말의 본뜻이 유지되면 원형을 밝히고(늘어나다), 멀어지면 소리대로 적는다(쓰러지다).",
         "sourceNote": "우리말 바로 쓰기 · 22쪽"
       },
       {
         "id": "korean-grammar-055",
-        "context": "사라지다 · 드러나다 · 쓰러지다 — 공통 표기 원리는?",
+        "context": "사라지다 · 드러나다 · 쓰러지다 · 공통 표기 원리는?",
         "explanation": "살다·들다·쓸다의 본뜻에서 멀어졌으므로 원형을 밝히지 않고 소리 나는 대로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 22쪽"
       },
       {
         "id": "korean-grammar-056",
-        "context": "구름이 걷히자 산봉우리가 ___. — 빈칸의 바른 표기는?",
+        "context": "구름이 걷히자 산봉우리가 ___. · 빈칸의 바른 표기는?",
         "explanation": "드러나다는 앞말 들다의 본뜻에서 멀어졌으므로 소리 나는 대로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 25쪽"
       },
       {
         "id": "korean-grammar-057",
-        "context": "그들은 사방으로 ___ 도망쳤다. — 빈칸의 바른 표기는?",
+        "context": "그들은 사방으로 ___ 도망쳤다. · 빈칸의 바른 표기는?",
         "explanation": "흩어지다는 앞말 흩다의 본뜻이 유지되므로 원형을 밝혀 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 25쪽"
       },
       {
         "id": "korean-grammar-058",
-        "context": "나무가 ___ 전신주를 덮쳤다. — 빈칸의 바른 표기는?",
+        "context": "나무가 ___ 전신주를 덮쳤다. · 빈칸의 바른 표기는?",
         "explanation": "쓰러지다는 쓸다의 본뜻에서 멀어진 말이라 소리 나는 대로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 25쪽"
       },
       {
         "id": "korean-grammar-059",
-        "context": "수출이 작년보다 두 배나 ___. — 빈칸의 바른 표기는?",
+        "context": "수출이 작년보다 두 배나 ___. · 빈칸의 바른 표기는?",
         "explanation": "늘어나다는 늘다의 본뜻이 유지되므로 원형을 밝혀 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 25쪽"
       },
       {
         "id": "korean-grammar-060",
-        "context": "달빛 아래 ___ 있는 광경을 보아라. — 빈칸의 바른 표기는?",
+        "context": "틈이 점점 ___ 있었다. · 빈칸의 바른 표기는?",
         "explanation": "벌어지다는 벌다(틈이 나다)의 본뜻이 유지되므로 원형을 밝혀 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 25쪽"
       }
     ],
     "topicKeys": [
       "형태에 관한 것"
+    ],
+    "resources": [
+      {
+        "title": "한글 맞춤법·표준어 규정·외래어 표기법",
+        "url": "https://korean.go.kr/kornorms/m/m_regltn.do",
+        "publisher": "국립국어원",
+        "note": "해당 문항의 규정 번호와 해설을 함께 찾아 읽으세요."
+      },
+      {
+        "title": "어문 규정집 내려받기",
+        "url": "https://korean.go.kr/kornorms/refr/refrList.do",
+        "publisher": "국립국어원",
+        "note": "규정과 해설 PDF를 내려받을 수 있는 공식 자료 목록입니다."
+      }
     ]
   },
   {
@@ -5827,103 +6021,123 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "장맛비는 ㄴ 소리가 덧나는 경우가 아니라 뒷말이 된소리가 되는 경우다. 조건 번호를 정확히 연결한다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
     "sourceNote": "우리말 바로 쓰기 학습지(교과서 17~30쪽) 기반",
     "examples": [
       {
         "id": "korean-grammar-061",
-        "context": "나룻배 · 바닷가 · 햇볕 · 귓밥 — 사이시옷을 적는 조건은?",
+        "context": "나룻배 · 바닷가 · 햇볕 · 귓밥 · 사이시옷을 적는 조건은?",
         "explanation": "순우리말 합성어로 앞말이 모음으로 끝나고 뒷말 첫소리가 된소리로 나면 사이시옷을 받치어 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-062",
-        "context": "아랫니 · 잇몸 · 냇물 · 빗물 — 사이시옷을 적는 조건은?",
+        "context": "아랫니 · 잇몸 · 냇물 · 빗물 · 사이시옷을 적는 조건은?",
         "explanation": "뒷말의 첫소리 ㄴ·ㅁ 앞에서 ㄴ 소리가 덧나는 경우 사이시옷을 적는다(아래+니→아랫니[아랜니]).",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-063",
-        "context": "뒷일 · 깻잎 · 나뭇잎 · 허드렛일 — 사이시옷을 적는 조건은?",
+        "context": "뒷일 · 깻잎 · 나뭇잎 · 허드렛일 · 사이시옷을 적는 조건은?",
         "explanation": "뒷말의 첫소리 모음 앞에서 ㄴㄴ 소리가 덧나는 경우 사이시옷을 적는다(허드레+일→허드렛일[허드렌닐]).",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-064",
-        "context": "곳간 · 셋방 · 숫자 · 찻간 · 툇간 · 횟수 — 이 단어들의 공통점은?",
+        "context": "곳간 · 셋방 · 숫자 · 찻간 · 툇간 · 횟수 · 이 단어들의 공통점은?",
         "explanation": "한자어에는 사이시옷을 적지 않지만, 두 음절로 된 이 여섯 한자어에만 예외로 사이시옷을 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 23쪽"
       },
       {
         "id": "korean-grammar-065",
-        "context": "개수(個數) · 초점(焦點) · 전세방 — 사이시옷을 적지 않는 까닭은?",
+        "context": "개수(個數) · 초점(焦點) · 전세방 · 사이시옷을 적지 않는 까닭은?",
         "explanation": "한자어로만 이루어진 단어는 곳간·셋방·숫자·찻간·툇간·횟수를 빼고 사이시옷을 적지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 23쪽"
       },
       {
         "id": "korean-grammar-066",
-        "context": "핑크빛 · 피자집 — 사이시옷을 적지 않는 까닭은?",
+        "context": "핑크빛 · 피자집 · 사이시옷을 적지 않는 까닭은?",
         "explanation": "고유어와 외래어가 결합한 경우에는 사이시옷을 적지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 23쪽"
       },
       {
         "id": "korean-grammar-067",
-        "context": "꽃 + 사슴 → 꽃사슴 — 사이시옷을 쓰지 않는 까닭은?",
-        "explanation": "사이시옷은 앞말이 모음으로 끝나야 한다. 꽃은 자음으로 끝나므로 조건 1·2만 만족해 사이시옷을 쓰지 않는다.",
+        "context": "꽃 + 사슴 → 꽃사슴 · 사이시옷을 쓰지 않는 까닭은?",
+        "explanation": "꽃은 받침으로 끝나므로 사이시옷을 더 적지 않는다. 뒷말의 첫소리가 된소리로 난다는 이유만으로 사이시옷을 적는 것은 아니다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-068",
-        "context": "장마 + 비 → 장맛비 [장마삐] — 해당하는 사이시옷 조건은?",
+        "context": "장마 + 비 → 장맛비 [장마삐] · 해당하는 사이시옷 조건은?",
         "explanation": "장맛비는 뒷말 비의 첫소리가 된소리[삐]로 바뀌는 경우다. ㄴ 소리가 덧나는 경우가 아니다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-069",
-        "context": "나무 + 잎 — 바른 표기는?",
+        "context": "나무 + 잎 · 바른 표기는?",
         "explanation": "나무+잎은 모음 앞에서 ㄴㄴ 소리가 덧나므로[나문닙] 사이시옷을 받쳐 나뭇잎으로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-070",
-        "context": "교차(交叉) + 점(點) — 사이시옷을 쓰지 않는 까닭은?",
+        "context": "교차(交叉) + 점(點) · 사이시옷을 쓰지 않는 까닭은?",
         "explanation": "사이시옷은 결합한 두 명사 중 하나 이상이 고유어여야 한다. 교차점은 한자어끼리라 사이시옷을 쓰지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-071",
-        "context": "냇물 · 잇몸 · 빗물 · 제삿날 — 단어 구성이 다른 하나는?",
+        "context": "냇물 · 잇몸 · 빗물 · 제삿날 · 단어 구성이 다른 하나는?",
         "explanation": "제삿날은 한자어 제사(祭祀)와 고유어 날의 합성어다. 나머지는 순우리말끼리의 합성어다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-072",
-        "context": "만두 + 국 [만두꾹] — 바른 표기는?",
+        "context": "만두 + 국 [만두꾹] · 바른 표기는?",
         "explanation": "뒷말의 첫소리가 된소리로 나므로 사이시옷을 받쳐 만둣국으로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-073",
-        "context": "후일(後日) + 담(譚) — 바른 표기는?",
+        "context": "후일(後日) + 담(譚) · 바른 표기는?",
         "explanation": "후일담은 한자어로만 된 말이라 사이시옷을 적지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       },
       {
         "id": "korean-grammar-074",
-        "context": "한자어로만 된 단어 — 사이시옷 표기 원칙은?",
+        "context": "한자어로만 된 단어 · 사이시옷 표기 원칙은?",
         "explanation": "한자어로만 된 단어에는 원칙적으로 사이시옷을 쓰지 않고, 곳간·셋방·숫자·찻간·툇간·횟수만 예외다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-075",
-        "context": "순우리말 + 한자어, 앞말이 모음 — 이 조건을 만족하는 예는?",
-        "explanation": "순우리말과 한자어로 된 합성어로 앞말이 모음으로 끝나면 사이시옷을 받쳐 적는다(귓병, 찻잔, 훗일).",
+        "context": "고유어+한자어인 사이시옷 표기 · 표기 조건을 모두 충족하는 예는?",
+        "explanation": "고유어와 한자어가 결합한 합성어이면서 앞말이 모음으로 끝나고, 뒷말의 된소리나 ㄴ 소리 덧남 등 발음 조건을 충족해야 한다. 모음으로 끝난다는 조건만으로는 부족하다.",
         "sourceNote": "우리말 바로 쓰기 · 18쪽"
       }
     ],
     "topicKeys": [
       "사이시옷"
+    ],
+    "resources": [
+      {
+        "title": "한글 맞춤법·표준어 규정·외래어 표기법",
+        "url": "https://korean.go.kr/kornorms/m/m_regltn.do",
+        "publisher": "국립국어원",
+        "note": "해당 문항의 규정 번호와 해설을 함께 찾아 읽으세요."
+      },
+      {
+        "title": "어문 규정집 내려받기",
+        "url": "https://korean.go.kr/kornorms/refr/refrList.do",
+        "publisher": "국립국어원",
+        "note": "규정과 해설 PDF를 내려받을 수 있는 공식 자료 목록입니다."
+      }
     ]
   },
   {
@@ -5952,79 +6166,99 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "생각컨대, 익숙치 않다는 틀린 표기다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
     "sourceNote": "우리말 바로 쓰기 학습지(교과서 17~30쪽) 기반",
     "examples": [
       {
         "id": "korean-grammar-076",
-        "context": "보이어 → 뵈어, ( ? ) — 또 하나의 준말은?",
+        "context": "보이어 → 뵈어, ( ? ) · 또 하나의 준말은?",
         "explanation": "제38항: ㅏ·ㅗ·ㅜ·ㅡ 뒤에 -이어가 어울려 줄어질 때는 준 대로 적는다(보이어→뵈어/보여).",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-077",
-        "context": "싸이어 → ( ? ), 싸여 — 또 하나의 준말은?",
+        "context": "싸이어 → ( ? ), 싸여 · 또 하나의 준말은?",
         "explanation": "제38항에 따라 싸이어는 쌔어, 싸여 두 가지로 줄여 적을 수 있다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-078",
-        "context": "그렇지 않은 — 준말의 바른 표기는?",
+        "context": "그렇지 않은 · 준말의 바른 표기는?",
         "explanation": "제39항: 어미 -지 뒤에 않-이 어울려 -잖-이 될 때는 준 대로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-079",
-        "context": "만만하지 않다 — 준말의 바른 표기는?",
+        "context": "만만하지 않다 · 준말의 바른 표기는?",
         "explanation": "제39항: -하지 뒤에 않-이 어울려 -찮-이 될 때는 준 대로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-080",
-        "context": "간편하게 — 준말의 바른 표기는?",
+        "context": "간편하게 · 준말의 바른 표기는?",
         "explanation": "제40항: 하의 ㅏ가 줄고 ㅎ이 다음 음절 첫소리와 어울려 거센소리가 되면 거센소리로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-081",
-        "context": "생각하건대 — 준말의 바른 표기는?",
+        "context": "생각하건대 · 준말의 바른 표기는?",
         "explanation": "안울림소리(ㄱ·ㄷ·ㅂ) 뒤에서는 하가 통째로 줄어 거센소리가 되지 않는다. 그래서 생각건대로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-082",
-        "context": "연구하도록 — 준말의 바른 표기는?",
+        "context": "연구하도록 · 준말의 바른 표기는?",
         "explanation": "울림소리 뒤에서 하의 ㅏ가 줄고 ㅎ이 남아 다음 첫소리와 거센소리가 되므로 연구토록으로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-083",
-        "context": "거북하지 — 준말의 바른 표기는?",
+        "context": "거북하지 · 준말의 바른 표기는?",
         "explanation": "ㄱ 받침 뒤라 하가 통째로 줄어든다. 거센소리로 적지 않고 거북지로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-084",
-        "context": "익숙하지 않다 — 준말의 바른 표기는?",
+        "context": "익숙하지 않다 · 준말의 바른 표기는?",
         "explanation": "ㄱ 받침 뒤에서 하가 통째로 줄면 거센소리로 적지 않는다(익숙지, 생각건대, 깨끗지).",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-085",
-        "context": "흔하다 → 흔타 · 정결하다 → 정결타 — 거센소리로 적는 까닭은?",
+        "context": "흔하다 → 흔타 · 정결하다 → 정결타 · 거센소리로 적는 까닭은?",
         "explanation": "울림소리 뒤에서는 하의 ㅏ만 줄고 남은 ㅎ이 다음 음절 첫소리와 어울려 거센소리가 된다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-086",
-        "context": "흔타 · 간편케 · 생각컨대 · 연구토록 — 준말 표기가 잘못된 것은?",
+        "context": "흔타 · 간편케 · 생각컨대 · 연구토록 · 준말 표기가 잘못된 것은?",
         "explanation": "생각하건대는 ㄱ 받침 뒤라 하가 통째로 줄어 생각건대로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       }
     ],
     "topicKeys": [
       "준말"
+    ],
+    "resources": [
+      {
+        "title": "한글 맞춤법·표준어 규정·외래어 표기법",
+        "url": "https://korean.go.kr/kornorms/m/m_regltn.do",
+        "publisher": "국립국어원",
+        "note": "해당 문항의 규정 번호와 해설을 함께 찾아 읽으세요."
+      },
+      {
+        "title": "어문 규정집 내려받기",
+        "url": "https://korean.go.kr/kornorms/refr/refrList.do",
+        "publisher": "국립국어원",
+        "note": "규정과 해설 PDF를 내려받을 수 있는 공식 자료 목록입니다."
+      }
     ]
   },
   {
@@ -6090,193 +6324,213 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "같이가 체언 뒤에서 처럼의 뜻이면 조사(보석같이)다. 시간의 경과를 나타내는 지만 의존 명사로 띄어 쓴다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
     "sourceNote": "우리말 바로 쓰기 학습지(교과서 17~30쪽) 기반",
     "examples": [
       {
         "id": "korean-grammar-087",
-        "context": "민수야, 너밖에 없어. — ‘밖에’를 붙여 쓴 까닭은?",
+        "context": "민수야, 너밖에 없어. · ‘밖에’를 붙여 쓴 까닭은?",
         "explanation": "그것 말고는의 뜻을 가진 밖에는 조사다. 조사는 그 앞말에 붙여 쓴다(제41항).",
         "sourceNote": "우리말 바로 쓰기 · 23쪽"
       },
       {
         "id": "korean-grammar-088",
-        "context": "뭔 소리야? 나 지금 밖에 있는데? — 여기서 ‘밖’의 품사는?",
+        "context": "뭔 소리야? 나 지금 밖에 있는데? · 여기서 ‘밖’의 품사는?",
         "explanation": "실외를 뜻하는 밖은 명사이므로 앞말과 띄어 쓴다. 너밖에의 밖에(조사)와 구별한다.",
         "sourceNote": "우리말 바로 쓰기 · 23쪽"
       },
       {
         "id": "korean-grammar-089",
-        "context": "오늘만이라도 — 이렇게 붙여 쓴 까닭은?",
+        "context": "오늘만이라도 · 이렇게 붙여 쓴 까닭은?",
         "explanation": "조사가 둘 이상 연속되거나 어미 뒤에 붙을 때도 앞말에 붙여 쓴다(만+이라도).",
         "sourceNote": "우리말 바로 쓰기 · 23쪽"
       },
       {
         "id": "korean-grammar-090",
-        "context": "아는 것이 힘이다. / 할 수 있다. — ‘것, 수’를 띄어 쓰는 까닭은?",
+        "context": "아는 것이 힘이다. / 할 수 있다. · ‘것, 수’를 띄어 쓰는 까닭은?",
         "explanation": "제42항: 의존 명사는 띄어 쓴다. 꾸며 주는 말이 있어야 쓰이지만 명사의 기능을 하는 단어이기 때문이다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-091",
-        "context": "집 한 채 · 소 한 마리 · 옷 한 벌 — ‘채, 마리, 벌’을 띄어 쓰는 근거는?",
+        "context": "집 한 채 · 소 한 마리 · 옷 한 벌 · ‘채, 마리, 벌’을 띄어 쓰는 근거는?",
         "explanation": "제43항: 단위를 나타내는 명사는 띄어 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-092",
-        "context": "제육회 · 35그램 · 2층 — 붙여 쓸 수 있는 까닭은?",
+        "context": "제6회 · 35그램 · 2층 · 붙여 쓸 수 있는 까닭은?",
         "explanation": "단위 명사는 띄어 쓰지만, 순서를 나타내거나 아라비아 숫자와 어울려 쓰이면 붙여 쓸 수 있다(허용).",
         "sourceNote": "우리말 바로 쓰기 · 23쪽"
       },
       {
         "id": "korean-grammar-093",
-        "context": "꺼져 간다 / 꺼져간다 — 보조 용언 띄어쓰기는?",
+        "context": "꺼져 간다 / 꺼져간다 · 보조 용언 띄어쓰기는?",
         "explanation": "제47항: 보조 용언은 띄어 씀을 원칙으로 하되, 경우에 따라 붙여 씀도 허용한다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-094",
-        "context": "너뿐이야. / 웃을 뿐이었다. — 두 ‘뿐’의 품사는 차례로?",
+        "context": "너뿐이야. / 웃을 뿐이었다. · 두 ‘뿐’의 품사는 차례로?",
         "explanation": "체언 뒤의 뿐은 조사라 붙여 쓰고, 관형어 뒤에서 따름이라는 뜻의 뿐은 의존 명사라 띄어 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-095",
-        "context": "___ 모두 말해 보자. (알다) — 바른 띄어쓰기는?",
+        "context": "___ 모두 말해 보자. (알다) · 바른 띄어쓰기는?",
         "explanation": "관형어 아는 뒤의 대로는 의존 명사이므로 띄어 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-096",
-        "context": "손님들은 ___ 충분히 먹었다. (먹다) — 바른 띄어쓰기는?",
+        "context": "손님들은 ___ 충분히 먹었다. (먹다) · 바른 띄어쓰기는?",
         "explanation": "관형어 먹을 뒤의 만큼은 의존 명사이므로 띄어 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-097",
-        "context": "그 사람은 ___ 누구보다 앞선다. (말) — 바른 띄어쓰기는?",
+        "context": "그 사람은 ___ 누구보다 앞선다. (말) · 바른 띄어쓰기는?",
         "explanation": "체언 말 뒤의 만큼은 조사이므로 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-098",
-        "context": "모든 것이 ___ 되었다. (내 생각) — 바른 띄어쓰기는?",
+        "context": "모든 것이 ___ 되었다. (내 생각) · 바른 띄어쓰기는?",
         "explanation": "체언 생각 뒤의 대로는 조사이므로 붙여 쓴다. 관형어 내와 생각은 띄어 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-099",
-        "context": "이번에는 보다 높게 / 나는 시보다 소설이 — 두 ‘보다’의 품사는 차례로?",
+        "context": "보다 높게 뛰자. / 시보다 소설이 좋다. · 두 ‘보다’의 품사는 차례로?",
         "explanation": "어떤 수준보다 한층 더의 뜻인 보다는 부사라 띄어 쓰고, 비교 대상 체언 뒤의 보다는 조사라 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-100",
-        "context": "제2 회 / 제2회 — 두 표기에 대한 설명으로 옳은 것은?",
-        "explanation": "단위 명사 회는 띄어 쓰는 것이 원칙이지만, 순서를 나타내는 경우 붙여 쓸 수 있다.",
+        "context": "사과 10 개 / 사과 10개 · 두 표기에 대한 설명으로 옳은 것은?",
+        "explanation": "단위를 나타내는 명사는 띄어 쓰는 것이 원칙이지만, 아라비아 숫자와 어울려 쓰일 때에는 붙여 쓰는 것도 허용된다. 따라서 두 표기가 모두 가능하다.",
         "sourceNote": "우리말 바로 쓰기 · 26쪽"
       },
       {
         "id": "korean-grammar-101",
-        "context": "너무 아는 척을 하지 마. — ‘척’을 띄어 쓴 까닭은?",
+        "context": "너무 아는 척을 하지 마. · ‘척’을 띄어 쓴 까닭은?",
         "explanation": "척은 관형어 아는의 꾸밈을 받는 의존 명사이므로 띄어 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 26쪽"
       },
       {
         "id": "korean-grammar-102",
-        "context": "나는 조용히 웃고만 있었다. — ‘만’을 붙여 쓴 까닭은?",
+        "context": "나는 조용히 웃고만 있었다. · ‘만’을 붙여 쓴 까닭은?",
         "explanation": "조사는 어미 뒤에 붙을 때도 앞말에 붙여 쓴다(웃-+-고+만).",
         "sourceNote": "우리말 바로 쓰기 · 26쪽"
       },
       {
         "id": "korean-grammar-103",
-        "context": "그는 반성을 ___ 오히려 큰소리를 쳤다. — 바른 띄어쓰기는?",
+        "context": "그는 반성을 ___ 오히려 큰소리를 쳤다. · 바른 띄어쓰기는?",
         "explanation": "는커녕은 조사(는+커녕)이므로 앞말에 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-104",
-        "context": "얼굴은 예전과 ___가 없었다. — 바른 띄어쓰기는?",
+        "context": "모습은 예전과 ___가 없었다. · 바른 띄어쓰기는?",
         "explanation": "바는 앞에 꾸미는 말이 있어야 쓰이는 의존 명사이므로 띄어 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-105",
-        "context": "크고 작은 실패가 ___ 숨어 있다. — 바른 띄어쓰기는?",
+        "context": "그는 ___ 도전했다. · 바른 띄어쓰기는?",
         "explanation": "수없이는 한 단어인 부사이므로 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       },
       {
         "id": "korean-grammar-106",
-        "context": "주머니 안에는 ___. — 바른 띄어쓰기는?",
+        "context": "주머니 안에는 ___. · 바른 띄어쓰기는?",
         "explanation": "체언 잔돈 뒤의 뿐은 조사이고, 이었다도 조사 이다의 활용형이므로 모두 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 30쪽"
       },
       {
         "id": "korean-grammar-107",
-        "context": "그 물건은 ___ 빛이 났다. — 바른 띄어쓰기는?",
+        "context": "그 물건은 ___ 빛이 났다. · 바른 띄어쓰기는?",
         "explanation": "체언 뒤에 쓰인 같이는 조사이므로 앞말에 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 30쪽"
       },
       {
         "id": "korean-grammar-108",
-        "context": "학교를 ___ 벌써 3년이 지났다. — 바른 띄어쓰기는?",
+        "context": "학교를 ___ 벌써 3년이 지났다. · 바른 띄어쓰기는?",
         "explanation": "시간의 경과를 나타내는 지는 의존 명사이므로 띄어 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 30쪽"
       },
       {
         "id": "korean-grammar-109",
-        "context": "하던 것을 ___ 없었다. — 바른 띄어쓰기는?",
+        "context": "하던 것을 ___ 없었다. · 바른 띄어쓰기는?",
         "explanation": "수는 의존 명사라 띄어 쓰고, 밖에는 조사라 수에 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 30쪽"
       },
       {
         "id": "korean-grammar-110",
-        "context": "___ 비해 성과가 나오지 않았다. — 바른 띄어쓰기는?",
-        "explanation": "것·일의 뜻으로 뒤에 조사가 붙을 수 있는 데는 의존 명사이므로 띄어 쓴다.",
+        "context": "이 문제를 ___ 시간이 필요하다. · 빈칸에 알맞은 띄어쓰기는?",
+        "explanation": "이 문장의 데는 어떤 일을 하는 데 필요한 시간과 관련된 의존 명사다. 해결하는 뒤에서 띄어 쓴다. 문장을 이어 주는 어미 -는데와 구별한다.",
         "sourceNote": "우리말 바로 쓰기 · 30쪽"
       },
       {
         "id": "korean-grammar-111",
-        "context": "‘데’의 띄어쓰기 — ‘데’가 의존 명사인 경우는?",
-        "explanation": "뒤에 조사가 결합할 수 있으면 데는 의존 명사이므로 띄어 쓴다. 조사라서 붙여 쓴다는 설명은 틀렸다.",
+        "context": "문제 푸는 데 시간이 걸렸다. · ‘데’를 띄어 쓴 까닭은?",
+        "explanation": "여기서 데는 문제를 푸는 일과 관련된 의존 명사이므로 앞말과 띄어 쓴다. 어미 -는데가 아니다.",
         "sourceNote": "우리말 바로 쓰기 · 30쪽"
       },
       {
         "id": "korean-grammar-112",
-        "context": "‘지’의 띄어쓰기 — ‘지’를 띄어 쓰는 경우는?",
+        "context": "‘지’의 띄어쓰기 · ‘지’를 띄어 쓰는 경우는?",
         "explanation": "시간의 경과를 나타내는 지는 의존 명사라 띄어 쓴다. 막연한 의문의 -ㄴ지는 어미라 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 30쪽"
       },
       {
         "id": "korean-grammar-113",
-        "context": "보석같이 · 너같이 — ‘같이’를 붙여 쓰는 조건은?",
+        "context": "보석같이 · 너같이 · ‘같이’를 붙여 쓰는 조건은?",
         "explanation": "같이가 체언 뒤에 쓰여 처럼의 뜻이면 조사이므로 앞말에 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 30쪽"
       },
       {
         "id": "korean-grammar-114",
-        "context": "나물좀줘. / 아기다리고기다리던 — 이런 문장의 문제점은?",
-        "explanation": "띄어쓰기가 바르지 않으면 뜻을 정확하게 파악하기 어렵다. 그래서 단어를 단위로 띄어 쓴다.",
+        "context": "아버지가방에들어가신다. · 띄어쓰기를 하지 않았을 때의 문제는?",
+        "explanation": "아버지가 방에 들어가신다와 아버지 가방에 들어가신다는 단어 경계가 다르다. 띄어쓰기는 문장의 구조와 의미를 분명하게 보여 준다.",
         "sourceNote": "우리말 바로 쓰기 · 29쪽"
       },
       {
         "id": "korean-grammar-115",
-        "context": "책을 · 등에 · 수 있었습니다 · 그곳 — 띄어쓰기 설명으로 옳지 않은 것은?",
-        "explanation": "그 밖의 것을 나열하는 등은 의존 명사이기 때문에 띄어 쓴다. 단위를 나타내는 말이라서가 아니다.",
+        "context": "책·공책 등을 챙길 수 있었다. · 띄어쓰기 설명으로 틀린 것은?",
+        "explanation": "여기서 등은 예시한 것들을 열거하는 의존 명사이며 단위 명사가 아니다. 조사 을은 붙여 쓰고, 수는 의존 명사이므로 띄어 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 30쪽"
       },
       {
         "id": "korean-grammar-116",
-        "context": "하늘에서 별이라도 따오겠다. — ‘이라도’를 붙여 쓴 까닭은?",
+        "context": "하늘에서 별이라도 따오겠다. · ‘이라도’를 붙여 쓴 까닭은?",
         "explanation": "이라도는 조사이므로 체언 별에 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 27쪽"
       }
     ],
     "topicKeys": [
       "띄어쓰기"
+    ],
+    "resources": [
+      {
+        "title": "한글 맞춤법·표준어 규정·외래어 표기법",
+        "url": "https://korean.go.kr/kornorms/m/m_regltn.do",
+        "publisher": "국립국어원",
+        "note": "해당 문항의 규정 번호와 해설을 함께 찾아 읽으세요."
+      },
+      {
+        "title": "어문 규정집 내려받기",
+        "url": "https://korean.go.kr/kornorms/refr/refrList.do",
+        "publisher": "국립국어원",
+        "note": "규정과 해설 PDF를 내려받을 수 있는 공식 자료 목록입니다."
+      }
     ]
   },
   {
@@ -6304,49 +6558,69 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "-하다가 붙는 어근이라도 ㅅ 받침 뒤(깨끗이)나 이로만 나는 말은 -이로 적는다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
     "sourceNote": "우리말 바로 쓰기 학습지(교과서 17~30쪽) 기반",
     "examples": [
       {
         "id": "korean-grammar-117",
-        "context": "깨끗__ · 가까__ · 번거로__ — 빈칸에 공통으로 들어갈 말은?",
+        "context": "깨끗__ · 가까__ · 번거로__ · 빈칸에 공통으로 들어갈 말은?",
         "explanation": "제51항: 부사의 끝음절이 분명히 이로만 나는 것은 -이로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-118",
-        "context": "급__ · 딱__ · 속__ · 솔직__ — 빈칸에 공통으로 들어갈 말은?",
+        "context": "급__ · 딱__ · 속__ · 솔직__ · 빈칸에 공통으로 들어갈 말은?",
         "explanation": "제51항: 히로만 나거나 이·히로 나는 것은 -히로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-119",
-        "context": "서류를 ___ 살펴보다. — 빈칸의 바른 표기는?",
+        "context": "서류를 ___ 살펴보다. · 빈칸의 바른 표기는?",
         "explanation": "꼼꼼히는 이·히로 나는 말이므로 -히로 적는다(제51항).",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-120",
-        "context": "내가 ___. (하다, 약속) — 빈칸의 바른 표기는?",
+        "context": "이 일은 내가 ___. (하다, 약속) · 빈칸의 바른 표기는?",
         "explanation": "제53항: -(으)ㄹ게 같은 어미는 된소리로 나더라도 예사소리로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-121",
-        "context": "-(으)ㄹ거나 · -(으)ㄹ걸 · -(으)ㄹ게 — 이런 어미는 어떻게 적나?",
+        "context": "-(으)ㄹ거나 · -(으)ㄹ걸 · -(으)ㄹ게 · 이 어미의 첫 자음은 어떻게 적는가?",
         "explanation": "제53항: 이 어미들은 [께]·[껄]처럼 소리 나도 예사소리로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-122",
-        "context": "-하다가 붙는 어근 + -히 — ‘딱히’를 ‘딱이’로 적지 않는 까닭은?",
+        "context": "-하다가 붙는 어근 + -히 · ‘딱히’를 ‘딱이’로 적지 않는 까닭은?",
         "explanation": "부사의 끝음절이 히로 나거나 이·히로 나면 -히로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       }
     ],
     "topicKeys": [
       "그 밖의 것"
+    ],
+    "resources": [
+      {
+        "title": "한글 맞춤법·표준어 규정·외래어 표기법",
+        "url": "https://korean.go.kr/kornorms/m/m_regltn.do",
+        "publisher": "국립국어원",
+        "note": "해당 문항의 규정 번호와 해설을 함께 찾아 읽으세요."
+      },
+      {
+        "title": "어문 규정집 내려받기",
+        "url": "https://korean.go.kr/kornorms/refr/refrList.do",
+        "publisher": "국립국어원",
+        "note": "규정과 해설 PDF를 내려받을 수 있는 공식 자료 목록입니다."
+      }
     ]
   },
   {
@@ -6376,79 +6650,99 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "외래어 받침에 ㄷ은 쓰지 않는다. 로마자에서 음운 변화는 반영하지만 된소리는 반영하지 않는다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
     "sourceNote": "우리말 바로 쓰기 학습지(교과서 17~30쪽) 기반",
     "examples": [
       {
         "id": "korean-grammar-123",
-        "context": "family — 외래어 표기법에 맞는 것은?",
+        "context": "family · 외래어 표기법에 맞는 것은?",
         "explanation": "외래어의 1 음운은 원칙적으로 1 기호로 적는다. f는 ㅍ으로 적어 패밀리다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-124",
-        "context": "chocolate — 외래어 표기법에 맞는 것은?",
+        "context": "chocolate · 외래어 표기법에 맞는 것은?",
         "explanation": "받침에는 ㄱ·ㄴ·ㄹ·ㅁ·ㅂ·ㅅ·ㅇ만 쓴다. 초콜릿이 바른 표기다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-125",
-        "context": "bus — 외래어 표기법에 맞는 것은?",
+        "context": "bus · 외래어 표기법에 맞는 것은?",
         "explanation": "파열음 표기에는 된소리를 쓰지 않는 것을 원칙으로 한다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-126",
-        "context": "외래어의 받침 — 쓸 수 있는 받침은?",
+        "context": "외래어의 받침 · 쓸 수 있는 받침은?",
         "explanation": "외래어 받침에는 ㄱ·ㄴ·ㄹ·ㅁ·ㅂ·ㅅ·ㅇ 일곱 개만 쓴다. ㄷ은 쓰지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-127",
-        "context": "외래어 표기에 쓰는 자모 — 몇 자모로 적나?",
+        "context": "외래어 표기에 쓰는 자모 · 사용하는 기본 자모의 수는?",
         "explanation": "외래어는 국어의 현용 24 자모만으로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-128",
-        "context": "종로 [종노] — 로마자 표기는?",
+        "context": "종로 [종노] · 로마자 표기는?",
         "explanation": "로마자 표기법은 표준 발음법에 따라 적는다. [종노]로 소리 나므로 Jongno다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-129",
-        "context": "백마 [뱅마] — 로마자 표기는?",
+        "context": "백마 [뱅마] · 로마자 표기는?",
         "explanation": "음운 변화가 일어날 때에는 변화의 결과에 따라 적는다. [뱅마]이므로 Baengma다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-130",
-        "context": "압구정 [압꾸정] — 로마자 표기는?",
+        "context": "압구정 [압꾸정] · 로마자 표기는?",
         "explanation": "된소리되기는 로마자 표기에 반영하지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-131",
-        "context": "낙동강 [낙똥강] — 로마자 표기는?",
+        "context": "낙동강 [낙똥강] · 로마자 표기는?",
         "explanation": "된소리는 표기에 반영하지 않으므로 Nakdonggang으로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-132",
-        "context": "부산 · 세종 — 고유 명사 로마자 표기는?",
+        "context": "부산 · 세종 · 고유 명사 로마자 표기는?",
         "explanation": "고유 명사는 첫 글자를 대문자로 적는다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       },
       {
         "id": "korean-grammar-133",
-        "context": "로마자 표기법의 기준 — 무엇에 따라 적나?",
-        "explanation": "국어의 로마자 표기는 표준 발음법에 따라 적는 것을 원칙으로 한다.",
+        "context": "로마자 표기법의 기준 · 무엇에 따라 적나?",
+        "explanation": "국어의 로마자 표기는 국어의 표준 발음에 따라 적는 것을 원칙으로 한다. 철자를 기계적으로 옮기거나 개인의 발음대로 적는 것이 아니다.",
         "sourceNote": "우리말 바로 쓰기 · 19쪽"
       }
     ],
     "topicKeys": [
       "외래어·로마자"
+    ],
+    "resources": [
+      {
+        "title": "한글 맞춤법·표준어 규정·외래어 표기법",
+        "url": "https://korean.go.kr/kornorms/m/m_regltn.do",
+        "publisher": "국립국어원",
+        "note": "해당 문항의 규정 번호와 해설을 함께 찾아 읽으세요."
+      },
+      {
+        "title": "어문 규정집 내려받기",
+        "url": "https://korean.go.kr/kornorms/refr/refrList.do",
+        "publisher": "국립국어원",
+        "note": "규정과 해설 PDF를 내려받을 수 있는 공식 자료 목록입니다."
+      }
     ]
   },
   {
@@ -6483,349 +6777,369 @@ export const studyConcepts: ConceptLesson[] = [
         "paragraphs": [
           "그럼으로써는 수단, 그러므로는 원인이다. 믿음으로써(수단)와 믿으므로(까닭)도 같은 방식으로 구별한다."
         ]
+      },
+      {
+        "heading": "보충 자료 활용",
+        "paragraphs": [
+          "아래 공식 자료는 개념을 확인하기 위한 보충 자료입니다. 시험 범위와 지문 독해의 정답 근거는 이 페이지에 표시된 수업자료를 우선 확인하세요."
+        ]
       }
     ],
     "sourceNote": "우리말 바로 쓰기 학습지(교과서 17~30쪽) 기반",
     "examples": [
       {
         "id": "korean-grammar-134",
-        "context": "부주의로 손을 ___. — 빈칸의 바른 표기는?",
+        "context": "부주의로 손을 ___. · 빈칸의 바른 표기는?",
         "explanation": "다치다는 신체에 상처가 생기다는 뜻이다. 닫히다는 닫다의 피동사, 닫치다는 세게 닫다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-135",
-        "context": "문이 저절로 ___. — 빈칸의 바른 표기는?",
+        "context": "문이 저절로 ___. · 빈칸의 바른 표기는?",
         "explanation": "저절로 닫히는 것은 닫다의 피동사 닫히다이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-136",
-        "context": "문을 힘껏 ___. — 빈칸의 바른 표기는?",
+        "context": "문을 힘껏 ___. · 빈칸의 바른 표기는?",
         "explanation": "닫치다는 문짝 따위를 세게 닫다는 뜻이다. -치-는 강세 접미사다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-137",
-        "context": "여러 문제를 더 ___. — 빈칸의 바른 표기는?",
+        "context": "여러 문제를 더 ___. · 빈칸의 바른 표기는?",
         "explanation": "맞히다는 문제에 대한 답을 틀리지 않게 하다는 뜻이다. 마치다는 끝내다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 29쪽"
       },
       {
         "id": "korean-grammar-138",
-        "context": "벌써 일을 ___. — 빈칸의 바른 표기는?",
+        "context": "벌써 일을 ___. · 빈칸의 바른 표기는?",
         "explanation": "마치다는 일이나 과정, 절차 따위가 끝나다(끝내다)는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-139",
-        "context": "나라를 위해 목숨을 ___. — 빈칸의 바른 표기는?",
+        "context": "나라를 위해 목숨을 ___. · 빈칸의 바른 표기는?",
         "explanation": "바치다는 무엇을 위해 모든 것을 아낌없이 내놓거나 쓰다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-140",
-        "context": "비가 와서 우산을 ___ 간다. — 빈칸의 바른 표기는?",
+        "context": "비가 와서 우산을 ___ 간다. · 빈칸의 바른 표기는?",
         "explanation": "받치다는 우산이나 양산을 펴 들다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 29쪽"
       },
       {
         "id": "korean-grammar-141",
-        "context": "쇠뿔에 ___. — 빈칸의 바른 표기는?",
+        "context": "쇠뿔에 ___. · 빈칸의 바른 표기는?",
         "explanation": "받히다는 받다(머리나 뿔로 세차게 부딪다)의 피동사다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-142",
-        "context": "술을 체에 ___. — 빈칸의 바른 표기는?",
+        "context": "술을 체에 ___. · 빈칸의 바른 표기는?",
         "explanation": "밭치다는 구멍이 뚫린 물건 위에 국수·야채 따위를 올려 물기를 빼다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-143",
-        "context": "약속은 ___ 지켜라. — 빈칸의 바른 표기는?",
+        "context": "약속은 ___ 지켜라. · 빈칸의 바른 표기는?",
         "explanation": "반드시는 틀림없이 꼭이라는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-144",
-        "context": "고개를 ___ 들어라. — 빈칸의 바른 표기는?",
-        "explanation": "반듯이는 비뚤어지거나 기울지 않고 바르게라는 뜻이다.",
+        "context": "액자를 ___ 걸었다. (비뚤어지지 않게) · 빈칸의 바른 표기는?",
+        "explanation": "반듯이는 비뚤어지지 않고 바르게라는 뜻이다. 반드시는 꼭, 틀림없이라는 뜻이므로 제시된 의미 조건에 맞지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-145",
-        "context": "차와 차가 마주 ___. — 빈칸의 바른 표기는?",
-        "explanation": "부딪치다는 서로 힘차게 마주 대다(능동, 강세)는 뜻이다.",
+        "context": "돌을 서로 세게 ___. (능동) · 빈칸의 바른 표기는?",
+        "explanation": "부딪치다는 어떤 것을 다른 것에 맞닿게 하는 능동 표현이다. 목적어 돌을과 능동이라는 조건에 맞는 활용형은 부딪쳤다이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-146",
-        "context": "마차가 화물차에 ___. — 빈칸의 바른 표기는?",
-        "explanation": "부딪히다는 부딪다의 피동사로, 부딪음을 당하다는 뜻이다.",
+        "context": "가만히 있던 손수레가 트럭에 ___. (피동) · 빈칸의 바른 표기는?",
+        "explanation": "부딪히다는 부딪치다의 피동사다. 손수레가 충격을 받은 대상으로 제시되었으므로 부딪혔다를 고른다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-147",
-        "context": "영월을 ___ 왔다. — 빈칸의 바른 표기는?",
+        "context": "영월을 ___ 왔다. · 빈칸의 바른 표기는?",
         "explanation": "거치다는 오가는 도중에 어디를 지나거나 들르다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-148",
-        "context": "외상값이 잘 ___. — 빈칸의 바른 표기는?",
+        "context": "외상값이 잘 ___. · 빈칸의 바른 표기는?",
         "explanation": "걷히다는 걷다(거두다)의 피동사다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-149",
-        "context": "___ 수 없는 상태에 이르렀다. — 빈칸의 바른 표기는?",
+        "context": "___ 수 없는 상태에 이르렀다. · 빈칸의 바른 표기는?",
         "explanation": "걷잡다는 한 방향으로 치우쳐 흘러가는 형세를 붙들어 잡거나 마음을 진정하다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 29쪽"
       },
       {
         "id": "korean-grammar-150",
-        "context": "___ 이틀은 걸릴 일이다. (대강 짐작하여) — 빈칸의 바른 표기는?",
+        "context": "___ 이틀은 걸릴 일이다. (대강 짐작하여) · 빈칸의 바른 표기는?",
         "explanation": "겉잡다는 겉으로 보고 대강 짐작하여 헤아리다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-151",
-        "context": "그는 부지런하다. ___ 잘 산다. — 빈칸의 바른 표기는?",
+        "context": "그는 부지런하다. ___ 잘 산다. · 빈칸의 바른 표기는?",
         "explanation": "그러므로는 그러니까, 그렇기 때문에의 뜻으로 원인에 따른 결과를 나타낸다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-152",
-        "context": "그는 열심히 공부한다. ___ 은혜에 보답한다. — 빈칸의 바른 표기는?",
+        "context": "그는 열심히 공부한다. ___ 은혜에 보답한다. · 빈칸의 바른 표기는?",
         "explanation": "그럼으로(써)는 그렇게 하는 것으로써라는 수단의 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-153",
-        "context": "진도가 너무 ___. — 빈칸의 바른 표기는?",
+        "context": "진도가 너무 ___. · 빈칸의 바른 표기는?",
         "explanation": "느리다는 동작을 하는 데 걸리는 시간이 길다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-154",
-        "context": "고무줄을 ___. — 빈칸의 바른 표기는?",
+        "context": "고무줄을 ___. · 빈칸의 바른 표기는?",
         "explanation": "늘이다는 본디보다 더 길어지게 하다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-155",
-        "context": "수출량을 더 ___. — 빈칸의 바른 표기는?",
+        "context": "수출량을 더 ___. · 빈칸의 바른 표기는?",
         "explanation": "늘리다는 크기·수·분량 따위를 본디보다 더 늘게 하다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-156",
-        "context": "옷을 ___. — 빈칸의 바른 표기는?",
+        "context": "옷을 ___. · 빈칸의 바른 표기는?",
         "explanation": "다리다는 옷의 주름이나 구김을 펴려고 다리미로 문지르다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-157",
-        "context": "약을 ___. — 빈칸의 바른 표기는?",
+        "context": "약을 ___. · 빈칸의 바른 표기는?",
         "explanation": "달이다는 끓여서 진하게 하거나, 약재에 물을 부어 우러나도록 끓이다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-158",
-        "context": "___가 덧났다. (목이 붓고 아픈 병) — 빈칸의 바른 표기는?",
+        "context": "목이 붓고 아픈 ___를 앓았다. · 빈칸의 바른 표기는?",
         "explanation": "목이 붓고 아픈 병은 목거리, 목에 거는 장식품은 목걸이다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-159",
-        "context": "둘로 ___. / 새 책상으로 ___하였다. — 빈칸에 차례로 들어갈 말은?",
-        "explanation": "가름은 쪼개거나 나누어 따로 되게 하는 것, 갈음은 이미 있는 사물을 다른 것으로 바꾸는 것이다.",
+        "context": "나누는 일 / 다른 것으로 대신하는 일 · 각 뜻에 맞는 말은 차례로?",
+        "explanation": "가름은 나누거나 구분하는 일이다. 갈음은 다른 것으로 바꾸어 대신하는 일이다. 두 명사의 뜻을 구별해 고른다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-160",
-        "context": "풀을 썩힌 ___ / 빠른 ___ — 빈칸에 차례로 들어갈 말은?",
+        "context": "밭에 ___을 주었다. / ___이 빨라졌다. · 빈칸에 차례로 들어갈 말은?",
         "explanation": "거름은 걸다의 본뜻에서 멀어져 소리대로 적고, 걸음은 걷다의 걸-에 -음이 붙은 형태다.",
         "sourceNote": "우리말 바로 쓰기 · 20쪽"
       },
       {
         "id": "korean-grammar-161",
-        "context": "편지를 ___. / 회의에 ___ 안건 — 빈칸에 차례로 들어갈 말은?",
+        "context": "편지를 ___. / 회의에 ___ 안건 · 빈칸에 차례로 들어갈 말은?",
         "explanation": "편지를 보내다, 어떤 문제를 다른 곳에 넘기다는 모두 부치다이다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-162",
-        "context": "빈대떡을 ___. / 논밭을 ___. — 빈칸에 공통으로 들어갈 말은?",
+        "context": "빈대떡을 ___. / 논밭을 ___. · 빈칸에 공통으로 들어갈 말은?",
         "explanation": "기름에 음식을 익히다, 논밭을 이용하여 농사를 짓다는 모두 부치다이다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-163",
-        "context": "힘이 ___ 일이다. (미치지 못함) — 빈칸의 바른 표기는?",
+        "context": "힘이 ___ 일이다. (미치지 못함) · 빈칸의 바른 표기는?",
         "explanation": "모자라거나 미치지 못하다는 뜻은 부치다이다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-164",
-        "context": "흥정을 ___. / 조건을 ___. — 빈칸에 공통으로 들어갈 말은?",
+        "context": "흥정을 ___. / 조건을 ___. · 빈칸에 공통으로 들어갈 말은?",
         "explanation": "겨루는 일을 어울려 시작하게 하다, 조건·이유 따위를 달다는 모두 붙이다이다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-165",
-        "context": "감시원을 ___. / 별명을 ___. — 빈칸에 공통으로 들어갈 말은?",
+        "context": "감시원을 ___. / 별명을 ___. · 빈칸에 공통으로 들어갈 말은?",
         "explanation": "사람을 딸려 붙게 하다, 이름을 만들어 주다는 모두 붙이다이다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-166",
-        "context": "일을 ___. / 끓인 물을 ___. — 빈칸에 차례로 들어갈 말은?",
+        "context": "일을 ___. / 끓인 물을 ___. · 빈칸에 차례로 들어갈 말은?",
         "explanation": "시키다는 어떤 일을 하게 하다, 식히다는 식다의 사동사다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-167",
-        "context": "세 ___ 되는 둘레 — 빈칸의 바른 표기는?",
+        "context": "이 나무의 둘레는 세 ___이나 된다. · 빈칸의 바른 표기는?",
         "explanation": "아름은 두 팔을 둥글게 모아 만든 둘레다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-168",
-        "context": "전부터 ___이 있는 사이 — 빈칸의 바른 표기는?",
+        "context": "우리는 예전부터 ___이 있는 사이다. · 빈칸의 바른 표기는?",
         "explanation": "알음은 사람끼리 서로 아는 일이다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-169",
-        "context": "___이 힘이다. — 빈칸의 바른 표기는?",
+        "context": "___이 힘이다. · 빈칸의 바른 표기는?",
         "explanation": "앎은 배우거나 경험하여 모르던 것을 깨달음, 아는 일이다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-170",
-        "context": "밥을 ___. / 윗자리에 ___. — 빈칸에 차례로 들어갈 말은?",
+        "context": "밥을 ___. / 윗자리에 ___. · 빈칸에 차례로 들어갈 말은?",
         "explanation": "안치다는 재료를 솥에 넣고 불 위에 올리다, 앉히다는 앉다의 사동사다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-171",
-        "context": "두 물건의 ___에서 일어난 현상 — 빈칸의 바른 표기는?",
+        "context": "두 물건의 ___에서 반응이 일어났다. (경계) · 빈칸의 바른 표기는?",
         "explanation": "어름은 두 사물의 끝이 맞닿은 자리, 얼음은 물이 얼어서 굳어진 물질이다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-172",
-        "context": "___ 오너라. (조금 지난 뒤에) — 빈칸의 바른 표기는?",
+        "context": "___ 오너라. (조금 지난 뒤에) · 빈칸의 바른 표기는?",
         "explanation": "이따가는 조금 지난 뒤에라는 뜻의 부사다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-173",
-        "context": "돈은 ___도 없다. — 빈칸의 바른 표기는?",
-        "explanation": "있다가는 있-+어미 -다가로, 어떤 상태가 끝나고 다른 상태로 옮겨지는 뜻이다.",
+        "context": "방에 잠깐 ___ 나왔다. · 빈칸의 바른 표기는?",
+        "explanation": "있다가는 있다에 연결 어미 -다가가 붙은 말로, 어떤 곳에 머물다가 다음 행동을 했다는 뜻이다. 이따가는 조금 지난 뒤를 뜻하는 부사다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-174",
-        "context": "다친 다리가 ___. — 빈칸의 바른 표기는?",
+        "context": "오래 앉았더니 다리가 ___. (찌릿한 느낌) · 빈칸의 바른 표기는?",
         "explanation": "저리다는 뼈마디나 몸의 일부가 오래 눌려서 감각이 둔하고 아리다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-175",
-        "context": "김장 배추를 ___. — 빈칸의 바른 표기는?",
+        "context": "김장 배추를 ___. · 빈칸의 바른 표기는?",
         "explanation": "절이다는 절다의 사동사로, 소금이나 식초 따위에 절게 하다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-176",
-        "context": "생선을 ___. / 마음을 ___. — 빈칸에 차례로 들어갈 말은?",
+        "context": "생선을 ___. / 마음을 ___. · 빈칸에 차례로 들어갈 말은?",
         "explanation": "조리다는 양념이 배게 바짝 끓이다, 졸이다는 속을 태우다시피 초조해하다는 뜻이다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-177",
-        "context": "여러 날을 ___. / 비용을 ___. — 빈칸에 차례로 들어갈 말은?",
+        "context": "배고파서 며칠을 ___. / 비용을 ___. · 빈칸에 차례로 들어갈 말은?",
         "explanation": "주리다는 제대로 먹지 못하여 배를 곯다, 줄이다는 줄다의 사동사다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-178",
-        "context": "___ 한 것이 이 모양이다. — 빈칸의 바른 표기는?",
-        "explanation": "-노라고는 자기 나름대로 꽤 노력했음을 나타낸다.",
+        "context": "열심히 ___ 했다. (자기 나름의 노력) · 괄호의 뜻에 맞는 어미는?",
+        "explanation": "-노라고는 자기 나름대로 꽤 노력했다는 뜻을 나타낸다. -느라고는 앞의 행동 때문에 뒤의 결과가 생겼다는 뜻이다. 문장의 모양만으로 구별하지 않도록 이 문항에는 의미 조건을 제시했다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-179",
-        "context": "공부___ 밤을 새웠다. — 빈칸의 바른 표기는?",
+        "context": "공부___ 밤을 새웠다. · 빈칸의 바른 표기는?",
         "explanation": "-느라고는 앞의 내용이 뒤 내용의 목적이나 원인이 됨을 나타낸다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-180",
-        "context": "나를 ___ 집에 있거라. (찾아오다) — 빈칸의 바른 표기는?",
+        "context": "멀리 ___ 집에서 기다려라. (찾아오다) · 빈칸의 바른 표기는?",
         "explanation": "-느니보다는 -는 것보다의 뜻인 어미이므로 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-181",
-        "context": "오는 이가 ___ 많다. (가다) — 빈칸의 바른 표기는?",
+        "context": "오는 이가 ___ 많다. (가다) · 빈칸의 바른 표기는?",
         "explanation": "-는 사람보다의 뜻이면 의존 명사 이에 조사 보다가 붙은 것이므로 가는 이보다로 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-182",
-        "context": "나를 ___ 잘못한 일이 없다. (미워하다) — 빈칸의 바른 표기는?",
+        "context": "나를 ___ 잘못한 일이 없다. (미워하다) · 빈칸의 바른 표기는?",
         "explanation": "-(으)리만큼은 -(으)ㄹ 정도로의 뜻인 어미이므로 붙여 쓴다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-183",
-        "context": "공부___ 간다. / 지방으로 가___ 한다. — 빈칸에 차례로 들어갈 말은?",
+        "context": "공부___ 간다. / 지방으로 ___ 한다. · 빈칸에 차례로 들어갈 말은?",
         "explanation": "-(으)러는 가거나 오는 동작의 목적, -(으)려는 어떤 행동을 할 의도나 욕망을 나타낸다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-184",
-        "context": "사람___ 그럴 수는 없다. — 빈칸의 바른 표기는?",
+        "context": "사람___ 그럴 수는 없다. · 빈칸의 바른 표기는?",
         "explanation": "(으)로서는 지위·신분·자격을 나타낸다.",
         "sourceNote": "우리말 바로 쓰기 · 29쪽"
       },
       {
         "id": "korean-grammar-185",
-        "context": "닭___ 꿩을 대신했다. — 빈칸의 바른 표기는?",
+        "context": "닭___ 꿩을 대신했다. · 빈칸의 바른 표기는?",
         "explanation": "(으)로써는 재료·수단·도구를 나타낸다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-186",
-        "context": "그가 나를 ___ 나도 그를 믿는다. — 빈칸의 바른 표기는?",
+        "context": "그가 나를 ___ 나도 그를 믿는다. · 빈칸의 바른 표기는?",
         "explanation": "-(으)므로는 까닭을 나타내는 어미로, 써가 결합하지 않는다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-187",
-        "context": "그는 ___ 산 보람을 느꼈다. — 빈칸의 바른 표기는?",
-        "explanation": "-(으)ㅁ으로(써)는 명사형 어미 -(으)ㅁ에 조사 으로(써)가 붙은 것으로 수단을 나타낸다.",
+        "context": "서로를 ___ 어려움을 이겨 냈다. (수단) · 수단을 나타내는 표현은?",
+        "explanation": "믿음으로써는 명사 믿음에 수단을 나타내는 조사 으로써가 붙은 표현이다. 믿으므로는 동사 믿다에 이유를 나타내는 어미 -으므로가 붙은 표현이다. 이 문항은 수단이라는 의미 조건을 명시했으므로 믿음으로써를 고른다.",
         "sourceNote": "우리말 바로 쓰기 · 21쪽"
       },
       {
         "id": "korean-grammar-188",
-        "context": "이번 회의의 안건은 비밀에 ___로 했다. — 빈칸의 바른 표기는?",
+        "context": "이번 회의의 안건은 비밀에 ___로 했다. · 빈칸의 바른 표기는?",
         "explanation": "어떤 일을 거론하거나 문제 삼지 않는 상태에 있게 하다는 뜻은 부치다이다.",
         "sourceNote": "우리말 바로 쓰기 · 29쪽"
       },
       {
         "id": "korean-grammar-189",
-        "context": "게시판에 홍보 전단지를 ___. — 빈칸의 바른 표기는?",
+        "context": "게시판에 홍보 전단지를 ___. · 빈칸의 바른 표기는?",
         "explanation": "맞닿아 떨어지지 않게 하다는 뜻은 붙이다이다.",
         "sourceNote": "우리말 바로 쓰기 · 29쪽"
       }
     ],
     "topicKeys": [
       "혼동하기 쉬운 표기"
+    ],
+    "resources": [
+      {
+        "title": "한글 맞춤법·표준어 규정·외래어 표기법",
+        "url": "https://korean.go.kr/kornorms/m/m_regltn.do",
+        "publisher": "국립국어원",
+        "note": "해당 문항의 규정 번호와 해설을 함께 찾아 읽으세요."
+      },
+      {
+        "title": "어문 규정집 내려받기",
+        "url": "https://korean.go.kr/kornorms/refr/refrList.do",
+        "publisher": "국립국어원",
+        "note": "규정과 해설 PDF를 내려받을 수 있는 공식 자료 목록입니다."
+      }
     ]
   },
   {

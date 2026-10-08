@@ -51,7 +51,7 @@ export const parkCards: SwipeCard[] = [
     "id": "biology-park-004",
     "topic": "유전의 기본 원리",
     "subject": "박상영T",
-    "question": "Aa × Aa의 자손에서 유전자형 비율은?",
+    "question": "각 대립유전자가 같은 확률로 전달될 때 Aa × Aa 자손의 기대 유전자형 비율은?",
     "answers": {
       "up": "AA:Aa:aa = 1:2:1",
       "left": "AA:Aa:aa = 3:0:1",
@@ -59,7 +59,7 @@ export const parkCards: SwipeCard[] = [
       "down": "AA:Aa:aa = 2:1:1"
     },
     "correct": "up",
-    "explanation": "각 부모가 A와 a 생식세포를 같은 확률로 만들어 AA 1/4, Aa 1/2, aa 1/4이다.",
+    "explanation": "각 부모가 A와 a를 같은 확률로 전달하고 무작위로 수정된다고 가정하면 AA 1/4, Aa 1/2, aa 1/4이다. 이는 기대 확률이며, 적은 수의 실제 자손이 반드시 같은 비율로 나오는 것은 아니다.",
     "sourceNote": "박상영T 필기 · 1쪽"
   },
   {
@@ -1279,95 +1279,5 @@ export const joCards: SwipeCard[] = [
     "correct": "up",
     "explanation": "원핵에는 핵막이 없어 전사 중인 mRNA에 리보솜이 결합할 수 있다.",
     "sourceNote": "유전자의 발현 수업자료 · 25쪽"
-  },
-  {
-    "id": "biology-jo-040",
-    "topic": "유전자 발현 조절",
-    "subject": "조용민T",
-    "question": "자료의 오페론 구성 요소에 포함되지 않는 것은?",
-    "answers": {
-      "up": "조절 유전자",
-      "left": "프로모터",
-      "right": "작동자",
-      "down": "구조 유전자"
-    },
-    "correct": "up",
-    "explanation": "조절 유전자는 억제 단백질 등을 만들지만 자료에서는 오페론 자체의 구성 요소와 구별된다.",
-    "sourceNote": "유전자의 발현 수업자료 · 27쪽"
-  },
-  {
-    "id": "biology-jo-041",
-    "topic": "유전자 발현 조절",
-    "subject": "조용민T",
-    "question": "젖당이 없을 때 lac 억제 단백질은?",
-    "answers": {
-      "up": "작동자에 결합",
-      "left": "항상 분해됨",
-      "right": "CAP에만 결합",
-      "down": "리보솜에 결합"
-    },
-    "correct": "up",
-    "explanation": "억제 단백질이 작동자에 결합해 구조 유전자 전사를 억제한다.",
-    "sourceNote": "유전자의 발현 수업자료 · 28쪽"
-  },
-  {
-    "id": "biology-jo-042",
-    "topic": "유전자 발현 조절",
-    "subject": "조용민T",
-    "question": "젖당 존재가 lac 억제를 풀어 주는 방식은?",
-    "answers": {
-      "up": "유도물질이 억제 단백질에 결합",
-      "left": "젖당이 RNA 중합효소를 분해",
-      "right": "젖당이 DNA를 절단",
-      "down": "젖당이 종결 코돈을 제거"
-    },
-    "correct": "up",
-    "explanation": "젖당에서 유래한 알로락토스가 억제 단백질에 결합하여 작동자 결합을 약화시킨다.",
-    "sourceNote": "유전자의 발현 수업자료 · 28쪽"
-  },
-  {
-    "id": "biology-jo-043",
-    "topic": "유전자 발현 조절",
-    "subject": "조용민T",
-    "question": "lac 오페론이 가장 강하게 발현되는 조건은?",
-    "answers": {
-      "up": "젖당 있음·포도당 없음",
-      "left": "젖당 없음·포도당 있음",
-      "right": "둘 다 없음",
-      "down": "둘 다 많음"
-    },
-    "correct": "up",
-    "explanation": "억제가 풀리고 높은 cAMP에 의해 CAP가 활성화되어 RNA 중합효소의 프로모터 결합을 촉진한다.",
-    "sourceNote": "유전자의 발현 수업자료 · 29쪽"
-  },
-  {
-    "id": "biology-jo-044",
-    "topic": "유전자 발현 조절",
-    "subject": "조용민T",
-    "question": "포도당 농도가 낮을 때 일반적으로 cAMP와 CAP의 상태는?",
-    "answers": {
-      "up": "cAMP 증가·CAP 활성화",
-      "left": "cAMP 감소·CAP 활성화",
-      "right": "cAMP 증가·CAP 비활성화",
-      "down": "둘 다 항상 분해"
-    },
-    "correct": "up",
-    "explanation": "포도당 감소 시 cAMP가 증가하고 cAMP–CAP 복합체가 전사를 촉진한다.",
-    "sourceNote": "유전자의 발현 수업자료 · 29쪽"
-  },
-  {
-    "id": "biology-jo-045",
-    "topic": "유전자 발현 조절",
-    "subject": "조용민T",
-    "question": "젖당과 포도당이 모두 있을 때 lac 발현은?",
-    "answers": {
-      "up": "최대 발현보다 낮음",
-      "left": "반드시 최대 발현",
-      "right": "억제 단백질이 항상 작동자에 결합",
-      "down": "DNA가 삭제되어 영구 정지"
-    },
-    "correct": "up",
-    "explanation": "젖당으로 억제가 풀려도 포도당이 있으면 CAP에 의한 활성화가 약해 발현이 낮다.",
-    "sourceNote": "유전자의 발현 수업자료 · 29쪽"
   }
 ];

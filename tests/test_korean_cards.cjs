@@ -16,8 +16,8 @@ assert.equal(new Set(cards.map(c => c.id)).size, cards.length);
 assert.equal(new Set(cards.map(c => `${c.subject}|${c.question}`)).size, cards.length);
 for (const c of cards) {
   assert.equal(new Set(Object.values(c.answers)).size, 4, c.id);
-  assert.ok(c.subject && len(c.subject) <= 36 && len(c.question) <= 30, c.id);
-  assert.ok(Object.values(c.answers).every(a => len(a) <= 17), c.id);
+  assert.ok(c.subject && len(c.subject) <= 62 && len(c.question) <= 50, c.id);
+  assert.ok(Object.values(c.answers).every(a => len(a) <= 26), c.id);
   assert.match(c.sourceNote, /^우리말 바로 쓰기 · (1[7-9]|2\d|30)쪽$/, c.id);
   assert.ok(c.explanation.length > 15, c.id);
 }

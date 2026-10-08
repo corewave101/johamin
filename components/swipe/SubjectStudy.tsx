@@ -40,12 +40,11 @@ export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBa
         <h1 ref={title} tabIndex={-1}>{deck.fullName ?? deck.name}{mode === 'written' ? ' · 서술형' : mode === 'concept' ? ' · 개념 정리' : ''}</h1>
       </header>
       {mode === 'menu' ? <section className="biology-menu glass" aria-label="학습 메뉴">
-        <span className="edition-badge">STUDY STUDIO · 3.0</span>
         <h2>{pending ? '준비 중' : '개념부터, 문제까지'}</h2><p>{deck.description}</p>
         {pending ? <p className="study-scope">아직 자료가 없어요. 수업 자료가 들어오면 개념과 문제를 추가할게요.</p> : <>
         <button type="button" className="biology-mode" onClick={() => setMode('concept')}><strong>개념 파트 · {lessons.length}단원</strong><span>핵심 설명 · 비교·예시 · 주의할 점 · 단원 검색</span></button>
         <button type="button" className="biology-mode" onClick={() => { setTopics([]); setWrittenTopic(''); setIndex(0); setMode('problems'); }}><strong>문제 파트 · 객관식 {deck.cards.length} / 서술형 {allWritten.length}</strong><span>단원별 객관식 · 해설과 오답 재출제 · 서술형 직접 채점</span></button>
-        {deck.id === 'biology-park' && <div className="term-launch"><span>NEW · 교사용 유전학 용어 22개</span><p>정의부터 구별까지, 첨부 자료만 따로 연습해요.</p><div><button type="button" onClick={() => { setTopics(['유전학 핵심 용어']); setMode('choice'); }}>객관식 22문제 →</button><button type="button" onClick={() => { setWrittenTopic('유전학 핵심 용어'); setIndex(0); setMode('written'); }}>서술형 22문제 →</button></div></div>}
+        {deck.id === 'biology-park' && <div className="concept-section"><h3>교사용 유전학 용어 22개</h3><p>정의부터 구별까지, 첨부 자료만 따로 연습해요.</p><div><button type="button" className="biology-mode" onClick={() => { setTopics(['유전학 핵심 용어']); setMode('choice'); }}>객관식 22문제 →</button><button type="button" className="biology-mode" onClick={() => { setWrittenTopic('유전학 핵심 용어'); setIndex(0); setMode('written'); }}>서술형 22문제 →</button></div></div>}
         <p className="biology-note">객관식 정답·오답 기록은 이 기기에 저장돼요. 개념 학습 표시와 서술형 답안은 새로고침하거나 과목·파트를 나가면 초기화돼요.</p></>}
       </section> : mode === 'concept' ? <ConceptReader read={read} setRead={setRead} lessons={lessons} onPractice={keys => { setTopics(keys); setMode('problems'); }} />
       : mode === 'problems' ? <section className="biology-menu glass" aria-label="문제 유형 선택">

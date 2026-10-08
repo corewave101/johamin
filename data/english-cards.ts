@@ -37,7 +37,7 @@ const rows: Row[] = [
   ['Göbekli Tepe', 'Amazingly, though, they moved 16-ton stones.', '여기서 though의 뜻과 품사는?', ['그러나 (부사)', '비록 ~이지만 (접속사)', '마치 ~처럼 (접속사)', '그러므로 (부사)'], '콤마 사이에 홀로 쓰인 though는 부사로 "그러나, 하지만"(=however)이다. 뒤에 절을 이끌지 않는다.', '학습지1 · 2쪽'],
   ['Göbekli Tepe', 'Amazingly, though, they moved 16-ton stones.', 'though와 바꿔 쓸 수 있는 말은?', ['however', 'although', 'as if', 'therefore'], '문장 중간 콤마 사이의 though는 부사 however와 같다. although는 절을 이끄는 접속사라 이 자리에 쓸 수 없다.', '학습지1 · 2쪽'],
   ['Göbekli Tepe', 'They found pillars similar to Göbekli Tepe’s.', 'Göbekli Tepe’s 뒤에 생략된 말은?', ['pillars', 'builders', 'areas', 'workers'], '앞에 나온 pillars가 반복되지 않도록 생략했다. Göbekli Tepe’s (pillars)와 비슷한 기둥이다.', '학습지1 · 2쪽'],
-  ['Göbekli Tepe', 'It’s as though it were a cathedral.', 'as though와 같은 뜻의 표현은?', ['as if', 'even though', 'even if', 'as long as'], 'as though = as if(마치 ~인 것처럼). even though = even if(비록 ~일지라도)와 구분한다.', '학습지1 · 2쪽'],
+  ['Göbekli Tepe', 'It’s as though it were a cathedral.', 'as though와 같은 뜻의 표현은?', ['as if', 'even though', 'even if', 'as long as'], 'as though와 as if는 마치 ~인 것처럼이라는 뜻이다. even though는 사실을 인정하는 양보, even if는 가정 조건의 양보이므로 서로 구별한다.', '학습지1 · 2쪽'],
   ['Göbekli Tepe', 'It’s as though it were a cathedral.', '이 문장의 뜻은?', ['마치 대성당인 것 같다', '비록 대성당이지만', '대성당이었기 때문에', '대성당이 되기 위해'], 'as though + 가정법 과거(were)는 "마치 ~인 것처럼"이다. 실제 대성당은 아니다.', '학습지1 · 2쪽'],
   ['Göbekli Tepe', 'The tallest pillars are 5.5 meters in height.', 'in height의 뜻은?', ['높이가', '무게가', '너비가', '깊이가'], 'in height는 "높이가"다. 무게는 weigh, 너비는 in width를 쓴다.', '학습지1 · 2쪽'],
   ['Göbekli Tepe', 'The pillar weighs over 14 tons.', 'weighs의 뜻은?', ['무게가 나간다', '기다린다', '길을 막는다', '높이가 된다'], 'weigh는 "무게가 ~이다, 무게를 재다"다. wait(기다리다), way(길)와 소리가 비슷하다.', '학습지1 · 2쪽'],
@@ -185,7 +185,7 @@ const rows: Row[] = [
   ['측정의 일관성', 'some degree of consistency', 'some degree of의 뜻은?', ['어느 정도의', '학위가 있는', '몇 도의', '단계별'], 'degree는 "정도, 학위, 온도의 도" 등 뜻이 여럿이다. some degree of = 어느 정도의.', '학습지4 · 2쪽'],
   ['측정의 일관성', 'As with words, units need definitions.', 'As with의 뜻은?', ['~와 마찬가지로', '~와 함께', '~ 때문에', '~이므로'], 'as with ~ = ~와 마찬가지로, ~처럼. 낱말과 마찬가지로 단위도 정의가 필요하다.', '학습지4 · 2쪽'],
   // ── 공통 문법·독해 ────────────────────────────────────────────────
-  ['공통 문법·독해', 'Even though it was old, the pillar still stood.', 'Even though의 뜻은?', ['비록 ~이지만', '마치 ~처럼', '~이기 때문에', '~하는 동안'], 'even though = even if(비록 ~일지라도). as though = as if(마치 ~처럼)와 구분한다.', '학습지1 · 2쪽'],
+  ['공통 문법·독해', 'Even though it was old, the pillar still stood.', 'Even though의 뜻은?', ['비록 ~이지만', '마치 ~처럼', '~이기 때문에', '~하는 동안'], 'even though는 이미 사실인 내용을 인정하면서 예상과 다른 결과를 말한다. even if는 사실 여부와 관계없이 가정 조건을 말한다. 이 문장에서는 낡았다는 사실과 여전히 서 있었다는 결과가 대조된다.', '학습지1 · 2쪽'],
   ['공통 문법·독해', 'He left early so that he could catch the bus.', 'so that의 뜻은?', ['~하기 위해서', '너무 ~해서', '그래서 결국', '~에도 불구하고'], 'so that + 주어 + can/could = ~하기 위해서(목적). so + 형용사/부사 + that(너무 ~해서)과 구분한다.', '학습지1 · 3쪽'],
   ['공통 문법·독해', 'It was on the third day that the first crack appeared.', '이 문장의 구조는?', ['It ~ that 강조 구문', '가주어·진주어', '가정법 과거', '분사구문'], 'It was ~ that 사이에 강조할 말(on the third day)을 넣은 강조 구문이다. 바로 사흘째 되는 날에 처음 금이 갔다.', '학습지3 · 1쪽'],
 ];
