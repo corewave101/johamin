@@ -1,3 +1,4 @@
+import { passageFor } from './english-passages';
 import type { Direction, SwipeCard } from './swipe-cards';
 
 // 영어 학습지 1~4(Dalia Jin)의 파란 글씨 문법 포인트와 단어장으로 만든 4지선다.
@@ -192,7 +193,7 @@ const rows: Row[] = [
 const directions: Direction[] = ['up', 'left', 'right', 'down'];
 export const englishCards: SwipeCard[] = rows.map(([topic, shown, question, choices, explanation, sourceNote], index) => ({
   id: `english-${String(index + 1).padStart(3, '0')}`,
-  topic, subject: shown, question,
+  topic, subject: shown, question, passage: passageFor(topic, shown, sourceNote),
   answers: Object.fromEntries(directions.map((direction, i) => [direction, choices[i]])) as Record<Direction, string>,
   correct: 'up', explanation, sourceNote,
 }));

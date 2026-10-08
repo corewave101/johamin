@@ -42,7 +42,7 @@ for (const card of englishCards) {
   assert.ok(card.answers[card.correct] && card.sourceNote && card.explanation.length > 15);
   // Self-contained: the sentence or word being asked about is printed on the card itself.
   assert.ok(card.subject && card.subject.length <= 62 && card.question.length <= 34, card.id);
-  assert.ok(!card.passage && !/지문에서|본문에서|윗글/.test(card.question), card.id);
+  assert.ok(card.passage && card.passage.includes(card.subject), card.id);
   assert.ok(Object.values(card.answers).every(a => a.length <= 26), card.id);
 }
 for (const q of englishWritten) assert.ok(q.modelAnswer && q.criteria.length === 3 && q.sourceNote);

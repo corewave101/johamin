@@ -55,6 +55,15 @@
 검증: `node tests/test_study_content.cjs`, `node tests/test_study_render.cjs`, 기존 `tests/test_*.cjs`, `npm run build`.
 GitHub Pages는 `.github/workflows/deploy.yml`에서 main push 시 전체 데이터 테스트와 빌드 후 배포합니다.
 
+## Study Studio (3.0)
+
+박상영T 학습 메뉴의 **유전학 용어**에서 객관식 22문제와 서술형 22문제를 따로 시작합니다. 전체 문제에도 포함되며, 개념 파트에 교사용 자료의 22개 정의와 주의점이 있습니다.
+조용민T 범위는 PPT 오페론(29쪽)까지이며 뒤쪽 자료는 개념·객관식·서술형에서 제외합니다.
+영어 문제 화면에는 관련 본문과 문제 대상 문장·표현을 표시합니다. 원문 문맥에 연결된 문법 연습 예문은 본문과 구별해 표시합니다.
+카드의 인물은 수업 선생님이 아닌 관련 역사적 학자·작가입니다. 출처는 카드 아래 링크에 있고, 이미지 원본은 `public/portraits/`, 목록은 `data/card-portraits.ts`입니다. 원본 복구는 `node scripts/fetch-portraits.cjs`로 할 수 있습니다.
+수업 범위와 영어 지문 수정은 이전 DB·기기 캐시보다 우선 적용됩니다. DB의 추가 문항은 유지하지만 조용민T 29쪽 이후는 제외합니다.
+검증: `node tests/test_studio_upgrade.cjs`, 전체 `tests/test_*.cjs`, `npm run build`.
+
 ## 가호 (2.0)
 
 - 하민의 가호(기본): 마을 영상, 조하민 카드, 황금색, 갑툭튀. 가호 없음: 푸른 기본 화면. 다른 가호: 각자 만든 배경·카드 사진·색·동전 글자(갑툭튀 없음).

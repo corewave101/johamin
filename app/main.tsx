@@ -10,6 +10,7 @@ import SwipeGame from '../components/swipe/SwipeGame';
 import './globals.css';
 import './scene.css';
 import './swipe.css';
+import './studio.css';
 import './intro.css';
 import './blessing.css';
 

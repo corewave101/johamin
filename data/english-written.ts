@@ -1,3 +1,4 @@
+import { passageFor } from './english-passages';
 import type { WrittenQuestion } from './biology-written';
 
 // 영어 학습지 1~4의 파란 글씨 문법 포인트로 만든 서술형. 풀이에 필요한 문장은 모두 문제 안에 들어 있다.
@@ -54,5 +55,5 @@ const rows: Row[] = [
 ];
 
 export const englishWritten: WrittenQuestion[] = rows.map(([topic, question, modelAnswer, criteria, sourceNote], i) => ({
-  id: `english-written-${String(i + 1).padStart(3, '0')}`, topic, question, modelAnswer, criteria, sourceNote,
+  id: `english-written-${String(i + 1).padStart(3, '0')}`, topic, question, modelAnswer, criteria, sourceNote, passage: passageFor(topic, question, sourceNote),
 }));

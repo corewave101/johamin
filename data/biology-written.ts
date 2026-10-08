@@ -1,4 +1,4 @@
-export interface WrittenQuestion { id: string; topic: string; question: string; modelAnswer: string; criteria: string[]; sourceNote: string }
+export interface WrittenQuestion { id: string; topic: string; question: string; modelAnswer: string; criteria: string[]; sourceNote: string; passage?: string }
 export const parkWritten: WrittenQuestion[] = [
   {
     "id": "park-written-001",
@@ -301,53 +301,5 @@ export const joWritten: WrittenQuestion[] = [
       "젖당만 있는 최대 발현과 CAP–cAMP"
     ],
     "sourceNote": "유전자의 발현 수업자료 · 29쪽"
-  },
-  {
-    "id": "jo-written-012",
-    "topic": "유전자 발현 조절",
-    "question": "히스톤 아세틸화와 프로모터 부근 DNA 메틸화의 일반적인 효과를 비교하시오.",
-    "modelAnswer": "히스톤 아세틸화는 DNA와 히스톤의 상호작용을 약하게 해 염색질 접근성을 높이고 전사를 촉진하는 경향이 있다. 프로모터 부근의 DNA 메틸화는 보통 전사 억제와 관련된다. 이러한 효과는 위치와 세포 맥락에 따라 달라질 수 있다.",
-    "criteria": [
-      "히스톤 아세틸화와 접근성",
-      "프로모터 메틸화와 억제",
-      "일반적 경향이라는 조건"
-    ],
-    "sourceNote": "유전자의 발현 수업자료 · 31쪽"
-  },
-  {
-    "id": "jo-written-013",
-    "topic": "유전자 발현 조절",
-    "question": "선택적 스플라이싱이 단백질 다양성을 높이는 원리를 설명하시오.",
-    "modelAnswer": "하나의 pre-mRNA에서 포함하는 엑손 조합을 달리하면 여러 성숙 mRNA가 생성될 수 있다. 각 mRNA의 암호화 서열이 달라져 서로 다른 단백질 산물이 만들어질 수 있으므로 유전자 수를 늘리지 않고 산물 다양성을 높인다.",
-    "criteria": [
-      "하나의 pre-mRNA",
-      "다른 엑손 조합과 성숙 mRNA",
-      "유전자 수 증가 없이 다양성"
-    ],
-    "sourceNote": "유전자의 발현 수업자료 · 35쪽"
-  },
-  {
-    "id": "jo-written-014",
-    "topic": "세포 분화와 발생",
-    "question": "같은 유전체를 가진 세포들이 서로 다른 구조와 기능을 갖는 이유를 전사 인자·MyoD·Hox와 연결하시오.",
-    "modelAnswer": "대부분의 유핵 체세포는 같은 유전체를 갖지만 전사 인자의 조합에 따라 발현하는 유전자와 단백질이 달라진다. MyoD는 근육 관련 유전자 발현을 조절하고 Hox는 부위별 발현을 통해 체절의 정체성과 구조 형성을 조절한다.",
-    "criteria": [
-      "같은 유전체와 선택적 발현",
-      "MyoD 근육 분화",
-      "Hox 부위 정체성"
-    ],
-    "sourceNote": "유전자의 발현 수업자료 · 39쪽"
-  },
-  {
-    "id": "jo-written-015",
-    "topic": "세포 분화와 발생",
-    "question": "배아줄기세포와 환자 유래 iPS 세포의 공통점·제작 과정·기대 장점을 설명하시오.",
-    "modelAnswer": "둘 다 다양한 체세포 계통으로 분화할 수 있는 다형성능을 가진다. iPS는 분화된 체세포에 특정 재프로그래밍 인자를 도입해 만든다. 환자 자신의 세포로 만들면 배아 사용에 따른 윤리적 부담과 면역 부적합 위험을 줄일 수 있으나 안전성 검증은 여전히 필요하다.",
-    "criteria": [
-      "공통 다형성능",
-      "체세포 재프로그래밍",
-      "윤리·면역 장점과 안전성 한계"
-    ],
-    "sourceNote": "유전자의 발현 수업자료 · 44쪽"
   }
 ];

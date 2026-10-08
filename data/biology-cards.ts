@@ -763,7 +763,7 @@ export const joCards: SwipeCard[] = [
     "answers": {
       "up": "코돈에 맞는 아미노산 운반",
       "left": "DNA 복제",
-      "right": "히스톤 아세틸화",
+      "right": "리보솜 소단위체 조립",
       "down": "인트론만 분해"
     },
     "correct": "up",
@@ -1039,21 +1039,6 @@ export const joCards: SwipeCard[] = [
     "correct": "up",
     "explanation": "5′·3′ UTR은 성숙 mRNA에 남아 번역과 안정성 등의 조절에 관여한다.",
     "sourceNote": "유전자의 발현 수업자료 · 12쪽"
-  },
-  {
-    "id": "biology-jo-023",
-    "topic": "RNA 가공",
-    "subject": "조용민T",
-    "question": "선택적 스플라이싱의 결과는?",
-    "answers": {
-      "up": "한 pre-mRNA에서 여러 성숙 mRNA",
-      "left": "DNA 유전자 수만 증가",
-      "right": "모든 단백질이 동일",
-      "down": "리보솜 수가 절반"
-    },
-    "correct": "up",
-    "explanation": "엑손 조합을 달리하여 한 유전자에서 다양한 mRNA와 단백질 산물이 만들어질 수 있다.",
-    "sourceNote": "유전자의 발현 수업자료 · 35쪽"
   },
   {
     "id": "biology-jo-024",
@@ -1384,140 +1369,5 @@ export const joCards: SwipeCard[] = [
     "correct": "up",
     "explanation": "젖당으로 억제가 풀려도 포도당이 있으면 CAP에 의한 활성화가 약해 발현이 낮다.",
     "sourceNote": "유전자의 발현 수업자료 · 29쪽"
-  },
-  {
-    "id": "biology-jo-046",
-    "topic": "유전자 발현 조절",
-    "subject": "조용민T",
-    "question": "히스톤 아세틸화의 일반적인 효과는?",
-    "answers": {
-      "up": "염색질이 풀려 전사 증가",
-      "left": "항상 전사 완전 차단",
-      "right": "염색체 수 증가",
-      "down": "DNA의 U 함량 증가"
-    },
-    "correct": "up",
-    "explanation": "히스톤 아세틸화는 DNA와의 결합을 약화시켜 전사 접근성을 높이는 경향이 있다.",
-    "sourceNote": "유전자의 발현 수업자료 · 31쪽"
-  },
-  {
-    "id": "biology-jo-047",
-    "topic": "유전자 발현 조절",
-    "subject": "조용민T",
-    "question": "프로모터 부근 DNA 메틸화의 일반적인 효과는?",
-    "answers": {
-      "up": "전사 억제",
-      "left": "항상 번역 증가",
-      "right": "DNA가 RNA로 바뀜",
-      "down": "리보솜 수 증가"
-    },
-    "correct": "up",
-    "explanation": "조절 부위의 DNA 메틸화는 보통 유전자 발현 억제와 관련된다. 모든 위치에 같은 규칙을 적용하지는 않는다.",
-    "sourceNote": "유전자의 발현 수업자료 · 32쪽"
-  },
-  {
-    "id": "biology-jo-048",
-    "topic": "유전자 발현 조절",
-    "subject": "조용민T",
-    "question": "인핸서에 대한 설명으로 옳은 것은?",
-    "answers": {
-      "up": "유전자에서 멀리 떨어져 있을 수도 있음",
-      "left": "반드시 시작 코돈 바로 옆",
-      "right": "항상 단백질로 구성",
-      "down": "모든 세포에서 같은 활성"
-    },
-    "correct": "up",
-    "explanation": "인핸서는 상류·하류·인트론 등에 존재할 수 있고 특정 활성자의 결합으로 전사를 조절한다.",
-    "sourceNote": "유전자의 발현 수업자료 · 33쪽"
-  },
-  {
-    "id": "biology-jo-049",
-    "topic": "유전자 발현 조절",
-    "subject": "조용민T",
-    "question": "진핵의 유전자 발현 조절은 언제 가능한가?",
-    "answers": {
-      "up": "전사부터 단백질 분해까지 여러 단계",
-      "left": "오직 전사 개시 때만",
-      "right": "오직 수정 때만",
-      "down": "DNA 비분리 때만"
-    },
-    "correct": "up",
-    "explanation": "염색질, 전사, RNA 가공, 번역, 번역 후 가공과 분해에서 조절할 수 있다.",
-    "sourceNote": "유전자의 발현 수업자료 · 30쪽"
-  },
-  {
-    "id": "biology-jo-050",
-    "topic": "세포 분화와 발생",
-    "subject": "조용민T",
-    "question": "같은 개체의 근육세포와 신경세포가 다른 주된 이유는?",
-    "answers": {
-      "up": "발현하는 유전자 조합이 다름",
-      "left": "모든 DNA 서열이 완전히 다름",
-      "right": "세포마다 유전 암호표가 다름",
-      "down": "한쪽에는 DNA가 전혀 없음"
-    },
-    "correct": "up",
-    "explanation": "대부분의 유핵 체세포는 같은 유전체를 공유하지만 선택적으로 발현하는 유전자와 단백질이 다르다.",
-    "sourceNote": "유전자의 발현 수업자료 · 39쪽"
-  },
-  {
-    "id": "biology-jo-051",
-    "topic": "세포 분화와 발생",
-    "subject": "조용민T",
-    "question": "myoD 유전자가 만드는 핵심 조절 산물의 기능은?",
-    "answers": {
-      "up": "근육 관련 유전자 전사 조절",
-      "left": "젖당 분해",
-      "right": "모든 인트론 제거",
-      "down": "염색체 수 증가"
-    },
-    "correct": "up",
-    "explanation": "MyoD는 근육 분화에 관여하는 전사 인자로 관련 유전자 발현을 조절한다.",
-    "sourceNote": "유전자의 발현 수업자료 · 40쪽"
-  },
-  {
-    "id": "biology-jo-052",
-    "topic": "세포 분화와 발생",
-    "subject": "조용민T",
-    "question": "Hox 유전자의 대표적인 역할은?",
-    "answers": {
-      "up": "몸의 부위 정체성과 배치 조절",
-      "left": "코돈별 아미노산 직접 운반",
-      "right": "모든 mRNA의 꼬리 합성",
-      "down": "DNA 인산 표지"
-    },
-    "correct": "up",
-    "explanation": "체절별 Hox 발현 차이가 각 부위의 구조 형성에 관여한다.",
-    "sourceNote": "유전자의 발현 수업자료 · 43쪽"
-  },
-  {
-    "id": "biology-jo-053",
-    "topic": "세포 분화와 발생",
-    "subject": "조용민T",
-    "question": "유도 만능 줄기세포(iPS)의 제작 원리는?",
-    "answers": {
-      "up": "분화된 체세포를 재프로그래밍",
-      "left": "적혈구에 단백질만 저장",
-      "right": "모든 DNA를 제거",
-      "down": "감수분열을 멈춤"
-    },
-    "correct": "up",
-    "explanation": "특정 인자를 도입해 체세포를 다형성능을 가진 상태로 되돌린다.",
-    "sourceNote": "유전자의 발현 수업자료 · 44쪽"
-  },
-  {
-    "id": "biology-jo-054",
-    "topic": "세포 분화와 발생",
-    "subject": "조용민T",
-    "question": "환자 유래 iPS 세포의 기대 장점은?",
-    "answers": {
-      "up": "면역 부적합 위험을 줄일 수 있음",
-      "left": "모든 임상 위험이 사라짐",
-      "right": "암 발생 가능성이 항상 0",
-      "down": "모든 세포가 수정란이 됨"
-    },
-    "correct": "up",
-    "explanation": "환자 자신의 체세포를 사용하면 면역 부적합을 줄일 수 있으나 안전성과 품질 검증이 필요하다.",
-    "sourceNote": "유전자의 발현 수업자료 · 44쪽"
   }
 ];

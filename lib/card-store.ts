@@ -33,7 +33,7 @@ export function rowToCard(row: CardRow): SwipeCard {
 }
 
 export const rowToWritten = (row: CardRow): WrittenQuestion =>
-  ({ id: row.id, topic: row.topic, question: row.question, modelAnswer: row.answer, criteria: row.criteria, sourceNote: noteOf(row) });
+  ({ id: row.id, topic: row.topic, question: row.question, modelAnswer: row.answer, criteria: row.criteria, sourceNote: noteOf(row), ...(row.passage ? { passage: row.passage } : {}) });
 
 export function groupRows(rows: CardRow[]): LiveDecks {
   const decks: LiveDecks = {};
@@ -47,9 +47,21 @@ export function groupRows(rows: CardRow[]): LiveDecks {
 
 /** Returns a copy of the menu where every deck found in the database uses the database cards. */
 export function withLiveCards(menu: SubjectGroup, live: LiveDecks): SubjectGroup {
-  const swap = (node: SubjectNode): SubjectNode => node.kind === 'group'
-    ? { ...node, children: node.children.map(swap) }
-    : live[node.id] ? { ...node, cards: live[node.id].cards, writtenQuestions: live[node.id].written.length ? live[node.id].written : node.writtenQuestions } : node;
+  const swap = (node: SubjectNode): SubjectNode => {
+    if (node.kind === 'group') return { ...node, children: node.children.map(swap) };
+    const incoming = live[node.id];
+    if (!incoming) return node;
+    // Published scope/passage fixes must survive a stale database or device cache.
+    if (['biology-jo', 'biology-park', 'english'].includes(node.id)) {
+      const merge = <T extends { id: string }>(bundled: T[], remote: T[]) => {
+        const known = new Set(bundled.map(q => q.id));
+        return [...bundled, ...remote.filter(q => !known.has(q.id) && (node.id !== 'biology-jo' || !/^biology-jo-|^jo-written-/.test(q.id)))];
+      };
+      const inScope = <T extends { sourceNote?: string; source?: { page: number } }>(q: T) => node.id !== 'biology-jo' || (q.source?.page ?? Number(q.sourceNote?.match(/(\d+)쪽/)?.[1] ?? 0)) <= 29;
+      return { ...node, cards: merge(node.cards, incoming.cards.filter(inScope)), writtenQuestions: merge(node.writtenQuestions ?? [], incoming.written.filter(inScope)) };
+    }
+    return { ...node, cards: incoming.cards, writtenQuestions: incoming.written.length ? incoming.written : node.writtenQuestions };
+  };
   return swap(menu) as SubjectGroup;
 }
 

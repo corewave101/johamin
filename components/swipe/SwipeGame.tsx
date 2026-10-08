@@ -117,7 +117,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
 
   return <main className={`swipe-app ${onBack ? 'swipe-study' : ''}`}>
     <StreakFlame streak={game.streak} />
-    <div className="swipe-game">
+    <div className={`swipe-game ${card?.passage ? 'has-passage' : ''}`}>
       <header className="swipe-heading"><h1 className="glass">조하민<span>레츠고</span></h1></header>
       <div className="swipe-deck-bar glass">
         {onBack && <button type="button" className="glass-button" onClick={onBack}>{backLabel}</button>}
@@ -127,7 +127,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
           <span className="swipe-progress-row">{game.mastered.length} / {cards.length}</span>
         </div>
       </div>
-      {card?.passage && <details key={card.id} open className="swipe-reading glass"><summary>문제 지문 · 펼치기/접기</summary><p>{card.passage}</p></details>}
+      {card?.passage && <details key={card.id} open className="swipe-reading glass"><summary>READ & SOLVE · 문제 지문</summary><small>본문을 읽고 아래 카드의 문장·표현을 확인하세요.</small><p lang="en">{card.passage}</p></details>}
       {finished ? <section className="swipe-complete glass" aria-label="최종 결과">
         <h2>깔끔하게 털었다!</h2>
         <p>{cards.length}장 완료 · 총 {game.attempts.length}번 선택</p>
@@ -145,13 +145,13 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
           {game.queue.length > 1 && <div className="swipe-under swipe-under-one" />}
           <LaminatedCard key={`${card.id}-${game.attempts.length}`} className={`is-current ${pointer.current ? 'is-dragging' : ''}`}
             style={{ '--tx': `${drag.x}px`, '--ty': `${drag.y}px`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
-            topic={card.topic} subject={card.subject} question={card.question}
+            topic={card.topic} subject={card.subject} question={card.question} portraitKey={deckId}
             onPointerDown={press} onPointerMove={move} onPointerUp={release} onPointerCancel={cancel}>
             {activeDirection && <div className={`swipe-drag-label ${distance >= SWIPE_DISTANCE ? 'is-ready' : ''}`}>{arrows[activeDirection]} {card.answers[activeDirection]}</div>}
           </LaminatedCard>
           {flight && <LaminatedCard key={flight.id} aria-hidden="true" className={`swipe-flying fly-${flight.direction}`}
             style={{ '--fx': `${flight.from.x}px`, '--fy': `${flight.from.y}px`, '--fr': `${flight.from.x / 22}deg` } as CSSProperties}
-            topic={flight.card.topic} subject={flight.card.subject} question={flight.card.question} />}
+            topic={flight.card.topic} subject={flight.card.subject} question={flight.card.question} portraitKey={deckId} />}
         </div>
       </section>}
       {!finished && <button type="button" className="swipe-skip glass" onClick={() => choose('unknown')}>모름 <kbd>Space</kbd></button>}
