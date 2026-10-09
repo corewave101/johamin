@@ -1,6 +1,5 @@
 // 베타 테스트: features still being tried out. Turned on/off from the update log (v0.0.-1), saved on this device.
-//   - 카드 펼쳐 고르기: the main menu lays every part out as cards to pick one directly
-//   - 가로 화면 해설 카드: on wide landscape screens the answered card flips to its back (explanation) on the right
+//   - 첫 화면 실습: ↑ opens 황윤환T 관측 실습 (the 카드 패 and 해설 카드 became regular features in 3.4.1)
 const KEY = 'johamin-beta';
 const listeners = new Set<(on: boolean) => void>();
 let on = (() => { try { return localStorage.getItem(KEY) === '1'; } catch { return false; } })();

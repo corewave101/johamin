@@ -1,4 +1,4 @@
-// 베타 · 카드 패: a subject's menu held as a hand of cards (the same laminated cards as the questions), fanned in an arc.
+// 카드 패: a subject's menu held as a hand of cards (the same laminated cards as the questions), fanned in an arc.
 //   ← → (or slide a finger across the hand) moves to the next card, ↑ / Enter / flicking the card up plays it,
 //   ↓ / Esc goes back. A mouse click plays a card; on touch the first tap lifts it and the second tap (or a flick up) plays it.
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
@@ -105,7 +105,6 @@ export default function CardHand({ deckName, prompt, cards, onBack, backLabel, s
       <div className="swipe-deck-bar glass">
         <button type="button" className="glass-button" onClick={onBack}>← {backLabel}</button>
         <strong>{deckName}</strong>
-        <span className="hand-beta">베타</span>
       </div>
       <p className="hand-prompt">{prompt}</p>
       <div className="hand" ref={hand} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={() => { drag.current = null; }}
