@@ -8,7 +8,8 @@ import { recordStreak } from '../../lib/best-streak';
 import { IDLE_MS, LEAVE_CHANCE, newTracker, scareForAnswer, triggerCustomScare, triggerScare } from '../../lib/jumpscare';
 import { customScareForAnswer, newCustomTracker } from '../../lib/custom-scares';
 import { getTheme } from '../../lib/theme';
-import { answerCard, getStats, newGame, type AnswerChoice } from '../../lib/swipe-game';
+import { answerCard, getStats, newGame, type AnswerChoice, type Attempt } from '../../lib/swipe-game';
+import { betaOn } from '../../lib/beta';
 import LaminatedCard from './LaminatedCard';
 import { useBeta } from './useBeta';
 import StreakFlame from './StreakFlame';
@@ -16,6 +17,25 @@ import StreakFlame from './StreakFlame';
 type Offset = { x: number; y: number };
 type Flight = { card: SwipeCard; direction: Direction; id: number; from: Offset };
 const FLIGHT_MS = 380;
+const OPPOSITE: Record<Direction, Direction> = { up: 'down', down: 'up', left: 'right', right: 'left' };
+const verdictOf = (a: Attempt) => a.direction === 'unknown' ? '모름 · 다시 나와요' : a.correct ? '정답' : `오답 · 정답은 ${a.card.answers[a.card.correct]}`;
+const toneOf = (a: Attempt) => a.direction === 'unknown' ? 'unknown' : a.correct ? 'correct' : 'wrong';
+
+/** 베타 · 해설 카드: the back of the answered card, laid on top of the deck. */
+function BackFace({ attempt }: { attempt: Attempt }) {
+  const c = attempt.card;
+  return <>
+    <div className="back-top"><span className="swipe-result-icon" aria-hidden="true">{attempt.direction === 'unknown' ? '?' : attempt.correct ? '✓' : '✕'}</span><strong>{verdictOf(attempt)}</strong></div>
+    <div className="back-body">
+      <p className="back-question">{c.subject ? `${c.subject} · ` : ''}{c.question}</p>
+      <p className="back-explanation">{c.explanation}</p>
+      {c.sourceNote && <p className="back-source">{c.sourceNote}</p>}
+      {c.sourceSlide && <p className="back-source">황윤환T · 슬라이드 {c.sourceSlide}</p>}
+      {c.source && <p className="back-source">{c.source.teacher && `${c.source.teacher} · `}{c.source.label ?? c.source.title.split('_')[0]} · PDF {c.source.page}쪽</p>}
+    </div>
+    <p className="back-hint">아무 방향으로 넘기면 다음 카드</p>
+  </>;
+}
 
 export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱', deckId, onBack, backLabel = '← 과목' }: { cards?: SwipeCard[]; deckName?: string; deckId?: string; onBack?: () => void; backLabel?: string }) {
   const [game, setGame] = useState(() => newGame(cards));
@@ -41,26 +61,32 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const [view, setView] = useState(answerView);
   useEffect(() => onAnswerViewChange(setView), []);
   const hidden = view === 'hidden';
-  const beta = useBeta(); // 베타 · 가로 화면 해설 카드 (CSS: wide landscape only)
-  const gameEl = useRef<HTMLDivElement>(null);
-  const stackEl = useRef<HTMLDivElement>(null);
-  // The back card copies the card stack's size and height on screen (card size setting included).
-  useEffect(() => {
-    if (!beta) return;
-    const measure = () => {
-      const game = gameEl.current, stack = stackEl.current;
-      if (!game || !stack) return;
-      const g = game.getBoundingClientRect(), r = stack.getBoundingClientRect();
-      game.style.setProperty('--back-top', `${Math.round(r.top - g.top)}px`);
-      game.style.setProperty('--back-w', `${Math.round(r.width)}px`);
-      game.style.setProperty('--back-h', `${Math.round(r.height)}px`);
-    };
-    measure();
-    window.addEventListener('resize', measure);
-    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
-    if (observer && stackEl.current) observer.observe(stackEl.current);
-    return () => { window.removeEventListener('resize', measure); observer?.disconnect(); };
-  }, [beta, Boolean(card?.passage)]);
+  const beta = useBeta();
+  // 베타 · 해설 카드: after an answer, the card's back comes in from the opposite side and lies on top of the deck.
+  // Throw it any way (swipe, arrow, Space/Enter, or any answer button) to reach the next card.
+  const [back, setBack] = useState<{ id: number; from: Direction } | null>(null);
+  const backRef = useRef(back);
+  backRef.current = back;
+  const [backDrag, setBackDrag] = useState<Offset>({ x: 0, y: 0 });
+  const backDragRef = useRef<Offset>({ x: 0, y: 0 });
+  const backPointer = useRef<{ id: number; x: number; y: number } | null>(null);
+  const [thrown, setThrown] = useState<{ id: number; dir: Direction; from: Offset; attempt: Attempt } | null>(null);
+  const thrownTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const moveBack = (offset: Offset) => { backDragRef.current = offset; setBackDrag(offset); };
+  const throwBack = useCallback((dir: Direction) => {
+    const attempt = gameRef.current.attempts.at(-1);
+    if (!backRef.current || !attempt) return;
+    const now = performance.now();
+    setThrown({ id: now, dir, from: backDragRef.current, attempt });
+    clearTimeout(thrownTimer.current);
+    thrownTimer.current = setTimeout(() => setThrown(null), FLIGHT_MS);
+    backRef.current = null;
+    setBack(null);
+    backPointer.current = null;
+    moveBack({ x: 0, y: 0 });
+    playSwipe(dir);
+    started.current = now; // reading the explanation does not count toward the next answer's time
+  }, []);
   const [peek, setPeek] = useState<Direction | null>(null);
   const peekRef = useRef<Direction | null>(null);
   peekRef.current = peek;
@@ -70,6 +96,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const moveCard = (offset: Offset) => { dragRef.current = offset; setDrag(offset); };
 
   const choose = useCallback((direction: AnswerChoice) => {
+    if (backRef.current) { throwBack(direction === 'unknown' ? 'down' : direction); return; }
     const current = gameRef.current;
     if (!current.queue.length) return;
     const now = performance.now();
@@ -103,15 +130,24 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     pointer.current = null;
     setPeek(null);
     moveCard({ x: 0, y: 0 });
-  }, []);
+    if (betaOn() && next.queue.length) { const b = { id: now, from: OPPOSITE[flyTo] }; backRef.current = b; setBack(b); }
+  }, [throwBack]);
   /** In 가리고 밀기, the first press of a direction only brings its answer into focus; the same direction again (or Enter) answers. */
   const pick = useCallback((direction: Direction) => {
+    if (backRef.current) { throwBack(direction); return; }
     if (answerView() === 'hidden' && peekRef.current !== direction) { setPeek(direction); return; }
     choose(direction);
-  }, [choose]);
+  }, [choose, throwBack]);
 
   useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {
+      if (backRef.current && !isTyping(event)) {
+        const dir = keyDirections[event.key] ?? (event.code === 'Space' || event.key === 'Enter' ? 'up' : null);
+        if (!dir || (event.key === 'Enter' && event.target instanceof HTMLButtonElement)) return;
+        event.preventDefault();
+        if (!event.repeat) throwBack(dir);
+        return;
+      }
       if (event.key === 'Enter' && peekRef.current && !isTyping(event) && !(event.target instanceof HTMLButtonElement) && gameRef.current.queue.length) {
         event.preventDefault();
         if (!event.repeat) choose(peekRef.current);
@@ -125,8 +161,10 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
       else pick(direction);
     };
     window.addEventListener('keydown', handleKey);
-    return () => { window.removeEventListener('keydown', handleKey); clearTimeout(flightTimer.current); };
-  }, [choose, pick]);
+    return () => { window.removeEventListener('keydown', handleKey); clearTimeout(flightTimer.current); clearTimeout(thrownTimer.current); };
+  }, [choose, pick, throwBack]);
+  // Turning beta off while a back card lies on the deck just clears it.
+  useEffect(() => { if (!beta && backRef.current) { backRef.current = null; setBack(null); } }, [beta]);
 
   // 9: five minutes on one card. 10: leaving a game in progress.
   const cardKey = card ? `${card.id}-${game.attempts.length}` : '';
@@ -186,7 +224,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
 
   return <main className={`swipe-app ${onBack ? 'swipe-study' : ''}`}>
     <StreakFlame streak={game.streak} />
-    <div ref={gameEl} className={`swipe-game ${card?.passage ? 'has-passage' : ''} ${beta ? 'is-beta' : ''} ${beta && last ? 'has-back' : ''}`}>
+    <div className={`swipe-game ${card?.passage ? 'has-passage' : ''} ${beta ? 'is-beta' : ''} ${finished ? 'is-finished' : ''}`}>
       <div className="swipe-main">
       <header className="swipe-heading"><h1 className="glass">조하민<span>레츠고</span></h1></header>
       <div className="swipe-deck-bar glass">
@@ -208,9 +246,9 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
         </div>
         <button type="button" className="swipe-restart" onClick={restart}>한 판 더</button>
       </section>
-      : <section className={`swipe-board ${hidden ? 'answers-hidden' : ''} ${revealed ? 'is-pulling' : ''}`} aria-label="방향을 선택해 답하기" style={{ '--pull': pull.toFixed(3) } as CSSProperties}>
+      : <section className={`swipe-board ${hidden ? 'answers-hidden' : ''} ${revealed ? 'is-pulling' : ''} ${back ? 'has-back' : ''}`} aria-label="방향을 선택해 답하기" style={{ '--pull': pull.toFixed(3) } as CSSProperties}>
         {directions.map(direction => <button type="button" key={direction} className={`swipe-option glass swipe-option-${direction} ${activeDirection === direction ? 'is-active' : ''} ${revealed === direction ? 'is-revealed' : ''}`} onClick={() => pick(direction)} aria-label={`${arrows[direction]} ${card.answers[direction]}`}><kbd>{arrows[direction]}</kbd><span>{card.answers[direction]}</span>{hidden && peek === direction && !activeDirection && <small className="peek-hint">한 번 더 · Enter</small>}</button>)}
-        <div className="swipe-stack" ref={stackEl}>
+        <div className="swipe-stack">
           {game.queue.length > 2 && <div className="swipe-under swipe-under-two" />}
           {game.queue.length > 1 && <div className="swipe-under swipe-under-one" />}
           <LaminatedCard key={`${card.id}-${game.attempts.length}`} className={`is-current ${pointer.current ? 'is-dragging' : ''}`}
@@ -223,6 +261,18 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
           {flight && <LaminatedCard key={flight.id} aria-hidden="true" className={`swipe-flying fly-${flight.direction}`}
             style={{ '--fx': `calc(${flight.from.x}px / var(--card-zoom, 1))`, '--fy': `calc(${flight.from.y}px / var(--card-zoom, 1))`, '--fr': `${flight.from.x / 22}deg` } as CSSProperties}
             topic={flight.card.topic} subject={flight.card.subject} question={flight.card.question} />}
+          {back && last && <article key={back.id} className={`swipe-card swipe-back from-${back.from} back-${toneOf(last)} ${backPointer.current ? 'is-dragging' : ''}`} aria-label="해설 카드"
+            style={{ '--tx': `calc(${backDrag.x}px / var(--card-zoom, 1))`, '--ty': `calc(${backDrag.y}px / var(--card-zoom, 1))`, '--rot': `${backDrag.x / 22}deg` } as CSSProperties}
+            onPointerDown={event => { if (!event.isPrimary || event.button !== 0) return; backPointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId); }}
+            onPointerMove={event => { const b = backPointer.current; if (!b || b.id !== event.pointerId) return; moveBack({ x: event.clientX - b.x, y: event.clientY - b.y }); }}
+            onPointerUp={event => { const b = backPointer.current; if (!b || b.id !== event.pointerId) return; const x = event.clientX - b.x, y = event.clientY - b.y; backPointer.current = null; if (Math.hypot(x, y) >= SWIPE_DISTANCE) { backDragRef.current = { x, y }; throwBack(directionOf(x, y)); } else moveBack({ x: 0, y: 0 }); }}
+            onPointerCancel={() => { backPointer.current = null; moveBack({ x: 0, y: 0 }); }}>
+            <BackFace attempt={last} />
+          </article>}
+          {thrown && <article key={thrown.id} aria-hidden="true" className={`swipe-card swipe-back back-${toneOf(thrown.attempt)} swipe-flying fly-${thrown.dir}`}
+            style={{ '--fx': `calc(${thrown.from.x}px / var(--card-zoom, 1))`, '--fy': `calc(${thrown.from.y}px / var(--card-zoom, 1))`, '--fr': `${thrown.from.x / 22}deg` } as CSSProperties}>
+            <BackFace attempt={thrown.attempt} />
+          </article>}
         </div>
       </section>}
       {!finished && <div className="swipe-actions">

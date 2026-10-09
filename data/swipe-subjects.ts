@@ -26,7 +26,7 @@ export const subjectMenu: SubjectGroup = {
       { id: 'social', kind: 'deck', name: '사회', fullName: '사회(성신제)', direction: 'left', symbol: '◎', description: '세계화·국제 갈등·평화·정의관·불평등을 꼬아서.', cards: socialCards },
       { id: 'english', kind: 'deck', name: '영어', direction: 'right', symbol: 'A', description: '고대 건축물·Bartleby·가정법·예술과 측정.', cards: englishCards, writtenQuestions: englishWritten },
     ] },
-    { id: 'science', kind: 'group', name: '과학', direction: 'up', symbol: '✳', description: '생물 · 지구과학 · 물리학Ⅱ를 골라요.', children: [
+    { id: 'science', kind: 'group', name: '과학', direction: 'right', symbol: '✳', description: '생물 · 지구과학 · 물리학Ⅱ를 골라요.', children: [
     { id: 'biology', kind: 'group', name: '생물', direction: 'up', symbol: '✳', description: '선생님별 객관식과 서술형 연습.', children: [
       { id: 'biology-jo', kind: 'deck', name: '조용민T', fullName: '생물(조용민T)', direction: 'left', symbol: '✳', description: '전사·RNA 가공·번역까지. 오페론부터 제외.', cards: joCards, writtenQuestions: joWritten },
       { id: 'biology-park', kind: 'deck', name: '박상영T', fullName: '생물(박상영T)', direction: 'right', symbol: '✳', description: '유전 법칙·사람의 유전·돌연변이·유전 물질 + 교사용 핵심 용어 22개.', cards: [...parkCards, ...geneticsCards], writtenQuestions: [...parkWritten, ...geneticsWritten] },
