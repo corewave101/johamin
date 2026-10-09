@@ -9,9 +9,7 @@ import { IDLE_MS, LEAVE_CHANCE, newTracker, scareForAnswer, triggerCustomScare, 
 import { customScareForAnswer, newCustomTracker } from '../../lib/custom-scares';
 import { getTheme } from '../../lib/theme';
 import { answerCard, getStats, newGame, type AnswerChoice, type Attempt } from '../../lib/swipe-game';
-import { betaOn } from '../../lib/beta';
 import LaminatedCard from './LaminatedCard';
-import { useBeta } from './useBeta';
 import StreakFlame from './StreakFlame';
 
 type Offset = { x: number; y: number };
@@ -61,8 +59,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const [view, setView] = useState(answerView);
   useEffect(() => onAnswerViewChange(setView), []);
   const hidden = view === 'hidden';
-  const beta = useBeta();
-  // 베타 · 해설 카드: after an answer, the card's back comes in from the opposite side and lies on top of the deck.
+  // 해설 카드: after an answer, the card's back comes in from the opposite side and lies on top of the deck.
   // Throw it any way (swipe, arrow, Space/Enter, or any answer button) to reach the next card.
   const [back, setBack] = useState<{ id: number; from: Direction } | null>(null);
   const backRef = useRef(back);
@@ -130,7 +127,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     pointer.current = null;
     setPeek(null);
     moveCard({ x: 0, y: 0 });
-    if (betaOn() && next.queue.length) { const b = { id: now, from: OPPOSITE[flyTo] }; backRef.current = b; setBack(b); }
+    if (next.queue.length) { const b = { id: now, from: OPPOSITE[flyTo] }; backRef.current = b; setBack(b); }
   }, [throwBack]);
   /** In 가리고 밀기, the first press of a direction only brings its answer into focus; the same direction again (or Enter) answers. */
   const pick = useCallback((direction: Direction) => {
@@ -163,8 +160,6 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     window.addEventListener('keydown', handleKey);
     return () => { window.removeEventListener('keydown', handleKey); clearTimeout(flightTimer.current); clearTimeout(thrownTimer.current); };
   }, [choose, pick, throwBack]);
-  // Turning beta off while a back card lies on the deck just clears it.
-  useEffect(() => { if (!beta && backRef.current) { backRef.current = null; setBack(null); } }, [beta]);
 
   // 9: five minutes on one card. 10: leaving a game in progress.
   const cardKey = card ? `${card.id}-${game.attempts.length}` : '';
@@ -224,7 +219,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
 
   return <main className={`swipe-app ${onBack ? 'swipe-study' : ''}`}>
     <StreakFlame streak={game.streak} />
-    <div className={`swipe-game ${card?.passage ? 'has-passage' : ''} ${beta ? 'is-beta' : ''} ${finished ? 'is-finished' : ''}`}>
+    <div className={`swipe-game ${card?.passage ? 'has-passage' : ''} ${finished ? 'is-finished' : ''}`}>
       <div className="swipe-main">
       <header className="swipe-heading"><h1 className="glass">조하민<span>레츠고</span></h1></header>
       <div className="swipe-deck-bar glass">

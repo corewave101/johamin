@@ -1,4 +1,5 @@
-// 베타 테스트: the switch lives in the update log (v0.0.-1); with it on, a subject's menus become a hand of cards.
+// 베타 테스트: the switch lives in the update log (v0.0.-1). Since 3.4.1 the 카드 패 and 해설 카드 are regular features;
+// only the first-screen 실습 is still behind the switch.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const ts = require('typescript');
@@ -19,11 +20,16 @@ const React = require('react'), { renderToStaticMarkup } = require('react-dom/se
 const SubjectStudy = require('../components/swipe/SubjectStudy.tsx').default;
 const social = subjectDecks.find(d => d.id === 'social');
 const render = () => renderToStaticMarkup(React.createElement(SubjectStudy, { deck: social, onBack: () => {} }));
-assert.ok(!betaOn() && render().includes('문제 파트'), 'beta off: the usual menu');
-setBeta(true);
+assert.ok(!betaOn());
 const hand = render();
 const cards = (hand.match(/class="hand-card/g) ?? []).length;
-assert.ok(cards >= 3 && hand.includes('개념 정리') && hand.includes('전체 풀기') && hand.includes('단원 골라 풀기'), 'beta on: the menu is a hand of cards');
+assert.ok(cards >= 3 && hand.includes('개념 정리') && hand.includes('전체 풀기') && hand.includes('단원 골라 풀기'), 'beta off: the menu is already a hand of cards');
 assert.ok(hand.includes('aria-selected="true"') && hand.includes('전체 풀기 고르기'), 'the second card (전체 풀기) starts lifted');
+assert.ok(!hand.includes('hand-beta'), 'no 베타 badge on the hand any more');
+setBeta(true);
+assert.equal(render(), hand, 'the switch no longer changes the subject menu');
+// SwipeGame and SubjectStudy no longer read the switch; only the first-screen 실습 does.
+for (const f of ['SwipeGame.tsx', 'SubjectStudy.tsx', 'CardHand.tsx']) assert.ok(!/useBeta|betaOn/.test(fs.readFileSync('components/swipe/' + f, 'utf8')), f);
+assert.ok(/useBeta/.test(fs.readFileSync('components/swipe/SubjectPicker.tsx', 'utf8')), '실습 stays behind the switch');
 setBeta(false);
-console.log(`PASS: beta switch at v0.0.-1, version shown as "3.3.0 베타.1", subject menu becomes a ${cards}-card hand with beta on.`);
+console.log(`PASS: beta switch at v0.0.-1, version shown as "3.3.0 베타.1", subject menu is a ${cards}-card hand without beta; the switch only gates 실습.`);

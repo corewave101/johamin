@@ -509,12 +509,12 @@
 .back-hint { margin-top: 8px; text-align: center; font-size: 11px; font-weight: 700; color: var(--ink-soft); }
 .swipe-board.has-back .swipe-option { opacity: .55; }
 /* The result box below is not needed while the back card shows it (kept for screen readers). */
-.swipe-game.is-beta:not(.is-finished) > .swipe-feedback { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: 0; overflow: hidden; clip: rect(0 0 0 0); border: 0; }
+.swipe-game:not(.is-finished) > .swipe-feedback { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: 0; overflow: hidden; clip: rect(0 0 0 0); border: 0; }
 /* Swiped cards blur as they fade. */
-.swipe-game.is-beta .fly-right { animation-name: fly-right, fly-fade, fly-blur; }
-.swipe-game.is-beta .fly-left { animation-name: fly-left, fly-fade, fly-blur; }
-.swipe-game.is-beta .fly-up { animation-name: fly-up, fly-fade, fly-blur; }
-.swipe-game.is-beta .fly-down { animation-name: fly-down, fly-fade, fly-blur; }
+.swipe-game .fly-right { animation-name: fly-right, fly-fade, fly-blur; }
+.swipe-game .fly-left { animation-name: fly-left, fly-fade, fly-blur; }
+.swipe-game .fly-up { animation-name: fly-up, fly-fade, fly-blur; }
+.swipe-game .fly-down { animation-name: fly-down, fly-fade, fly-blur; }
 @keyframes fly-blur { to { filter: blur(12px); } }
 @media (max-width: 600px) { .swipe-back { padding: 13px 13px 10px; } .back-explanation { font-size: 14px; } .back-top strong { font-size: 15px; } }
 @media (prefers-reduced-motion: reduce) { .swipe-back { animation: none; } }
@@ -529,7 +529,6 @@
 /* ===== 베타 · 카드 패 (components/swipe/CardHand.tsx): a subject's menu as a fanned hand of laminated cards ===== */
 .hand-game { display: grid; justify-items: center; }
 .hand-game .swipe-deck-bar { width: 100%; }
-.hand-beta { margin-left: auto; padding: 1px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; background: var(--theme-base, #e8b931); color: var(--theme-ink, #4a2b00); position: relative; }
 .hand-prompt { margin: 14px 0 0; padding: 4px 14px; border-radius: 999px; font-size: 15px; font-weight: 800; color: #fff; background: rgba(20, 28, 40, .36); text-shadow: 0 1px 2px rgba(0, 0, 0, .4); }
 .hand { --card-h: calc(var(--card-w) * 370 / 300); position: relative; width: 100%; height: calc(var(--card-h) + var(--rows-extra, 0px) + 110px); margin-top: 34px; touch-action: pan-y; user-select: none; -webkit-user-select: none; zoom: var(--card-zoom, 1); }
 .hand-card { position: absolute; left: 50%; bottom: 52px; width: var(--card-w); height: var(--card-h); margin-left: calc(var(--card-w) / -2); z-index: var(--z);

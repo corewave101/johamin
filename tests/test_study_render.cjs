@@ -18,8 +18,10 @@ for (const deck of subjectDecks) {
     assert.ok(menu.includes('↑ 개념 정리') && menu.includes('← 문제 풀기') && menu.includes('→ 원문 단어장') && menu.includes('↓ 과목·파트'), deck.id);
     assert.ok(menu.includes(`객관식 ${general} · 서술형 ${written}`), deck.id);
   } else {
-    assert.ok(menu.includes('개념 파트') && menu.includes('문제 파트'), deck.id);
-    assert.ok(menu.includes(`${deck.cards.length} / 서술형`), deck.id);
+    // 카드 패 (3.4.1부터 기본): 개념 정리 · 전체 풀기 · 단원 골라 풀기 (+ 서술형 쓰기)
+    assert.ok(menu.includes('class="hand-card') && menu.includes('개념 정리') && menu.includes('전체 풀기') && menu.includes('단원 골라 풀기'), deck.id);
+    assert.ok(menu.includes(`${deck.cards.length}문제`), deck.id);
+    if (deck.writtenQuestions?.length) assert.ok(menu.includes('서술형 쓰기') && menu.includes(`${deck.writtenQuestions.length}문제`), deck.id);
   }
   const lessons = conceptsFor(deck.id);
   const markup = renderToStaticMarkup(React.createElement(ConceptReader, { lessons, onPractice: () => {}, read: [lessons[0].id], setRead: () => {} }));
@@ -27,4 +29,4 @@ for (const deck of subjectDecks) {
   assert.ok(markup.includes('aria-current="true"') && markup.includes('aria-pressed="true"'), deck.id);
   assert.ok(markup.includes(lessons[0].title));
 }
-console.log('PASS: all subject menus render concept/problem choices and counts; concept search, active chapter, retained read marker, practice link and the waiting notice for empty Korean parts render correctly.');
+console.log('PASS: all subject menus render as card hands with concept/problem choices and counts; concept search, active chapter, retained read marker, practice link and the waiting notice for empty Korean parts render correctly.');
