@@ -55,7 +55,8 @@ export default function CardHand({ deckName, prompt, cards, onBack, backLabel, s
   }, [at, play, step, onBack]);
 
   // Fan: spacing shrinks as the hand grows so it always fits; the angle shrinks too.
-  // More than 10 cards → two rows, then one more row for every 7 cards. Back rows sit higher and behind.
+  // More than 10 cards → two rows, then one more row for every 7 cards. Upper rows sit higher and on top,
+  // so the lower row's captions show below them and the upper row's captions overlap only the lower row's photos.
   const n = cards.length;
   const rows = n > 10 ? Math.ceil(n / 7) : 1;
   const perRow = Math.ceil(n / rows);
@@ -116,7 +117,7 @@ export default function CardHand({ deckName, prompt, cards, onBack, backLabel, s
           const lifted = i === at;
           const style = {
             '--x': `${offset * gap}px`, '--r': `${offset * angle}deg`,
-            '--y': `${offset * offset * drop - (rows - 1 - row) * rowStep}px`, '--z': lifted ? 100 : row * 20 + col,
+            '--y': `${offset * offset * drop - (rows - 1 - row) * rowStep}px`, '--z': lifted ? 100 : (rows - 1 - row) * 20 + col, // upper rows lie on top so every row's caption shows
           } as CSSProperties;
           return <div key={card.id} id={`hand-${card.id}`} data-i={i} role="option" aria-selected={lifted} aria-disabled={card.disabled || undefined}
             className={`hand-card ${lifted ? 'is-lifted' : ''} ${played === i ? 'is-played' : ''} ${card.disabled ? 'is-disabled' : ''}`} style={style}>
