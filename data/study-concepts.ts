@@ -1,4 +1,5 @@
 import { physicsConcepts } from './physics-concepts';
+import { socialJoConcepts } from './social-jo-concepts';
 export interface ConceptSection {
   heading: string;
   paragraphs?: string[];
@@ -14,6 +15,7 @@ export interface ConceptLesson {
 }
 export const studyConcepts: ConceptLesson[] = [
   ...physicsConcepts,
+  ...socialJoConcepts,
   {
     "id": "biology-jo-concept-1",
     "deckId": "biology-jo",

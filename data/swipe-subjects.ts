@@ -4,6 +4,7 @@ import type { Direction, SwipeCard } from './swipe-cards';
 import { astronomyCards } from './astronomy-cards';
 import { jeonCards } from './jeon-cards';
 import { socialCards } from './social-cards';
+import { socialJoCards, socialJoWritten } from './social-jo-cards';
 import { englishCards } from './english-cards';
 import { englishWritten } from './english-written';
 import { koreanGrammarCards, koreanGrammarWritten } from './korean-cards';
@@ -23,7 +24,10 @@ export const subjectMenu: SubjectGroup = {
         { id: 'korean-grammar', kind: 'deck', name: '문법', fullName: '국어(문법)', direction: 'up', symbol: '가', description: '우리말 바로 쓰기: 한글 맞춤법·띄어쓰기·헷갈리는 표기.', cards: koreanGrammarCards, writtenQuestions: koreanGrammarWritten },
         { id: 'korean-classic', kind: 'deck', name: '고전 시가', fullName: '국어(고전 시가)', direction: 'right', symbol: '가', description: '수업 자료를 기다리는 중.', cards: [] },
       ] },
-      { id: 'social', kind: 'deck', name: '사회', fullName: '사회(성신제)', direction: 'left', symbol: '◎', description: '세계화·국제 갈등·평화·정의관·불평등을 꼬아서.', cards: socialCards },
+      { id: 'social-group', kind: 'group', name: '사회', direction: 'left', symbol: '◎', description: '왼쪽은 성신제T, 오른쪽은 조안나T. 공부할 파트를 골라요.', children: [
+        { id: 'social', kind: 'deck', name: '성신제T', fullName: '사회(성신제T)', direction: 'left', symbol: '◎', description: '세계화·국제 갈등·평화·정의관·불평등을 꼬아서.', cards: socialCards },
+        { id: 'social-jo', kind: 'deck', name: '조안나T', fullName: '사회(조안나T)', direction: 'right', symbol: '◎', description: '인권 보장과 헌법: 기본권·기본권 제한·권력 분립·헌법재판소.', cards: socialJoCards, writtenQuestions: socialJoWritten },
+      ] },
       { id: 'english', kind: 'deck', name: '영어', direction: 'right', symbol: 'A', description: '고대 건축물·Bartleby·가정법·예술과 측정.', cards: englishCards, writtenQuestions: englishWritten },
     ] },
     { id: 'science', kind: 'group', name: '과학', direction: 'right', symbol: '✳', description: '생물 · 지구과학 · 물리학Ⅱ를 골라요.', children: [
