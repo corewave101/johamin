@@ -42,7 +42,7 @@ assert.equal(JSON.stringify(jeonCards), snapshot);
     await page.goto((process.env.JOHAMIN_TEST_URL || 'http://127.0.0.1:5180') + '/?v=jeon#johamin');
     await page.locator('.intro.is-ready .intro-button').click(); await page.locator('.intro').waitFor({ state: 'detached' });
     await page.getByRole('region', { name: '과목 선택 메뉴', exact: true }).waitFor();
-    await page.keyboard.press('ArrowRight'); await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowUp'); await page.keyboard.press('ArrowLeft'); await page.keyboard.press('ArrowRight');
     await page.getByRole('button', { name: /문제 파트/ }).click();
     await page.getByRole('button', { name: /^객관식/ }).click();
     await page.locator('.swipe-deck-bar strong').filter({ hasText: '행성우주과학(전)' }).waitFor();

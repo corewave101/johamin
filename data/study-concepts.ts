@@ -1,3 +1,4 @@
+import { physicsConcepts } from './physics-concepts';
 export interface ConceptSection {
   heading: string;
   paragraphs?: string[];
@@ -8,9 +9,11 @@ export interface ConceptLesson {
   id: string; deckId: string; title: string; summary: string; sections: ConceptSection[];
   sourceNote: string; topicKeys: string[];
   resources?: { title: string; url: string; publisher: string; note: string }[];
+  examplesLabel?: string;
   examples?: { id: string; context: string; explanation: string; sourceNote: string }[];
 }
 export const studyConcepts: ConceptLesson[] = [
+  ...physicsConcepts,
   {
     "id": "biology-jo-concept-1",
     "deckId": "biology-jo",

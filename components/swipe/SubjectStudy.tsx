@@ -1,3 +1,4 @@
+import ObservationLab from './ObservationLab';
 import { useEffect, useRef, useState } from 'react';
 import type { SubjectDeck } from '../../data/swipe-subjects';
 import type { SwipeCard } from '../../data/swipe-cards';
@@ -17,7 +18,7 @@ export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBa
 }
 
 function GeneralStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
-  const [mode, setMode] = useState<'menu' | 'concept' | 'problems' | 'choice' | 'missed' | 'written'>('menu');
+  const [mode, setMode] = useState<'menu' | 'concept' | 'problems' | 'choice' | 'missed' | 'written' | 'practice'>('menu');
   const [retryCards, setRetryCards] = useState<SwipeCard[]>([]);
   const [read, setRead] = useState<string[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
@@ -38,12 +39,14 @@ function GeneralStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void 
   const gameBackLabel = beta ? '← 카드 패' : '← 문제 유형';
   if (mode === 'missed') return <SwipeGame cards={retryCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} />;
   if (mode === 'choice') return <SwipeGame cards={choiceCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} />;
+  if (mode === 'practice') return <ObservationLab onBack={() => setMode('menu')} />;
   const missed = missedCards(choiceCards);
   const name = deck.fullName ?? deck.name;
   if (beta && mode === 'menu' && !pending) {
     const missedAll = missedCards(generalCards);
     const topicCount = new Set(generalCards.map(card => card.topic)).size;
     const hand: HandCard[] = [
+      ...(deck.id === 'astronomy-hwang' ? [{ id: 'practice', kicker: '관측 실습', title: '직접 연습하기', note: '정렬 · 천구 좌표 · 기록', onPlay: () => setMode('practice') }] : []),
       { id: 'concept', kicker: '개념', title: '개념 정리', note: `${lessons.length}단원`, disabled: !lessons.length, onPlay: () => setMode('concept') },
       { id: 'all', kicker: '객관식', title: '전체 풀기', note: `${generalCards.length}문제 · 푼 문제 ${seenCount(generalCards)}`, disabled: !generalCards.length, onPlay: () => { setTopics([]); setMode('choice'); } },
       { id: 'topics', kicker: '객관식', title: '단원 골라 풀기', note: `${topicCount}단원`, disabled: !generalCards.length, onPlay: () => { setTopics([]); setMode('problems'); } },
@@ -73,6 +76,7 @@ function GeneralStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void 
         {pending ? <p className="study-scope">아직 자료가 없어요. 수업 자료가 들어오면 개념과 문제를 추가할게요.</p> : <>
         <button type="button" className="biology-mode" onClick={() => setMode('concept')}><strong>개념 파트 · {lessons.length}단원</strong><span>핵심 설명 · 비교·예시 · 주의할 점 · 단원 검색</span></button>
         <button type="button" className="biology-mode" onClick={() => { setTopics([]); setWrittenTopic(''); setWritten(w => ({ ...w, index: 0 })); setMode('problems'); }}><strong>문제 파트 · 객관식 {generalCards.length} / 서술형 {allWritten.length}</strong><span>단원별 객관식 · 해설과 오답 재출제 · 서술형 직접 채점</span></button>
+        {deck.id === 'astronomy-hwang' && <button type="button" className="biology-mode" onClick={() => setMode('practice')}><strong>관측 실습 · 직접 연습하기</strong><span>파인더 정렬 · 극축 정렬 원리 · 천구 좌표 · 연습 기록</span></button>}
         <p className="biology-note">객관식 정답·오답 기록은 이 기기에 저장돼요. 개념 학습 표시와 서술형 답안은 새로고침하거나 과목·파트를 나가면 초기화돼요.</p></>}
       </section> : mode === 'concept' ? <ConceptReader read={read} setRead={setRead} lessons={lessons} onPractice={keys => { setTopics(keys); setMode('problems'); }} />
       : mode === 'problems' ? <section className="biology-menu glass" aria-label="문제 유형 선택">
