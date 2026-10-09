@@ -253,10 +253,12 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
             {/* The sticker shows only while dragging; a key or tap preview shows its hint on the answer instead (so the card face stays clear). */}
             {activeDirection && <div className={`swipe-drag-label ${distance >= SWIPE_DISTANCE ? 'is-ready' : ''}`}>{arrows[activeDirection]} {card.answers[activeDirection]}{hidden && <small>{distance >= SWIPE_DISTANCE ? '놓으면 선택' : '더 밀면 선택'}</small>}</div>}
           </LaminatedCard>
-          {flight && <LaminatedCard key={flight.id} aria-hidden="true" className={`swipe-flying fly-${flight.direction}`}
+          {/* Each layer gets its own key prefix: the answer's flight and its back card share a timestamp, and a
+              duplicate key made React leave finished cards (with their blur animations) in the DOM. */}
+          {flight && <LaminatedCard key={`flight-${flight.id}`} aria-hidden="true" className={`swipe-flying fly-${flight.direction}`}
             style={{ '--fx': `calc(${flight.from.x}px / var(--card-zoom, 1))`, '--fy': `calc(${flight.from.y}px / var(--card-zoom, 1))`, '--fr': `${flight.from.x / 22}deg` } as CSSProperties}
             topic={flight.card.topic} subject={flight.card.subject} question={flight.card.question} />}
-          {back && last && <article key={back.id} className={`swipe-card swipe-back from-${back.from} back-${toneOf(last)} ${backPointer.current ? 'is-dragging' : ''}`} aria-label="해설 카드"
+          {back && last && <article key={`back-${back.id}`} className={`swipe-card swipe-back from-${back.from} back-${toneOf(last)} ${backPointer.current ? 'is-dragging' : ''}`} aria-label="해설 카드"
             style={{ '--tx': `calc(${backDrag.x}px / var(--card-zoom, 1))`, '--ty': `calc(${backDrag.y}px / var(--card-zoom, 1))`, '--rot': `${backDrag.x / 22}deg` } as CSSProperties}
             onPointerDown={event => { if (!event.isPrimary || event.button !== 0) return; backPointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId); }}
             onPointerMove={event => { const b = backPointer.current; if (!b || b.id !== event.pointerId) return; moveBack({ x: event.clientX - b.x, y: event.clientY - b.y }); }}
@@ -264,7 +266,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
             onPointerCancel={() => { backPointer.current = null; moveBack({ x: 0, y: 0 }); }}>
             <BackFace attempt={last} />
           </article>}
-          {thrown && <article key={thrown.id} aria-hidden="true" className={`swipe-card swipe-back back-${toneOf(thrown.attempt)} swipe-flying fly-${thrown.dir}`}
+          {thrown && <article key={`thrown-${thrown.id}`} aria-hidden="true" className={`swipe-card swipe-back back-${toneOf(thrown.attempt)} swipe-flying fly-${thrown.dir}`}
             style={{ '--fx': `calc(${thrown.from.x}px / var(--card-zoom, 1))`, '--fy': `calc(${thrown.from.y}px / var(--card-zoom, 1))`, '--fr': `${thrown.from.x / 22}deg` } as CSSProperties}>
             <BackFace attempt={thrown.attempt} />
           </article>}
