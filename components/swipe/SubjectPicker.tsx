@@ -4,7 +4,9 @@ import type { SubjectDeck, SubjectGroup } from '../../data/swipe-subjects';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playTick } from '../../lib/sound';
 import LaminatedCard from './LaminatedCard';
+import ObservationLab from './ObservationLab';
 import SubjectStudy from './SubjectStudy';
+import { useBeta } from './useBeta';
 import { findGroup, useLiveMenu } from './useLiveMenu';
 
 export default function SubjectPicker() {
@@ -14,25 +16,31 @@ export default function SubjectPicker() {
   const pointer = useRef<{ id: number; x: number; y: number } | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const menu = useLiveMenu();
+  // 베타 · 실습: the first screen's ↑ opens 황윤환T 관측 실습 directly.
+  const beta = useBeta();
+  const [lab, setLab] = useState(false);
+  const practiceSlot = beta && path.length === 0 && !menu.children.some(item => item.direction === 'up');
   const current = findGroup(menu, path.at(-1)?.id) ?? menu;
   const resetDrag = useCallback(() => { pointer.current = null; setDrag({ x: 0, y: 0 }); }, []);
   const back = useCallback(() => {
-    if (subject) setSubject(null);
+    if (lab) setLab(false);
+    else if (subject) setSubject(null);
     else setPath(previous => previous.slice(0, -1));
     playTick();
     resetDrag();
     requestAnimationFrame(() => heading.current?.focus());
-  }, [subject, resetDrag]);
+  }, [subject, lab, resetDrag]);
   const choose = useCallback((direction: Direction) => {
-    if (subject) return;
+    if (subject || lab) return;
     if (direction === 'down' && path.length) { back(); return; }
+    if (direction === 'up' && practiceSlot) { playTick(); setLab(true); resetDrag(); return; }
     const next = current.children.find(item => item.direction === direction);
     if (!next) return;
     playTick();
     if (next.kind === 'group') setPath(previous => [...previous, next]);
     else setSubject(next);
     resetDrag();
-  }, [subject, path.length, current, back, resetDrag]);
+  }, [subject, lab, practiceSlot, path.length, current, back, resetDrag]);
   useEffect(() => {
     const home = () => { setSubject(null); setPath([]); resetDrag(); };
     window.addEventListener('johamin:home', home);
@@ -45,13 +53,13 @@ export default function SubjectPicker() {
     const onKey = (event: KeyboardEvent) => {
       if (isTyping(event)) return;
       if (event.key === 'Escape' && (subject || path.length)) { event.preventDefault(); if (!event.repeat) back(); return; }
-      if (!keyDirections[event.key] || subject) return;
+      if (!keyDirections[event.key] || subject || lab) return;
       event.preventDefault();
       if (!event.repeat) choose(keyDirections[event.key]);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [choose, back, subject, path.length]);
+  }, [choose, back, subject, lab, path.length]);
   const move = (event: PointerEvent<HTMLElement>) => {
     if (!pointer.current || pointer.current.id !== event.pointerId) return;
     setDrag({ x: event.clientX - pointer.current.x, y: event.clientY - pointer.current.y });
@@ -65,22 +73,24 @@ export default function SubjectPicker() {
   const options = directions.map(direction => {
     const node = current.children.find(item => item.direction === direction);
     const isBack = direction === 'down' && path.length > 0;
-    return { direction, node, enabled: Boolean(node || isBack), label: node?.name ?? (isBack ? '이전' : '') };
+    const isPractice = direction === 'up' && practiceSlot;
+    return { direction, node, enabled: Boolean(node || isBack || isPractice), label: node?.name ?? (isBack ? '이전' : isPractice ? '실습' : ''), practice: isPractice };
   });
   const distance = Math.hypot(drag.x, drag.y);
   const activeDirection = distance > 18 ? directionOf(drag.x, drag.y) : null;
   const highlighted = options.find(item => item.direction === activeDirection && item.enabled);
+  if (lab) return <ObservationLab onBack={back} />;
   if (subject) return <SubjectStudy key={subject.id} deck={subject} onBack={back} />;
 
   return <main className="swipe-app subject-app">
     <div className="swipe-game">
       <header className="swipe-heading"><h1 className="glass" ref={heading} tabIndex={-1}>조하민<span>레츠고</span></h1></header>
       <section className="swipe-board" aria-label={`${current.name} 메뉴`}>
-        {options.map(({ direction, node, enabled, label }) => <button type="button" key={direction} disabled={!enabled}
+        {options.map(({ direction, node, enabled, label, practice }) => <button type="button" key={direction} disabled={!enabled}
           className={`swipe-option swipe-option-${direction} ${enabled ? 'glass' : 'swipe-empty-option'} ${activeDirection === direction && enabled ? 'is-active' : ''}`}
           onClick={() => choose(direction)} aria-label={enabled ? `${arrows[direction]} ${label}` : '빈 선택지'}>
           <kbd>{arrows[direction]}</kbd>
-          {enabled && <span>{label}{node?.kind === 'deck' && (node.cards.length > 0 ? <small>{node.cards.length}장</small> : !node.writtenQuestions?.length && <small>준비 중</small>)}</span>}
+          {enabled && <span>{label}{practice && <small>황윤환T 관측 · 베타</small>}{node?.kind === 'deck' && (node.cards.length > 0 ? <small>{node.cards.length}장</small> : !node.writtenQuestions?.length && <small>준비 중</small>)}</span>}
         </button>)}
         <div className="swipe-stack">
           <div className="swipe-under swipe-under-two" /><div className="swipe-under swipe-under-one" />

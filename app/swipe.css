@@ -486,50 +486,39 @@
 /* The left column of a game. Invisible to layout except in 베타 · 가로 화면 해설 카드. */
 .swipe-main { display: contents; }
 
-/* ===== 베타 · 가로 화면 해설 카드 =====
-   Wide landscape only. Before the first answer the card set stays centred; after it, the set slides a little left and
-   the answered card's back (the explanation), the same size as the card, is placed on the right.
-   The swiped card blurs and fades as it flies; the moment it is gone the back card zooms out into place.
-   --back-top / --back-w / --back-h are measured from the card stack (SwipeGame). */
-@media (orientation: landscape) and (min-width: 1000px) {
-  .swipe-app:has(> .swipe-game.is-beta:not(.has-passage)) { justify-items: center; padding-left: 24px; }
-  :root body .swipe-app > .swipe-game.is-beta:not(.has-passage) {
-    width: min(100%, calc(700px + var(--back-w, 300px))); margin-left: 0; display: grid; align-items: start;
-    grid-template-columns: minmax(0, 660px) var(--back-w, 300px); column-gap: 40px; }
-  .swipe-game.is-beta:not(.has-passage) .swipe-main { display: block; min-width: 0;
-    transform: translateX(calc((var(--back-w, 300px) + 40px) / 2)); transition: transform .55s cubic-bezier(.2, .9, .25, 1); }
-  .swipe-game.is-beta.has-back:not(.has-passage) .swipe-main { transform: none; }
-  /* The section is only a holder; each answer places a new card face in it. */
-  .swipe-game.is-beta:not(.has-passage) .swipe-feedback { grid-column: 2; grid-row: 1; width: 100%; height: var(--back-h, 370px); min-height: 0; margin: var(--back-top, 140px) 0 0; padding: 0;
-    background: none; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; opacity: 1; perspective: 1200px; }
-  .swipe-game.is-beta:not(.has-passage) .swipe-feedback::before { display: none; }
-  :root:root body .swipe-app > .swipe-game.is-beta:not(.has-passage) > .swipe-feedback { margin: var(--back-top, 140px) 0 0; overflow: visible; flex: none; } /* beats the fit-the-screen rule */
-  .swipe-game.is-beta:not(.has-back):not(.has-passage) .swipe-feedback { visibility: hidden; }
-  .swipe-game.is-beta:not(.has-passage) .swipe-feedback-face { box-sizing: border-box; height: 100%; overflow-y: auto; overscroll-behavior: contain;
-    padding: 20px 20px 18px; border-radius: 22px; border-top: 5px solid #8a7a66;
-    background: linear-gradient(160deg, rgba(255, 253, 248, .95), rgba(250, 244, 233, .9));
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .95), 0 0 0 1px rgba(120, 76, 36, .08), 0 28px 50px -24px rgba(70, 36, 10, .6), 0 8px 18px -8px rgba(70, 36, 10, .3);
-    animation: back-place .42s cubic-bezier(.2, .9, .25, 1) .34s both; }
-  .swipe-game.is-beta:not(.has-passage) .is-correct .swipe-feedback-face { border-top-color: #3f8f5a; }
-  .swipe-game.is-beta:not(.has-passage) .is-wrong .swipe-feedback-face { border-top-color: #b3263a; }
-  .swipe-game.is-beta:not(.has-passage) .swipe-feedback-top { padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px dashed rgba(90, 60, 30, .25); }
-  .swipe-game.is-beta:not(.has-passage) .swipe-feedback-top strong { font-size: 17px; line-height: 1.4; }
-  .swipe-game.is-beta:not(.has-passage) .swipe-result-icon { width: 28px; height: 28px; font-size: 14px; }
-  .swipe-game.is-beta:not(.has-passage) .swipe-previous { margin-top: 0; font-size: 13px; line-height: 1.55; }
-  .swipe-game.is-beta:not(.has-passage) .swipe-explanation { margin-top: 10px; font-size: 15px; line-height: 1.7; color: #2b2118; }
-  .swipe-game.is-beta:not(.has-passage) .swipe-source { margin-top: 12px; }
-  /* The swiped card blurs as it fades. */
-  .swipe-game.is-beta:not(.has-passage) .fly-right { animation-name: fly-right, fly-fade, fly-blur; }
-  .swipe-game.is-beta:not(.has-passage) .fly-left { animation-name: fly-left, fly-fade, fly-blur; }
-  .swipe-game.is-beta:not(.has-passage) .fly-up { animation-name: fly-up, fly-fade, fly-blur; }
-  .swipe-game.is-beta:not(.has-passage) .fly-down { animation-name: fly-down, fly-fade, fly-blur; }
-}
+/* ===== 베타 · 해설 카드: the answered card's back comes in from the opposite side and lies on top of the deck ===== */
+.swipe-back { z-index: 4; display: flex; flex-direction: column; padding: 16px 16px 12px; box-sizing: border-box; cursor: grab; color: #2b2118;
+  background: linear-gradient(160deg, #fffdf8, #f8f0e2); border-top: 5px solid #8a7a66; opacity: 1;
+  -webkit-backdrop-filter: none; backdrop-filter: none; animation: back-in .44s cubic-bezier(.2, .9, .25, 1) .1s backwards; }
+.swipe-back.back-correct { border-top-color: #3f8f5a; }
+.swipe-back.back-wrong { border-top-color: #b3263a; }
+.swipe-back.from-left { --bx: -125%; --by: 0%; --br: -9deg; }
+.swipe-back.from-right { --bx: 125%; --by: 0%; --br: 9deg; }
+.swipe-back.from-up { --bx: 0%; --by: -115%; --br: -4deg; }
+.swipe-back.from-down { --bx: 0%; --by: 115%; --br: 4deg; }
+@keyframes back-in { from { opacity: 0; transform: translate(var(--bx, 0%), var(--by, 0%)) rotate(var(--br, 0deg)) scale(.96); } 55% { opacity: 1; } }
+.swipe-back.swipe-flying { animation-delay: 0s; }
+.back-top { display: flex; align-items: flex-start; gap: 9px; padding-bottom: 9px; margin-bottom: 8px; border-bottom: 1px dashed rgba(90, 60, 30, .25); }
+.back-top strong { font-size: 16px; font-weight: 800; line-height: 1.4; word-break: keep-all; }
+.back-correct .swipe-result-icon { background: #3f8f5a; }
+.back-wrong .swipe-result-icon { background: #b3263a; }
+.back-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; }
+.back-question { font-size: 13px; line-height: 1.5; color: var(--ink-soft); word-break: keep-all; }
+.back-explanation { margin-top: 8px; font-size: 15px; line-height: 1.7; word-break: keep-all; }
+.back-source { margin-top: 8px; font-size: 11.5px; color: var(--ink-soft); }
+.back-hint { margin-top: 8px; text-align: center; font-size: 11px; font-weight: 700; color: var(--ink-soft); }
+.swipe-board.has-back .swipe-option { opacity: .55; }
+/* The result box below is not needed while the back card shows it (kept for screen readers). */
+.swipe-game.is-beta:not(.is-finished) > .swipe-feedback { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: 0; overflow: hidden; clip: rect(0 0 0 0); border: 0; }
+/* Swiped cards blur as they fade. */
+.swipe-game.is-beta .fly-right { animation-name: fly-right, fly-fade, fly-blur; }
+.swipe-game.is-beta .fly-left { animation-name: fly-left, fly-fade, fly-blur; }
+.swipe-game.is-beta .fly-up { animation-name: fly-up, fly-fade, fly-blur; }
+.swipe-game.is-beta .fly-down { animation-name: fly-down, fly-fade, fly-blur; }
 @keyframes fly-blur { to { filter: blur(12px); } }
-@keyframes back-place {
-  from { opacity: 0; transform: scale(1.22); filter: blur(6px); }
-  to { opacity: 1; transform: none; filter: none; }
-}
-@media (prefers-reduced-motion: reduce) { .swipe-feedback-face { animation: none !important; } }
+@media (max-width: 600px) { .swipe-back { padding: 13px 13px 10px; } .back-explanation { font-size: 14px; } .back-top strong { font-size: 15px; } }
+@media (prefers-reduced-motion: reduce) { .swipe-back { animation: none; } }
+
 
 /* 업데이트 기록 · 베타 스위치 */
 .update-log-beta { display: inline-block; padding: 4px 12px; border-radius: 999px; font: inherit; font-weight: 800; color: #1d4f8f; text-decoration: underline; text-underline-offset: 3px; background: rgba(29, 79, 143, .08); cursor: pointer; }
