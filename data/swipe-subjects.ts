@@ -8,6 +8,7 @@ import { socialJoCards, socialJoWritten } from './social-jo-cards';
 import { englishCards } from './english-cards';
 import { englishWritten } from './english-written';
 import { koreanGrammarCards, koreanGrammarWritten } from './korean-cards';
+import { koreanNewyorkCards, koreanNewyorkWritten } from './korean-newyork-cards';
 import { parkCards, joCards } from './biology-cards';
 import { geneticsCards, geneticsWritten } from './genetics-terms';
 import { parkWritten, joWritten, type WrittenQuestion } from './biology-written';
@@ -20,7 +21,7 @@ export const subjectMenu: SubjectGroup = {
   children: [
     { id: 'humanities', kind: 'group', name: '인문', direction: 'left', symbol: '가', description: '국어 · 사회 · 영어를 방향으로 골라요.', children: [
       { id: 'korean', kind: 'group', name: '국어', direction: 'up', symbol: '가', description: '뉴욕제과점 · 문법 · 고전 시가.', children: [
-        { id: 'korean-newyork', kind: 'deck', name: '뉴욕제과점', fullName: '국어(뉴욕제과점)', direction: 'left', symbol: '가', description: '수업 자료를 기다리는 중.', cards: [] },
+        { id: 'korean-newyork', kind: 'deck', name: '뉴욕제과점', fullName: '국어(뉴욕제과점)', direction: 'left', symbol: '가', description: '김연수 「뉴욕제과점」: 구절 풀이·어머니·결말의 깨달음.', cards: koreanNewyorkCards, writtenQuestions: koreanNewyorkWritten },
         { id: 'korean-grammar', kind: 'deck', name: '문법', fullName: '국어(문법)', direction: 'up', symbol: '가', description: '우리말 바로 쓰기: 한글 맞춤법·띄어쓰기·헷갈리는 표기.', cards: koreanGrammarCards, writtenQuestions: koreanGrammarWritten },
         { id: 'korean-classic', kind: 'deck', name: '고전 시가', fullName: '국어(고전 시가)', direction: 'right', symbol: '가', description: '수업 자료를 기다리는 중.', cards: [] },
       ] },

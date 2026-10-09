@@ -9,10 +9,10 @@ const { englishWritten } = require('../data/english-written.ts');
 const { newGame, answerCard } = require('../lib/swipe-game.ts');
 assert.equal(englishCards.length, 170);
 assert.equal(englishWritten.length, 16);
-assert.equal(studyConcepts.length, 69);
+assert.equal(studyConcepts.length, 71);
 const ids = new Set();
 const pending = subjectDecks.filter(deck => !deck.cards.length && !deck.writtenQuestions?.length);
-assert.deepEqual(pending.map(deck => deck.id), ['korean-newyork', 'korean-classic'], 'Only parts waiting for class material may be empty');
+assert.deepEqual(pending.map(deck => deck.id), ['korean-classic'], 'Only parts waiting for class material may be empty');
 for (const deck of subjectDecks) {
   const lessons = conceptsFor(deck.id);
   if (pending.includes(deck)) { assert.equal(lessons.length, 0, deck.id); continue; }
@@ -63,4 +63,4 @@ assert.equal(game.queue[12].id, first.id);
 assert.equal(game.queue[12].answers[game.queue[12].correct], first.answers[first.correct]);
 while (game.queue.length) game = answerCard(game, game.queue[0].correct, 1);
 assert.equal(game.mastered.length, englishCards.length);
-console.log('PASS: 9 subject parts (+2 waiting for material) have 69 concepts and connected practice; every card is an example in its concept; 170 self-contained English choices, 16 rubrics, semantic traps, retry and completion.');
+console.log('PASS: 10 subject parts (+1 waiting for material) have 71 concepts and connected practice; every card is an example in its concept; 170 self-contained English choices, 16 rubrics, semantic traps, retry and completion.');
