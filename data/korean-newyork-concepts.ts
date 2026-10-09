@@ -1,0 +1,68 @@
+import type { ConceptLesson } from './study-concepts';
+import { koreanNewyorkCards, koreanNewyorkSource } from './korean-newyork-cards';
+
+// 국어 · 김연수 「뉴욕제과점」 학습 노트를 정리했다. 각 단원의 예시는 같은 단원의 객관식 카드 전부다.
+const examplesFor = (topics: string[]) => koreanNewyorkCards
+  .filter(card => topics.includes(card.topic))
+  .map(card => ({ id: card.id, context: `${card.subject} · ${card.question}`, explanation: card.explanation, sourceNote: card.sourceNote ?? koreanNewyorkSource }));
+
+const lesson = (id: string, title: string, topicKeys: string[], summary: string, sections: ConceptLesson['sections'], resources?: ConceptLesson['resources']): ConceptLesson => ({
+  id, deckId: 'korean-newyork', title, summary, sections, topicKeys, sourceNote: koreanNewyorkSource,
+  examplesLabel: '문제로 확인', examples: examplesFor(topicKeys), ...(resources ? { resources } : {}),
+});
+
+export const koreanNewyorkConcepts: ConceptLesson[] = [
+  lesson('korean-newyork-concept-1', '작품의 짜임과 구절 풀이', ['갈래와 구성', '구절의 의미'],
+    '「뉴욕제과점」은 1인칭 주인공 시점의 자전적 소설이다. 사라진 뉴욕제과점을 두고 \'나\'가 떠올리는 구절마다 상실감과 애틋함, 추억의 힘이 담겨 있다.',
+    [
+      { heading: '갈래와 구성', points: [
+        '자전적 소설 · 1인칭 주인공 시점',
+        '삽화의 구성(삽화들은 순차적으로 이어짐), 전체는 역행적 구성',
+        '배경(뉴욕제과점) → 주제 의식: 추억이 삶을 살게 하는 힘',
+      ] },
+      { heading: '구절의 의미', table: { columns: ['구절', '의미'], rows: [
+        ['이 소설만은 연필로 쓰기로 했다', '정성을 들여 수정을 거침'],
+        ['물론 인생은 그런 게 아니다', '뉴욕제과점이 사라짐 · 인생은 예상대로 흘러가지 않음'],
+        ['이제는 더 이상 제과점을 하지 않아요', '\'나\'에게 큰일이며, 큰일임을 알려 주기 위해'],
+        ['고향 사람들은 곧잘 문맥을 놓친다', '\'나\'와 달리 다른 사람들은 관심 없음(서로 다름)'],
+        ['나란 존재는 그 거리 … 이루어진 어떤 것', '뉴욕제과점이 \'나\'의 정체성을 기름'],
+        ['실향민', '의식·정체성을 이루던 곳이 사라짐'],
+        ['다시 되돌아볼 기회가 … 다시 걷고 싶다', '뉴욕제과점에 다시 돌아가고 싶음'],
+        ['다른 고향 사람들의 생각이 좀 야속하다', '뉴욕제과점을 향한 애틋함'],
+        ['그거보다는 내가 더 많이 팔았지', '뉴욕제과점에 대한 어머니의 자부심'],
+        ['훌륭한 것은 등록금이 아니라 그 웃음', '어머니의 긍정·낙천적 성격을 더 좋아함'],
+        ['불빛, 사탕', '힘들고 헤어질 때마다 떠올리는 추억'],
+      ] } },
+      { heading: '반어와 감정 표현', points: [
+        '\'정상적\' 4번 반복: 먼저 생긴 것은 먼저 없어진다(반어적) → 상실감 강조',
+        '상식적으로 받아들일 수 있었다 → 담담히 받아들임',
+        '고개를 숙이고 … 없었다 → 울컥함 / 둥글게 아롱져 보였다 → 눈물이 차오름',
+        '세상은 살아 … 된다 → 소중한 추억의 힘을 원동력 삼아 살아감',
+      ] },
+    ]),
+  lesson('korean-newyork-concept-2', '어머니와 뉴욕제과점 · 결말의 깨달음', ['어머니', '어머니와 뉴욕제과점', '\'나\'와 고향 사람들', '결말과 깨달음'],
+    '뉴욕제과점은 어머니의 삶과 겹쳐지는 어머니의 분신이다. 제과점이 사라진 뒤 \'나\'는 두려움에서 안도감과 희망을 거쳐, 자신도 누군가에게 위안이 되리라는 깨달음에 이른다.',
+    [
+      { heading: '어머니의 성격', table: { columns: ['행동', '성격'], rows: [
+        ['제과점을 경영해 삼남매를 길러 냄', '억척스럽고 책임감이 강함'],
+        ['수술 후 사소한 일에도 웃음', '긍정적이고 낙천적임'],
+        ['대학 등록금까지만 지원, 졸업 후 돈을 안 줌', '자립심을 중요하게 여김'],
+        ['버리는 빵을 검정 봉투에 가림', '자존심이 강함'],
+        ['장사가 안 돼도 오래 버팀', '소중히 여기는 것에 애착이 강함'],
+      ] } },
+      { heading: '어머니와 뉴욕제과점', points: [
+        '제과점의 전성기·쇠퇴기 = 어머니 삶의 흐름',
+        '\'나\'가 살아가는 데 필요한 돈과 소중한 추억까지 제공',
+        '⇒ 뉴욕제과점은 어머니의 분신처럼 형상화됨',
+        '문을 닫았을 때: \'나\'는 놀람·큰일(소중한 추억), 고향 사람들은 무관심(소중한 곳이 아님)',
+      ] },
+      { heading: '결말과 깨달음', points: [
+        '이제 살 세상에 괴로운 일이 있어도, 괴로운 일만 남은 것은 아님',
+        '추억으로 살아가는 자신을 보며: 존재하지 않는 무언가가 나를 살아가게 함',
+        '삶에서 시간은 의미 없고, 보이는 것만이 전부가 아니며, 사라졌다 생각한 것이 내 안에 있음',
+        '두려움(소중한 것들이 떠나 버릴 것) → 안도감·희망(어른이 되는 동안 제과점이 있었음) → 깨달음(나도 누군가에게 오래 위안이 되는 사람으로 남으리라)',
+      ] },
+    ], [
+      { title: '표준국어대사전', url: 'https://stdict.korean.go.kr', publisher: '국립국어원', note: '반어, 실향민, 아롱지다처럼 풀이에 나온 낱말 뜻을 찾아보세요. 작품 해석은 수업 노트를 기준으로 하세요.' },
+    ]),
+];
