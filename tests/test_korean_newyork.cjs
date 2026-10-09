@@ -9,7 +9,7 @@ const { conceptsFor } = require('../data/study-concepts.ts');
 const deck = subjectDecks.find(d => d.id === 'korean-newyork');
 assert.equal(deck.cards, cards);
 assert.equal(deck.writtenQuestions, written);
-assert.equal(cards.length, 42);
+assert.equal(cards.length, 70);
 assert.equal(written.length, 4);
 const len = s => [...s].length;
 const all = [...cards, ...written];
@@ -23,12 +23,16 @@ for (const c of cards) {
   assert.ok(c.explanation.length > 15 && c.sourceNote === koreanNewyorkSource, c.id);
   // The work is named or quoted on the card itself, and nothing points at a handout.
   assert.ok(/뉴욕제과점|"|'나'|불빛|고향 사람/.test(c.subject), c.id);
+  assert.ok(!/(몇 그릇|몇 년|몇 번 테이블|언제 문을 닫)/.test(c.question), `${c.id}: ask meaning, not trivia`);
   assert.ok(!/(위 글|윗글|학습지|노트에서|앞 문제|위 그림)/.test(c.subject + c.question), c.id);
 }
 for (const q of written) assert.ok(q.criteria.length === 3 && q.modelAnswer.length > 80 && q.sourceNote === koreanNewyorkSource, q.id);
 assert.equal(conceptsFor('korean-newyork').length, 2);
 const answer = (shown, prompt = '') => { const c = cards.find(c => c.subject.includes(shown) && c.question.includes(prompt)); assert.ok(c, shown); return c.answers[c.correct]; };
-assert.equal(answer('연필로 쓰기로'), '정성 들여 고쳐 가며 쓰려고');
+assert.equal(answer('연필로 쓰기로'), '정성 들여 고쳐 가며 쓰려 함');
+assert.equal(answer('곧잘 문맥을 놓친다'), '제과점을 보는 시각 차이');
+assert.equal(answer('어차피 인생이란'), '설의법');
+assert.equal(answer('상식적으로'), '담담히 받아들임');
 assert.equal(answer('정상적인 세상에서'), '반어적으로 상실감 강조');
 assert.equal(answer('그와 마찬가지다', '표현법'), '반어법');
 assert.equal(answer('검정 봉투'), '자존심이 강함');
