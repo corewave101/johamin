@@ -42,6 +42,25 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   useEffect(() => onAnswerViewChange(setView), []);
   const hidden = view === 'hidden';
   const beta = useBeta(); // 베타 · 가로 화면 해설 카드 (CSS: wide landscape only)
+  const gameEl = useRef<HTMLDivElement>(null);
+  const stackEl = useRef<HTMLDivElement>(null);
+  // The back card copies the card stack's size and height on screen (card size setting included).
+  useEffect(() => {
+    if (!beta) return;
+    const measure = () => {
+      const game = gameEl.current, stack = stackEl.current;
+      if (!game || !stack) return;
+      const g = game.getBoundingClientRect(), r = stack.getBoundingClientRect();
+      game.style.setProperty('--back-top', `${Math.round(r.top - g.top)}px`);
+      game.style.setProperty('--back-w', `${Math.round(r.width)}px`);
+      game.style.setProperty('--back-h', `${Math.round(r.height)}px`);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
+    if (observer && stackEl.current) observer.observe(stackEl.current);
+    return () => { window.removeEventListener('resize', measure); observer?.disconnect(); };
+  }, [beta, Boolean(card?.passage)]);
   const [peek, setPeek] = useState<Direction | null>(null);
   const peekRef = useRef<Direction | null>(null);
   peekRef.current = peek;
@@ -167,7 +186,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
 
   return <main className={`swipe-app ${onBack ? 'swipe-study' : ''}`}>
     <StreakFlame streak={game.streak} />
-    <div className={`swipe-game ${card?.passage ? 'has-passage' : ''} ${beta ? 'is-beta' : ''}`}>
+    <div ref={gameEl} className={`swipe-game ${card?.passage ? 'has-passage' : ''} ${beta ? 'is-beta' : ''} ${beta && last ? 'has-back' : ''}`}>
       <div className="swipe-main">
       <header className="swipe-heading"><h1 className="glass">조하민<span>레츠고</span></h1></header>
       <div className="swipe-deck-bar glass">
@@ -191,7 +210,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
       </section>
       : <section className={`swipe-board ${hidden ? 'answers-hidden' : ''} ${revealed ? 'is-pulling' : ''}`} aria-label="방향을 선택해 답하기" style={{ '--pull': pull.toFixed(3) } as CSSProperties}>
         {directions.map(direction => <button type="button" key={direction} className={`swipe-option glass swipe-option-${direction} ${activeDirection === direction ? 'is-active' : ''} ${revealed === direction ? 'is-revealed' : ''}`} onClick={() => pick(direction)} aria-label={`${arrows[direction]} ${card.answers[direction]}`}><kbd>{arrows[direction]}</kbd><span>{card.answers[direction]}</span>{hidden && peek === direction && !activeDirection && <small className="peek-hint">한 번 더 · Enter</small>}</button>)}
-        <div className="swipe-stack">
+        <div className="swipe-stack" ref={stackEl}>
           {game.queue.length > 2 && <div className="swipe-under swipe-under-two" />}
           {game.queue.length > 1 && <div className="swipe-under swipe-under-one" />}
           <LaminatedCard key={`${card.id}-${game.attempts.length}`} className={`is-current ${pointer.current ? 'is-dragging' : ''}`}
@@ -217,7 +236,6 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
       </div>}
       </div>
       <section className={`swipe-feedback glass ${tone}`} aria-label="결과창" aria-live="polite" aria-atomic="true">
-        {!last && beta && <p className="swipe-feedback-placeholder">답을 고르면 카드가 뒤집혀서<br />이 자리에 해설 면이 놓여요</p>}
         {last && <div className="swipe-feedback-face" key={game.attempts.length}>
           <div className="swipe-feedback-top"><span className="swipe-result-icon" aria-hidden="true">{last.direction === 'unknown' ? '?' : last.correct ? '✓' : '✕'}</span><strong>{verdict}</strong></div>
           <p className="swipe-previous">{last.card.subject ? `${last.card.subject} · ` : ''}{last.card.question}</p>

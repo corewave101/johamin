@@ -2,11 +2,11 @@
 
 카드를 한 장씩 표로 관리하는 DB입니다. **사이트는 이 DB의 카드를 먼저 읽습니다**(DB에 있는 덱은 DB 카드가 덱 전체를 대신함). 인터넷이 없을 때만 기기에 저장된 DB 사본이나 `data/*.ts`의 내장 카드를 씁니다. 코드에서 카드를 고치면 DB에도 올려야 사이트에 보입니다. 작업 순서는 저장소 맨 위 `AGENTS.md` 3장을 보세요.
 
-**현재 상태:** Supabase 프로젝트(서울, `vlmwrkalgjaduagxavhb`)에 표·권한 규칙이 적용되었고 덱 9개·카드 926장이 들어 있습니다. 앱에서 쓸 주소와 공개 키는 `lib/supabase-config.ts`에 있습니다.
+**현재 상태:** Supabase 프로젝트(서울, `vlmwrkalgjaduagxavhb`)에 표·권한 규칙이 적용되었고 덱 10개·카드 1016장이 들어 있습니다. 앱에서 쓸 주소와 공개 키는 `lib/supabase-config.ts`에 있습니다.
 
 ## 물리학Ⅱ 추가 브랜치
 
-`db/physics-release.sql`은 기존 926개 카드 내용을 변경하지 않고 새 물리학Ⅱ 90개 카드만 추가합니다. **DB 반영은 아직 실행하지 않았습니다.** 팀 멤버가 SQL Editor에서 검토·실행한 뒤 PR을 병합해야 합니다. 상세 절차는 `docs/science-study.md`를 보세요.
+`db/physics-release.sql`은 기존 926개 카드 내용을 변경하지 않고 새 물리학Ⅱ 90개 카드만 추가합니다. **2026-10-09 DB에 반영 완료**(객관식 72 · 서술형 18, DB 1016장 = `db/cards.json`). 상세 절차는 `docs/science-study.md`를 보세요.
 
 ## 카드 고치기 (지금 방법)
 
