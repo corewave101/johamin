@@ -1,3 +1,5 @@
+import { parkDepthCards } from './biology-depth';
+import { joDepthCards } from './biology-jo-depth';
 import type { SwipeCard } from './swipe-cards';
 
 // 첨부 필기·정리본·유전학 용어집·유전자의 발현 수업자료를 바탕으로 작성.
@@ -706,7 +708,8 @@ export const parkCards: SwipeCard[] = [
     "correct": "up",
     "explanation": "세균은 전형적으로 핵막이 없고 주 염색체가 원형이며 진핵생물은 핵에 여러 선형 염색체가 있다.",
     "sourceNote": "박상영T 필기 · 3쪽"
-  }
+  },
+  ...parkDepthCards,
 ];
 
 export const joCards: SwipeCard[] = [
@@ -1279,5 +1282,6 @@ export const joCards: SwipeCard[] = [
     "correct": "up",
     "explanation": "원핵에는 핵막이 없어 전사 중인 mRNA에 리보솜이 결합할 수 있다.",
     "sourceNote": "유전자의 발현 수업자료 · 25쪽"
-  }
+  },
+  ...joDepthCards,
 ];

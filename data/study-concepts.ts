@@ -1,3 +1,4 @@
+import { scienceDepthConcepts } from './science-depth-concepts';
 import { physicsConcepts } from './physics-concepts';
 import { socialJoConcepts } from './social-jo-concepts';
 import { koreanNewyorkConcepts } from './korean-newyork-concepts';
@@ -15,6 +16,7 @@ export interface ConceptLesson {
   examples?: { id: string; context: string; explanation: string; sourceNote: string }[];
 }
 export const studyConcepts: ConceptLesson[] = [
+  ...scienceDepthConcepts,
   ...physicsConcepts,
   ...socialJoConcepts,
   ...koreanNewyorkConcepts,

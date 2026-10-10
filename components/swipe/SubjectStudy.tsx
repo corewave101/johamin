@@ -1,3 +1,4 @@
+import ChemistryLab from './ChemistryLab';
 import ObservationLab from './ObservationLab';
 import { useEffect, useRef, useState } from 'react';
 import type { SubjectDeck } from '../../data/swipe-subjects';
@@ -37,13 +38,14 @@ function GeneralStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void 
   const gameBackLabel = '← 카드 패';
   if (mode === 'missed') return <SwipeGame cards={retryCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} />;
   if (mode === 'choice') return <SwipeGame cards={choiceCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} />;
-  if (mode === 'practice') return <ObservationLab onBack={() => setMode('menu')} />;
+  if (mode === 'practice') return deck.id === 'chemistry' ? <ChemistryLab onBack={() => setMode('menu')} /> : <ObservationLab onBack={() => setMode('menu')} />;
   const name = deck.fullName ?? deck.name;
   // 카드 패: the subject menu and the unit menu are hands of cards.
   if (mode === 'menu' && !pending) {
     const missedAll = missedCards(generalCards);
     const topicCount = new Set(generalCards.map(card => card.topic)).size;
     const hand: HandCard[] = [
+      ...(deck.id === 'chemistry' ? [{ id: 'practice', kicker: '화학 실험', title: '직접 연습하기', note: '적정 곡선 · 완충 · 5% 규칙', onPlay: () => setMode('practice') }] : []),
       ...(deck.id === 'astronomy-hwang' ? [{ id: 'practice', kicker: '관측 실습', title: '직접 연습하기', note: '정렬 · 천구 좌표 · 기록', onPlay: () => setMode('practice') }] : []),
       { id: 'concept', kicker: '개념', title: '개념 정리', note: `${lessons.length}단원`, disabled: !lessons.length, onPlay: () => setMode('concept') },
       { id: 'all', kicker: '객관식', title: '전체 풀기', note: `${generalCards.length}문제 · 푼 문제 ${seenCount(generalCards)}`, disabled: !generalCards.length, onPlay: () => { setTopics([]); setMode('choice'); } },

@@ -1,3 +1,5 @@
+import { parkDepthWritten } from './biology-depth';
+import { joDepthWritten } from './biology-jo-depth';
 export interface WrittenQuestion { id: string; topic: string; question: string; modelAnswer: string; criteria: string[]; sourceNote: string; passage?: string }
 export const parkWritten: WrittenQuestion[] = [
   {
@@ -167,7 +169,8 @@ export const parkWritten: WrittenQuestion[] = [
       "염기쌍별 수소 결합 수"
     ],
     "sourceNote": "박상영T 필기 · 3쪽"
-  }
+  },
+  ...parkDepthWritten,
 ];
 export const joWritten: WrittenQuestion[] = [
   {
@@ -289,5 +292,6 @@ export const joWritten: WrittenQuestion[] = [
       "진핵의 공간적 구분"
     ],
     "sourceNote": "유전자의 발현 수업자료 · 25쪽"
-  }
+  },
+  ...joDepthWritten,
 ];
