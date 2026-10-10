@@ -8,7 +8,7 @@ require.extensions['.ts'] = (m, f) => m._compile(ts.transpileModule(fs.readFileS
 const { subjectMenu } = require('../data/swipe-subjects.ts');
 
 const root = path.join(__dirname, '..');
-const SPLIT_GROUPS = new Set(['humanities', 'science']); // groups whose children are separate subjects (국어 · 사회 · 영어)
+const SPLIT_GROUPS = new Set(['humanities', 'science', 'physics-chemistry']); // groups whose children are separate subjects (국어 · 사회 · 영어)
 
 function teacherOf(deck) {
   const card = deck.cards[0];

@@ -2,7 +2,7 @@ const assert=require('node:assert/strict'), fs=require('node:fs'),ts=require('ty
 require.extensions['.ts']=(m,f)=>m._compile(ts.transpileModule(fs.readFileSync(f,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,f);
 const {physicsCards:cards}=require('../data/physics-cards.ts');const {physicsWritten:written}=require('../data/physics-written.ts');const {subjectMenu}=require('../data/swipe-subjects.ts');
 assert.deepEqual(new Set(subjectMenu.children.map(x=>x.id)),new Set(['science','humanities']));
-const science=subjectMenu.children.find(x=>x.id==='science');assert.deepEqual(science.children.map(x=>x.id),['biology','astronomy','physics-ii']);
+const science=subjectMenu.children.find(x=>x.id==='science');assert.deepEqual(science.children.map(x=>x.id),['biology','astronomy','physics-chemistry']);
 assert.equal(cards.length,72);assert.equal(written.length,18);
 const ranges=[[86,91],[99,103],[109,115],[122,128],[136,142],[152,157]];
 for(let u=6;u<=11;u++){const list=cards.filter(c=>c.id.startsWith(`physics-u${String(u).padStart(2,'0')}-`));assert.equal(list.length,12);const answers={};for(const c of list){answers[c.correct]=(answers[c.correct]??0)+1;}assert.deepEqual(Object.values(answers),[3,3,3,3]);}

@@ -1,3 +1,5 @@
+import { parkDepthCards, parkDepthWritten } from './biology-depth';
+import { chemistryCards, chemistryWritten } from './chemistry-content';
 import { physicsCards } from './physics-cards';
 import { physicsWritten } from './physics-written';
 import type { Direction, SwipeCard } from './swipe-cards';
@@ -31,16 +33,19 @@ export const subjectMenu: SubjectGroup = {
       ] },
       { id: 'english', kind: 'deck', name: '영어', direction: 'right', symbol: 'A', description: '고대 건축물·Bartleby·가정법·예술과 측정.', cards: englishCards, writtenQuestions: englishWritten },
     ] },
-    { id: 'science', kind: 'group', name: '과학', direction: 'right', symbol: '✳', description: '생물 · 지구과학 · 물리학Ⅱ를 골라요.', children: [
+    { id: 'science', kind: 'group', name: '과학', direction: 'right', symbol: '✳', description: '생물 · 지구과학 · 물리학Ⅱ · 화학을 골라요.', children: [
     { id: 'biology', kind: 'group', name: '생물', direction: 'up', symbol: '✳', description: '선생님별 객관식과 서술형 연습.', children: [
       { id: 'biology-jo', kind: 'deck', name: '조용민T', fullName: '생물(조용민T)', direction: 'left', symbol: '✳', description: '전사·RNA 가공·번역까지. 오페론부터 제외.', cards: joCards, writtenQuestions: joWritten },
-      { id: 'biology-park', kind: 'deck', name: '박상영T', fullName: '생물(박상영T)', direction: 'right', symbol: '✳', description: '유전 법칙·사람의 유전·돌연변이·유전 물질 + 교사용 핵심 용어 22개.', cards: [...parkCards, ...geneticsCards], writtenQuestions: [...parkWritten, ...geneticsWritten] },
+      { id: 'biology-park', kind: 'deck', name: '박상영T', fullName: '생물(박상영T)', direction: 'right', symbol: '✳', description: '유전 법칙·사람의 유전·돌연변이·유전 물질 + 교사용 핵심 용어 22개.', cards: [...parkCards.filter(c => !c.id.includes("-depth-")), ...geneticsCards, ...parkDepthCards], writtenQuestions: [...parkWritten.filter(q => !q.id.includes("-depth-")), ...geneticsWritten, ...parkDepthWritten] },
     ] },
     { id: 'astronomy', kind: 'group', name: '지구과학', direction: 'left', symbol: '✦', description: '왼쪽은 황, 오른쪽은 전. 공부할 파트를 골라요.', children: [
       { id: 'astronomy-hwang', kind: 'deck', name: '(황)', fullName: '행성우주과학(황)', direction: 'left', symbol: '✦', description: '조립 순서·조작 이유·극축 정렬의 원리.', cards: astronomyCards },
       { id: 'astronomy-jeon', kind: 'deck', name: '(전)', fullName: '행성우주과학(전)', direction: 'right', symbol: '✧', description: '케플러 법칙·천구 좌표·일주와 연주운동·행성과 달 관측.', cards: jeonCards },
     ] },
-      { id: 'physics-ii', kind: 'deck', name: '물리학Ⅱ', fullName: '물리학Ⅱ(6~11단원)', direction: 'right', symbol: 'F', description: '수능특강 6~11단원 · 개념 · 새 객관식 · 서술형.', cards: physicsCards, writtenQuestions: physicsWritten },
+      { id: 'physics-chemistry', kind: 'group', name: '물리 · 화학', direction: 'right', symbol: 'F', description: '왼쪽은 물리학Ⅱ, 오른쪽은 화학이에요.', children: [
+      { id: 'physics-ii', kind: 'deck', name: '물리학Ⅱ', fullName: '물리학Ⅱ(6~11단원)', direction: 'left', symbol: 'F', description: '수능특강 6~11단원 · 개념 · 새 객관식 · 서술형.', cards: physicsCards, writtenQuestions: physicsWritten },
+      { id: 'chemistry', kind: 'deck', name: '화학', fullName: '화학(산·염기 평형과 실험)', direction: 'right', symbol: '⚗', description: '평형 · 산염기 · 중화적정 · 가수분해 · 완충 · 실험 필기 적용.', cards: chemistryCards, writtenQuestions: chemistryWritten },
+      ] },
     ] },
   ],
 };
