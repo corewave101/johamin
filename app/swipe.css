@@ -589,3 +589,9 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 :root.intro-open .app-status { visibility: hidden; }
 /* version: smaller */
 .app-version { font-size: 10px; padding: 3px 5px; right: 4px; bottom: 3px; }
+
+/* Many small word pieces stay close to the remaining pool on a phone. */
+.order-slots.is-compact { display: flex; flex-wrap: wrap; gap: 7px; }
+.order-slots.is-compact .order-slot { min-width: 0; max-width: 100%; }
+.order-slots.is-compact .order-slot.is-empty { min-height: 38px; }
+.order-slots.is-compact .order-slot button { width: auto; padding: 8px 10px; gap: 6px; overflow-wrap: anywhere; }

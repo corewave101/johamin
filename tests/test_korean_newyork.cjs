@@ -8,7 +8,7 @@ const { subjectDecks } = require('../data/swipe-subjects.ts');
 const { conceptsFor } = require('../data/study-concepts.ts');
 const deck = subjectDecks.find(d => d.id === 'korean-newyork');
 assert.equal(deck.cards, cards);
-assert.equal(deck.writtenQuestions, written);
+assert.deepEqual(deck.writtenQuestions, [...written, ...require('../data/study-practice.ts').studyPractice['korean-newyork']]);
 assert.equal(cards.length, 70);
 assert.equal(written.length, 4);
 const len = s => [...s].length;

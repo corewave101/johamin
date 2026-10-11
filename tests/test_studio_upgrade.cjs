@@ -16,7 +16,7 @@ const park = subjectDecks.find(d => d.id === 'biology-park');
 const jo = subjectDecks.find(d => d.id === 'biology-jo');
 assert.equal(geneticsCards.length,22); assert.equal(geneticsWritten.length,22);
 assert.equal(park.cards.filter(q => q.topic === '유전학 핵심 용어').length,22);
-assert.equal(park.writtenQuestions.filter(q => q.topic === '유전학 핵심 용어').length,22);
+assert.equal(park.writtenQuestions.filter(q => q.topic === '유전학 핵심 용어' && q.id.startsWith('park-term-')).length,22);
 for (const q of geneticsWritten) assert.ok(q.modelAnswer.length > 60 && new Set(q.criteria).size === 3);
 const glossary = conceptsFor(park.id).find(l => l.id === 'biology-park-terms');
 assert.equal(glossary.sections.flatMap(s => s.table?.rows ?? []).length,22);
@@ -30,12 +30,12 @@ assert.ok(englishCards.filter(q=>q.topic==='Chichén Itzá').every(q=>q.passage.
 const flatten = g=>g.children.flatMap(n=>n.kind==='group'?flatten(n):[n]);
 const fromDb = flatten(withLiveCards(subjectMenu, { english: { cards: englishCards.slice(0, 3), written: [] } }));
 assert.equal(fromDb.find(d=>d.id==='english').cards.length, 3);
-assert.equal(fromDb.find(d=>d.id==='english').writtenQuestions.length, englishWritten.length, 'No written rows in the DB keeps the bundled ones');
+assert.equal(fromDb.find(d=>d.id==='english').writtenQuestions.length, subjectDecks.find(d=>d.id==='english').writtenQuestions.length, 'No written rows in the DB keeps the bundled ones');
 assert.equal(fromDb.find(d=>d.id===jo.id).cards, jo.cards, 'Decks missing from the DB keep the bundled cards');
 // The exported DB copy matches the bundled cards, so the live site shows the same scope and passages.
 const dbFile = JSON.parse(fs.readFileSync('db/cards.json', 'utf8'));
 assert.ok(!dbFile.cards.some(c => c.deck_id === 'biology-jo' && c.source_page > 25), 'Operon cards are not in the DB copy');
-assert.equal(dbFile.cards.filter(c => c.deck_id === 'english' && c.passage).length, englishCards.length + englishWritten.length);
+assert.equal(dbFile.cards.filter(c => c.deck_id === 'english' && c.passage).length, englishCards.length + subjectDecks.find(d=>d.id==='english').writtenQuestions.length);
 const { koreanGrammarCards } = require('../data/korean-cards.ts');
 const ambiguous = koreanGrammarCards.find(q => q.id === 'korean-grammar-187');
 assert.ok(ambiguous.subject.includes('수단') && ambiguous.explanation.includes('이유'));

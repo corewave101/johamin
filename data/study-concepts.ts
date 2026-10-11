@@ -1,3 +1,4 @@
+import { sciencePractice } from './science-practice';
 import { scienceDepthConcepts } from './science-depth-concepts';
 import { physicsConcepts } from './physics-concepts';
 import { socialJoConcepts } from './social-jo-concepts';
@@ -7441,4 +7442,11 @@ export const studyConcepts: ConceptLesson[] = [
     ]
   }
 ];
+for (const [deckId, cards] of Object.entries(sciencePractice)) {
+  for (const card of cards) {
+    const lesson = studyConcepts.find(l => l.deckId === deckId && l.topicKeys.includes(card.topic));
+    if (!lesson) throw new Error('Missing concept: ' + card.topic);
+    lesson.examples = [...(lesson.examples ?? []), { id: card.id, context: card.question, explanation: card.explanation, sourceNote: card.sourceNote! }];
+  }
+}
 export const conceptsFor = (deckId: string) => studyConcepts.filter(lesson => lesson.deckId === deckId);

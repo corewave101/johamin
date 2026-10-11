@@ -1,3 +1,4 @@
+import { isShortQuestion } from '../../data/study-practice';
 // 박상영T: every menu is a card (↑ ← → to choose, ↓ back), so keys, swipes and taps never have to change hands.
 //   박상영T     ↑ 개념 정리   ← 문제 풀기   → 원문 단어장
 //   문제 풀기   ↑ 객관식 전체  ← 단원 골라 풀기  → 서술형
@@ -17,12 +18,13 @@ import SwipeGame from './SwipeGame';
 import WrittenPractice, { blankWritten, type WrittenState } from './WrittenPractice';
 
 const TERMS = '유전학 핵심 용어';
-type Screen = 'home' | 'concept' | 'problems' | 'topics' | 'choice' | 'writtenMenu' | 'written' | 'order' | 'orderDone' | 'vocab';
+type Screen = 'home' | 'concept' | 'problems' | 'topics' | 'choice' | 'writtenMenu' | 'written' | 'order' | 'orderDone' | 'vocab' | 'short';
 
 export default function ParkStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
   const lessons = useMemo(() => conceptsFor(deck.id).filter(l => l.id !== 'biology-park-terms'), [deck.id]);
   const cards = useMemo(() => deck.cards.filter(c => c.topic !== TERMS), [deck.cards]);
-  const written = useMemo(() => (deck.writtenQuestions ?? []).filter(q => q.topic !== TERMS), [deck.writtenQuestions]);
+  const written = useMemo(() => (deck.writtenQuestions ?? []).filter(q => q.topic !== TERMS && !isShortQuestion(q)), [deck.writtenQuestions]);
+  const short = useMemo(() => (deck.writtenQuestions ?? []).filter(isShortQuestion), [deck.writtenQuestions]);
   const pieces = useMemo(() => written.map(q => splitPieces(q.modelAnswer)), [written]);
   const topics = useMemo(() => [...new Set(cards.map(c => c.topic))], [cards]);
 
@@ -41,6 +43,7 @@ export default function ParkStudy({ deck, onBack }: { deck: SubjectDeck; onBack:
     home: onBack, concept: () => setScreen('home'), problems: () => setScreen('home'), topics: () => setScreen('problems'),
     choice: () => setScreen(game?.back ?? 'problems'), writtenMenu: () => setScreen('problems'), written: () => setScreen('writtenMenu'),
     order: () => setScreen('writtenMenu'), orderDone: () => setScreen('writtenMenu'),
+    short: () => setScreen('writtenMenu'),
     vocab: () => { if (!vocabBack.current?.()) setScreen('home'); },
   };
   useEscape(() => backFrom[screen]());
@@ -81,8 +84,9 @@ export default function ParkStudy({ deck, onBack }: { deck: SubjectDeck; onBack:
   }
 
   if (screen === 'writtenMenu') return <MenuCard cardKey="park-written" topic={name} subject="서술형" question={`${written.length}문제 · 순서 맞추기부터, 직접 쓰기까지`} onBack={backFrom.writtenMenu}
+    left={{ label: '단답형', note: `${short.length}문제 · 정답 하나 쓰기`, onChoose: () => { setWrittenState(s => ({ ...s, index: 0 })); setScreen('short'); } }}
     up={{ label: '문장 배치로 풀기', note: '모범답안 조각 순서 맞추기', onChoose: startOrder }}
-    right={{ label: '직접 써 보기', note: '답안 작성 · 직접 채점', onChoose: () => setScreen('written') }}>
+    right={{ label: '직접 써 보기', note: '답안 작성 · 직접 채점', onChoose: () => { setWrittenState(s => ({ ...s, index: 0 })); setScreen('written'); } }}>
     <p className="menu-hint glass">문장 배치로 흐름을 잡고, 직접 써 보기로 넘어가면 좋아요.</p>
   </MenuCard>;
 
@@ -93,13 +97,13 @@ export default function ParkStudy({ deck, onBack }: { deck: SubjectDeck; onBack:
     <div className="biology-study">
       <header className="biology-header glass">
         <button type="button" className="glass-button" onClick={backFrom[screen]}>{screen === 'concept' ? '← 박상영T' : '← 서술형'}</button>
-        <h1 tabIndex={-1}>{name}{screen === 'concept' ? ' · 개념 정리' : screen === 'order' ? ' · 문장 배치' : ' · 서술형'}</h1>
+        <h1 tabIndex={-1}>{name}{screen === 'concept' ? ' · 개념 정리' : screen === 'order' ? ' · 문장 배치' : screen === 'short' ? ' · 단답형' : ' · 서술형'}</h1>
       </header>
       {screen === 'concept' ? <ConceptReader read={read} setRead={setRead} lessons={lessons} onPractice={keys => play(cards.filter(c => keys.includes(c.topic)), `${name} · 관련 객관식`, 'concept')} />
         : screen === 'order' ? <OrderDeck pieces={pieces[orderAt]} title={written[orderAt].question} prompt="모범답안 조각을 순서대로 쌓아 보세요." step={`${orderAt + 1} / ${written.length} · ${written[orderAt].topic}`}
           nextLabel={orderAt + 1 < written.length ? '다음 문제 →' : '결과 보기'}
           onNext={result => { if (result.firstTry) setOrderFirstTry(n => n + 1); if (orderAt + 1 < written.length) setOrderAt(orderAt + 1); else setScreen('orderDone'); }} />
-        : <WrittenPractice questions={written} state={writtenState} setState={setWrittenState} />}
+        : <WrittenPractice questions={screen === 'short' ? short : written} state={writtenState} setState={setWrittenState} />}
     </div>
   </main>;
 }

@@ -4,14 +4,16 @@ const ts = require('typescript');
 require.extensions['.ts'] = (module, file) => module._compile(ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText, file);
 const { parkCards, joCards } = require('../data/biology-cards.ts');
 const { parkWritten, joWritten } = require('../data/biology-written.ts');
+const { studyPractice } = require('../data/study-practice.ts');
+const { sciencePractice } = require('../data/science-practice.ts');
 const { subjectDecks, subjectMenu } = require('../data/swipe-subjects.ts');
 const { newGame, answerCard } = require('../lib/swipe-game.ts');
 assert.equal(subjectMenu.children.find(x => x.id === 'science').children.find(x => x.id === 'biology').kind, 'group');
 const ids = new Set();
 for (const [id, cards, written, maxPage] of [['biology-park', parkCards, parkWritten, 3], ['biology-jo', joCards, joWritten, 25]]) {
   const deck = subjectDecks.find(x => x.id === id);
-  assert.deepEqual(deck.cards.filter(q => !q.id.startsWith('park-term-')), cards);
-  assert.deepEqual(deck.writtenQuestions.filter(q => !q.id.startsWith('park-term-')), written);
+  assert.deepEqual(deck.cards.filter(q => !q.id.startsWith('park-term-')), [...cards, ...(sciencePractice[id] ?? [])]);
+  assert.deepEqual(deck.writtenQuestions.filter(q => !q.id.startsWith('park-term-')), [...written, ...(studyPractice[id] ?? [])]);
   assert.ok(cards.length >= (id === 'biology-jo' ? 38 : 40) && written.length >= 10);
   assert.equal(new Set(cards.map(x => x.question)).size, cards.length);
   for (const q of [...cards, ...written]) {

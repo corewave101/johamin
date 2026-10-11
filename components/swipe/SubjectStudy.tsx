@@ -1,3 +1,4 @@
+import { isShortQuestion } from '../../data/study-practice';
 import ChemistryLab from './ChemistryLab';
 import ObservationLab from './ObservationLab';
 import { useEffect, useRef, useState } from 'react';
@@ -18,7 +19,7 @@ export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBa
 }
 
 function GeneralStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
-  const [mode, setMode] = useState<'menu' | 'concept' | 'problems' | 'choice' | 'missed' | 'written' | 'practice'>('menu');
+  const [mode, setMode] = useState<'menu' | 'concept' | 'problems' | 'choice' | 'missed' | 'written' | 'short' | 'practice'>('menu');
   const [retryCards, setRetryCards] = useState<SwipeCard[]>([]);
   const [read, setRead] = useState<string[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
@@ -27,8 +28,10 @@ function GeneralStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void 
   const generalCards = deck.cards;
   const choiceCards = topics.length ? generalCards.filter(card => topics.includes(card.topic)) : generalCards;
   const [written, setWritten] = useState<WrittenState>(blankWritten);
-  const allWritten = deck.writtenQuestions ?? [];
-  const questions = writtenTopic ? allWritten.filter(q => q.topic === writtenTopic) : allWritten;
+  const allWritten = (deck.writtenQuestions ?? []).filter(q => !isShortQuestion(q));
+  const allShort = (deck.writtenQuestions ?? []).filter(isShortQuestion);
+  const activeWritten = mode === 'short' ? allShort : allWritten;
+  const questions = writtenTopic ? activeWritten.filter(q => q.topic === writtenTopic) : activeWritten;
   const pending = !deck.cards.length && !questions.length && !lessons.length; // a part whose class material has not arrived yet
   const title = useRef<HTMLHeadingElement>(null);
   useEffect(() => { title.current?.focus(); }, [mode, written.index]);
@@ -51,6 +54,7 @@ function GeneralStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void 
       { id: 'all', kicker: '객관식', title: '전체 풀기', note: `${generalCards.length}문제 · 푼 문제 ${seenCount(generalCards)}`, disabled: !generalCards.length, onPlay: () => { setTopics([]); setMode('choice'); } },
       { id: 'topics', kicker: '객관식', title: '단원 골라 풀기', note: `${topicCount}단원`, disabled: !generalCards.length, onPlay: () => { setTopics([]); setMode('problems'); } },
       ...(missedAll.length ? [{ id: 'missed', kicker: '복습', title: '오답만 다시', note: `${missedAll.length}문제`, onPlay: () => { setRetryCards(missedAll); setMode('missed'); } }] : []),
+      ...(allShort.length ? [{ id: 'short', kicker: '단답형', title: '정답 하나 쓰기', note: `${allShort.length}문제`, onPlay: () => { setWrittenTopic(''); setWritten(w => ({ ...w, index: 0 })); setMode('short'); } }] : []),
       ...(allWritten.length ? [{ id: 'written', kicker: '서술형', title: '서술형 쓰기', note: `${allWritten.length}문제`, onPlay: () => { setWrittenTopic(''); setWritten(w => ({ ...w, index: 0 })); setMode('written'); } }] : []),
     ];
     return <CardHand key="menu" deckName={name} prompt="무엇을 할까요?" cards={hand} onBack={onBack} backLabel="과목·파트" start={1} />;
@@ -69,7 +73,7 @@ function GeneralStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void 
     <div className="biology-study">
       <header className="biology-header glass">
         <button type="button" className="glass-button" onClick={mode === 'menu' ? onBack : () => setMode('menu')}>{mode === 'menu' ? '← 과목·파트' : '← 학습 메뉴'}</button>
-        <h1 ref={title} tabIndex={-1}>{deck.fullName ?? deck.name}{mode === 'written' ? ' · 서술형' : mode === 'concept' ? ' · 개념 정리' : ''}</h1>
+        <h1 ref={title} tabIndex={-1}>{deck.fullName ?? deck.name}{mode === 'short' ? ' · 단답형' : mode === 'written' ? ' · 서술형' : mode === 'concept' ? ' · 개념 정리' : ''}</h1>
       </header>
       {mode === 'menu' ? <section className="biology-menu glass" aria-label="학습 메뉴">
         <h2>준비 중</h2><p>{deck.description}</p>
