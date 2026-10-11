@@ -13,7 +13,7 @@ assert.equal(social.kind, 'group');
 assert.deepEqual(social.children.map(d => [d.id, d.name, d.direction]), [['social', '성신제T', 'left'], ['social-jo', '조안나T', 'right']]);
 const deck = subjectDecks.find(d => d.id === 'social-jo');
 assert.equal(deck.cards, socialJoCards);
-assert.equal(deck.writtenQuestions, socialJoWritten);
+assert.deepEqual(deck.writtenQuestions, [...socialJoWritten, ...require('../data/study-practice.ts').studyPractice['social-jo']]);
 
 assert.equal(socialJoCards.length, 49);
 assert.equal(socialJoWritten.length, 4);

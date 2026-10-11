@@ -98,3 +98,14 @@ export function splitPieces(text: string, max = 46): string[] {
  if (pieces.length < 3) pieces = sentences.flatMap(s => cut(s, Math.max(20, Math.floor(max * 0.6))));
  return pieces;
 }
+
+export type PieceSize = 'large' | 'small' | 'word';
+/** Cut only at existing spaces. Joining restores the teacher's definition exactly. */
+export function vocabularyPieces(term: VocabularyTerm, size: PieceSize): string[] {
+ if (size === 'large') return term.pieces;
+ const words = term.definition.split(' ');
+ if (size === 'word') return words;
+ const chunks: string[] = [];
+ for (let i = 0; i < words.length; i += 3) chunks.push(words.slice(i, i + 3).join(' '));
+ return chunks;
+}

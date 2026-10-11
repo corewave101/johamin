@@ -2,20 +2,20 @@
 //   ↑ 카드로 외우기 — flip a word card, → 외웠어 / ← 한 번 더
 //   ← 문장 배치     — put the pieces of the definition back in order
 //   → 쓰기 테스트   — write the definition; one point per key idea (핵심어), word-for-word earns a badge
-// Every mode starts from a fixed set (기본 용어, 유전 법칙 …) so the same few words can be learned together.
+// Each primary mode begins with all 22 terms; review and starred shortcuts keep their own session.
 import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 import { geneticsCards } from '../../data/genetics-terms';
-import { parkVocabulary as terms, vocabularySets, vocabularySource, type VocabularyTerm } from '../../data/park-vocabulary';
-import { compareAnswer, currentRecord, dayKey, gradeTerm, loadVocabulary, saveVocabulary, scoreKeywords, scoreMessage, streakDays, type KeywordScore } from '../../lib/vocabulary';
+import { parkVocabulary as terms, vocabularySource, type VocabularyTerm } from '../../data/park-vocabulary';
+import { compareAnswer, currentRecord, dayKey, gradeTerm, loadVocabulary, saveVocabulary, scoreKeywords, scoreMessage, streakDays, vocabularyPieces, type PieceSize, type KeywordScore } from '../../lib/vocabulary';
 import MenuCard from './MenuCard';
 import OrderDeck from './OrderDeck';
 import SwipeGame from './SwipeGame';
 
 type Mode = 'flash' | 'order' | 'write' | 'reverse';
-type Screen = 'home' | 'sets' | Mode | 'done' | 'list' | 'choice';
+type Screen = 'home' | Mode | 'done' | 'list' | 'choice';
 type Done = { id: string; got: number; total: number; perfect?: boolean; firstTry?: boolean };
 const MODE_NAME: Record<Mode, string> = { flash: '카드로 외우기', order: '문장 배치', write: '쓰기 테스트', reverse: '뜻 보고 용어 맞히기' };
-const byName = new Map(terms.map(t => [t.term, t]));
+
 
 /** "같○ ○○" — the first letter of each word of a key idea, for a hint. */
 const initials = (label: string) => label.replace(/[^\s·()/:,0-9A-Za-z–]/gu, (ch, at: number, all: string) => (at === 0 || /[\s·(/]/.test(all[at - 1]) ? ch : '○'));
@@ -25,7 +25,9 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
   const [mode, setMode] = useState<Mode>('flash');
   const [progress, setProgress] = useState(loadVocabulary);
   const [saved, setSaved] = useState(true);
-  const [setAt, setSetAt] = useState(0);
+  const [sessionIds, setSessionIds] = useState(terms.map(t => t.id));
+  const [sessionName, setSessionName] = useState('전체 22개');
+  const [pieceSize, setPieceSize] = useState<PieceSize>('large');
   const [queue, setQueue] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
@@ -44,17 +46,12 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
   const learned = terms.filter(t => currentRecord(progress, t).wins > 0).length;
   const review = terms.filter(t => { const r = currentRecord(progress, t); return (r.mistakes > 0 && r.wins === 0) || (r.wins > 0 && r.due <= now); });
   const starred = terms.filter(t => currentRecord(progress, t).starred);
-  const sets = [
-    ...vocabularySets.map(s => ({ id: s.id, name: s.name, list: s.terms.map(n => byName.get(n)!).filter(Boolean) })),
-    ...(review.length ? [{ id: 'review', name: '다시 볼 용어', list: review }] : []),
-    ...(starred.length ? [{ id: 'starred', name: '즐겨찾기', list: starred }] : []),
-    { id: 'all', name: '전체 22개', list: terms },
-  ];
-  const chosenSet = sets[Math.min(setAt, sets.length - 1)];
+  const chosenSet = { name: sessionName, list: terms.filter(t => sessionIds.includes(t.id)) };
   const term: VocabularyTerm | undefined = terms.find(t => t.id === queue[index]);
 
   const clear = () => { setAnswer(''); setScore(null); setReverseResult(null); setHint(false); setFlipped(false); };
-  const openSets = (next: Mode) => { setMode(next); setScreen('sets'); };
+  const openSets = (next: Mode) => { startSession(next, terms); };
+  const startSession = (next: Mode, list: VocabularyTerm[], name = '전체 22개') => { setSessionIds(list.map(t => t.id)); setSessionName(name); setMode(next); setQueue(list.map(t => t.id)); setIndex(0); setDone([]); setXpAtStart(progress.xp); clear(); setScreen(next); };
   const begin = () => { setQueue(chosenSet.list.map(t => t.id)); setIndex(0); setDone([]); setXpAtStart(progress.xp); clear(); setScreen(mode); };
   const advance = () => { clear(); if (index + 1 < queue.length) setIndex(index + 1); else setScreen('done'); };
   const again = (id: string) => { if (queue.filter(x => x === id).length < 2) setQueue(q => [...q, id]); };
@@ -63,8 +60,8 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
   // Esc: one step back. Returns false at the top so the 박상영T menu takes over.
   const back = () => {
     if (screen === 'home') return false;
-    if (screen === 'sets' || screen === 'list' || screen === 'choice') setScreen('home');
-    else setScreen('sets');
+    if (screen === 'list' || screen === 'choice') setScreen('home');
+    else setScreen('home');
     clear();
     return true;
   };
@@ -97,6 +94,8 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
     left={{ label: '문장 배치', note: '정의 조각 순서', onChoose: () => openSets('order') }}
     right={{ label: '쓰기 테스트', note: '핵심어 채점', onChoose: () => openSets('write') }}>
     <div className="menu-extras">
+      {review.length > 0 && <button type="button" className="glass-button" onClick={() => startSession('write', review, '다시 볼 용어')}>다시 볼 용어 · {review.length}개</button>}
+      {starred.length > 0 && <button type="button" className="glass-button" onClick={() => startSession('flash', starred, '즐겨찾기')}>즐겨찾기만 외우기 · {starred.length}개</button>}
       <button type="button" className="glass-button" onClick={() => setScreen('list')}>용어 목록 · 즐겨찾기</button>
       <button type="button" className="glass-button" onClick={() => openSets('reverse')}>뜻 보고 용어 맞히기</button>
       <button type="button" className="glass-button" onClick={() => setScreen('choice')}>용어 이해 객관식 22문제</button>
@@ -104,28 +103,17 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
     {!saved && <p className="menu-hint glass" role="alert">이 브라우저에서 저장하지 못했어요. 화면을 닫으면 기록이 사라질 수 있어요.</p>}
   </MenuCard>;
 
-  if (screen === 'sets') {
-    const step = (d: number) => setSetAt(i => (Math.min(i, sets.length - 1) + d + sets.length) % sets.length);
-    const names = chosenSet.list.map(t => t.term);
-    return <MenuCard cardKey={`vocab-set-${chosenSet.id}`} topic={`${MODE_NAME[mode]} · 묶음 ${Math.min(setAt, sets.length - 1) + 1} / ${sets.length}`} subject={chosenSet.name}
-      question={names.length > 6 ? `${names.slice(0, 5).join(', ')} 외 ${names.length - 5}개` : names.join(', ')} onBack={() => setScreen('home')} backLabel="단어장"
-      up={{ label: '이 묶음 시작', note: `${names.length}개`, onChoose: begin }}
-      left={{ label: '이전 묶음', onChoose: () => step(-1) }} right={{ label: '다음 묶음', onChoose: () => step(1) }}>
-      <p className="menu-hint glass">← → 로 묶음을 고르고 ↑ 로 시작해요. 같은 묶음을 며칠 반복하면 잘 외워져요.</p>
-    </MenuCard>;
-  }
-
   if (screen === 'done') {
     const xp = progress.xp - xpAtStart;
     const best = new Map<string, Done>();
     for (const d of done) { const prev = best.get(d.id); if (!prev || d.got / d.total > prev.got / prev.total) best.set(d.id, d); }
     const scored = [...best.values()];
     const got = scored.reduce((n, d) => n + d.got, 0), total = scored.reduce((n, d) => n + d.total, 0);
-    return <MenuCard cardKey="vocab-done" topic={`${MODE_NAME[mode]} · ${chosenSet.name}`} subject="한 묶음 끝!"
+    return <MenuCard cardKey="vocab-done" topic={`${MODE_NAME[mode]} · ${chosenSet.name}`} subject="전체 학습 끝!"
       question={mode === 'write' ? `핵심어 ${got} / ${total} · +${xp} XP` : mode === 'order' ? `한 번에 맞춘 정의 ${done.filter(d => d.firstTry).length} / ${new Set(queue).size}` : `${new Set(queue).size}개 확인`}
       onBack={() => setScreen('home')} backLabel="단어장"
-      up={{ label: '한 번 더', onChoose: begin }} right={{ label: '다른 묶음', onChoose: () => setScreen('sets') }}
-      left={mode !== 'write' ? { label: '쓰기 테스트로', onChoose: () => { setMode('write'); setScreen('sets'); } } : undefined}>
+      up={{ label: '한 번 더', onChoose: begin }} right={{ label: '단어장으로', onChoose: () => setScreen('home') }}
+      left={mode !== 'write' ? { label: '쓰기 테스트로', onChoose: () => { startSession('write', chosenSet.list, chosenSet.name); } } : undefined}>
       {mode === 'write' && scored.length > 0 && <ul className="menu-hint glass vocab-summary">
         {scored.map(d => { const t = terms.find(x => x.id === d.id)!; return <li key={d.id}><strong>{t.term}</strong> {d.got} / {d.total}{d.perfect ? ' · 원문 완벽 ✦' : d.got === d.total ? ' · 전부!' : ''}</li>; })}
       </ul>}
@@ -135,7 +123,7 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
   if (screen === 'flash' && term) {
     const repeat = queue.filter(x => x === term.id).length > 1;
     return <MenuCard cardKey={`flash-${term.id}-${index}`} topic={`${chosenSet.name} · ${index + 1} / ${queue.length}`} subject={term.term}
-      question={flipped ? '맞게 떠올렸나요?' : '정의를 떠올려 보세요 · 눌러서 뒤집기'} onBack={() => setScreen('sets')} backLabel="그만"
+      question={flipped ? '맞게 떠올렸나요?' : '정의를 떠올려 보세요 · 눌러서 뒤집기'} onBack={() => setScreen('home')} backLabel="그만"
       onTap={() => setFlipped(f => !f)}
       up={{ label: flipped ? '다시 덮기' : '뒤집기', note: 'Space', onChoose: () => setFlipped(f => !f) }}
       left={{ label: '한 번 더', note: repeat ? '이미 한 번 더 나와요' : '뒤에 다시', onChoose: () => { again(term.id); advance(); } }}
@@ -146,8 +134,9 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
   }
 
   if (screen === 'order' && term) return <main className="swipe-app biology-app"><div className="biology-study">
-    <header className="biology-header glass"><button type="button" className="glass-button" onClick={() => setScreen('sets')}>← 묶음</button><h1>{MODE_NAME.order}</h1></header>
-    <OrderDeck pieces={term.pieces} title={term.term} prompt="정의 조각을 순서대로 쌓아 보세요." step={`${chosenSet.name} · ${index + 1} / ${queue.length}`}
+    <header className="biology-header glass"><button type="button" className="glass-button" onClick={() => setScreen('home')}>← 단어장</button><h1>{MODE_NAME.order}</h1></header>
+    <div className="biology-actions" role="group" aria-label="문장 조각 크기">{(['large', 'small', 'word'] as const).map(size => <button type="button" key={size} className="glass-button" aria-pressed={pieceSize === size} onClick={() => setPieceSize(size)}>{size === 'large' ? '큰 조각' : size === 'small' ? '작은 조각' : '낱말'}</button>)}</div>
+    <OrderDeck key={term.id + '-' + pieceSize} pieces={vocabularyPieces(term, pieceSize)} title={term.term} prompt="정의 조각을 순서대로 쌓아 보세요. 조각 크기를 바꾸면 이 문제의 배치를 다시 시작해요." step={`${chosenSet.name} · ${index + 1} / ${queue.length}`}
       nextLabel={index + 1 < queue.length ? '다음 용어 →' : '결과 보기'}
       onNext={result => { setDone(d => [...d, { id: term.id, got: result.right, total: result.total, firstTry: result.firstTry }]); advance(); }} />
   </div></main>;
@@ -155,7 +144,7 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
   if ((screen === 'write' || screen === 'reverse') && term) {
     const reverse = screen === 'reverse';
     return <main className="swipe-app biology-app"><div className="biology-study">
-      <header className="biology-header glass"><button type="button" className="glass-button" onClick={() => setScreen('sets')}>← 묶음</button><h1>{MODE_NAME[screen]}</h1></header>
+      <header className="biology-header glass"><button type="button" className="glass-button" onClick={() => setScreen('home')}>← 단어장</button><h1>{MODE_NAME[screen]}</h1></header>
       <section className="biology-written glass vocab-write" aria-label="용어 쓰기">
         <div className="biology-progress"><span>{chosenSet.name} · {index + 1} / {queue.length}</span><button type="button" className="glass-button" aria-pressed={currentRecord(progress, term).starred} onClick={() => star(term.id)}>★ 즐겨찾기</button></div>
         <h2>{reverse ? '이 정의의 용어는?' : term.term}</h2>
@@ -175,7 +164,7 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
           <h3>{scoreMessage(score)} <span className="vocab-score">{score.got} / {score.total}</span>{score.perfect && <span className="vocab-badge">원문 완벽 ✦</span>}</h3>
           {keywordChips(term, score.hits)}
           <p>{term.definition}</p>
-          {score.got < score.total && <p className="biology-note">빠진 핵심어가 있는 용어는 이 묶음 끝에 한 번 더 나와요.</p>}
+          {score.got < score.total && <p className="biology-note">빠진 핵심어가 있는 용어는 전체 학습 끝에 한 번 더 나와요.</p>}
           <button type="button" ref={nextButton} className="glass-button is-primary" onClick={advance}>{index + 1 < queue.length ? '다음 용어' : '결과 보기'} <kbd>Enter</kbd></button>
         </div>}
         {reverseResult !== null && <div className="biology-model" role="status">

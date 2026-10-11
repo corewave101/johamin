@@ -1,3 +1,5 @@
+import { sciencePractice } from './science-practice';
+import { studyPractice } from './study-practice';
 import { parkDepthCards, parkDepthWritten } from './biology-depth';
 import { chemistryCards, chemistryWritten } from './chemistry-content';
 import { physicsCards } from './physics-cards';
@@ -49,5 +51,15 @@ export const subjectMenu: SubjectGroup = {
     ] },
   ],
 };
+function appendPractice(group: SubjectGroup): void {
+  for (const node of group.children) {
+    if (node.kind === 'group') appendPractice(node);
+    else {
+      if (studyPractice[node.id]) node.writtenQuestions = [...(node.writtenQuestions ?? []), ...studyPractice[node.id]];
+      if (sciencePractice[node.id]) node.cards = [...node.cards, ...sciencePractice[node.id]];
+    }
+  }
+}
+appendPractice(subjectMenu);
 const flatten = (group: SubjectGroup): SubjectDeck[] => group.children.flatMap(node => node.kind === 'group' ? flatten(node) : [node]);
 export const subjectDecks = flatten(subjectMenu);

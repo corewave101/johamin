@@ -35,7 +35,7 @@ assert.equal(streakDays({ '2026-10-07':['a'] },new Date(now)),1);
 const React=require('react'),{renderToStaticMarkup}=require('react-dom/server');
 const {subjectDecks}=require('../data/swipe-subjects.ts');const SubjectStudy=require('../components/swipe/SubjectStudy.tsx').default;
 const html=renderToStaticMarkup(React.createElement(SubjectStudy,{deck:subjectDecks.find(d=>d.id==='biology-park'),onBack:()=>{}}));
-assert.ok(html.includes('→ 원문 단어장'));assert.ok(html.includes('22개 용어'));assert.ok(html.includes('객관식 111 · 서술형 26'));
+assert.ok(html.includes('→ 원문 단어장'));assert.ok(html.includes('22개 용어'));const parkDeck=subjectDecks.find(d=>d.id==='biology-park'); assert.ok(html.includes(`객관식 ${parkDeck.cards.filter(c=>c.topic!=='유전학 핵심 용어').length} · 서술형 ${parkDeck.writtenQuestions.filter(q=>q.topic!=='유전학 핵심 용어' && !q.id.startsWith('practice-short-')).length}`));
 const ParkVocabulary=require('../components/swipe/ParkVocabulary.tsx').default;const vocab=renderToStaticMarkup(React.createElement(ParkVocabulary,{onBack:()=>{}}));
 for(const label of ['↑ 카드로 외우기','← 문장 배치','→ 쓰기 테스트','↓ 박상영T'])assert.ok(vocab.includes(label),label);
 console.log('PASS: 22 source definitions with key ideas and ordering pieces, lenient keyword scoring with partial credit, word-for-word badge, fixed sets, proportional XP without duplicates, review scheduling, card-style menus.');

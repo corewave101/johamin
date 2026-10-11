@@ -29,6 +29,7 @@ export default function OrderDeck({ pieces, title, prompt, step, onNext, nextLab
   const [shown, setShown] = useState(false); // gave up and looked at the answer
   const firstResult = useRef<OrderResult | null>(null);
   const pool = deal.filter(i => !placed.includes(i));
+  const compact = pieces.length > 10;
   const full = placed.length === pieces.length;
   const rightAt = placed.map((piece, slot) => piece === slot);
   const right = rightAt.filter(Boolean).length;
@@ -65,8 +66,9 @@ export default function OrderDeck({ pieces, title, prompt, step, onNext, nextLab
     <div className="biology-progress"><span>{step}</span><span>{tries > 0 && !solved ? `${tries}번째 맞춰 보는 중` : ''}</span></div>
     <h2 ref={heading} tabIndex={-1}>{title}</h2>
     <p className="order-prompt">{prompt}</p>
-    <ol className={`order-slots ${full ? (solved ? 'is-solved' : 'is-checked') : ''}`} aria-label="쌓은 순서">
-      {pieces.map((_, slot) => {
+    {compact && <p className="biology-note" aria-live="polite">놓은 조각 {placed.length} / {pieces.length}</p>}
+    <ol className={`order-slots ${compact ? 'is-compact' : ''} ${full ? (solved ? 'is-solved' : 'is-checked') : ''}`} aria-label="쌓은 순서">
+      {pieces.slice(0, compact && !full ? placed.length + 1 : pieces.length).map((_, slot) => {
         const piece = placed[slot];
         if (piece === undefined) return <li key={`empty-${slot}`} className="order-slot is-empty"><span className="order-num">{slot + 1}</span></li>;
         const mark = full ? (rightAt[slot] ? 'is-right' : 'is-wrong') : '';
