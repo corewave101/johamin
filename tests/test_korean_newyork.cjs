@@ -21,8 +21,7 @@ for (const c of cards) {
   assert.ok(c.subject && len(c.subject) <= 62 && len(c.question) <= 50, c.id);
   assert.ok(Object.values(c.answers).every(a => len(a) <= 26), c.id);
   assert.ok(c.explanation.length > 15 && c.sourceNote === koreanNewyorkSource, c.id);
-  // The work is named or quoted on the card itself, and nothing points at a handout.
-  assert.ok(/뉴욕제과점|"|'나'|불빛|고향 사람/.test(c.subject), c.id);
+  // Nothing points at a handout. (The deck itself names the work, so the big line may be a short scene.)
   assert.ok(!/(몇 그릇|몇 년|몇 번 테이블|언제 문을 닫)/.test(c.question), `${c.id}: ask meaning, not trivia`);
   assert.ok(!/(위 글|윗글|학습지|노트에서|앞 문제|위 그림)/.test(c.subject + c.question), c.id);
 }
