@@ -595,3 +595,10 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 .order-slots.is-compact .order-slot { min-width: 0; max-width: 100%; }
 .order-slots.is-compact .order-slot.is-empty { min-height: 38px; }
 .order-slots.is-compact .order-slot button { width: auto; padding: 8px 10px; gap: 6px; overflow-wrap: anywhere; }
+
+.hwang-reference { margin: 1rem 0; }
+.hwang-reference summary { cursor:pointer; color:var(--theme-ink); }
+.hwang-reference img { width:100%; height:auto; border-radius:12px; }
+.written-model-text { white-space:pre-line; }
+.hwang-exam-filters { display:flex; flex-wrap:wrap; gap:0.6rem; align-items:center; margin-bottom:1rem; }
+.hwang-exam-filters select { max-width:100%; }

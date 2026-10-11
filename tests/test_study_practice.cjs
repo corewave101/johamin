@@ -36,7 +36,7 @@ const allRows = JSON.parse(fs.readFileSync('db/cards.json', 'utf8')).cards;
 const exported = allRows.filter(c => c.id.startsWith('practice-'));
 assert.equal(exported.length, 334);
 const live = groupRows(allRows);
-assert.equal(Object.values(live).flatMap(d => d.written).filter(isShortQuestion).length, 152);
+assert.equal(Object.values(live).flatMap(d => d.written).filter(isShortQuestion).length, 152 + require('../data/hwang-exam.ts').hwangExam.filter(isShortQuestion).length);
 const liveMenu = withLiveCards(subjectMenu, live);
 assert.ok(JSON.stringify(liveMenu).includes('practice-short-'));
 const dna = sciencePractice['biology-park'];

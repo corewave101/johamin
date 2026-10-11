@@ -1,3 +1,4 @@
+import { hwangExam } from './hwang-exam';
 import { sciencePractice } from './science-practice';
 import { studyPractice } from './study-practice';
 import { parkDepthCards, parkDepthWritten } from './biology-depth';
@@ -57,6 +58,7 @@ function appendPractice(group: SubjectGroup): void {
     else {
       if (studyPractice[node.id]) node.writtenQuestions = [...(node.writtenQuestions ?? []), ...studyPractice[node.id]];
       if (sciencePractice[node.id]) node.cards = [...node.cards, ...sciencePractice[node.id]];
+      if (node.id === 'astronomy-hwang') node.writtenQuestions = [...(node.writtenQuestions ?? []), ...hwangExam];
     }
   }
 }
