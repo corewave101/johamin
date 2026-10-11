@@ -2996,4 +2996,4 @@ export const studyPractice: Record<string, WrittenQuestion[]> = {
     }
   ]
 };
-export const isShortQuestion = (q: Pick<WrittenQuestion, 'id'>) => q.id.startsWith('practice-short-');
+export const isShortQuestion = (q: Pick<WrittenQuestion, 'id'>) => q.id.startsWith('practice-short-') || q.id.startsWith('hwang-exam-short-');

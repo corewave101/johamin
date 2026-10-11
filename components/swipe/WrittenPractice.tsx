@@ -1,3 +1,5 @@
+import { hwangFigurePage, isHwangExam } from '../../data/hwang-exam';
+import { gradeHwangAnswer } from '../../lib/hwang-answer';
 import { isShortQuestion } from '../../data/study-practice';
 import { gradeShortAnswer } from '../../lib/practice-answer';
 // 서술형: write an answer, open the model answer and tick the points you covered.
@@ -14,6 +16,8 @@ export default function WrittenPractice({ questions, state, setState }: { questi
   const q = questions[index];
   if (!q) return null;
   const short = isShortQuestion(q);
+  const figure = hwangFigurePage(q);
+  const grade = () => isHwangExam(q) ? gradeHwangAnswer(draft.answer, q) : gradeShortAnswer(draft.answer, q.modelAnswer);
   const draft = state.drafts[q.id] ?? { answer: '', checked: [], reviewed: false };
   const update = (changes: Partial<Draft>) => setState(s => ({ ...s, drafts: { ...s.drafts, [q.id]: { ...draft, reviewed: false, correct: undefined, ...changes } } }));
   const setIndex = (i: number) => setState(s => ({ ...s, index: i }));
@@ -22,14 +26,15 @@ export default function WrittenPractice({ questions, state, setState }: { questi
   return <section className="biology-written glass" aria-label={short ? "단답형 연습" : "서술형 연습"}>
     <div className="biology-progress"><span>{index + 1} / {questions.length} · {q.topic}</span><span>채점 완료 {reviewed} / {questions.length}</span></div>
     <h2>{q.question}</h2>
+    {figure && <details key={q.id} className="hwang-reference"><summary>수업자료 그림·힌트 보기 · {figure}쪽</summary><p>그림에는 정답 단서가 포함되어 있어요. 먼저 기억으로 답을 써 보세요.</p><img loading="lazy" src={`images/hwang-exam/page-${figure}.jpg`} alt={`수업자료 ${figure}쪽의 부품과 정렬 그림`} /></details>}
     {q.passage && <details key={q.id} open className="swipe-reading"><summary>READ & WRITE · 관련 영어 지문</summary><p lang="en">{q.passage}</p></details>}
     <label htmlFor="written-answer">내 답안</label>
-    <textarea id="written-answer" value={draft.answer} onChange={event => update({ answer: event.target.value })} placeholder={short ? '정답 하나를 입력하세요.' : '핵심 개념과 이유를 문장으로 써 보세요.'} rows={short ? 2 : 7} onKeyDown={event => { if (short && event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); if (draft.answer.trim()) { update({ reviewed: true, correct: gradeShortAnswer(draft.answer, q.modelAnswer) }); setState(s => ({ ...s, revealed: { ...s.revealed, [q.id]: true } })); } } }} />
-    {short && <div className="biology-actions"><button type="button" className="glass-button is-primary" disabled={!draft.answer.trim()} onClick={() => { update({ reviewed: true, correct: gradeShortAnswer(draft.answer, q.modelAnswer) }); setState(s => ({ ...s, revealed: { ...s.revealed, [q.id]: true } })); }}>채점하기 · Enter</button></div>}
+    <textarea id="written-answer" value={draft.answer} onChange={event => update({ answer: event.target.value })} placeholder={short ? '정답 하나를 입력하세요.' : '핵심 개념과 이유를 문장으로 써 보세요.'} rows={short ? 2 : 7} onKeyDown={event => { if (short && event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); if (draft.answer.trim()) { update({ reviewed: true, correct: grade() }); setState(s => ({ ...s, revealed: { ...s.revealed, [q.id]: true } })); } } }} />
+    {short && <div className="biology-actions"><button type="button" className="glass-button is-primary" disabled={!draft.answer.trim()} onClick={() => { update({ reviewed: true, correct: grade() }); setState(s => ({ ...s, revealed: { ...s.revealed, [q.id]: true } })); }}>채점하기 · Enter</button></div>}
     {short && draft.reviewed && <p role="status" className="biology-score">{draft.correct ? '정답이에요!' : '정답을 확인하고 다시 써 보세요.'}</p>}
     <div className="biology-actions"><button type="button" className="glass-button" aria-expanded={open} onClick={() => setState(s => ({ ...s, revealed: { ...s.revealed, [q.id]: !open } }))}>{open ? '정답 숨기기' : short ? '정답 보기' : '모범답안·채점 기준 보기'}</button></div>
     {open && <div className="biology-model">
-      <h3>{short ? '정답' : '모범답안'}</h3><p>{q.modelAnswer}</p>
+      <h3>{short ? '정답' : '모범답안'}</h3><p className="written-model-text">{q.modelAnswer}</p>
       {!short && <><fieldset><legend>내 답안에 포함된 항목을 직접 체크하세요 · 각 1점</legend>
         {q.criteria.map((criterion, i) => <label key={criterion}><input type="checkbox" checked={Boolean(draft.checked[i])} onChange={event => { const checked = [...draft.checked]; checked[i] = event.target.checked; update({ checked }); }} />{criterion}</label>)}
       </fieldset>
