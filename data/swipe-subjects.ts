@@ -10,6 +10,7 @@ import { astronomyCards } from './astronomy-cards';
 import { jeonCards } from './jeon-cards';
 import { socialCards } from './social-cards';
 import { socialJoCards, socialJoWritten } from './social-jo-cards';
+import { socialBulkCards, socialBulkWritten } from './social-bulk-cards';
 import { englishCards } from './english-cards';
 import { englishWritten } from './english-written';
 import { koreanGrammarCards, koreanGrammarWritten } from './korean-cards';
@@ -31,7 +32,10 @@ export const subjectMenu: SubjectGroup = {
         { id: 'korean-classic', kind: 'deck', name: '고전 시가', fullName: '국어(고전 시가)', direction: 'right', symbol: '가', description: '수업 자료를 기다리는 중.', cards: [] },
       ] },
       { id: 'social-group', kind: 'group', name: '사회', direction: 'left', symbol: '◎', description: '왼쪽은 성신제T, 오른쪽은 조안나T. 공부할 파트를 골라요.', children: [
-        { id: 'social', kind: 'deck', name: '성신제T', fullName: '사회(성신제T)', direction: 'left', symbol: '◎', description: '세계화·국제 갈등·평화·정의관·불평등을 꼬아서.', cards: socialCards },
+        { id: 'social-sung', kind: 'group', name: '성신제T', direction: 'left', symbol: '◎', description: '왼쪽은 기본, 오른쪽은 학습지마다 촘촘한 뭉탱이.', children: [
+          { id: 'social', kind: 'deck', name: '기본', fullName: '사회(성신제T)', direction: 'left', symbol: '◎', description: '세계화·국제 갈등·평화·정의관·불평등을 꼬아서.', cards: socialCards },
+          { id: 'social-bulk', kind: 'deck', name: '뭉탱이', fullName: '사회(성신제T · 뭉탱이)', direction: 'right', symbol: '◎', description: '학습지 하나 = 에디션 하나. 그 학습지만 촘촘하게 파요.', cards: socialBulkCards, writtenQuestions: socialBulkWritten },
+        ] },
         { id: 'social-jo', kind: 'deck', name: '조안나T', fullName: '사회(조안나T)', direction: 'right', symbol: '◎', description: '인권 보장과 헌법: 기본권·기본권 제한·권력 분립·헌법재판소.', cards: socialJoCards, writtenQuestions: socialJoWritten },
       ] },
       { id: 'english', kind: 'deck', name: '영어', direction: 'right', symbol: 'A', description: '고대 건축물·Bartleby·가정법·예술과 측정.', cards: englishCards, writtenQuestions: englishWritten },

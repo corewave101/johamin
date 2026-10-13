@@ -34,7 +34,7 @@ function sourceOf(card, teacher) {
 const decks = [], cards = [];
 function walk(group, parent) {
   for (const node of group.children) {
-    if (node.kind === 'group') { walk(node, node); continue; }
+    if (node.kind === 'group') { walk(node, parent && !SPLIT_GROUPS.has(parent.id) ? parent : node); continue; } // 사회 › 성신제T › 기본 keeps subject 사회
     const subject = !parent || SPLIT_GROUPS.has(parent.id) ? node.name : parent.name;
     const teacher = teacherOf(node);
     decks.push({ id: node.id, subject, name: node.name, full_name: node.fullName ?? null, teacher, description: node.description, sort: decks.length });
