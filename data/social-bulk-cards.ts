@@ -33,7 +33,6 @@ const editions: Edition[] = [
     // 지리적 표시제
     ['지역의 지리적 특성을 반영한 우수 상품에 생산지 표시를 인정하는 제도는?', ['지리적 표시제', '장소 마케팅', '지역 브랜드화', '현지화'], '지리적 표시제는 기후·지형·토양 등 지리적 특성을 반영한 우수한 상품에 그 지역에서 생산·제조·가공된 상품임을 표시하도록 인정하는 제도다.', 1],
     ['지리적 표시제가 반영하는 특성이 아닌 것은?', ['기업의 상표 가치', '그 지역의 기후', '그 지역의 지형', '그 지역의 토양'], '지리적 표시제는 특정 지역의 기후·지형·토양 등 지리적 특성을 반영한 상품을 대상으로 한다.', 1],
-    ['우리나라 지리적 표시제 제1호 상품은?', ['보성 녹차', '영덕 대게', '횡성 한우', '다르질링 차'], '보성 녹차가 국내 지리적 표시제 제1호다. 영덕 대게, 횡성 한우도 지리적 표시제 상품이다.', 1],
     ['샴페인 A, 다르질링 차 B를 지리적 표시 상품으로 둔 나라는? A–B는?', ['프랑스–인도', '이탈리아–인도', '프랑스–스리랑카', '에스파냐–인도'], '샴페인은 프랑스, 다르질링 차는 인도의 지리적 표시제 상품이다.', 1],
     ['미국의 플로리다 오렌지가 해당하는 지역화 전략은?', ['지리적 표시제', '장소 마케팅', '지역 브랜드화', '글로컬라이제이션'], '플로리다 오렌지는 그 지역에서 생산된 상품임을 표시하는 지리적 표시제의 예다.', 1],
     // 자료 1 세계의 주요 지리적 표시제 특산물
@@ -126,7 +125,7 @@ const practiceOf = (card: SwipeCard, kind: 'short' | 'written'): WrittenQuestion
 };
 const practiceCards = socialBulkCards.filter(writable);
 // 단답형은 정확히 같은 답을 쓰게 되므로 짧은 낱말·이름만(두 어절 이하, 10자 이하). 서술형은 고른 카드 전부.
-const shortable = (card: SwipeCard) => { const a = card.answers[card.correct]; return [...a].length <= 10 && a.split(' ').length <= 2 && !/옳은 것/.test(card.question); };
+const shortable = (card: SwipeCard) => { const a = card.answers[card.correct]; return Array.from(a).length <= 10 && a.split(' ').length <= 2 && !/옳은 것/.test(card.question); };
 export const socialBulkPractice = { short: practiceCards.filter(shortable).map(card => practiceOf(card, 'short')), written: practiceCards.map(card => practiceOf(card, 'written')) };
 
 export const socialBulkWritten: WrittenQuestion[] = [...rubrics, ...socialBulkPractice.short, ...socialBulkPractice.written];
