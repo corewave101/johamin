@@ -26943,6 +26943,1524 @@
       "sort": 652
     },
     {
+      "id": "social-bulk-212-001",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "부·권력·명예 등이 차등 분배되어 개인과 집단이 서열화되는 현상 X. X의 예로 알맞은 것은?",
+      "passage": null,
+      "answer": "신분 제도",
+      "wrong": [
+        "사회 보험",
+        "적극적 우대 조치",
+        "혁신 도시 조성"
+      ],
+      "criteria": [],
+      "explanation": "사회 불평등은 사회적 자원이 차등적으로 분배되어 개인과 집단이 서열화되는 현상이며, 신분 제도가 대표적인 예다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 653
+    },
+    {
+      "id": "social-bulk-212-002",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 불평등에서 차등 분배되는 부·권력·명예 X. X를 달리 부르는 말은?",
+      "passage": null,
+      "answer": "사회적 희소가치",
+      "wrong": [
+        "생산 수단",
+        "사회적 위신",
+        "공동 자산"
+      ],
+      "criteria": [],
+      "explanation": "부·권력·명예 같은 사회적 자원은 누구나 원하지만 한정되어 있어 사회적 희소가치라고 부른다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 654
+    },
+    {
+      "id": "social-bulk-212-003",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "양극화로 부모의 계층이 자녀에게 대물림될 때 형성되는 사회 구조는?",
+      "passage": null,
+      "answer": "폐쇄적 사회 구조",
+      "wrong": [
+        "개방적 사회 구조",
+        "다원적 계층 구조",
+        "연속적 계층 구조"
+      ],
+      "criteria": [],
+      "explanation": "부모의 계층이 자녀에게 대물림되면 능력·업적에 따른 계층 이동이 어려운 폐쇄적 사회 구조가 형성된다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 655
+    },
+    {
+      "id": "social-bulk-212-004",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "양극화는 A 격차에서 시작해 B 등 삶의 다른 영역으로 번진다. A–B는?",
+      "passage": null,
+      "answer": "경제적–주거·교육·건강",
+      "wrong": [
+        "교육–자산·소득",
+        "주거–경제·여가",
+        "정치적–경제·교육"
+      ],
+      "criteria": [],
+      "explanation": "자산과 소득에 따른 경제적 격차가 주거, 교육 기회, 건강, 여가 등 삶의 다른 영역의 격차로 확대된다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 656
+    },
+    {
+      "id": "social-bulk-212-005",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 계층의 양극화가 사회 통합을 해치는 까닭으로 알맞은 것은?",
+      "passage": null,
+      "answer": "계층 간 위화감 조성",
+      "wrong": [
+        "중간 계층의 확대",
+        "지위 불일치 증가",
+        "계층 이동의 활성화"
+      ],
+      "criteria": [],
+      "explanation": "양극화는 상층과 하층 사이에 위화감을 조성하여 사회 통합을 저해한다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 657
+    },
+    {
+      "id": "social-bulk-212-006",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "베버가 계층을 구분할 때 쓴 기준으로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "생산 수단 소유만",
+      "wrong": [
+        "경제적 계급",
+        "사회적 위신",
+        "정치적 권력"
+      ],
+      "criteria": [],
+      "explanation": "베버는 경제적 계급, 사회적 위신, 정치적 권력 등 다양한 요인으로 계층을 구분했다. 생산 수단 소유라는 단일 기준은 마르크스의 것이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 658
+    },
+    {
+      "id": "social-bulk-212-007",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "마르크스가 계급을 나누는 기준인 생산 수단의 예로 알맞은 것은?",
+      "passage": null,
+      "answer": "자본·토지",
+      "wrong": [
+        "위신·명예",
+        "권력·지위",
+        "소득·학력"
+      ],
+      "criteria": [],
+      "explanation": "마르크스는 자본, 토지 등 생산 수단을 소유했는지에 따라 지배 계급과 피지배 계급을 구분했다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 659
+    },
+    {
+      "id": "social-bulk-212-008",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "계급 이론에서 사회 변혁의 원동력 A, 계층 이론이 불평등을 이해하는 방식 B는?",
+      "passage": null,
+      "answer": "계급 대립·갈등–상·중·하층 범주화",
+      "wrong": [
+        "계층 간 이동–상·중·하층 범주화",
+        "계급 대립·갈등–지배·피지배 구분",
+        "구성원 합의–지배·피지배 구분"
+      ],
+      "criteria": [],
+      "explanation": "계급 이론은 자본가와 노동자의 대립·갈등을 사회 변혁의 원동력으로 보고, 계층 이론은 희소가치의 불평등한 분배 상태를 상층·중층·하층으로 범주화하여 이해한다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 660
+    },
+    {
+      "id": "social-bulk-212-009",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "계층을 상층·중층·하층으로 범주화해 수직적 연속선에 배열하는 이론 X. X를 제시한 학자는?",
+      "passage": null,
+      "answer": "베버",
+      "wrong": [
+        "마르크스",
+        "왈처",
+        "롤스"
+      ],
+      "criteria": [],
+      "explanation": "계층을 수직적 연속선상에 배열하고 다양한 요인으로 위치를 구분하는 계층 이론은 베버가 제시했다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 661
+    },
+    {
+      "id": "social-bulk-212-010",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "자본가·노동자 두 층으로 나눈 피라미드 A, 상·중·하층을 연속선에 나눈 피라미드 B는?",
+      "passage": null,
+      "answer": "계급 이론–계층 이론",
+      "wrong": [
+        "계층 이론–계급 이론",
+        "기능론–갈등론",
+        "갈등론–기능론"
+      ],
+      "criteria": [],
+      "explanation": "지배·피지배 두 계급으로 불연속적으로 나누면 계급 이론, 상·중·하층을 연속선으로 나누면 계층 이론의 구조다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 662
+    },
+    {
+      "id": "social-bulk-212-011",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "지배 집단에 유리한 분배 구조가 계급을 재생산한다고 보는 이론 X. X에서 불평등을 결정하는 것은?",
+      "passage": null,
+      "answer": "경제적 요인",
+      "wrong": [
+        "다양한 요인",
+        "개인의 능력",
+        "구성원의 합의"
+      ],
+      "criteria": [],
+      "explanation": "마르크스의 계급 이론은 경제적 요인이 다른 모든 사회 불평등을 결정한다고 보는 일원론이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 663
+    },
+    {
+      "id": "social-bulk-212-012",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "베버의 계층 이론에 대한 설명으로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "경제적 요인이 결정",
+      "wrong": [
+        "계층을 연속선에 배열",
+        "다양한 계층 분화 설명",
+        "자유로운 사회 이동"
+      ],
+      "criteria": [],
+      "explanation": "경제적 요인이 모든 불평등을 결정한다는 것은 계급 이론(일원론)이다. 계층 이론은 여러 요인이 불평등을 낳는다고 본다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 664
+    },
+    {
+      "id": "social-bulk-212-013",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 이동에 대해 계급 이론은 A, 계층 이론은 B로 본다. A–B는?",
+      "passage": null,
+      "answer": "제한적–자유로움",
+      "wrong": [
+        "자유로움–제한적",
+        "제한적–제한적",
+        "자유로움–자유로움"
+      ],
+      "criteria": [],
+      "explanation": "계급 이론은 사회 이동(수직 이동)이 제한된다고 보고, 계층 이론은 자유로운 사회 이동이 가능하다고 본다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 665
+    },
+    {
+      "id": "social-bulk-212-014",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "계급 이론과 연결된 관점 A, 계층 이론이 바탕으로 삼은 관점 B는?",
+      "passage": null,
+      "answer": "갈등론–다원론",
+      "wrong": [
+        "기능론–일원론",
+        "다원론–갈등론",
+        "일원론–기능론"
+      ],
+      "criteria": [],
+      "explanation": "계급 이론은 지배 집단에 유리한 분배 구조가 계급을 재생산한다는 갈등론과 연결되고, 계층 이론은 다원론을 바탕으로 한다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 666
+    },
+    {
+      "id": "social-bulk-212-015",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "계급 이론·계층 이론과 그 특징의 연결로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "계층–계급 의식 강함",
+      "wrong": [
+        "계급–이분법적 구분",
+        "계급–갈등론과 연결",
+        "계층–지위 불일치 설명"
+      ],
+      "criteria": [],
+      "explanation": "구성원의 계급 의식과 소속감이 강하고 상대 계급에 적대감이 크다는 것은 계급 이론의 특징이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 667
+    },
+    {
+      "id": "social-bulk-212-016",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "권력은 크지만 재산은 적은 사람처럼 영역마다 계층 서열이 다른 현상은?",
+      "passage": null,
+      "answer": "지위 불일치",
+      "wrong": [
+        "계층의 양극화",
+        "계급 재생산",
+        "지위 대물림"
+      ],
+      "criteria": [],
+      "explanation": "지위 불일치는 계급(재산), 위신(명예), 권력의 각 측면에서 개인의 서열 위치가 서로 다른 현상이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 668
+    },
+    {
+      "id": "social-bulk-212-017",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "계급·위신·권력의 서열이 서로 다른 현상 X. 마르크스 이론이 X를 설명하지 못하는 이유는?",
+      "passage": null,
+      "answer": "경제적 요인만 보기 때문",
+      "wrong": [
+        "다원론에 기반하기 때문",
+        "사회 이동을 강조해서",
+        "계층을 범주화해서"
+      ],
+      "criteria": [],
+      "explanation": "지위 불일치는 여러 요인을 함께 보는 계층 이론(다원론)만 설명할 수 있다. 경제적 요인 하나로만 보는 계급 이론은 설명하기 어렵다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 669
+    },
+    {
+      "id": "social-bulk-212-018",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "지위 불일치에 대한 설명으로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "계급 이론으로 설명 가능",
+      "wrong": [
+        "계층 이론으로 설명 가능",
+        "재산·위신·권력 서열 차이",
+        "다원론과 관련됨"
+      ],
+      "criteria": [],
+      "explanation": "지위 불일치는 다원론인 계층 이론만 설명할 수 있다. 계급 이론이 지위 불일치를 설명하기에 적절하다는 진술은 틀렸다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 670
+    },
+    {
+      "id": "social-bulk-212-019",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "이분법적·대립적 계급 구분이 타당했다고 평가받는 시기는?",
+      "passage": null,
+      "answer": "근대 초 산업화 시기",
+      "wrong": [
+        "현대 정보화 사회",
+        "고대 신분제 사회",
+        "탈산업화 시기"
+      ],
+      "criteria": [],
+      "explanation": "계급 구분은 근대 초 산업화 시기에는 타당했으나, 직업이 분화되고 복잡해진 현대 사회를 설명하기엔 적합하지 않다는 비판을 받는다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 671
+    },
+    {
+      "id": "social-bulk-212-020",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "신도심과 구도심 사이에 자원이 불균등하게 분배되어 생긴 격차 X. X의 종류는?",
+      "passage": null,
+      "answer": "공간 불평등",
+      "wrong": [
+        "계층의 양극화",
+        "사회적 소수자 차별",
+        "지위 불일치"
+      ],
+      "criteria": [],
+      "explanation": "공간 불평등은 지역 간 자원이 불균등하게 분배되어 격차가 생기는 현상으로, 신도심과 구도심 같은 도시 내부에서도 나타난다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 672
+    },
+    {
+      "id": "social-bulk-212-021",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "'성장 거점을 집중 개발해야 공간 불평등이 해소된다'는 주장이 틀린 이유는?",
+      "passage": null,
+      "answer": "집중 개발이 격차를 낳음",
+      "wrong": [
+        "투자 규모가 부족함",
+        "도시화가 늦어짐",
+        "농촌 인구가 늘어남"
+      ],
+      "criteria": [],
+      "explanation": "성장 가능성이 큰 지역에 자본과 기술을 집중 투자한 성장 거점 개발 정책은 제외된 지역의 인구 유출과 경제 침체를 낳아 공간 불평등의 원인이 되었다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 673
+    },
+    {
+      "id": "social-bulk-212-022",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "공간 불평등을 낳은 정책 A, 그와 함께 원인이 된 사회 변화 B는?",
+      "passage": null,
+      "answer": "성장 거점 개발–산업화·도시화",
+      "wrong": [
+        "균형 발전 정책–산업화·도시화",
+        "성장 거점 개발–탈산업화",
+        "혁신 도시 조성–인구 감소"
+      ],
+      "criteria": [],
+      "explanation": "경제 성장 초기의 성장 거점 개발 정책과 1960년대 이후 급격한 산업화·도시화가 공간 불평등의 원인이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 674
+    },
+    {
+      "id": "social-bulk-212-023",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "공간 불평등의 영향으로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "국토의 효율적 이용",
+      "wrong": [
+        "삶의 기회 차이",
+        "낙후 지역 삶의 질 저하",
+        "사회 통합 저해"
+      ],
+      "criteria": [],
+      "explanation": "공간 불평등은 국토의 비효율적 이용을 낳고, 지역에 따른 자원 차이가 삶의 기회 차이로 이어지며 사회 안정과 통합을 저해한다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 675
+    },
+    {
+      "id": "social-bulk-212-024",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "교육·문화·의료 등 생활 환경의 지역 격차가 낙후 지역 주민에게 미치는 영향은?",
+      "passage": null,
+      "answer": "삶의 질 저하",
+      "wrong": [
+        "계급 의식 강화",
+        "지위 불일치 확대",
+        "역차별 논란"
+      ],
+      "criteria": [],
+      "explanation": "공간 불평등으로 교육, 문화, 의료 등 생활 환경 전반이 불평등해지면 낙후 지역 주민의 삶의 질이 떨어진다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 676
+    },
+    {
+      "id": "social-bulk-212-025",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "장애·나이·국적 등으로 소외되어 인간다운 삶을 영위하기 어려운 개인·집단은?",
+      "passage": null,
+      "answer": "사회적 약자",
+      "wrong": [
+        "피지배 계급",
+        "최소 수혜자",
+        "상대적 빈곤층"
+      ],
+      "criteria": [],
+      "explanation": "사회적 약자는 장애, 나이, 성별, 출신 국가, 소득 수준 등으로 사회적으로 소외되어 인간다운 삶을 영위하는 데 어려움을 겪는 개인이나 집단이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 677
+    },
+    {
+      "id": "social-bulk-212-026",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "약자 차별의 원인 중 개인의 인식 A, 사회의 태도 B는?",
+      "passage": null,
+      "answer": "선입견·편견–차별 용인 환경",
+      "wrong": [
+        "차별 용인 환경–선입견·편견",
+        "능력 부족–선입견·편견",
+        "선입견·편견–경제적 격차"
+      ],
+      "criteria": [],
+      "explanation": "나이·장애·국적 등을 근거로 한 선입견과 편견, 그리고 차별을 타개할 의지가 없는 사회적 환경이 차별의 원인이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 678
+    },
+    {
+      "id": "social-bulk-212-027",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "능력·업적과 무관한 차별이 낳는 결과로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "계층 간 이동 촉진",
+      "wrong": [
+        "기본적 권리 침해",
+        "불평등 심화",
+        "인간다운 삶 곤란"
+      ],
+      "criteria": [],
+      "explanation": "능력·업적과 무관한 차별은 사회적 약자의 기본적 권리를 침해하고 불평등을 심화하여 정의로운 사회 구현을 방해한다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 679
+    },
+    {
+      "id": "social-bulk-212-028",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "신체적·문화적 특징으로 주류 집단에게 차별받는 사람들 X. X인지 판단하는 핵심은?",
+      "passage": null,
+      "answer": "차별받는다는 사실",
+      "wrong": [
+        "수적으로 적다는 점",
+        "소득이 낮다는 점",
+        "국적이 다르다는 점"
+      ],
+      "criteria": [],
+      "explanation": "사회적 소수자는 반드시 수적으로 소수를 뜻하지 않는다. 과거 남아프리카 공화국의 흑인처럼 다수여도 주류 집단에게 차별받으면 소수자다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 680
+    },
+    {
+      "id": "social-bulk-212-029",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "더 중요한 위치에 능력 있는 사람을 충원하려면 불평등이 불가피하다는 관점 X. X의 분배 기준은?",
+      "passage": null,
+      "answer": "직업의 사회적 중요도",
+      "wrong": [
+        "지배 집단만의 합의",
+        "권력·가정 배경",
+        "생산 수단 소유"
+      ],
+      "criteria": [],
+      "explanation": "기능론은 사회 전체의 필요에 의해 결정되는 직업별 사회적 중요도·기여도에 따라 차등 분배된다고 본다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 681
+    },
+    {
+      "id": "social-bulk-212-030",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "가치 배분 과정에 기능론은 A, 갈등론은 B가 반영된다고 본다. A–B는?",
+      "passage": null,
+      "answer": "구성원 합의–지배 집단 기득권",
+      "wrong": [
+        "지배 집단 기득권–구성원 합의",
+        "구성원 합의–개인 능력",
+        "개인 능력–지배 집단 기득권"
+      ],
+      "criteria": [],
+      "explanation": "기능론은 사회 구성원의 합의된 가치가, 갈등론은 지배 집단의 기득권 유지를 위한 가치가 배분 과정에 반영된다고 본다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 682
+    },
+    {
+      "id": "social-bulk-212-031",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "가치 배분 기준으로 기능론은 A, 갈등론은 B를 든다. A–B는?",
+      "passage": null,
+      "answer": "자질·노력·능력–권력·재산·배경",
+      "wrong": [
+        "권력·재산·배경–자질·노력·능력",
+        "합법적 절차–자질·노력·능력",
+        "권력·재산·배경–합법적 절차"
+      ],
+      "criteria": [],
+      "explanation": "기능론은 개인의 자질·노력·능력에 따라 합법적으로, 갈등론은 권력·재산·가정 배경 등에 따라 강제적·불공정하게 배분된다고 본다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 683
+    },
+    {
+      "id": "social-bulk-212-032",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "직업의 기능적 중요도에는 차이가 없다고 보는 관점 X. X가 본 불평등의 원인은?",
+      "passage": null,
+      "answer": "지배 집단의 기득권 유지",
+      "wrong": [
+        "직업별 기여도 차이",
+        "개인의 자질 차이",
+        "구성원의 합의"
+      ],
+      "criteria": [],
+      "explanation": "갈등론은 불평등을 지배 집단이 현재의 기득권과 지배적 위치를 유지하려는 결과로 본다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 684
+    },
+    {
+      "id": "social-bulk-212-033",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "'의사의 소득이 높은 건 사회에 중요한 일을 맡아서다'라는 주장의 관점은?",
+      "passage": null,
+      "answer": "기능론",
+      "wrong": [
+        "갈등론",
+        "계급 이론",
+        "다원론"
+      ],
+      "criteria": [],
+      "explanation": "직업의 사회적 중요도·기여도에 따라 보상이 차등 분배된다고 보는 것은 기능론의 관점이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 685
+    },
+    {
+      "id": "social-bulk-212-034",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "좋은 직업이 부모의 재산과 배경으로 대물림된다고 보는 관점 X. X가 받는 비판은?",
+      "passage": null,
+      "answer": "개인 노력의 영향 간과",
+      "wrong": [
+        "가정 배경 영향 간과",
+        "갈등의 현실 경시",
+        "계급 의식 과장"
+      ],
+      "criteria": [],
+      "explanation": "갈등론은 개인의 능력이나 노력이 지위 변동에 미치는 영향력을 간과한다는 비판을 받는다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 686
+    },
+    {
+      "id": "social-bulk-212-035",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "기능론에 대한 설명으로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "가정 배경에 따른 배분",
+      "wrong": [
+        "합법적 절차로 배분",
+        "성취동기 유발",
+        "사회 유지·발전에 기여"
+      ],
+      "criteria": [],
+      "explanation": "권력·재산·가정 배경에 따라 배분된다는 것은 갈등론의 시각이다. 기능론은 자질·노력·능력에 따라 합법적으로 배분된다고 본다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 687
+    },
+    {
+      "id": "social-bulk-212-036",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "불평등이 사회적 박탈감과 집단 간 대립을 유발한다는 관점 X. X가 본 가치 배분의 성격은?",
+      "passage": null,
+      "answer": "강제적·불공정",
+      "wrong": [
+        "합법적·정당",
+        "자발적·합의적",
+        "능력별·차등적"
+      ],
+      "criteria": [],
+      "explanation": "갈등론은 가치가 지배 집단만의 합의에 의해 강제적으로 불공정하게 배분된다고 본다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 688
+    },
+    {
+      "id": "social-bulk-212-037",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "불평등을 개인을 적재적소에 배치하는 장치로 보는 관점 X. X가 경시한다고 비판받는 것은?",
+      "passage": null,
+      "answer": "소외된 사람들의 현실",
+      "wrong": [
+        "성취동기 유발 효과",
+        "사회적 효율성 향상",
+        "개인의 노력과 능력"
+      ],
+      "criteria": [],
+      "explanation": "기능론은 가정 배경 같은 현실적 영향력을 간과하고, 불평등이 초래하는 대립·갈등과 소외된 사람들의 현실을 경시한다는 비판을 받는다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 689
+    },
+    {
+      "id": "social-bulk-212-038",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "불평등의 결과로 기능론은 A, 갈등론은 B를 강조한다. A–B는?",
+      "passage": null,
+      "answer": "사회적 효율성 향상–양극화 초래",
+      "wrong": [
+        "양극화 초래–사회적 효율성 향상",
+        "계급 재생산–성취동기 유발",
+        "성취동기 유발–적재적소 배치"
+      ],
+      "criteria": [],
+      "explanation": "기능론은 불평등이 사회의 유지·발전과 효율성 향상에 기여한다고 보고, 갈등론은 박탈감·대립을 유발하고 양극화를 초래한다고 본다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 690
+    },
+    {
+      "id": "social-bulk-212-039",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "기능론·갈등론과 그 주장의 연결로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "기능론–계급 재생산 강조",
+      "wrong": [
+        "갈등론–강제적 배분",
+        "기능론–합의된 가치 반영",
+        "갈등론–기득권 유지"
+      ],
+      "criteria": [],
+      "explanation": "불평등으로 계급이 재생산된다고 강조하는 것은 갈등론이다. 기능론은 구성원의 합의된 가치가 반영된다고 본다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 691
+    },
+    {
+      "id": "social-bulk-212-040",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 복지 제도가 사회 통합에 기여하는 까닭으로 알맞은 것은?",
+      "passage": null,
+      "answer": "계층 양극화 완화",
+      "wrong": [
+        "계급 의식 강화",
+        "성장 거점 육성",
+        "역차별 해소"
+      ],
+      "criteria": [],
+      "explanation": "사회 복지 제도는 구성원의 기본적 욕구 충족과 인간다운 삶을 지원하여 사회 계층의 양극화를 완화하고 사회 통합에 기여한다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 692
+    },
+    {
+      "id": "social-bulk-212-041",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "복지 이념으로 사회 보험은 A, 공공 부조는 B 복지다. A–B는?",
+      "passage": null,
+      "answer": "보편적–선별적",
+      "wrong": [
+        "선별적–보편적",
+        "보편적–보편적",
+        "선별적–선별적"
+      ],
+      "criteria": [],
+      "explanation": "사회 보험은 일정 요건을 갖춘 모든 국민이 대상인 보편적 복지, 공공 부조는 생활이 어려운 계층만 대상인 선별적 복지다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 693
+    },
+    {
+      "id": "social-bulk-212-042",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "성격으로 볼 때 사회 보험은 A, 공공 부조는 B다. A–B는?",
+      "passage": null,
+      "answer": "사전 예방적–사후 처방적",
+      "wrong": [
+        "사후 처방적–사전 예방적",
+        "사후 처방적–사후 처방적",
+        "사전 예방적–사전 예방적"
+      ],
+      "criteria": [],
+      "explanation": "사회 보험은 사회적 위험에 미리 대비하는 사전 예방적·상호 부조 성격, 공공 부조는 어려움이 생긴 뒤 돕는 사후 처방적 성격이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 694
+    },
+    {
+      "id": "social-bulk-212-043",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "지원 방식으로 공공 부조는 A, 사회 서비스는 B가 원칙이다. A–B는?",
+      "passage": null,
+      "answer": "금전적–비금전적",
+      "wrong": [
+        "비금전적–금전적",
+        "금전적–금전적",
+        "비금전적–비금전적"
+      ],
+      "criteria": [],
+      "explanation": "공공 부조는 금전적 지원을, 사회 서비스는 상담·재활·돌봄 등 비금전적 지원을 원칙으로 한다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 695
+    },
+    {
+      "id": "social-bulk-212-044",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 서비스에 대한 설명으로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "절대 빈곤층만 대상",
+      "wrong": [
+        "민간 부문 참여 가능",
+        "비금전적 지원 원칙",
+        "수익자 부담 원칙"
+      ],
+      "criteria": [],
+      "explanation": "사회 서비스는 도움이 필요한 모든 국민이 대상이다. 절대 빈곤층만 선별하는 것은 공공 부조다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 696
+    },
+    {
+      "id": "social-bulk-212-045",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "공공 부조에 대한 설명으로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "보험료를 재원으로 함",
+      "wrong": [
+        "부담자와 수혜자가 다름",
+        "사후 처방적 성격",
+        "국가 재정 부담"
+      ],
+      "criteria": [],
+      "explanation": "공공 부조는 국가·지자체가 조세로 전액 부담한다. 보험료를 재원으로 하는 것은 사회 보험이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 697
+    },
+    {
+      "id": "social-bulk-212-046",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "조세로 국가·지자체가 전액 지원해 최저 생활을 보장하는 제도 X. X의 복지 이념은?",
+      "passage": null,
+      "answer": "선별적 복지",
+      "wrong": [
+        "보편적 복지",
+        "상호 부조",
+        "수익자 부담"
+      ],
+      "criteria": [],
+      "explanation": "공공 부조는 생활이 어려운 저소득층(절대 빈곤층)을 골라 지원하는 선별적 복지다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 698
+    },
+    {
+      "id": "social-bulk-212-047",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "가입자·사업주가 보험료를 내고 국가가 일부 보태는 제도 X. X의 한계는?",
+      "passage": null,
+      "answer": "보험료 부담",
+      "wrong": [
+        "부정적 낙인",
+        "큰 국가 재정 부담",
+        "민간 참여 곤란"
+      ],
+      "criteria": [],
+      "explanation": "사회 보험의 한계는 보험료 부담이다. 부정적 낙인과 국가 재정 부담은 공공 부조의 한계다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 699
+    },
+    {
+      "id": "social-bulk-212-048",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 보험료를 소득 수준에 따라 다르게 내는 것은 어떤 원칙인가?",
+      "passage": null,
+      "answer": "능력별 부담",
+      "wrong": [
+        "수익자 부담",
+        "전액 국가 부담",
+        "균등 부담"
+      ],
+      "criteria": [],
+      "explanation": "사회 보험의 재원은 수익자 부담과 능력별 부담 원칙을 따르며, 소득에 따라 보험료를 달리 내는 것은 능력별 부담이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 700
+    },
+    {
+      "id": "social-bulk-212-049",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "국민 연금 제도는 A, 기초 연금 제도는 B에 속한다. A–B는?",
+      "passage": null,
+      "answer": "사회 보험–공공 부조",
+      "wrong": [
+        "공공 부조–사회 보험",
+        "사회 보험–사회 보험",
+        "공공 부조–사회 서비스"
+      ],
+      "criteria": [],
+      "explanation": "국민 연금은 보험료를 내는 사회 보험이고, 기초 연금은 조세로 지급하는 공공 부조다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 701
+    },
+    {
+      "id": "social-bulk-212-050",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "노인 장기 요양 보험은 A, 노인 맞춤 돌봄 서비스는 B에 속한다. A–B는?",
+      "passage": null,
+      "answer": "사회 보험–사회 서비스",
+      "wrong": [
+        "사회 서비스–사회 보험",
+        "공공 부조–사회 서비스",
+        "사회 보험–공공 부조"
+      ],
+      "criteria": [],
+      "explanation": "노인 장기 요양 보험은 사회 보험, 노인 맞춤 돌봄 서비스는 돌봄을 제공하는 사회 서비스다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 702
+    },
+    {
+      "id": "social-bulk-212-051",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 보장 제도와 그 예의 연결로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "공공 부조–국민 연금",
+      "wrong": [
+        "사회 보험–고용 보험",
+        "공공 부조–의료 급여",
+        "사회 서비스–가사·간병 방문"
+      ],
+      "criteria": [],
+      "explanation": "국민 연금 제도는 사회 보험의 예다. 공공 부조의 예는 국민 기초 생활 보장, 의료 급여, 기초 연금, 장애인 연금 제도다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 703
+    },
+    {
+      "id": "social-bulk-212-052",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "산업 재해 보상 보험이 속한 제도 X. X의 성격으로 알맞은 것은?",
+      "passage": null,
+      "answer": "사전 예방적·상호 부조",
+      "wrong": [
+        "사후 처방적·선별적",
+        "비금전적 지원 원칙",
+        "조세로 전액 지원"
+      ],
+      "criteria": [],
+      "explanation": "산업 재해 보상 보험은 사회 보험이다. 사회 보험은 사회적 위험에 미리 대비하는 사전 예방적·상호 부조 성격을 지닌다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 704
+    },
+    {
+      "id": "social-bulk-212-053",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "공공 부조가 사회 보험보다 소득 재분배 효과가 큰 까닭은?",
+      "passage": null,
+      "answer": "부담자와 수혜자가 다름",
+      "wrong": [
+        "강제 가입이 원칙임",
+        "보험료를 분담함",
+        "보편적 복지임"
+      ],
+      "criteria": [],
+      "explanation": "공공 부조는 조세로 마련한 재원을 저소득층에게 지원해 부담자와 수혜자가 달라 소득 재분배 효과가 크다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 705
+    },
+    {
+      "id": "social-bulk-212-054",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "대상자로 사회 보험은 A, 공공 부조는 B를 정한다. A–B는?",
+      "passage": null,
+      "answer": "요건 갖춘 모든 국민–절대 빈곤층",
+      "wrong": [
+        "절대 빈곤층–요건 갖춘 모든 국민",
+        "도움 필요한 국민–저소득층",
+        "절대 빈곤층–도움 필요한 국민"
+      ],
+      "criteria": [],
+      "explanation": "사회 보험은 일정 요건을 갖춘 모든 국민(보편주의), 공공 부조는 절대 빈곤층(선별주의)을 대상으로 한다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 706
+    },
+    {
+      "id": "social-bulk-212-055",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 보험 급여는 과거 자신의 노동과 A, 공공 부조 급여는 B. A–B는?",
+      "passage": null,
+      "answer": "관련됨–관련 없음",
+      "wrong": [
+        "관련 없음–관련됨",
+        "관련됨–관련됨",
+        "관련 없음–관련 없음"
+      ],
+      "criteria": [],
+      "explanation": "사회 보험 급여는 과거 자신의 노동(보험료 기여)과 관련되고, 공공 부조 급여는 과거 노동과 관련 없이 보장된다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 707
+    },
+    {
+      "id": "social-bulk-212-056",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "1차 사회 안전망에서 빠진 빈곤층을 받치는 2차 안전망 X. X의 한계는?",
+      "passage": null,
+      "answer": "수혜자 낙인 우려",
+      "wrong": [
+        "보험료 부담",
+        "민간 참여 곤란",
+        "재분배 효과 작음"
+      ],
+      "criteria": [],
+      "explanation": "2차 안전망은 공공 부조다. 공공 부조는 수혜자 선정 과정에서 부정적 낙인이 생기고 국가 재정 부담이 크다는 한계가 있다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 708
+    },
+    {
+      "id": "social-bulk-212-057",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "오랫동안 차별받은 약자에게 혜택을 주어 불평등을 바로잡는 제도의 이름으로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "역차별 정책",
+      "wrong": [
+        "적극적 우대 조치",
+        "적극적 차별 시정 정책",
+        "적극적 평등 실현 조치"
+      ],
+      "criteria": [],
+      "explanation": "이 제도는 적극적 평등 실현 조치, 적극적 우대 조치, 적극적 차별 시정 정책이라 부른다. 역차별은 이 제도에서 생길 수 있는 논란이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 709
+    },
+    {
+      "id": "social-bulk-212-058",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "적극적 평등 실현 조치의 사례로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "기초 연금 제도",
+      "wrong": [
+        "여성 할당제",
+        "장애인 의무 고용 제도",
+        "사회적 배려 대상자 전형"
+      ],
+      "criteria": [],
+      "explanation": "기초 연금 제도는 공공 부조다. 여성 할당제, 장애인 의무 고용 제도, 대학의 사회적 배려 대상자 전형 등이 적극적 평등 실현 조치다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 710
+    },
+    {
+      "id": "social-bulk-212-059",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "농어촌 학생 전형·기회균등 전형이 속하는 제도 X. X가 받는 비판은?",
+      "passage": null,
+      "answer": "개인 능력·노력 경시",
+      "wrong": [
+        "형식적 평등 강조",
+        "재분배 효과가 작음",
+        "수혜자 낙인"
+      ],
+      "criteria": [],
+      "explanation": "적극적 평등 실현 조치는 역차별 논란과 함께 개인의 능력·노력을 고려하지 않는다는 비판을 받는다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 711
+    },
+    {
+      "id": "social-bulk-212-060",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "적극적 평등 실현 조치가 넘어서려는 평등 A, 이루려는 평등 B는?",
+      "passage": null,
+      "answer": "형식적 기회균등–실질적 평등",
+      "wrong": [
+        "실질적 평등–형식적 기회균등",
+        "절대적 평등–실질적 평등",
+        "형식적 기회균등–절대적 평등"
+      ],
+      "criteria": [],
+      "explanation": "형식적 기회균등만으로는 해결되지 않는 기울어진 운동장을 바로잡아 실질적 평등을 실현하려는 조치다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 712
+    },
+    {
+      "id": "social-bulk-212-061",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "여성 할당제로 남성이 불이익을 받는다는 논란 X. X를 줄이려면 시행 시 무엇이 필요한가?",
+      "passage": null,
+      "answer": "사회적 합의",
+      "wrong": [
+        "할당 비율 확대",
+        "형식적 평등 폐지",
+        "개인 능력 배제"
+      ],
+      "criteria": [],
+      "explanation": "보호하려던 쪽 대신 반대쪽이 차별받는다는 역차별 논란이 생길 수 있으므로 시행할 때 사회적 합의가 필요하다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 713
+    },
+    {
+      "id": "social-bulk-212-062",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "장애인 의무 고용 제도에 대한 설명으로 옳은 것은?",
+      "passage": null,
+      "answer": "민간 기업에도 적용",
+      "wrong": [
+        "공공 기관에만 적용",
+        "자발적 고용을 권장",
+        "사회 보험의 하나"
+      ],
+      "criteria": [],
+      "explanation": "장애인 의무 고용 제도는 국가·지자체뿐 아니라 일정 규모 이상의 공공 기관과 민간 기업에 장애인 고용을 의무화한 적극적 평등 실현 조치다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 714
+    },
+    {
+      "id": "social-bulk-212-063",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "공공 기관 지방 이전과 혁신 도시 조성을 담은 법 X. X가 해결하려는 문제는?",
+      "passage": null,
+      "answer": "수도권 과밀화",
+      "wrong": [
+        "도시 내부 불평등",
+        "계층의 양극화",
+        "사회적 약자 차별"
+      ],
+      "criteria": [],
+      "explanation": "「국가 균형 발전 특별법」에 따른 공공 기관 지방 이전과 혁신 도시 조성은 수도권 과밀화 해소 정책이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 715
+    },
+    {
+      "id": "social-bulk-212-064",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "자립형 지역 발전 기반 구축 사례로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "공공 임대 주택 공급",
+      "wrong": [
+        "지역 축제",
+        "상생형 지역 일자리",
+        "지역 특산품 개발"
+      ],
+      "criteria": [],
+      "explanation": "공공 임대 주택 공급은 도시 내부 불평등 완화 정책이다. 자립형 지역 발전은 지역 브랜드, 지역 축제, 특산품, 상생형 일자리 등이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 716
+    },
+    {
+      "id": "social-bulk-212-065",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "수도권 과밀화 해소 정책으로 옳지 않은 것은?",
+      "passage": null,
+      "answer": "고향 사랑 기부제",
+      "wrong": [
+        "공공 기관 지방 이전",
+        "혁신 도시 조성",
+        "이전 기업 세금 감면"
+      ],
+      "criteria": [],
+      "explanation": "고향 사랑 기부제는 지역의 잠재력을 살리는 자립형 지역 발전 기반 구축 정책이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 717
+    },
+    {
+      "id": "social-bulk-212-066",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "광주형 일자리는 A, 도시 기반 시설 확충은 B 정책이다. A–B는?",
+      "passage": null,
+      "answer": "자립형 발전–도시 내부 완화",
+      "wrong": [
+        "도시 내부 완화–자립형 발전",
+        "과밀화 해소–도시 내부 완화",
+        "자립형 발전–과밀화 해소"
+      ],
+      "criteria": [],
+      "explanation": "광주형 일자리는 상생형 지역 일자리로 자립형 지역 발전 기반 구축, 도시 기반 시설 확충은 도시 내부 불평등 완화 정책이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 718
+    },
+    {
+      "id": "social-bulk-212-067",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "지역 격차 완화 정책이 궁극적으로 이루려는 것은?",
+      "passage": null,
+      "answer": "국토의 균형 발전",
+      "wrong": [
+        "성장 거점 육성",
+        "수도권 경쟁력 강화",
+        "대도시 중심 성장"
+      ],
+      "criteria": [],
+      "explanation": "지역 격차 완화 정책은 공간 불평등을 해소하여 국토의 균형 발전을 이루려는 정책이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 719
+    },
+    {
+      "id": "social-bulk-212-068",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "지자체 복지 정책이 적절히 집행되는지 지켜보는 A, 내 편견을 돌아보는 B는?",
+      "passage": null,
+      "answer": "감시·견제–성찰",
+      "wrong": [
+        "성찰–감시·견제",
+        "정책 제안–성찰",
+        "감시·견제–정책 제안"
+      ],
+      "criteria": [],
+      "explanation": "시민은 사회적 차원의 노력이 적절한지 감시·견제하고, 자신이 사회적 약자에 대한 선입견·편견을 가지고 있는지 성찰해야 한다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 720
+    },
+    {
+      "id": "social-bulk-212-069",
+      "deck_id": "social-bulk",
+      "kind": "choice",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "청소년 참여 포털에 필요한 정책을 올리는 것은 어떤 시민 실천인가?",
+      "passage": null,
+      "answer": "정책 제안",
+      "wrong": [
+        "감시·견제",
+        "편견 성찰",
+        "공감과 배려"
+      ],
+      "criteria": [],
+      "explanation": "청소년 참여 포털에서 정책을 제안하는 것은 정의로운 사회를 위해 필요한 정책을 다양한 방식으로 제안하는 실천이다.",
+      "source_label": "성신제T · 다양한 불평등 현상",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/1etIcuZ7X0n_Y0iHDpN2ckiNnC9mlo0oH",
+      "sort": 721
+    },
+    {
       "id": "social-bulk-21-written-001",
       "deck_id": "social-bulk",
       "kind": "written",
@@ -27628,6 +29146,75 @@
       "sort": 1029
     },
     {
+      "id": "social-bulk-212-written-001",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "마르크스의 계급 이론과 베버의 계층 이론을 구분 기준, 일원론·다원론, 사회 이동, 지위 불일치 설명 가능 여부를 들어 비교하시오.",
+      "passage": null,
+      "answer": "마르크스의 계급 이론은 자본·토지 같은 생산 수단의 소유 여부라는 단일 기준으로 지배 계급(자본가)과 피지배 계급(노동자)을 불연속적·이분법적으로 구분하며, 경제적 요인이 모든 불평등을 결정한다는 일원론이다. 계급 의식이 강하고 사회 이동이 제한된다고 보며 갈등론과 연결된다. 베버의 계층 이론은 경제적 계급·사회적 위신·정치적 권력 등 다양한 요인으로 상층·중층·하층을 수직적 연속선에 배열하는 다원론으로, 자유로운 사회 이동이 가능하다고 보며 지위 불일치 현상과 다양한 계층 분화를 설명하기에 적절하다.",
+      "wrong": [],
+      "criteria": [
+        "계급 이론: 생산 수단 소유 여부(단일 기준), 지배·피지배의 불연속적·이분법적 구분",
+        "계급 이론은 일원론, 계층 이론은 다원론(경제적 계급·사회적 위신·정치적 권력)",
+        "사회 이동: 계급 이론은 제한, 계층 이론은 자유로운 이동 가능",
+        "지위 불일치는 계층 이론만 설명 가능"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1030
+    },
+    {
+      "id": "social-bulk-212-written-002",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 불평등을 보는 기능론과 갈등론의 입장을 불평등의 원인, 가치 배분 기준, 사회적 기능, 비판점을 중심으로 비교하시오.",
+      "passage": null,
+      "answer": "기능론은 더 중요한 위치에 더 능력 있는 사람을 충원하기 위해 불평등이 불가피하다고 보며, 구성원의 합의된 가치에 따라 개인의 자질·노력·능력에 맞게 합법적으로 배분된다고 본다. 불평등은 성취동기를 유발하고 개인을 적재적소에 배치해 사회의 유지·발전과 효율성에 기여한다. 반면 갈등론은 불평등을 지배 집단이 기득권을 유지하려는 결과로 보며, 권력·재산·가정 배경에 따라 강제적·불공정하게 배분되어 계급이 재생산되고 박탈감·갈등·양극화가 생긴다고 본다. 기능론은 가정 배경의 영향과 소외된 사람들의 현실을 경시하고, 갈등론은 개인의 능력·노력의 영향과 순기능을 경시한다는 비판을 받는다.",
+      "wrong": [],
+      "criteria": [
+        "원인: 기능론(중요한 위치에 능력 있는 사람 충원, 불가피) / 갈등론(지배 집단의 기득권 유지)",
+        "배분 기준: 기능론(자질·노력·능력, 합의·합법) / 갈등론(권력·재산·가정 배경, 강제·불공정)",
+        "기능: 기능론(성취동기·적재적소·효율성) / 갈등론(계급 재생산·박탈감·양극화)",
+        "비판: 기능론(가정 배경·갈등·소외 경시) / 갈등론(개인 노력 영향·순기능 경시)"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1031
+    },
+    {
+      "id": "social-bulk-212-written-003",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 보험과 공공 부조를 대상, 재원, 복지 이념, 성격, 소득 재분배 효과, 한계의 측면에서 비교하고 사회 안전망에서 각각의 역할을 쓰시오.",
+      "passage": null,
+      "answer": "사회 보험은 일정 요건을 갖춘 모든 국민이 강제 가입하고 가입자·사업주·국가가 보험료를 분담하는 보편적 복지로, 사회적 위험에 미리 대비하는 사전 예방적·상호 부조 성격을 지니며 과거 노동과 관련된다. 재분배 효과가 작고 보험료 부담이 한계다. 공공 부조는 생활이 어려운 절대 빈곤층에게 국가·지자체가 조세로 전액 지원하는 선별적 복지로, 사후 처방적이며 부담자와 수혜자가 달라 재분배 효과가 크지만 부정적 낙인과 국가 재정 부담이 한계다. 사회 보험은 1차 안전망, 공공 부조는 2차 안전망 역할을 한다.",
+      "wrong": [],
+      "criteria": [
+        "대상·재원: 사회 보험(요건 갖춘 국민, 보험료 분담) / 공공 부조(절대 빈곤층, 조세 전액)",
+        "이념·성격: 보편적·사전 예방적 / 선별적·사후 처방적",
+        "재분배 효과와 한계: 사회 보험(작음, 보험료 부담) / 공공 부조(큼, 낙인·재정 부담)",
+        "사회 안전망: 사회 보험 1차, 공공 부조 2차"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1032
+    },
+    {
       "id": "practice-short-social-bulk-21-001",
       "deck_id": "social-bulk",
       "kind": "written",
@@ -27645,7 +29232,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1030
+      "sort": 1033
     },
     {
       "id": "practice-short-social-bulk-21-008",
@@ -27665,7 +29252,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1031
+      "sort": 1034
     },
     {
       "id": "practice-short-social-bulk-21-010",
@@ -27685,7 +29272,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1032
+      "sort": 1035
     },
     {
       "id": "practice-short-social-bulk-21-013",
@@ -27705,7 +29292,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1033
+      "sort": 1036
     },
     {
       "id": "practice-short-social-bulk-21-016",
@@ -27725,7 +29312,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1034
+      "sort": 1037
     },
     {
       "id": "practice-short-social-bulk-21-019",
@@ -27745,7 +29332,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1035
+      "sort": 1038
     },
     {
       "id": "practice-short-social-bulk-21-020",
@@ -27765,7 +29352,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1036
+      "sort": 1039
     },
     {
       "id": "practice-short-social-bulk-21-021",
@@ -27785,7 +29372,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1037
+      "sort": 1040
     },
     {
       "id": "practice-short-social-bulk-21-025",
@@ -27805,7 +29392,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1038
+      "sort": 1041
     },
     {
       "id": "practice-short-social-bulk-21-027",
@@ -27825,7 +29412,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1039
+      "sort": 1042
     },
     {
       "id": "practice-short-social-bulk-21-029",
@@ -27845,7 +29432,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1040
+      "sort": 1043
     },
     {
       "id": "practice-short-social-bulk-21-033",
@@ -27865,7 +29452,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1041
+      "sort": 1044
     },
     {
       "id": "practice-short-social-bulk-21-035",
@@ -27885,7 +29472,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1042
+      "sort": 1045
     },
     {
       "id": "practice-short-social-bulk-21-036",
@@ -27905,7 +29492,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1043
+      "sort": 1046
     },
     {
       "id": "practice-short-social-bulk-21-042",
@@ -27925,7 +29512,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1044
+      "sort": 1047
     },
     {
       "id": "practice-short-social-bulk-21-044",
@@ -27945,7 +29532,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1045
+      "sort": 1048
     },
     {
       "id": "practice-short-social-bulk-21-045",
@@ -27965,7 +29552,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1046
+      "sort": 1049
     },
     {
       "id": "practice-short-social-bulk-21-046",
@@ -27985,7 +29572,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1047
+      "sort": 1050
     },
     {
       "id": "practice-short-social-bulk-21-049",
@@ -28005,7 +29592,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1048
+      "sort": 1051
     },
     {
       "id": "practice-short-social-bulk-21-051",
@@ -28025,7 +29612,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1049
+      "sort": 1052
     },
     {
       "id": "practice-short-social-bulk-21-054",
@@ -28045,7 +29632,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1050
+      "sort": 1053
     },
     {
       "id": "practice-short-social-bulk-22-001",
@@ -28065,7 +29652,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1051
+      "sort": 1054
     },
     {
       "id": "practice-short-social-bulk-22-005",
@@ -28085,7 +29672,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1052
+      "sort": 1055
     },
     {
       "id": "practice-short-social-bulk-22-014",
@@ -28105,7 +29692,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1053
+      "sort": 1056
     },
     {
       "id": "practice-short-social-bulk-22-015",
@@ -28125,7 +29712,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1054
+      "sort": 1057
     },
     {
       "id": "practice-short-social-bulk-22-022",
@@ -28145,7 +29732,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1055
+      "sort": 1058
     },
     {
       "id": "practice-short-social-bulk-22-023",
@@ -28165,7 +29752,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1056
+      "sort": 1059
     },
     {
       "id": "practice-short-social-bulk-22-028",
@@ -28185,7 +29772,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1057
+      "sort": 1060
     },
     {
       "id": "practice-short-social-bulk-22-030",
@@ -28205,7 +29792,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1058
+      "sort": 1061
     },
     {
       "id": "practice-short-social-bulk-22-035",
@@ -28225,7 +29812,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1059
+      "sort": 1062
     },
     {
       "id": "practice-short-social-bulk-22-039",
@@ -28245,7 +29832,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1060
+      "sort": 1063
     },
     {
       "id": "practice-short-social-bulk-22-044",
@@ -28265,7 +29852,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1061
+      "sort": 1064
     },
     {
       "id": "practice-short-social-bulk-22-046",
@@ -28285,7 +29872,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1062
+      "sort": 1065
     },
     {
       "id": "practice-short-social-bulk-22-047",
@@ -28305,7 +29892,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1063
+      "sort": 1066
     },
     {
       "id": "practice-short-social-bulk-23-009",
@@ -28325,7 +29912,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1064
+      "sort": 1067
     },
     {
       "id": "practice-short-social-bulk-23-013",
@@ -28345,7 +29932,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1065
+      "sort": 1068
     },
     {
       "id": "practice-short-social-bulk-23-015",
@@ -28365,7 +29952,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1066
+      "sort": 1069
     },
     {
       "id": "practice-short-social-bulk-23-020",
@@ -28385,7 +29972,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1067
+      "sort": 1070
     },
     {
       "id": "practice-short-social-bulk-23-022",
@@ -28405,7 +29992,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1068
+      "sort": 1071
     },
     {
       "id": "practice-short-social-bulk-23-024",
@@ -28425,7 +30012,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1069
+      "sort": 1072
     },
     {
       "id": "practice-short-social-bulk-23-030",
@@ -28445,7 +30032,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1070
+      "sort": 1073
     },
     {
       "id": "practice-short-social-bulk-23-043",
@@ -28465,7 +30052,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1071
+      "sort": 1074
     },
     {
       "id": "practice-short-social-bulk-23-046",
@@ -28485,7 +30072,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1072
+      "sort": 1075
     },
     {
       "id": "practice-short-social-bulk-23-047",
@@ -28505,7 +30092,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1073
+      "sort": 1076
     },
     {
       "id": "practice-short-social-bulk-23-049",
@@ -28525,7 +30112,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1074
+      "sort": 1077
     },
     {
       "id": "practice-short-social-bulk-23-053",
@@ -28545,7 +30132,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1075
+      "sort": 1078
     },
     {
       "id": "practice-short-social-bulk-23-054",
@@ -28565,7 +30152,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1076
+      "sort": 1079
     },
     {
       "id": "practice-short-social-bulk-23-056",
@@ -28585,7 +30172,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1077
+      "sort": 1080
     },
     {
       "id": "practice-short-social-bulk-23-059",
@@ -28605,7 +30192,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1078
+      "sort": 1081
     },
     {
       "id": "practice-short-social-bulk-23-061",
@@ -28625,7 +30212,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1079
+      "sort": 1082
     },
     {
       "id": "practice-short-social-bulk-24-003",
@@ -28645,7 +30232,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1080
+      "sort": 1083
     },
     {
       "id": "practice-short-social-bulk-24-018",
@@ -28665,7 +30252,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1081
+      "sort": 1084
     },
     {
       "id": "practice-short-social-bulk-24-021",
@@ -28685,7 +30272,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1082
+      "sort": 1085
     },
     {
       "id": "practice-short-social-bulk-24-025",
@@ -28705,7 +30292,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1083
+      "sort": 1086
     },
     {
       "id": "practice-short-social-bulk-24-027",
@@ -28725,7 +30312,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1084
+      "sort": 1087
     },
     {
       "id": "practice-short-social-bulk-24-035",
@@ -28745,7 +30332,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1085
+      "sort": 1088
     },
     {
       "id": "practice-short-social-bulk-24-036",
@@ -28765,7 +30352,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1086
+      "sort": 1089
     },
     {
       "id": "practice-short-social-bulk-24-040",
@@ -28785,7 +30372,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1087
+      "sort": 1090
     },
     {
       "id": "practice-short-social-bulk-24-043",
@@ -28805,7 +30392,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1088
+      "sort": 1091
     },
     {
       "id": "practice-short-social-bulk-24-047",
@@ -28825,7 +30412,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1089
+      "sort": 1092
     },
     {
       "id": "practice-short-social-bulk-24-048",
@@ -28845,7 +30432,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1090
+      "sort": 1093
     },
     {
       "id": "practice-short-social-bulk-24-052",
@@ -28865,7 +30452,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1091
+      "sort": 1094
     },
     {
       "id": "practice-short-social-bulk-24-060",
@@ -28885,7 +30472,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1092
+      "sort": 1095
     },
     {
       "id": "practice-short-social-bulk-24-062",
@@ -28905,7 +30492,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1093
+      "sort": 1096
     },
     {
       "id": "practice-short-social-bulk-25-001",
@@ -28925,7 +30512,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1094
+      "sort": 1097
     },
     {
       "id": "practice-short-social-bulk-25-015",
@@ -28945,7 +30532,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1095
+      "sort": 1098
     },
     {
       "id": "practice-short-social-bulk-25-018",
@@ -28965,7 +30552,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1096
+      "sort": 1099
     },
     {
       "id": "practice-short-social-bulk-25-022",
@@ -28985,7 +30572,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1097
+      "sort": 1100
     },
     {
       "id": "practice-short-social-bulk-25-023",
@@ -29005,7 +30592,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1098
+      "sort": 1101
     },
     {
       "id": "practice-short-social-bulk-25-024",
@@ -29025,7 +30612,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1099
+      "sort": 1102
     },
     {
       "id": "practice-short-social-bulk-25-027",
@@ -29045,7 +30632,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1100
+      "sort": 1103
     },
     {
       "id": "practice-short-social-bulk-25-030",
@@ -29065,7 +30652,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1101
+      "sort": 1104
     },
     {
       "id": "practice-short-social-bulk-25-034",
@@ -29085,7 +30672,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1102
+      "sort": 1105
     },
     {
       "id": "practice-short-social-bulk-25-035",
@@ -29105,7 +30692,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1103
+      "sort": 1106
     },
     {
       "id": "practice-short-social-bulk-25-050",
@@ -29125,7 +30712,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1104
+      "sort": 1107
     },
     {
       "id": "practice-short-social-bulk-25-055",
@@ -29145,7 +30732,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1105
+      "sort": 1108
     },
     {
       "id": "practice-short-social-bulk-25-056",
@@ -29165,7 +30752,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1106
+      "sort": 1109
     },
     {
       "id": "practice-short-social-bulk-25-060",
@@ -29185,7 +30772,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1107
+      "sort": 1110
     },
     {
       "id": "practice-short-social-bulk-25-062",
@@ -29205,7 +30792,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1108
+      "sort": 1111
     },
     {
       "id": "practice-short-social-bulk-25-066",
@@ -29225,7 +30812,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1109
+      "sort": 1112
     },
     {
       "id": "practice-short-social-bulk-26-003",
@@ -29245,7 +30832,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1110
+      "sort": 1113
     },
     {
       "id": "practice-short-social-bulk-26-005",
@@ -29265,7 +30852,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1111
+      "sort": 1114
     },
     {
       "id": "practice-short-social-bulk-26-006",
@@ -29285,7 +30872,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1112
+      "sort": 1115
     },
     {
       "id": "practice-short-social-bulk-26-014",
@@ -29305,7 +30892,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1113
+      "sort": 1116
     },
     {
       "id": "practice-short-social-bulk-26-031",
@@ -29325,7 +30912,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1114
+      "sort": 1117
     },
     {
       "id": "practice-short-social-bulk-26-033",
@@ -29345,7 +30932,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1115
+      "sort": 1118
     },
     {
       "id": "practice-short-social-bulk-26-048",
@@ -29365,7 +30952,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1116
+      "sort": 1119
     },
     {
       "id": "practice-short-social-bulk-26-054",
@@ -29385,7 +30972,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1117
+      "sort": 1120
     },
     {
       "id": "practice-short-social-bulk-26-059",
@@ -29405,7 +30992,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1118
+      "sort": 1121
     },
     {
       "id": "practice-short-social-bulk-26-066",
@@ -29425,7 +31012,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1119
+      "sort": 1122
     },
     {
       "id": "practice-short-social-bulk-26-069",
@@ -29445,7 +31032,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1120
+      "sort": 1123
     },
     {
       "id": "practice-short-social-bulk-26-070",
@@ -29465,7 +31052,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1121
+      "sort": 1124
     },
     {
       "id": "practice-short-social-bulk-28-001",
@@ -29485,7 +31072,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1122
+      "sort": 1125
     },
     {
       "id": "practice-short-social-bulk-28-009",
@@ -29505,7 +31092,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1123
+      "sort": 1126
     },
     {
       "id": "practice-short-social-bulk-28-016",
@@ -29525,7 +31112,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1124
+      "sort": 1127
     },
     {
       "id": "practice-short-social-bulk-28-018",
@@ -29545,7 +31132,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1125
+      "sort": 1128
     },
     {
       "id": "practice-short-social-bulk-28-021",
@@ -29565,7 +31152,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1126
+      "sort": 1129
     },
     {
       "id": "practice-short-social-bulk-28-024",
@@ -29585,7 +31172,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1127
+      "sort": 1130
     },
     {
       "id": "practice-short-social-bulk-28-025",
@@ -29605,7 +31192,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1128
+      "sort": 1131
     },
     {
       "id": "practice-short-social-bulk-28-034",
@@ -29625,7 +31212,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1129
+      "sort": 1132
     },
     {
       "id": "practice-short-social-bulk-28-036",
@@ -29645,7 +31232,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1130
+      "sort": 1133
     },
     {
       "id": "practice-short-social-bulk-28-049",
@@ -29665,7 +31252,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1131
+      "sort": 1134
     },
     {
       "id": "practice-short-social-bulk-28-050",
@@ -29685,7 +31272,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1132
+      "sort": 1135
     },
     {
       "id": "practice-short-social-bulk-28-053",
@@ -29705,7 +31292,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1133
+      "sort": 1136
     },
     {
       "id": "practice-short-social-bulk-28-055",
@@ -29725,7 +31312,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1134
+      "sort": 1137
     },
     {
       "id": "practice-short-social-bulk-28-060",
@@ -29745,7 +31332,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1135
+      "sort": 1138
     },
     {
       "id": "practice-short-social-bulk-28-064",
@@ -29765,7 +31352,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1136
+      "sort": 1139
     },
     {
       "id": "practice-short-social-bulk-28-069",
@@ -29785,7 +31372,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1137
+      "sort": 1140
     },
     {
       "id": "practice-short-social-bulk-29-013",
@@ -29805,7 +31392,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1138
+      "sort": 1141
     },
     {
       "id": "practice-short-social-bulk-29-016",
@@ -29825,7 +31412,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1139
+      "sort": 1142
     },
     {
       "id": "practice-short-social-bulk-29-017",
@@ -29845,7 +31432,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1140
+      "sort": 1143
     },
     {
       "id": "practice-short-social-bulk-29-027",
@@ -29865,7 +31452,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1141
+      "sort": 1144
     },
     {
       "id": "practice-short-social-bulk-29-039",
@@ -29885,7 +31472,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1142
+      "sort": 1145
     },
     {
       "id": "practice-short-social-bulk-29-040",
@@ -29905,7 +31492,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1143
+      "sort": 1146
     },
     {
       "id": "practice-short-social-bulk-29-042",
@@ -29925,7 +31512,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1144
+      "sort": 1147
     },
     {
       "id": "practice-short-social-bulk-29-045",
@@ -29945,7 +31532,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1145
+      "sort": 1148
     },
     {
       "id": "practice-short-social-bulk-29-048",
@@ -29965,7 +31552,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1146
+      "sort": 1149
     },
     {
       "id": "practice-short-social-bulk-29-056",
@@ -29985,7 +31572,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1147
+      "sort": 1150
     },
     {
       "id": "practice-short-social-bulk-210-001",
@@ -30005,7 +31592,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1148
+      "sort": 1151
     },
     {
       "id": "practice-short-social-bulk-210-008",
@@ -30025,7 +31612,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1149
+      "sort": 1152
     },
     {
       "id": "practice-short-social-bulk-210-009",
@@ -30045,7 +31632,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1150
+      "sort": 1153
     },
     {
       "id": "practice-short-social-bulk-210-012",
@@ -30065,7 +31652,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1151
+      "sort": 1154
     },
     {
       "id": "practice-short-social-bulk-210-013",
@@ -30085,7 +31672,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1152
+      "sort": 1155
     },
     {
       "id": "practice-short-social-bulk-210-017",
@@ -30105,7 +31692,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1153
+      "sort": 1156
     },
     {
       "id": "practice-short-social-bulk-210-019",
@@ -30125,7 +31712,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1154
+      "sort": 1157
     },
     {
       "id": "practice-short-social-bulk-210-020",
@@ -30145,7 +31732,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1155
+      "sort": 1158
     },
     {
       "id": "practice-short-social-bulk-210-024",
@@ -30165,7 +31752,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1156
+      "sort": 1159
     },
     {
       "id": "practice-short-social-bulk-210-031",
@@ -30185,7 +31772,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1157
+      "sort": 1160
     },
     {
       "id": "practice-short-social-bulk-210-033",
@@ -30205,7 +31792,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1158
+      "sort": 1161
     },
     {
       "id": "practice-short-social-bulk-210-034",
@@ -30225,7 +31812,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1159
+      "sort": 1162
     },
     {
       "id": "practice-short-social-bulk-210-037",
@@ -30245,7 +31832,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1160
+      "sort": 1163
     },
     {
       "id": "practice-short-social-bulk-210-043",
@@ -30265,7 +31852,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1161
+      "sort": 1164
     },
     {
       "id": "practice-short-social-bulk-210-044",
@@ -30285,7 +31872,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1162
+      "sort": 1165
     },
     {
       "id": "practice-short-social-bulk-210-045",
@@ -30305,7 +31892,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1163
+      "sort": 1166
     },
     {
       "id": "practice-short-social-bulk-210-049",
@@ -30325,7 +31912,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1164
+      "sort": 1167
     },
     {
       "id": "practice-short-social-bulk-210-053",
@@ -30345,7 +31932,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1165
+      "sort": 1168
     },
     {
       "id": "practice-short-social-bulk-210-054",
@@ -30365,7 +31952,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1166
+      "sort": 1169
     },
     {
       "id": "practice-short-social-bulk-210-055",
@@ -30385,7 +31972,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1167
+      "sort": 1170
     },
     {
       "id": "practice-short-social-bulk-210-060",
@@ -30405,7 +31992,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1168
+      "sort": 1171
     },
     {
       "id": "practice-short-social-bulk-210-068",
@@ -30425,7 +32012,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1169
+      "sort": 1172
     },
     {
       "id": "practice-short-social-bulk-211-008",
@@ -30445,7 +32032,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1170
+      "sort": 1173
     },
     {
       "id": "practice-short-social-bulk-211-009",
@@ -30465,7 +32052,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1171
+      "sort": 1174
     },
     {
       "id": "practice-short-social-bulk-211-010",
@@ -30485,7 +32072,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1172
+      "sort": 1175
     },
     {
       "id": "practice-short-social-bulk-211-023",
@@ -30505,7 +32092,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1173
+      "sort": 1176
     },
     {
       "id": "practice-short-social-bulk-211-024",
@@ -30525,7 +32112,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1174
+      "sort": 1177
     },
     {
       "id": "practice-short-social-bulk-211-026",
@@ -30545,7 +32132,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1175
+      "sort": 1178
     },
     {
       "id": "practice-short-social-bulk-211-028",
@@ -30565,7 +32152,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1176
+      "sort": 1179
     },
     {
       "id": "practice-short-social-bulk-211-038",
@@ -30585,7 +32172,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1177
+      "sort": 1180
     },
     {
       "id": "practice-short-social-bulk-211-039",
@@ -30605,7 +32192,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1178
+      "sort": 1181
     },
     {
       "id": "practice-short-social-bulk-211-042",
@@ -30625,7 +32212,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1179
+      "sort": 1182
     },
     {
       "id": "practice-short-social-bulk-211-048",
@@ -30645,7 +32232,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1180
+      "sort": 1183
     },
     {
       "id": "practice-short-social-bulk-211-059",
@@ -30665,7 +32252,307 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1181
+      "sort": 1184
+    },
+    {
+      "id": "practice-short-social-bulk-212-002",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 불평등에서 차등 분배되는 부·권력·명예 X. X를 달리 부르는 말은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "사회적 희소가치",
+      "wrong": [],
+      "criteria": [
+        "정답: 사회적 희소가치"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1185
+    },
+    {
+      "id": "practice-short-social-bulk-212-009",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "계층을 상층·중층·하층으로 범주화해 수직적 연속선에 배열하는 이론 X. X를 제시한 학자는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "베버",
+      "wrong": [],
+      "criteria": [
+        "정답: 베버"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1186
+    },
+    {
+      "id": "practice-short-social-bulk-212-011",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "지배 집단에 유리한 분배 구조가 계급을 재생산한다고 보는 이론 X. X에서 불평등을 결정하는 것은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "경제적 요인",
+      "wrong": [],
+      "criteria": [
+        "정답: 경제적 요인"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1187
+    },
+    {
+      "id": "practice-short-social-bulk-212-016",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "권력은 크지만 재산은 적은 사람처럼 영역마다 계층 서열이 다른 현상은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "지위 불일치",
+      "wrong": [],
+      "criteria": [
+        "정답: 지위 불일치"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1188
+    },
+    {
+      "id": "practice-short-social-bulk-212-020",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "신도심과 구도심 사이에 자원이 불균등하게 분배되어 생긴 격차 X. X의 종류는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "공간 불평등",
+      "wrong": [],
+      "criteria": [
+        "정답: 공간 불평등"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1189
+    },
+    {
+      "id": "practice-short-social-bulk-212-025",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "장애·나이·국적 등으로 소외되어 인간다운 삶을 영위하기 어려운 개인·집단은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "사회적 약자",
+      "wrong": [],
+      "criteria": [
+        "정답: 사회적 약자"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1190
+    },
+    {
+      "id": "practice-short-social-bulk-212-028",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "신체적·문화적 특징으로 주류 집단에게 차별받는 사람들 X. X인지 판단하는 핵심은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "차별받는다는 사실",
+      "wrong": [],
+      "criteria": [
+        "정답: 차별받는다는 사실"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1191
+    },
+    {
+      "id": "practice-short-social-bulk-212-033",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "'의사의 소득이 높은 건 사회에 중요한 일을 맡아서다'라는 주장의 관점은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "기능론",
+      "wrong": [],
+      "criteria": [
+        "정답: 기능론"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1192
+    },
+    {
+      "id": "practice-short-social-bulk-212-036",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "불평등이 사회적 박탈감과 집단 간 대립을 유발한다는 관점 X. X가 본 가치 배분의 성격은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "강제적·불공정",
+      "wrong": [],
+      "criteria": [
+        "정답: 강제적·불공정"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1193
+    },
+    {
+      "id": "practice-short-social-bulk-212-046",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "조세로 국가·지자체가 전액 지원해 최저 생활을 보장하는 제도 X. X의 복지 이념은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "선별적 복지",
+      "wrong": [],
+      "criteria": [
+        "정답: 선별적 복지"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1194
+    },
+    {
+      "id": "practice-short-social-bulk-212-047",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "가입자·사업주가 보험료를 내고 국가가 일부 보태는 제도 X. X의 한계는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "보험료 부담",
+      "wrong": [],
+      "criteria": [
+        "정답: 보험료 부담"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1195
+    },
+    {
+      "id": "practice-short-social-bulk-212-048",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 보험료를 소득 수준에 따라 다르게 내는 것은 어떤 원칙인가? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "능력별 부담",
+      "wrong": [],
+      "criteria": [
+        "정답: 능력별 부담"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1196
+    },
+    {
+      "id": "practice-short-social-bulk-212-061",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "여성 할당제로 남성이 불이익을 받는다는 논란 X. X를 줄이려면 시행 시 무엇이 필요한가? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "사회적 합의",
+      "wrong": [],
+      "criteria": [
+        "정답: 사회적 합의"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1197
+    },
+    {
+      "id": "practice-short-social-bulk-212-063",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "공공 기관 지방 이전과 혁신 도시 조성을 담은 법 X. X가 해결하려는 문제는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "수도권 과밀화",
+      "wrong": [],
+      "criteria": [
+        "정답: 수도권 과밀화"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1198
+    },
+    {
+      "id": "practice-short-social-bulk-212-069",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "청소년 참여 포털에 필요한 정책을 올리는 것은 어떤 시민 실천인가? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "정책 제안",
+      "wrong": [],
+      "criteria": [
+        "정답: 정책 제안"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1199
     },
     {
       "id": "practice-written-social-bulk-21-001",
@@ -30686,7 +32573,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1182
+      "sort": 1200
     },
     {
       "id": "practice-written-social-bulk-21-003",
@@ -30707,7 +32594,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1183
+      "sort": 1201
     },
     {
       "id": "practice-written-social-bulk-21-005",
@@ -30728,7 +32615,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1184
+      "sort": 1202
     },
     {
       "id": "practice-written-social-bulk-21-008",
@@ -30749,7 +32636,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1185
+      "sort": 1203
     },
     {
       "id": "practice-written-social-bulk-21-010",
@@ -30770,7 +32657,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1186
+      "sort": 1204
     },
     {
       "id": "practice-written-social-bulk-21-012",
@@ -30791,7 +32678,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1187
+      "sort": 1205
     },
     {
       "id": "practice-written-social-bulk-21-013",
@@ -30812,7 +32699,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1188
+      "sort": 1206
     },
     {
       "id": "practice-written-social-bulk-21-016",
@@ -30833,7 +32720,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1189
+      "sort": 1207
     },
     {
       "id": "practice-written-social-bulk-21-019",
@@ -30854,7 +32741,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1190
+      "sort": 1208
     },
     {
       "id": "practice-written-social-bulk-21-020",
@@ -30875,7 +32762,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1191
+      "sort": 1209
     },
     {
       "id": "practice-written-social-bulk-21-021",
@@ -30896,7 +32783,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1192
+      "sort": 1210
     },
     {
       "id": "practice-written-social-bulk-21-025",
@@ -30917,7 +32804,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1193
+      "sort": 1211
     },
     {
       "id": "practice-written-social-bulk-21-027",
@@ -30938,7 +32825,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1194
+      "sort": 1212
     },
     {
       "id": "practice-written-social-bulk-21-029",
@@ -30959,7 +32846,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1195
+      "sort": 1213
     },
     {
       "id": "practice-written-social-bulk-21-033",
@@ -30980,7 +32867,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1196
+      "sort": 1214
     },
     {
       "id": "practice-written-social-bulk-21-035",
@@ -31001,7 +32888,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1197
+      "sort": 1215
     },
     {
       "id": "practice-written-social-bulk-21-036",
@@ -31022,7 +32909,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1198
+      "sort": 1216
     },
     {
       "id": "practice-written-social-bulk-21-037",
@@ -31043,7 +32930,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1199
+      "sort": 1217
     },
     {
       "id": "practice-written-social-bulk-21-042",
@@ -31064,7 +32951,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1200
+      "sort": 1218
     },
     {
       "id": "practice-written-social-bulk-21-044",
@@ -31085,7 +32972,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1201
+      "sort": 1219
     },
     {
       "id": "practice-written-social-bulk-21-045",
@@ -31106,7 +32993,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1202
+      "sort": 1220
     },
     {
       "id": "practice-written-social-bulk-21-046",
@@ -31127,7 +33014,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1203
+      "sort": 1221
     },
     {
       "id": "practice-written-social-bulk-21-049",
@@ -31148,7 +33035,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1204
+      "sort": 1222
     },
     {
       "id": "practice-written-social-bulk-21-050",
@@ -31169,7 +33056,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1205
+      "sort": 1223
     },
     {
       "id": "practice-written-social-bulk-21-051",
@@ -31190,7 +33077,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1206
+      "sort": 1224
     },
     {
       "id": "practice-written-social-bulk-21-054",
@@ -31211,7 +33098,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1207
+      "sort": 1225
     },
     {
       "id": "practice-written-social-bulk-22-001",
@@ -31232,7 +33119,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1208
+      "sort": 1226
     },
     {
       "id": "practice-written-social-bulk-22-005",
@@ -31253,7 +33140,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1209
+      "sort": 1227
     },
     {
       "id": "practice-written-social-bulk-22-007",
@@ -31274,7 +33161,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1210
+      "sort": 1228
     },
     {
       "id": "practice-written-social-bulk-22-008",
@@ -31295,7 +33182,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1211
+      "sort": 1229
     },
     {
       "id": "practice-written-social-bulk-22-010",
@@ -31316,7 +33203,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1212
+      "sort": 1230
     },
     {
       "id": "practice-written-social-bulk-22-011",
@@ -31337,7 +33224,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1213
+      "sort": 1231
     },
     {
       "id": "practice-written-social-bulk-22-014",
@@ -31358,7 +33245,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1214
+      "sort": 1232
     },
     {
       "id": "practice-written-social-bulk-22-015",
@@ -31379,7 +33266,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1215
+      "sort": 1233
     },
     {
       "id": "practice-written-social-bulk-22-022",
@@ -31400,7 +33287,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1216
+      "sort": 1234
     },
     {
       "id": "practice-written-social-bulk-22-023",
@@ -31421,7 +33308,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1217
+      "sort": 1235
     },
     {
       "id": "practice-written-social-bulk-22-025",
@@ -31442,7 +33329,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1218
+      "sort": 1236
     },
     {
       "id": "practice-written-social-bulk-22-027",
@@ -31463,7 +33350,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1219
+      "sort": 1237
     },
     {
       "id": "practice-written-social-bulk-22-028",
@@ -31484,7 +33371,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1220
+      "sort": 1238
     },
     {
       "id": "practice-written-social-bulk-22-029",
@@ -31505,7 +33392,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1221
+      "sort": 1239
     },
     {
       "id": "practice-written-social-bulk-22-030",
@@ -31526,7 +33413,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1222
+      "sort": 1240
     },
     {
       "id": "practice-written-social-bulk-22-035",
@@ -31547,7 +33434,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1223
+      "sort": 1241
     },
     {
       "id": "practice-written-social-bulk-22-037",
@@ -31568,7 +33455,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1224
+      "sort": 1242
     },
     {
       "id": "practice-written-social-bulk-22-039",
@@ -31589,7 +33476,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1225
+      "sort": 1243
     },
     {
       "id": "practice-written-social-bulk-22-040",
@@ -31610,7 +33497,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1226
+      "sort": 1244
     },
     {
       "id": "practice-written-social-bulk-22-041",
@@ -31631,7 +33518,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1227
+      "sort": 1245
     },
     {
       "id": "practice-written-social-bulk-22-042",
@@ -31652,7 +33539,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1228
+      "sort": 1246
     },
     {
       "id": "practice-written-social-bulk-22-044",
@@ -31673,7 +33560,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1229
+      "sort": 1247
     },
     {
       "id": "practice-written-social-bulk-22-046",
@@ -31694,7 +33581,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1230
+      "sort": 1248
     },
     {
       "id": "practice-written-social-bulk-22-047",
@@ -31715,7 +33602,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1231
+      "sort": 1249
     },
     {
       "id": "practice-written-social-bulk-22-049",
@@ -31736,7 +33623,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1232
+      "sort": 1250
     },
     {
       "id": "practice-written-social-bulk-22-050",
@@ -31757,7 +33644,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1233
+      "sort": 1251
     },
     {
       "id": "practice-written-social-bulk-22-053",
@@ -31778,7 +33665,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1234
+      "sort": 1252
     },
     {
       "id": "practice-written-social-bulk-22-058",
@@ -31799,7 +33686,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1235
+      "sort": 1253
     },
     {
       "id": "practice-written-social-bulk-22-059",
@@ -31820,7 +33707,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1236
+      "sort": 1254
     },
     {
       "id": "practice-written-social-bulk-23-006",
@@ -31841,7 +33728,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1237
+      "sort": 1255
     },
     {
       "id": "practice-written-social-bulk-23-009",
@@ -31862,7 +33749,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1238
+      "sort": 1256
     },
     {
       "id": "practice-written-social-bulk-23-011",
@@ -31883,7 +33770,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1239
+      "sort": 1257
     },
     {
       "id": "practice-written-social-bulk-23-013",
@@ -31904,7 +33791,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1240
+      "sort": 1258
     },
     {
       "id": "practice-written-social-bulk-23-015",
@@ -31925,7 +33812,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1241
+      "sort": 1259
     },
     {
       "id": "practice-written-social-bulk-23-018",
@@ -31946,7 +33833,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1242
+      "sort": 1260
     },
     {
       "id": "practice-written-social-bulk-23-020",
@@ -31967,7 +33854,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1243
+      "sort": 1261
     },
     {
       "id": "practice-written-social-bulk-23-022",
@@ -31988,7 +33875,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1244
+      "sort": 1262
     },
     {
       "id": "practice-written-social-bulk-23-024",
@@ -32009,7 +33896,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1245
+      "sort": 1263
     },
     {
       "id": "practice-written-social-bulk-23-030",
@@ -32030,7 +33917,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1246
+      "sort": 1264
     },
     {
       "id": "practice-written-social-bulk-23-034",
@@ -32051,7 +33938,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1247
+      "sort": 1265
     },
     {
       "id": "practice-written-social-bulk-23-036",
@@ -32072,7 +33959,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1248
+      "sort": 1266
     },
     {
       "id": "practice-written-social-bulk-23-037",
@@ -32093,7 +33980,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1249
+      "sort": 1267
     },
     {
       "id": "practice-written-social-bulk-23-038",
@@ -32114,7 +34001,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1250
+      "sort": 1268
     },
     {
       "id": "practice-written-social-bulk-23-043",
@@ -32135,7 +34022,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1251
+      "sort": 1269
     },
     {
       "id": "practice-written-social-bulk-23-044",
@@ -32156,7 +34043,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1252
+      "sort": 1270
     },
     {
       "id": "practice-written-social-bulk-23-046",
@@ -32177,7 +34064,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1253
+      "sort": 1271
     },
     {
       "id": "practice-written-social-bulk-23-047",
@@ -32198,7 +34085,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1254
+      "sort": 1272
     },
     {
       "id": "practice-written-social-bulk-23-049",
@@ -32219,7 +34106,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1255
+      "sort": 1273
     },
     {
       "id": "practice-written-social-bulk-23-050",
@@ -32240,7 +34127,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1256
+      "sort": 1274
     },
     {
       "id": "practice-written-social-bulk-23-051",
@@ -32261,7 +34148,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1257
+      "sort": 1275
     },
     {
       "id": "practice-written-social-bulk-23-053",
@@ -32282,7 +34169,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1258
+      "sort": 1276
     },
     {
       "id": "practice-written-social-bulk-23-054",
@@ -32303,7 +34190,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1259
+      "sort": 1277
     },
     {
       "id": "practice-written-social-bulk-23-055",
@@ -32324,7 +34211,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1260
+      "sort": 1278
     },
     {
       "id": "practice-written-social-bulk-23-056",
@@ -32345,7 +34232,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1261
+      "sort": 1279
     },
     {
       "id": "practice-written-social-bulk-23-058",
@@ -32366,7 +34253,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1262
+      "sort": 1280
     },
     {
       "id": "practice-written-social-bulk-23-059",
@@ -32387,7 +34274,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1263
+      "sort": 1281
     },
     {
       "id": "practice-written-social-bulk-23-060",
@@ -32408,7 +34295,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1264
+      "sort": 1282
     },
     {
       "id": "practice-written-social-bulk-23-061",
@@ -32429,7 +34316,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1265
+      "sort": 1283
     },
     {
       "id": "practice-written-social-bulk-24-001",
@@ -32450,7 +34337,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1266
+      "sort": 1284
     },
     {
       "id": "practice-written-social-bulk-24-003",
@@ -32471,7 +34358,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1267
+      "sort": 1285
     },
     {
       "id": "practice-written-social-bulk-24-007",
@@ -32492,7 +34379,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1268
+      "sort": 1286
     },
     {
       "id": "practice-written-social-bulk-24-015",
@@ -32513,7 +34400,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1269
+      "sort": 1287
     },
     {
       "id": "practice-written-social-bulk-24-016",
@@ -32534,7 +34421,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1270
+      "sort": 1288
     },
     {
       "id": "practice-written-social-bulk-24-018",
@@ -32555,7 +34442,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1271
+      "sort": 1289
     },
     {
       "id": "practice-written-social-bulk-24-019",
@@ -32576,7 +34463,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1272
+      "sort": 1290
     },
     {
       "id": "practice-written-social-bulk-24-021",
@@ -32597,7 +34484,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1273
+      "sort": 1291
     },
     {
       "id": "practice-written-social-bulk-24-025",
@@ -32618,7 +34505,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1274
+      "sort": 1292
     },
     {
       "id": "practice-written-social-bulk-24-026",
@@ -32639,7 +34526,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1275
+      "sort": 1293
     },
     {
       "id": "practice-written-social-bulk-24-027",
@@ -32660,7 +34547,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1276
+      "sort": 1294
     },
     {
       "id": "practice-written-social-bulk-24-029",
@@ -32681,7 +34568,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1277
+      "sort": 1295
     },
     {
       "id": "practice-written-social-bulk-24-030",
@@ -32702,7 +34589,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1278
+      "sort": 1296
     },
     {
       "id": "practice-written-social-bulk-24-031",
@@ -32723,7 +34610,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1279
+      "sort": 1297
     },
     {
       "id": "practice-written-social-bulk-24-033",
@@ -32744,7 +34631,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1280
+      "sort": 1298
     },
     {
       "id": "practice-written-social-bulk-24-035",
@@ -32765,7 +34652,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1281
+      "sort": 1299
     },
     {
       "id": "practice-written-social-bulk-24-036",
@@ -32786,7 +34673,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1282
+      "sort": 1300
     },
     {
       "id": "practice-written-social-bulk-24-038",
@@ -32807,7 +34694,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1283
+      "sort": 1301
     },
     {
       "id": "practice-written-social-bulk-24-039",
@@ -32828,7 +34715,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1284
+      "sort": 1302
     },
     {
       "id": "practice-written-social-bulk-24-040",
@@ -32849,7 +34736,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1285
+      "sort": 1303
     },
     {
       "id": "practice-written-social-bulk-24-041",
@@ -32870,7 +34757,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1286
+      "sort": 1304
     },
     {
       "id": "practice-written-social-bulk-24-042",
@@ -32891,7 +34778,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1287
+      "sort": 1305
     },
     {
       "id": "practice-written-social-bulk-24-043",
@@ -32912,7 +34799,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1288
+      "sort": 1306
     },
     {
       "id": "practice-written-social-bulk-24-047",
@@ -32933,7 +34820,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1289
+      "sort": 1307
     },
     {
       "id": "practice-written-social-bulk-24-048",
@@ -32954,7 +34841,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1290
+      "sort": 1308
     },
     {
       "id": "practice-written-social-bulk-24-050",
@@ -32975,7 +34862,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1291
+      "sort": 1309
     },
     {
       "id": "practice-written-social-bulk-24-052",
@@ -32996,7 +34883,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1292
+      "sort": 1310
     },
     {
       "id": "practice-written-social-bulk-24-060",
@@ -33017,7 +34904,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1293
+      "sort": 1311
     },
     {
       "id": "practice-written-social-bulk-24-062",
@@ -33038,7 +34925,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1294
+      "sort": 1312
     },
     {
       "id": "practice-written-social-bulk-25-001",
@@ -33059,7 +34946,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1295
+      "sort": 1313
     },
     {
       "id": "practice-written-social-bulk-25-009",
@@ -33080,7 +34967,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1296
+      "sort": 1314
     },
     {
       "id": "practice-written-social-bulk-25-012",
@@ -33101,7 +34988,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1297
+      "sort": 1315
     },
     {
       "id": "practice-written-social-bulk-25-013",
@@ -33122,7 +35009,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1298
+      "sort": 1316
     },
     {
       "id": "practice-written-social-bulk-25-015",
@@ -33143,7 +35030,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1299
+      "sort": 1317
     },
     {
       "id": "practice-written-social-bulk-25-017",
@@ -33164,7 +35051,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1300
+      "sort": 1318
     },
     {
       "id": "practice-written-social-bulk-25-018",
@@ -33185,7 +35072,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1301
+      "sort": 1319
     },
     {
       "id": "practice-written-social-bulk-25-022",
@@ -33206,7 +35093,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1302
+      "sort": 1320
     },
     {
       "id": "practice-written-social-bulk-25-023",
@@ -33227,7 +35114,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1303
+      "sort": 1321
     },
     {
       "id": "practice-written-social-bulk-25-024",
@@ -33248,7 +35135,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1304
+      "sort": 1322
     },
     {
       "id": "practice-written-social-bulk-25-027",
@@ -33269,7 +35156,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1305
+      "sort": 1323
     },
     {
       "id": "practice-written-social-bulk-25-029",
@@ -33290,7 +35177,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1306
+      "sort": 1324
     },
     {
       "id": "practice-written-social-bulk-25-030",
@@ -33311,7 +35198,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1307
+      "sort": 1325
     },
     {
       "id": "practice-written-social-bulk-25-033",
@@ -33332,7 +35219,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1308
+      "sort": 1326
     },
     {
       "id": "practice-written-social-bulk-25-034",
@@ -33353,7 +35240,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1309
+      "sort": 1327
     },
     {
       "id": "practice-written-social-bulk-25-035",
@@ -33374,7 +35261,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1310
+      "sort": 1328
     },
     {
       "id": "practice-written-social-bulk-25-037",
@@ -33395,7 +35282,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1311
+      "sort": 1329
     },
     {
       "id": "practice-written-social-bulk-25-043",
@@ -33416,7 +35303,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1312
+      "sort": 1330
     },
     {
       "id": "practice-written-social-bulk-25-050",
@@ -33437,7 +35324,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1313
+      "sort": 1331
     },
     {
       "id": "practice-written-social-bulk-25-053",
@@ -33458,7 +35345,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1314
+      "sort": 1332
     },
     {
       "id": "practice-written-social-bulk-25-055",
@@ -33479,7 +35366,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1315
+      "sort": 1333
     },
     {
       "id": "practice-written-social-bulk-25-056",
@@ -33500,7 +35387,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1316
+      "sort": 1334
     },
     {
       "id": "practice-written-social-bulk-25-060",
@@ -33521,7 +35408,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1317
+      "sort": 1335
     },
     {
       "id": "practice-written-social-bulk-25-062",
@@ -33542,7 +35429,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1318
+      "sort": 1336
     },
     {
       "id": "practice-written-social-bulk-25-066",
@@ -33563,7 +35450,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1319
+      "sort": 1337
     },
     {
       "id": "practice-written-social-bulk-26-002",
@@ -33584,7 +35471,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1320
+      "sort": 1338
     },
     {
       "id": "practice-written-social-bulk-26-003",
@@ -33605,7 +35492,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1321
+      "sort": 1339
     },
     {
       "id": "practice-written-social-bulk-26-005",
@@ -33626,7 +35513,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1322
+      "sort": 1340
     },
     {
       "id": "practice-written-social-bulk-26-006",
@@ -33647,7 +35534,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1323
+      "sort": 1341
     },
     {
       "id": "practice-written-social-bulk-26-010",
@@ -33668,7 +35555,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1324
+      "sort": 1342
     },
     {
       "id": "practice-written-social-bulk-26-011",
@@ -33689,7 +35576,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1325
+      "sort": 1343
     },
     {
       "id": "practice-written-social-bulk-26-014",
@@ -33710,7 +35597,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1326
+      "sort": 1344
     },
     {
       "id": "practice-written-social-bulk-26-016",
@@ -33731,7 +35618,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1327
+      "sort": 1345
     },
     {
       "id": "practice-written-social-bulk-26-018",
@@ -33752,7 +35639,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1328
+      "sort": 1346
     },
     {
       "id": "practice-written-social-bulk-26-021",
@@ -33773,7 +35660,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1329
+      "sort": 1347
     },
     {
       "id": "practice-written-social-bulk-26-023",
@@ -33794,7 +35681,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1330
+      "sort": 1348
     },
     {
       "id": "practice-written-social-bulk-26-024",
@@ -33815,7 +35702,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1331
+      "sort": 1349
     },
     {
       "id": "practice-written-social-bulk-26-027",
@@ -33836,7 +35723,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1332
+      "sort": 1350
     },
     {
       "id": "practice-written-social-bulk-26-030",
@@ -33857,7 +35744,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1333
+      "sort": 1351
     },
     {
       "id": "practice-written-social-bulk-26-031",
@@ -33878,7 +35765,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1334
+      "sort": 1352
     },
     {
       "id": "practice-written-social-bulk-26-032",
@@ -33899,7 +35786,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1335
+      "sort": 1353
     },
     {
       "id": "practice-written-social-bulk-26-033",
@@ -33920,7 +35807,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1336
+      "sort": 1354
     },
     {
       "id": "practice-written-social-bulk-26-037",
@@ -33941,7 +35828,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1337
+      "sort": 1355
     },
     {
       "id": "practice-written-social-bulk-26-038",
@@ -33962,7 +35849,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1338
+      "sort": 1356
     },
     {
       "id": "practice-written-social-bulk-26-040",
@@ -33983,7 +35870,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1339
+      "sort": 1357
     },
     {
       "id": "practice-written-social-bulk-26-042",
@@ -34004,7 +35891,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1340
+      "sort": 1358
     },
     {
       "id": "practice-written-social-bulk-26-045",
@@ -34025,7 +35912,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1341
+      "sort": 1359
     },
     {
       "id": "practice-written-social-bulk-26-048",
@@ -34046,7 +35933,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1342
+      "sort": 1360
     },
     {
       "id": "practice-written-social-bulk-26-049",
@@ -34067,7 +35954,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1343
+      "sort": 1361
     },
     {
       "id": "practice-written-social-bulk-26-050",
@@ -34088,7 +35975,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1344
+      "sort": 1362
     },
     {
       "id": "practice-written-social-bulk-26-054",
@@ -34109,7 +35996,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1345
+      "sort": 1363
     },
     {
       "id": "practice-written-social-bulk-26-057",
@@ -34130,7 +36017,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1346
+      "sort": 1364
     },
     {
       "id": "practice-written-social-bulk-26-059",
@@ -34151,7 +36038,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1347
+      "sort": 1365
     },
     {
       "id": "practice-written-social-bulk-26-060",
@@ -34172,7 +36059,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1348
+      "sort": 1366
     },
     {
       "id": "practice-written-social-bulk-26-063",
@@ -34193,7 +36080,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1349
+      "sort": 1367
     },
     {
       "id": "practice-written-social-bulk-26-065",
@@ -34214,7 +36101,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1350
+      "sort": 1368
     },
     {
       "id": "practice-written-social-bulk-26-066",
@@ -34235,7 +36122,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1351
+      "sort": 1369
     },
     {
       "id": "practice-written-social-bulk-26-069",
@@ -34256,7 +36143,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1352
+      "sort": 1370
     },
     {
       "id": "practice-written-social-bulk-26-070",
@@ -34277,7 +36164,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1353
+      "sort": 1371
     },
     {
       "id": "practice-written-social-bulk-28-001",
@@ -34298,7 +36185,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1354
+      "sort": 1372
     },
     {
       "id": "practice-written-social-bulk-28-002",
@@ -34319,7 +36206,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1355
+      "sort": 1373
     },
     {
       "id": "practice-written-social-bulk-28-007",
@@ -34340,7 +36227,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1356
+      "sort": 1374
     },
     {
       "id": "practice-written-social-bulk-28-008",
@@ -34361,7 +36248,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1357
+      "sort": 1375
     },
     {
       "id": "practice-written-social-bulk-28-009",
@@ -34382,7 +36269,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1358
+      "sort": 1376
     },
     {
       "id": "practice-written-social-bulk-28-013",
@@ -34403,7 +36290,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1359
+      "sort": 1377
     },
     {
       "id": "practice-written-social-bulk-28-014",
@@ -34424,7 +36311,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1360
+      "sort": 1378
     },
     {
       "id": "practice-written-social-bulk-28-016",
@@ -34445,7 +36332,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1361
+      "sort": 1379
     },
     {
       "id": "practice-written-social-bulk-28-018",
@@ -34466,7 +36353,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1362
+      "sort": 1380
     },
     {
       "id": "practice-written-social-bulk-28-020",
@@ -34487,7 +36374,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1363
+      "sort": 1381
     },
     {
       "id": "practice-written-social-bulk-28-021",
@@ -34508,7 +36395,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1364
+      "sort": 1382
     },
     {
       "id": "practice-written-social-bulk-28-022",
@@ -34529,7 +36416,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1365
+      "sort": 1383
     },
     {
       "id": "practice-written-social-bulk-28-023",
@@ -34550,7 +36437,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1366
+      "sort": 1384
     },
     {
       "id": "practice-written-social-bulk-28-024",
@@ -34571,7 +36458,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1367
+      "sort": 1385
     },
     {
       "id": "practice-written-social-bulk-28-025",
@@ -34592,7 +36479,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1368
+      "sort": 1386
     },
     {
       "id": "practice-written-social-bulk-28-026",
@@ -34613,7 +36500,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1369
+      "sort": 1387
     },
     {
       "id": "practice-written-social-bulk-28-029",
@@ -34634,7 +36521,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1370
+      "sort": 1388
     },
     {
       "id": "practice-written-social-bulk-28-034",
@@ -34655,7 +36542,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1371
+      "sort": 1389
     },
     {
       "id": "practice-written-social-bulk-28-035",
@@ -34676,7 +36563,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1372
+      "sort": 1390
     },
     {
       "id": "practice-written-social-bulk-28-036",
@@ -34697,7 +36584,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1373
+      "sort": 1391
     },
     {
       "id": "practice-written-social-bulk-28-037",
@@ -34718,7 +36605,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1374
+      "sort": 1392
     },
     {
       "id": "practice-written-social-bulk-28-041",
@@ -34739,7 +36626,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1375
+      "sort": 1393
     },
     {
       "id": "practice-written-social-bulk-28-043",
@@ -34760,7 +36647,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1376
+      "sort": 1394
     },
     {
       "id": "practice-written-social-bulk-28-046",
@@ -34781,7 +36668,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1377
+      "sort": 1395
     },
     {
       "id": "practice-written-social-bulk-28-048",
@@ -34802,7 +36689,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1378
+      "sort": 1396
     },
     {
       "id": "practice-written-social-bulk-28-049",
@@ -34823,7 +36710,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1379
+      "sort": 1397
     },
     {
       "id": "practice-written-social-bulk-28-050",
@@ -34844,7 +36731,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1380
+      "sort": 1398
     },
     {
       "id": "practice-written-social-bulk-28-053",
@@ -34865,7 +36752,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1381
+      "sort": 1399
     },
     {
       "id": "practice-written-social-bulk-28-054",
@@ -34886,7 +36773,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1382
+      "sort": 1400
     },
     {
       "id": "practice-written-social-bulk-28-055",
@@ -34907,7 +36794,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1383
+      "sort": 1401
     },
     {
       "id": "practice-written-social-bulk-28-060",
@@ -34928,7 +36815,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1384
+      "sort": 1402
     },
     {
       "id": "practice-written-social-bulk-28-061",
@@ -34949,7 +36836,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1385
+      "sort": 1403
     },
     {
       "id": "practice-written-social-bulk-28-064",
@@ -34970,7 +36857,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1386
+      "sort": 1404
     },
     {
       "id": "practice-written-social-bulk-28-065",
@@ -34991,7 +36878,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1387
+      "sort": 1405
     },
     {
       "id": "practice-written-social-bulk-28-069",
@@ -35012,7 +36899,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1388
+      "sort": 1406
     },
     {
       "id": "practice-written-social-bulk-29-003",
@@ -35033,7 +36920,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1389
+      "sort": 1407
     },
     {
       "id": "practice-written-social-bulk-29-006",
@@ -35054,7 +36941,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1390
+      "sort": 1408
     },
     {
       "id": "practice-written-social-bulk-29-012",
@@ -35075,7 +36962,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1391
+      "sort": 1409
     },
     {
       "id": "practice-written-social-bulk-29-013",
@@ -35096,7 +36983,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1392
+      "sort": 1410
     },
     {
       "id": "practice-written-social-bulk-29-014",
@@ -35117,7 +37004,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1393
+      "sort": 1411
     },
     {
       "id": "practice-written-social-bulk-29-016",
@@ -35138,7 +37025,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1394
+      "sort": 1412
     },
     {
       "id": "practice-written-social-bulk-29-017",
@@ -35159,7 +37046,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1395
+      "sort": 1413
     },
     {
       "id": "practice-written-social-bulk-29-027",
@@ -35180,7 +37067,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1396
+      "sort": 1414
     },
     {
       "id": "practice-written-social-bulk-29-028",
@@ -35201,7 +37088,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1397
+      "sort": 1415
     },
     {
       "id": "practice-written-social-bulk-29-029",
@@ -35222,7 +37109,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1398
+      "sort": 1416
     },
     {
       "id": "practice-written-social-bulk-29-030",
@@ -35243,7 +37130,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1399
+      "sort": 1417
     },
     {
       "id": "practice-written-social-bulk-29-031",
@@ -35264,7 +37151,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1400
+      "sort": 1418
     },
     {
       "id": "practice-written-social-bulk-29-033",
@@ -35285,7 +37172,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1401
+      "sort": 1419
     },
     {
       "id": "practice-written-social-bulk-29-034",
@@ -35306,7 +37193,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1402
+      "sort": 1420
     },
     {
       "id": "practice-written-social-bulk-29-036",
@@ -35327,7 +37214,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1403
+      "sort": 1421
     },
     {
       "id": "practice-written-social-bulk-29-037",
@@ -35348,7 +37235,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1404
+      "sort": 1422
     },
     {
       "id": "practice-written-social-bulk-29-039",
@@ -35369,7 +37256,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1405
+      "sort": 1423
     },
     {
       "id": "practice-written-social-bulk-29-040",
@@ -35390,7 +37277,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1406
+      "sort": 1424
     },
     {
       "id": "practice-written-social-bulk-29-042",
@@ -35411,7 +37298,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1407
+      "sort": 1425
     },
     {
       "id": "practice-written-social-bulk-29-043",
@@ -35432,7 +37319,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1408
+      "sort": 1426
     },
     {
       "id": "practice-written-social-bulk-29-045",
@@ -35453,7 +37340,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1409
+      "sort": 1427
     },
     {
       "id": "practice-written-social-bulk-29-047",
@@ -35474,7 +37361,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1410
+      "sort": 1428
     },
     {
       "id": "practice-written-social-bulk-29-048",
@@ -35495,7 +37382,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1411
+      "sort": 1429
     },
     {
       "id": "practice-written-social-bulk-29-051",
@@ -35516,7 +37403,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1412
+      "sort": 1430
     },
     {
       "id": "practice-written-social-bulk-29-053",
@@ -35537,7 +37424,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1413
+      "sort": 1431
     },
     {
       "id": "practice-written-social-bulk-29-054",
@@ -35558,7 +37445,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1414
+      "sort": 1432
     },
     {
       "id": "practice-written-social-bulk-29-056",
@@ -35579,7 +37466,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1415
+      "sort": 1433
     },
     {
       "id": "practice-written-social-bulk-29-057",
@@ -35600,7 +37487,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1416
+      "sort": 1434
     },
     {
       "id": "practice-written-social-bulk-29-067",
@@ -35621,7 +37508,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1417
+      "sort": 1435
     },
     {
       "id": "practice-written-social-bulk-210-001",
@@ -35642,7 +37529,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1418
+      "sort": 1436
     },
     {
       "id": "practice-written-social-bulk-210-003",
@@ -35663,7 +37550,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1419
+      "sort": 1437
     },
     {
       "id": "practice-written-social-bulk-210-008",
@@ -35684,7 +37571,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1420
+      "sort": 1438
     },
     {
       "id": "practice-written-social-bulk-210-009",
@@ -35705,7 +37592,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1421
+      "sort": 1439
     },
     {
       "id": "practice-written-social-bulk-210-011",
@@ -35726,7 +37613,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1422
+      "sort": 1440
     },
     {
       "id": "practice-written-social-bulk-210-012",
@@ -35747,7 +37634,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1423
+      "sort": 1441
     },
     {
       "id": "practice-written-social-bulk-210-013",
@@ -35768,7 +37655,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1424
+      "sort": 1442
     },
     {
       "id": "practice-written-social-bulk-210-017",
@@ -35789,7 +37676,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1425
+      "sort": 1443
     },
     {
       "id": "practice-written-social-bulk-210-019",
@@ -35810,7 +37697,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1426
+      "sort": 1444
     },
     {
       "id": "practice-written-social-bulk-210-020",
@@ -35831,7 +37718,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1427
+      "sort": 1445
     },
     {
       "id": "practice-written-social-bulk-210-021",
@@ -35852,7 +37739,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1428
+      "sort": 1446
     },
     {
       "id": "practice-written-social-bulk-210-024",
@@ -35873,7 +37760,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1429
+      "sort": 1447
     },
     {
       "id": "practice-written-social-bulk-210-027",
@@ -35894,7 +37781,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1430
+      "sort": 1448
     },
     {
       "id": "practice-written-social-bulk-210-028",
@@ -35915,7 +37802,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1431
+      "sort": 1449
     },
     {
       "id": "practice-written-social-bulk-210-030",
@@ -35936,7 +37823,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1432
+      "sort": 1450
     },
     {
       "id": "practice-written-social-bulk-210-031",
@@ -35957,7 +37844,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1433
+      "sort": 1451
     },
     {
       "id": "practice-written-social-bulk-210-032",
@@ -35978,7 +37865,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1434
+      "sort": 1452
     },
     {
       "id": "practice-written-social-bulk-210-033",
@@ -35999,7 +37886,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1435
+      "sort": 1453
     },
     {
       "id": "practice-written-social-bulk-210-034",
@@ -36020,7 +37907,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1436
+      "sort": 1454
     },
     {
       "id": "practice-written-social-bulk-210-036",
@@ -36041,7 +37928,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1437
+      "sort": 1455
     },
     {
       "id": "practice-written-social-bulk-210-037",
@@ -36062,7 +37949,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1438
+      "sort": 1456
     },
     {
       "id": "practice-written-social-bulk-210-042",
@@ -36083,7 +37970,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1439
+      "sort": 1457
     },
     {
       "id": "practice-written-social-bulk-210-043",
@@ -36104,7 +37991,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1440
+      "sort": 1458
     },
     {
       "id": "practice-written-social-bulk-210-044",
@@ -36125,7 +38012,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1441
+      "sort": 1459
     },
     {
       "id": "practice-written-social-bulk-210-045",
@@ -36146,7 +38033,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1442
+      "sort": 1460
     },
     {
       "id": "practice-written-social-bulk-210-048",
@@ -36167,7 +38054,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1443
+      "sort": 1461
     },
     {
       "id": "practice-written-social-bulk-210-049",
@@ -36188,7 +38075,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1444
+      "sort": 1462
     },
     {
       "id": "practice-written-social-bulk-210-053",
@@ -36209,7 +38096,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1445
+      "sort": 1463
     },
     {
       "id": "practice-written-social-bulk-210-054",
@@ -36230,7 +38117,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1446
+      "sort": 1464
     },
     {
       "id": "practice-written-social-bulk-210-055",
@@ -36251,7 +38138,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1447
+      "sort": 1465
     },
     {
       "id": "practice-written-social-bulk-210-056",
@@ -36272,7 +38159,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1448
+      "sort": 1466
     },
     {
       "id": "practice-written-social-bulk-210-060",
@@ -36293,7 +38180,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1449
+      "sort": 1467
     },
     {
       "id": "practice-written-social-bulk-210-068",
@@ -36314,7 +38201,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1450
+      "sort": 1468
     },
     {
       "id": "practice-written-social-bulk-211-002",
@@ -36335,7 +38222,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1451
+      "sort": 1469
     },
     {
       "id": "practice-written-social-bulk-211-003",
@@ -36356,7 +38243,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1452
+      "sort": 1470
     },
     {
       "id": "practice-written-social-bulk-211-004",
@@ -36377,7 +38264,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1453
+      "sort": 1471
     },
     {
       "id": "practice-written-social-bulk-211-008",
@@ -36398,7 +38285,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1454
+      "sort": 1472
     },
     {
       "id": "practice-written-social-bulk-211-009",
@@ -36419,7 +38306,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1455
+      "sort": 1473
     },
     {
       "id": "practice-written-social-bulk-211-010",
@@ -36440,7 +38327,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1456
+      "sort": 1474
     },
     {
       "id": "practice-written-social-bulk-211-011",
@@ -36461,7 +38348,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1457
+      "sort": 1475
     },
     {
       "id": "practice-written-social-bulk-211-012",
@@ -36482,7 +38369,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1458
+      "sort": 1476
     },
     {
       "id": "practice-written-social-bulk-211-015",
@@ -36503,7 +38390,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1459
+      "sort": 1477
     },
     {
       "id": "practice-written-social-bulk-211-016",
@@ -36524,7 +38411,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1460
+      "sort": 1478
     },
     {
       "id": "practice-written-social-bulk-211-018",
@@ -36545,7 +38432,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1461
+      "sort": 1479
     },
     {
       "id": "practice-written-social-bulk-211-020",
@@ -36566,7 +38453,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1462
+      "sort": 1480
     },
     {
       "id": "practice-written-social-bulk-211-021",
@@ -36587,7 +38474,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1463
+      "sort": 1481
     },
     {
       "id": "practice-written-social-bulk-211-022",
@@ -36608,7 +38495,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1464
+      "sort": 1482
     },
     {
       "id": "practice-written-social-bulk-211-023",
@@ -36629,7 +38516,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1465
+      "sort": 1483
     },
     {
       "id": "practice-written-social-bulk-211-024",
@@ -36650,7 +38537,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1466
+      "sort": 1484
     },
     {
       "id": "practice-written-social-bulk-211-026",
@@ -36671,7 +38558,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1467
+      "sort": 1485
     },
     {
       "id": "practice-written-social-bulk-211-028",
@@ -36692,7 +38579,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1468
+      "sort": 1486
     },
     {
       "id": "practice-written-social-bulk-211-031",
@@ -36713,7 +38600,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1469
+      "sort": 1487
     },
     {
       "id": "practice-written-social-bulk-211-032",
@@ -36734,7 +38621,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1470
+      "sort": 1488
     },
     {
       "id": "practice-written-social-bulk-211-035",
@@ -36755,7 +38642,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1471
+      "sort": 1489
     },
     {
       "id": "practice-written-social-bulk-211-038",
@@ -36776,7 +38663,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1472
+      "sort": 1490
     },
     {
       "id": "practice-written-social-bulk-211-039",
@@ -36797,7 +38684,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1473
+      "sort": 1491
     },
     {
       "id": "practice-written-social-bulk-211-040",
@@ -36818,7 +38705,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1474
+      "sort": 1492
     },
     {
       "id": "practice-written-social-bulk-211-042",
@@ -36839,7 +38726,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1475
+      "sort": 1493
     },
     {
       "id": "practice-written-social-bulk-211-047",
@@ -36860,7 +38747,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1476
+      "sort": 1494
     },
     {
       "id": "practice-written-social-bulk-211-048",
@@ -36881,7 +38768,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1477
+      "sort": 1495
     },
     {
       "id": "practice-written-social-bulk-211-056",
@@ -36902,7 +38789,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1478
+      "sort": 1496
     },
     {
       "id": "practice-written-social-bulk-211-058",
@@ -36923,7 +38810,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1479
+      "sort": 1497
     },
     {
       "id": "practice-written-social-bulk-211-059",
@@ -36944,7 +38831,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1480
+      "sort": 1498
     },
     {
       "id": "practice-written-social-bulk-211-062",
@@ -36965,7 +38852,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1481
+      "sort": 1499
     },
     {
       "id": "practice-written-social-bulk-211-063",
@@ -36986,7 +38873,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1482
+      "sort": 1500
     },
     {
       "id": "practice-written-social-bulk-211-064",
@@ -37007,7 +38894,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1483
+      "sort": 1501
     },
     {
       "id": "practice-written-social-bulk-211-065",
@@ -37028,7 +38915,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1484
+      "sort": 1502
     },
     {
       "id": "practice-written-social-bulk-211-066",
@@ -37049,7 +38936,616 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1485
+      "sort": 1503
+    },
+    {
+      "id": "practice-written-social-bulk-212-002",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 불평등에서 차등 분배되는 부·권력·명예 X. X를 달리 부르는 말은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "사회적 희소가치. 부·권력·명예 같은 사회적 자원은 누구나 원하지만 한정되어 있어 사회적 희소가치라고 부른다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 사회적 희소가치",
+        "근거: 부·권력·명예 같은 사회적 자원은 누구나 원하지만 한정되어 있어 사회적 희소가치라고 부른다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1504
+    },
+    {
+      "id": "practice-written-social-bulk-212-003",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "양극화로 부모의 계층이 자녀에게 대물림될 때 형성되는 사회 구조는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "폐쇄적 사회 구조. 부모의 계층이 자녀에게 대물림되면 능력·업적에 따른 계층 이동이 어려운 폐쇄적 사회 구조가 형성된다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 폐쇄적 사회 구조",
+        "근거: 부모의 계층이 자녀에게 대물림되면 능력·업적에 따른 계층 이동이 어려운 폐쇄적 사회 구조가 형성된다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1505
+    },
+    {
+      "id": "practice-written-social-bulk-212-009",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "계층을 상층·중층·하층으로 범주화해 수직적 연속선에 배열하는 이론 X. X를 제시한 학자는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "베버. 계층을 수직적 연속선상에 배열하고 다양한 요인으로 위치를 구분하는 계층 이론은 베버가 제시했다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 베버",
+        "근거: 계층을 수직적 연속선상에 배열하고 다양한 요인으로 위치를 구분하는 계층 이론은 베버가 제시했다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1506
+    },
+    {
+      "id": "practice-written-social-bulk-212-011",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "지배 집단에 유리한 분배 구조가 계급을 재생산한다고 보는 이론 X. X에서 불평등을 결정하는 것은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "경제적 요인. 마르크스의 계급 이론은 경제적 요인이 다른 모든 사회 불평등을 결정한다고 보는 일원론이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 경제적 요인",
+        "근거: 마르크스의 계급 이론은 경제적 요인이 다른 모든 사회 불평등을 결정한다고 보는 일원론이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1507
+    },
+    {
+      "id": "practice-written-social-bulk-212-016",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "권력은 크지만 재산은 적은 사람처럼 영역마다 계층 서열이 다른 현상은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "지위 불일치. 지위 불일치는 계급(재산), 위신(명예), 권력의 각 측면에서 개인의 서열 위치가 서로 다른 현상이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 지위 불일치",
+        "근거: 지위 불일치는 계급(재산), 위신(명예), 권력의 각 측면에서 개인의 서열 위치가 서로 다른 현상이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1508
+    },
+    {
+      "id": "practice-written-social-bulk-212-017",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "계급·위신·권력의 서열이 서로 다른 현상 X. 마르크스 이론이 X를 설명하지 못하는 이유는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "경제적 요인만 보기 때문. 지위 불일치는 여러 요인을 함께 보는 계층 이론(다원론)만 설명할 수 있다. 경제적 요인 하나로만 보는 계급 이론은 설명하기 어렵다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 경제적 요인만 보기 때문",
+        "근거: 지위 불일치는 여러 요인을 함께 보는 계층 이론(다원론)만 설명할 수 있다. 경제적 요인 하나로만 보는 계급 이론은 설명하기 어렵다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1509
+    },
+    {
+      "id": "practice-written-social-bulk-212-019",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "이분법적·대립적 계급 구분이 타당했다고 평가받는 시기는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "근대 초 산업화 시기. 계급 구분은 근대 초 산업화 시기에는 타당했으나, 직업이 분화되고 복잡해진 현대 사회를 설명하기엔 적합하지 않다는 비판을 받는다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 근대 초 산업화 시기",
+        "근거: 계급 구분은 근대 초 산업화 시기에는 타당했으나, 직업이 분화되고 복잡해진 현대 사회를 설명하기엔 적합하지 않다는 비판을 받는다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1510
+    },
+    {
+      "id": "practice-written-social-bulk-212-020",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "신도심과 구도심 사이에 자원이 불균등하게 분배되어 생긴 격차 X. X의 종류는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "공간 불평등. 공간 불평등은 지역 간 자원이 불균등하게 분배되어 격차가 생기는 현상으로, 신도심과 구도심 같은 도시 내부에서도 나타난다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 공간 불평등",
+        "근거: 공간 불평등은 지역 간 자원이 불균등하게 분배되어 격차가 생기는 현상으로, 신도심과 구도심 같은 도시 내부에서도 나타난다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1511
+    },
+    {
+      "id": "practice-written-social-bulk-212-021",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "'성장 거점을 집중 개발해야 공간 불평등이 해소된다'는 주장이 틀린 이유는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "집중 개발이 격차를 낳음. 성장 가능성이 큰 지역에 자본과 기술을 집중 투자한 성장 거점 개발 정책은 제외된 지역의 인구 유출과 경제 침체를 낳아 공간 불평등의 원인이 되었다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 집중 개발이 격차를 낳음",
+        "근거: 성장 가능성이 큰 지역에 자본과 기술을 집중 투자한 성장 거점 개발 정책은 제외된 지역의 인구 유출과 경제 침체를 낳아 공간 불평등의 원인이 되었다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1512
+    },
+    {
+      "id": "practice-written-social-bulk-212-024",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "교육·문화·의료 등 생활 환경의 지역 격차가 낙후 지역 주민에게 미치는 영향은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "삶의 질 저하. 공간 불평등으로 교육, 문화, 의료 등 생활 환경 전반이 불평등해지면 낙후 지역 주민의 삶의 질이 떨어진다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 삶의 질 저하",
+        "근거: 공간 불평등으로 교육, 문화, 의료 등 생활 환경 전반이 불평등해지면 낙후 지역 주민의 삶의 질이 떨어진다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1513
+    },
+    {
+      "id": "practice-written-social-bulk-212-025",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "장애·나이·국적 등으로 소외되어 인간다운 삶을 영위하기 어려운 개인·집단은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "사회적 약자. 사회적 약자는 장애, 나이, 성별, 출신 국가, 소득 수준 등으로 사회적으로 소외되어 인간다운 삶을 영위하는 데 어려움을 겪는 개인이나 집단이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 사회적 약자",
+        "근거: 사회적 약자는 장애, 나이, 성별, 출신 국가, 소득 수준 등으로 사회적으로 소외되어 인간다운 삶을 영위하는 데 어려움을 겪는 개인이나 집단이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1514
+    },
+    {
+      "id": "practice-written-social-bulk-212-028",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "신체적·문화적 특징으로 주류 집단에게 차별받는 사람들 X. X인지 판단하는 핵심은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "차별받는다는 사실. 사회적 소수자는 반드시 수적으로 소수를 뜻하지 않는다. 과거 남아프리카 공화국의 흑인처럼 다수여도 주류 집단에게 차별받으면 소수자다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 차별받는다는 사실",
+        "근거: 사회적 소수자는 반드시 수적으로 소수를 뜻하지 않는다. 과거 남아프리카 공화국의 흑인처럼 다수여도 주류 집단에게 차별받으면 소수자다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1515
+    },
+    {
+      "id": "practice-written-social-bulk-212-029",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "더 중요한 위치에 능력 있는 사람을 충원하려면 불평등이 불가피하다는 관점 X. X의 분배 기준은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "직업의 사회적 중요도. 기능론은 사회 전체의 필요에 의해 결정되는 직업별 사회적 중요도·기여도에 따라 차등 분배된다고 본다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 직업의 사회적 중요도",
+        "근거: 기능론은 사회 전체의 필요에 의해 결정되는 직업별 사회적 중요도·기여도에 따라 차등 분배된다고 본다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1516
+    },
+    {
+      "id": "practice-written-social-bulk-212-032",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "직업의 기능적 중요도에는 차이가 없다고 보는 관점 X. X가 본 불평등의 원인은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "지배 집단의 기득권 유지. 갈등론은 불평등을 지배 집단이 현재의 기득권과 지배적 위치를 유지하려는 결과로 본다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 지배 집단의 기득권 유지",
+        "근거: 갈등론은 불평등을 지배 집단이 현재의 기득권과 지배적 위치를 유지하려는 결과로 본다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1517
+    },
+    {
+      "id": "practice-written-social-bulk-212-033",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "'의사의 소득이 높은 건 사회에 중요한 일을 맡아서다'라는 주장의 관점은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "기능론. 직업의 사회적 중요도·기여도에 따라 보상이 차등 분배된다고 보는 것은 기능론의 관점이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 기능론",
+        "근거: 직업의 사회적 중요도·기여도에 따라 보상이 차등 분배된다고 보는 것은 기능론의 관점이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1518
+    },
+    {
+      "id": "practice-written-social-bulk-212-034",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "좋은 직업이 부모의 재산과 배경으로 대물림된다고 보는 관점 X. X가 받는 비판은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "개인 노력의 영향 간과. 갈등론은 개인의 능력이나 노력이 지위 변동에 미치는 영향력을 간과한다는 비판을 받는다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 개인 노력의 영향 간과",
+        "근거: 갈등론은 개인의 능력이나 노력이 지위 변동에 미치는 영향력을 간과한다는 비판을 받는다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1519
+    },
+    {
+      "id": "practice-written-social-bulk-212-036",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "불평등이 사회적 박탈감과 집단 간 대립을 유발한다는 관점 X. X가 본 가치 배분의 성격은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "강제적·불공정. 갈등론은 가치가 지배 집단만의 합의에 의해 강제적으로 불공정하게 배분된다고 본다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 강제적·불공정",
+        "근거: 갈등론은 가치가 지배 집단만의 합의에 의해 강제적으로 불공정하게 배분된다고 본다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1520
+    },
+    {
+      "id": "practice-written-social-bulk-212-037",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "불평등을 개인을 적재적소에 배치하는 장치로 보는 관점 X. X가 경시한다고 비판받는 것은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "소외된 사람들의 현실. 기능론은 가정 배경 같은 현실적 영향력을 간과하고, 불평등이 초래하는 대립·갈등과 소외된 사람들의 현실을 경시한다는 비판을 받는다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 소외된 사람들의 현실",
+        "근거: 기능론은 가정 배경 같은 현실적 영향력을 간과하고, 불평등이 초래하는 대립·갈등과 소외된 사람들의 현실을 경시한다는 비판을 받는다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1521
+    },
+    {
+      "id": "practice-written-social-bulk-212-046",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "조세로 국가·지자체가 전액 지원해 최저 생활을 보장하는 제도 X. X의 복지 이념은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "선별적 복지. 공공 부조는 생활이 어려운 저소득층(절대 빈곤층)을 골라 지원하는 선별적 복지다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 선별적 복지",
+        "근거: 공공 부조는 생활이 어려운 저소득층(절대 빈곤층)을 골라 지원하는 선별적 복지다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1522
+    },
+    {
+      "id": "practice-written-social-bulk-212-047",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "가입자·사업주가 보험료를 내고 국가가 일부 보태는 제도 X. X의 한계는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "보험료 부담. 사회 보험의 한계는 보험료 부담이다. 부정적 낙인과 국가 재정 부담은 공공 부조의 한계다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 보험료 부담",
+        "근거: 사회 보험의 한계는 보험료 부담이다. 부정적 낙인과 국가 재정 부담은 공공 부조의 한계다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1523
+    },
+    {
+      "id": "practice-written-social-bulk-212-048",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "사회 보험료를 소득 수준에 따라 다르게 내는 것은 어떤 원칙인가? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "능력별 부담. 사회 보험의 재원은 수익자 부담과 능력별 부담 원칙을 따르며, 소득에 따라 보험료를 달리 내는 것은 능력별 부담이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 능력별 부담",
+        "근거: 사회 보험의 재원은 수익자 부담과 능력별 부담 원칙을 따르며, 소득에 따라 보험료를 달리 내는 것은 능력별 부담이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1524
+    },
+    {
+      "id": "practice-written-social-bulk-212-053",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "공공 부조가 사회 보험보다 소득 재분배 효과가 큰 까닭은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "부담자와 수혜자가 다름. 공공 부조는 조세로 마련한 재원을 저소득층에게 지원해 부담자와 수혜자가 달라 소득 재분배 효과가 크다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 부담자와 수혜자가 다름",
+        "근거: 공공 부조는 조세로 마련한 재원을 저소득층에게 지원해 부담자와 수혜자가 달라 소득 재분배 효과가 크다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1525
+    },
+    {
+      "id": "practice-written-social-bulk-212-056",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "1차 사회 안전망에서 빠진 빈곤층을 받치는 2차 안전망 X. X의 한계는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "수혜자 낙인 우려. 2차 안전망은 공공 부조다. 공공 부조는 수혜자 선정 과정에서 부정적 낙인이 생기고 국가 재정 부담이 크다는 한계가 있다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 수혜자 낙인 우려",
+        "근거: 2차 안전망은 공공 부조다. 공공 부조는 수혜자 선정 과정에서 부정적 낙인이 생기고 국가 재정 부담이 크다는 한계가 있다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1526
+    },
+    {
+      "id": "practice-written-social-bulk-212-059",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "농어촌 학생 전형·기회균등 전형이 속하는 제도 X. X가 받는 비판은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "개인 능력·노력 경시. 적극적 평등 실현 조치는 역차별 논란과 함께 개인의 능력·노력을 고려하지 않는다는 비판을 받는다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 개인 능력·노력 경시",
+        "근거: 적극적 평등 실현 조치는 역차별 논란과 함께 개인의 능력·노력을 고려하지 않는다는 비판을 받는다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1527
+    },
+    {
+      "id": "practice-written-social-bulk-212-061",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "여성 할당제로 남성이 불이익을 받는다는 논란 X. X를 줄이려면 시행 시 무엇이 필요한가? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "사회적 합의. 보호하려던 쪽 대신 반대쪽이 차별받는다는 역차별 논란이 생길 수 있으므로 시행할 때 사회적 합의가 필요하다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 사회적 합의",
+        "근거: 보호하려던 쪽 대신 반대쪽이 차별받는다는 역차별 논란이 생길 수 있으므로 시행할 때 사회적 합의가 필요하다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1528
+    },
+    {
+      "id": "practice-written-social-bulk-212-062",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "장애인 의무 고용 제도에 대한 설명으로 옳은 것은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "민간 기업에도 적용. 장애인 의무 고용 제도는 국가·지자체뿐 아니라 일정 규모 이상의 공공 기관과 민간 기업에 장애인 고용을 의무화한 적극적 평등 실현 조치다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 민간 기업에도 적용",
+        "근거: 장애인 의무 고용 제도는 국가·지자체뿐 아니라 일정 규모 이상의 공공 기관과 민간 기업에 장애인 고용을 의무화한 적극적 평등 실현 조치다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1529
+    },
+    {
+      "id": "practice-written-social-bulk-212-063",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "공공 기관 지방 이전과 혁신 도시 조성을 담은 법 X. X가 해결하려는 문제는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "수도권 과밀화. 「국가 균형 발전 특별법」에 따른 공공 기관 지방 이전과 혁신 도시 조성은 수도권 과밀화 해소 정책이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 수도권 과밀화",
+        "근거: 「국가 균형 발전 특별법」에 따른 공공 기관 지방 이전과 혁신 도시 조성은 수도권 과밀화 해소 정책이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1530
+    },
+    {
+      "id": "practice-written-social-bulk-212-067",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "지역 격차 완화 정책이 궁극적으로 이루려는 것은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "국토의 균형 발전. 지역 격차 완화 정책은 공간 불평등을 해소하여 국토의 균형 발전을 이루려는 정책이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 국토의 균형 발전",
+        "근거: 지역 격차 완화 정책은 공간 불평등을 해소하여 국토의 균형 발전을 이루려는 정책이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1531
+    },
+    {
+      "id": "practice-written-social-bulk-212-069",
+      "deck_id": "social-bulk",
+      "kind": "written",
+      "topic": "베버 에디션",
+      "badge": null,
+      "question": "청소년 참여 포털에 필요한 정책을 올리는 것은 어떤 시민 실천인가? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "정책 제안. 청소년 참여 포털에서 정책을 제안하는 것은 정의로운 사회를 위해 필요한 정책을 다양한 방식으로 제안하는 실천이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 정책 제안",
+        "근거: 청소년 참여 포털에서 정책을 제안하는 것은 정의로운 사회를 위해 필요한 정책을 다양한 방식으로 제안하는 실천이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 212 · 다양한 불평등 현상",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1532
     },
     {
       "id": "social-jo-001",
