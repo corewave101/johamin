@@ -11,6 +11,7 @@ import { jeonCards } from './jeon-cards';
 import { socialCards } from './social-cards';
 import { socialJoCards, socialJoWritten } from './social-jo-cards';
 import { socialBulkCards, socialBulkWritten } from './social-bulk-cards';
+import { biologyJoBulkCards, biologyJoBulkWritten } from './biology-jo-bulk-cards';
 import { englishCards } from './english-cards';
 import { englishWritten } from './english-written';
 import { koreanGrammarCards, koreanGrammarWritten } from './korean-cards';
@@ -42,7 +43,10 @@ export const subjectMenu: SubjectGroup = {
     ] },
     { id: 'science', kind: 'group', name: '과학', direction: 'right', symbol: '✳', description: '생물 · 지구과학 · 물리학Ⅱ · 화학을 골라요.', children: [
     { id: 'biology', kind: 'group', name: '생물', direction: 'up', symbol: '✳', description: '선생님별 객관식과 서술형 연습.', children: [
-      { id: 'biology-jo', kind: 'deck', name: '조용민T', fullName: '생물(조용민T)', direction: 'left', symbol: '✳', description: '전사·RNA 가공·번역까지. 오페론부터 제외.', cards: joCards, writtenQuestions: joWritten },
+      { id: 'biology-jo-t', kind: 'group', name: '조용민T', direction: 'left', symbol: '✳', description: '왼쪽은 기본, 오른쪽은 에디션마다 촘촘한 뭉탱이.', children: [
+        { id: 'biology-jo', kind: 'deck', name: '기본', fullName: '생물(조용민T)', direction: 'left', symbol: '✳', description: '전사·RNA 가공·번역까지. 오페론부터 제외.', cards: joCards, writtenQuestions: joWritten },
+        { id: 'biology-jo-bulk', kind: 'deck', name: '뭉탱이', fullName: '생물(조용민T · 뭉탱이)', direction: 'right', symbol: '✳', description: '전사 에디션(3~14쪽) · 번역 에디션(15~25쪽). PPT와 필기를 촘촘하게 파요.', cards: biologyJoBulkCards, writtenQuestions: biologyJoBulkWritten },
+      ] },
       { id: 'biology-park', kind: 'deck', name: '박상영T', fullName: '생물(박상영T)', direction: 'right', symbol: '✳', description: '유전 법칙·사람의 유전·돌연변이·유전 물질 + 교사용 핵심 용어 22개.', cards: [...parkCards.filter(c => !c.id.includes("-depth-")), ...geneticsCards, ...parkDepthCards], writtenQuestions: [...parkWritten.filter(q => !q.id.includes("-depth-")), ...geneticsWritten, ...parkDepthWritten] },
     ] },
     { id: 'astronomy', kind: 'group', name: '지구과학', direction: 'left', symbol: '✦', description: '왼쪽은 황, 오른쪽은 전. 공부할 파트를 골라요.', children: [
