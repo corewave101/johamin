@@ -8,7 +8,9 @@ import type { WrittenQuestion } from './biology-written';
 
 type Row = [question: string, choices: [string, string, string, string], explanation: string, page: number];
 // Correct text comes first; the game randomizes the four directions on every run and retry.
-interface Edition { key: string; name: string; pages: [number, number]; rows: Row[] }
+// 그림 카드: the figure is a clean slide figure with the answer labels covered by (가)(나)… tags (public/figures/jo).
+type FigureRow = [question: string, choices: [string, string, string, string], explanation: string, page: number, figure: string, alt: string];
+interface Edition { key: string; name: string; pages: [number, number]; rows: Row[]; figures: FigureRow[] }
 
 const editions: Edition[] = [
   { key: 'tx', name: '전사 에디션', pages: [3, 14], rows: [
@@ -147,6 +149,21 @@ const editions: Edition[] = [
     ['poly-A 꼬리의 역할로 옳은 것은?', ['mRNA 분해 억제', '인트론 제거', '전사 개시', '아미노산 운반'], 'poly-A 꼬리는 mRNA 분해를 억제하고, mRNA가 세포질로 수송되는 과정에 관여한다.', 14],
     ['5′ 캡과 poly-A 꼬리의 공통 역할은?', ['mRNA 분해 억제', '인트론 제거', '프로모터 인식', '아미노산 운반'], '둘 다 mRNA 분해를 억제하고, 세포질로 수송되는 과정에 관여한다.', 14],
     ['poly-A 꼬리가 붙는 곳은?', ['절단된 3′ 말단', 'mRNA 5′ 말단', '인트론 안', '프로모터'], '가수분해로 절단된 pre-mRNA의 3′ 말단에 PAP가 A를 붙인다.', 14],
+  ], figures: [
+    ['그림의 (가)를 뺀 RNA 중합효소를 부르는 말은?', ['핵심 효소', '완전 효소', '개시 복합체', '스플라이시오솜'], '(가)는 σ 인자다. σ를 뺀 α₂ββ′ω가 핵심 효소이고, σ까지 붙으면 완전 효소다.', 6, 'rna-polymerase', '원핵 RNA 중합효소 그림. α, α, ω, β′, β 소단위가 DNA를 감싸고, 아래쪽 소단위 하나가 (가)로 가려져 있다.'],
+    ['그림의 (가)가 필요한 때는?', ['전사를 시작할 때만', '전사하는 내내', '전사를 끝낼 때만', '번역을 시작할 때'], '(가)는 σ 인자다. 전사를 시작할 때만 필요하고, 약 10개 뉴클레오타이드를 합성한 뒤 떨어져 나간다.', 6, 'rna-polymerase', '원핵 RNA 중합효소 그림. α, α, ω, β′, β 소단위가 DNA를 감싸고, 아래쪽 소단위 하나가 (가)로 가려져 있다.'],
+    ['그림의 (가) 자리에 들어갈 공통 서열은?', ['TTGACA', 'TATAAT', 'TATAAA', 'AGGAGG'], '(가)는 -35 지역이다. σ 인자가 인식하는 공통 서열 TTGACA가 있다.', 7, 'prokaryote-promoter', '원핵 프로모터 그림. 상위 요소(-60~-40), -35 지역의 서열 (가), -10 지역의 서열 (나), 전사 시작점 +1.'],
+    ['그림의 (나) 서열이 있는 곳에서 일어나는 일은?', ['이중 가닥 DNA가 풀림', 'σ 인자가 처음 인식함', '전사가 끝남', '리보솜이 결합함'], '(나)는 -10 지역의 TATAAT(프립노브 상자)다. σ 인자의 아미노산과 상호작용하며 dsDNA가 풀린다.', 7, 'prokaryote-promoter', '원핵 프로모터 그림. 상위 요소(-60~-40), -35 지역의 서열 (가), -10 지역의 서열 (나), 전사 시작점 +1.'],
+    ['그림의 (가)에 들어갈 rRNA는?', ['23S rRNA', '16S rRNA', '28S rRNA', '5.8S rRNA'], '원핵 50S 대단위체는 5S와 23S rRNA를 가지므로 (가)는 23S rRNA다.', 10, 'ribosome-rrna', '리보솜 rRNA 갈래 그림. 원핵 50S(5S, (가)), 30S(16S), 진핵 60S(5S, 5.8S, 28S), 40S((나)).'],
+    ['그림의 (나)에 들어갈 rRNA는?', ['18S rRNA', '16S rRNA', '28S rRNA', '5S rRNA'], '진핵 40S 소단위체의 rRNA는 18S다. 16S는 원핵 30S의 rRNA다.', 10, 'ribosome-rrna', '리보솜 rRNA 갈래 그림. 원핵 50S(5S, (가)), 30S(16S), 진핵 60S(5S, 5.8S, 28S), 40S((나)).'],
+    ['그림의 (가)를 인식하는 전사 인자는?', ['TFⅡB', 'σ 인자', '방출 인자', '개시 인자(IFs)'], '(가)는 약 -37~-32의 BRE, 즉 TFⅡB 인식 서열이다.', 11, 'eukaryote-promoter', '진핵 프로모터 그림. 위치 약 -37~-32의 (가), 약 -31~-26의 (나, 서열 TATAAA), -2~+4의 (다, 전사 시작 화살표), +28~+32의 (라).'],
+    ['그림의 (나)와 비슷한 원핵 프로모터 요소는?', ['프립노브 상자', '-35 지역', 'SD 서열', '상위 요소'], '(나)는 TATAAA 서열의 TATA 상자로, 원핵의 프립노브 상자(-10, TATAAT)와 비슷하다.', 11, 'eukaryote-promoter', '진핵 프로모터 그림. 위치 약 -37~-32의 (가), 약 -31~-26의 (나, 서열 TATAAA), -2~+4의 (다, 전사 시작 화살표), +28~+32의 (라).'],
+    ['그림의 (다)의 이름은?', ['Inr(개시자)', 'BRE', 'TATA 상자', 'DPE'], '(다)는 -2~+4에 있어 전사 시작점 +1을 포함하는 Inr(개시자)이다.', 11, 'eukaryote-promoter', '진핵 프로모터 그림. 위치 약 -37~-32의 (가), 약 -31~-26의 (나, 서열 TATAAA), -2~+4의 (다, 전사 시작 화살표), +28~+32의 (라).'],
+    ['그림의 (라)의 이름은?', ['DPE(하위 프로모터)', 'BRE(TFⅡB 인식)', 'Inr(개시자)', 'TATA 상자'], '(라)는 +28~+32, 전사 시작점의 하류에 있는 DPE(하위 프로모터 요소)다.', 11, 'eukaryote-promoter', '진핵 프로모터 그림. 위치 약 -37~-32의 (가), 약 -31~-26의 (나, 서열 TATAAA), -2~+4의 (다, 전사 시작 화살표), +28~+32의 (라).'],
+    ['그림의 (가)의 역할은?', ['리보솜이 인식하는 부위', 'mRNA 안정성에 영향', '아미노산 암호화', '인트론 제거 신호'], '(가)는 5′ 캡과 암호화 영역 사이의 5′ UTR로, 리보솜이 인식하는 부위다.', 12, 'mature-mrna', 'mRNA 가공 그림. 위는 엑손·인트론이 있는 mRNA 전구체, 아래는 5′ 캡 – (가) – 암호화 영역 – (나) – 폴리A 꼬리의 성숙 mRNA.'],
+    ['그림의 (가)와 (나)를 함께 부르는 말은?', ['UTR(비번역 부위)', '인트론(잘린 부분)', '암호화 영역', 'poly-A 신호'], '(가)는 5′ UTR, (나)는 3′ UTR이다. 둘 다 번역되지 않지만 번역 과정과 조절에 관여한다.', 12, 'mature-mrna', 'mRNA 가공 그림. 위는 엑손·인트론이 있는 mRNA 전구체, 아래는 5′ 캡 – (가) – 암호화 영역 – (나) – 폴리A 꼬리의 성숙 mRNA.'],
+    ['그림의 (가)에 들어갈 서열은?', ['AAUAAA', 'TATAAA', 'AGGAGG', 'UCCUCC'], '(가)는 pre-mRNA의 전사 종결 신호 AAUAAA다. 약 10~35 뉴클레오타이드 뒤에서 절단된다.', 14, 'poly-a', 'poly-A 꼬리 첨가 그림. pre-mRNA의 (가) 서열, 약 10~35 뒤의 Poly-A site, 약 50 뒤의 (나) 서열. 절단 뒤 A가 이어 붙는다.'],
+    ['절단 뒤 그림의 (나) 쪽에 남은 RNA는?', ['5′ 캡이 없어 분해됨', 'poly-A 꼬리가 붙음', '스플라이싱됨', '번역됨'], '(나)는 GU-rich 서열이다. 절단 뒤 남은 하류 RNA에는 5′ 캡이 없어 분해된다.', 14, 'poly-a', 'poly-A 꼬리 첨가 그림. pre-mRNA의 (가) 서열, 약 10~35 뒤의 Poly-A site, 약 50 뒤의 (나) 서열. 절단 뒤 A가 이어 붙는다.'],
   ] },
   { key: 'tl', name: '번역 에디션', pages: [15, 25], rows: [
     // 15 유전 암호표
@@ -259,6 +276,18 @@ const editions: Edition[] = [
     ['동시 진행 때 mRNA에서 RNA 중합효소와 먼 끝은?', ['5′ 말단', '3′ 말단', 'N-말단', 'C-말단'], 'mRNA는 5′ → 3′로 자라므로 막 합성되는 3′ 끝이 RNA 중합효소에 있고, 먼저 만들어진 5′ 끝이 떨어져 나와 있다.', 25],
     ['전사 방향이 오른쪽(→)이면 주형 DNA 가닥의 오른쪽 끝은?', ['5′ 말단', '3′ 말단', 'N-말단', 'C-말단'], 'RNA 중합효소는 주형 가닥을 3′ → 5′로 읽으므로 진행 방향(오른쪽) 끝이 주형의 5′ 말단이다.', 25],
     ['원핵 동시 진행 때 가장 짧은 mRNA를 단 RNA 중합효소는?', ['가장 나중에 결합한 것', '가장 먼저 결합한 것', '종결 서열에 가장 가까운 것', '모두 같은 길이'], '가장 나중에 DNA에 결합한 RNA 중합효소는 전사를 막 시작해 mRNA가 가장 짧다.', 25],
+  ], figures: [
+    ['그림의 (가)에 결합하는 것은?', ['아미노산', 'mRNA 코돈', '리보솜 소단위', '방출 인자'], '(가)는 3′ 말단 CCA 쪽의 아미노산 부착자리다.', 16, 'trna', 'tRNA 2차 구조 그림. 3′ 말단 꼭대기의 (가), 아래쪽 고리의 세 염기 (나), 염기쌍을 잇는 수소 결합.'],
+    ['그림의 (나)가 하는 일은?', ['mRNA 코돈과 짝짓기', '아미노산과 결합', '펩타이드 결합 촉매', '리보솜을 이동시킴'], '(나)는 안티코돈이다. mRNA의 코돈과 상보적으로 염기쌍을 이룬다.', 16, 'trna', 'tRNA 2차 구조 그림. 3′ 말단 꼭대기의 (가), 아래쪽 고리의 세 염기 (나), 염기쌍을 잇는 수소 결합.'],
+    ['그림의 (나) 자리의 이름은?', ['P 자리', 'A 자리', 'E 자리', '출구 터널'], '가운데 (나)는 P 자리(펩티딜 tRNA 결합자리)다. 왼쪽 (가)는 E 자리, 오른쪽 (다)는 A 자리다.', 19, 'ribosome-sites', '리보솜 단면 그림. 큰 소단위에 tRNA 자리 셋이 왼쪽부터 (가), (나), (다)로 있고, 위에 출구 터널, 작은 소단위에 mRNA 결합자리.'],
+    ['그림의 (다) 자리로 들어오는 것은?', ['아미노아실 tRNA', '아미노산을 내준 tRNA', '완성된 폴리펩타이드', '방출 인자만'], '(다)는 A 자리(아미노아실 tRNA 결합자리)로, 다음 아미노산을 단 tRNA가 들어온다.', 19, 'ribosome-sites', '리보솜 단면 그림. 큰 소단위에 tRNA 자리 셋이 왼쪽부터 (가), (나), (다)로 있고, 위에 출구 터널, 작은 소단위에 mRNA 결합자리.'],
+    ['그림의 (가) 자리에서 일어나는 일은?', ['빈 tRNA가 떠남', '아미노아실 tRNA 결합', '펩타이드 결합 형성', 'mRNA가 결합함'], '(가)는 E 자리(출구자리)로, 아미노산을 내준 tRNA가 리보솜을 떠난다.', 19, 'ribosome-sites', '리보솜 단면 그림. 큰 소단위에 tRNA 자리 셋이 왼쪽부터 (가), (나), (다)로 있고, 위에 출구 터널, 작은 소단위에 mRNA 결합자리.'],
+    ['그림의 (가)의 이름은?', ['SD 서열', 'TATA 상자', '개시 코돈', 'poly-A 신호'], '(가)는 개시 코돈 AUG보다 앞(5′ 쪽)에 있는 샤인-달가르노(SD) 서열이다.', 20, 'sd-sequence', 'mRNA 인식 그림. mRNA의 (가) 서열이 30S 소단위체 rRNA의 (나) 서열과 짝을 이루고, 오른쪽에 AUG가 있다.'],
+    ['그림의 (나)가 들어 있는 rRNA는?', ['16S rRNA', '23S rRNA', '18S rRNA', '5S rRNA'], '(나)는 anti-SD 서열(UCCUCC)로, 30S 소단위체의 16S rRNA에 있다.', 20, 'sd-sequence', 'mRNA 인식 그림. mRNA의 (가) 서열이 30S 소단위체 rRNA의 (나) 서열과 짝을 이루고, 오른쪽에 AUG가 있다.'],
+    ['그림의 (가)~(라) 중 번역을 가장 먼저 시작한 리보솜은?', ['(라)', '(가)', '(나)', '(다)'], '리보솜은 5′ → 3′로 이동하므로 3′ 끝 쪽의 (라)가 가장 먼저 시작했고 폴리펩타이드도 가장 길다.', 24, 'polysome', '폴리리보솜 그림. mRNA 5′ 말단부터 3′ 말단 쪽으로 리보솜 (가), (나), (다), (라)가 있고 뒤로 갈수록 폴리펩타이드가 길다.'],
+    ['그림의 (가)~(라)가 완성하는 폴리펩타이드는?', ['모두 같은 서열', '리보솜마다 다른 서열', '(가)가 가장 긴 서열', '(라)만 다른 서열'], '같은 mRNA를 번역하므로 완성되면 모두 같은 아미노산 서열이다. 지금 길이만 다를 뿐이다.', 24, 'polysome', '폴리리보솜 그림. mRNA 5′ 말단부터 3′ 말단 쪽으로 리보솜 (가), (나), (다), (라)가 있고 뒤로 갈수록 폴리펩타이드가 길다.'],
+    ['그림의 (가)~(라) 중 가장 먼저 DNA에 결합한 RNA 중합효소는?', ['(라)', '(가)', '(나)', '(다)'], '전사 방향(→)으로 가장 멀리 간 (라)가 가장 먼저 결합했고, 매달린 mRNA도 가장 길다.', 25, 'coupled', '원핵 전사·번역 동시 진행 그림. 전사 방향은 오른쪽. DNA 위의 RNA 중합효소 (가)~(라)에 mRNA와 리보솜이 매달려 있고 오른쪽일수록 길다.'],
+    ['그림의 (가)에 매달린 mRNA가 가장 짧은 까닭은?', ['가장 늦게 전사 시작', '가장 빨리 분해되어서', '인트론이 잘려서', '번역이 끝나서'], '(가)는 가장 나중에 DNA에 결합한 RNA 중합효소라 전사를 막 시작해 mRNA가 가장 짧다.', 25, 'coupled', '원핵 전사·번역 동시 진행 그림. 전사 방향은 오른쪽. DNA 위의 RNA 중합효소 (가)~(라)에 mRNA와 리보솜이 매달려 있고 오른쪽일수록 길다.'],
   ] },
 ];
 
@@ -267,19 +296,24 @@ const source = { title: 'Ⅱ. 유전자의 발현', label: '유전자의 발현 
 
 export const biologyJoBulkEditions = editions.map(e => ({ key: e.key, name: e.name, pages: e.pages }));
 
-export const biologyJoBulkCards: SwipeCard[] = editions.flatMap(edition =>
-  edition.rows.map(([question, choices, explanation, page], index) => ({
-    id: `biology-jo-bulk-${edition.key}-${String(index + 1).padStart(3, '0')}`,
-    topic: edition.name, question,
-    answers: Object.fromEntries(directions.map((direction, i) => [direction, choices[i]])) as Record<Direction, string>,
-    correct: 'up' as Direction, explanation,
-    sourceNote: `조용민T PPT · ${page}쪽`,
-    source: { title: source.title, url: source.url, page, label: source.label, teacher: '조용민T' },
-  })));
+const cardOf = (edition: Edition, number: number, [question, choices, explanation, page]: Row): SwipeCard => ({
+  id: `biology-jo-bulk-${edition.key}-${String(number).padStart(3, '0')}`,
+  topic: edition.name, question,
+  answers: Object.fromEntries(directions.map((direction, i) => [direction, choices[i]])) as Record<Direction, string>,
+  correct: 'up' as Direction, explanation,
+  source: { title: source.title, url: source.url, page, label: source.label, teacher: '조용민T' },
+});
+// 그림 카드 are numbered after the text cards of the same edition and sit at the end of the deck,
+// so the ids and order of the cards before them never change.
+export const biologyJoBulkCards: SwipeCard[] = [
+  ...editions.flatMap(edition => edition.rows.map((row, index) => cardOf(edition, index + 1, row))),
+  ...editions.flatMap(edition => edition.figures.map(([question, choices, explanation, page, figure, alt], index) =>
+    ({ ...cardOf(edition, edition.rows.length + index + 1, [question, choices, explanation, page]), figure: { src: `figures/jo/${figure}.webp`, alt } }))),
+];
 
 // 단답형·이유 서술 연습(성신제T 뭉탱이와 같은 방식): 답이 한 낱말·구로 떨어지는 카드만 고른다.
-// 짝짓기(A–B), '아닌 것' 류, 순서(→) 문제는 쓰기로 바꾸면 답이 여러 개라 뺀다.
-const writable = (card: SwipeCard) => !/[–→]/.test(card.answers[card.correct]) && !/(않은|아닌|않는|못하는|읽지 못|들어 있지|쓰지 않는|알맞은 것|옳은 것)/.test(card.question);
+// 짝짓기(A–B), '아닌 것' 류, 순서(→) 문제는 쓰기로 바꾸면 답이 여러 개라 뺀다. 그림 카드는 그림 없이 쓸 수 없어 뺀다.
+const writable = (card: SwipeCard) => !card.figure && !/[–→]/.test(card.answers[card.correct]) && !/(않은|아닌|않는|못하는|읽지 못|들어 있지|쓰지 않는|알맞은 것|옳은 것)/.test(card.question);
 const noteOf = (card: SwipeCard) => `조용민T 유전자의 발현 PPT · ${card.source?.page}쪽`;
 const practiceOf = (card: SwipeCard, kind: 'short' | 'written'): WrittenQuestion => {
   const answer = card.answers[card.correct];

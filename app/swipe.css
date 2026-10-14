@@ -602,3 +602,57 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 .written-model-text { white-space:pre-line; }
 .hwang-exam-filters { display:flex; flex-wrap:wrap; gap:0.6rem; align-items:center; margin-bottom:1rem; }
 .hwang-exam-filters select { max-width:100%; }
+
+/* ===== 그림 카드 (조용민T 뭉탱이) =====
+   Landscape: the quiz slides to the left and a dashed, frosted slot waits on the right.
+   When a figure question comes up, its figure card rises into the slot. Upright phones never show the panel. */
+.swipe-app.has-figures { grid-template-columns: minmax(0, 660px) minmax(280px, 1fr); column-gap: clamp(18px, 3vw, 48px); justify-items: stretch; align-items: start; }
+.swipe-app.has-figures > .swipe-game { width: 100%; animation: figure-aside .55s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes figure-aside { from { transform: translateX(min(14vw, 180px)); } to { transform: none; } }
+.figure-panel { position: sticky; top: 0; box-sizing: border-box; display: grid; place-items: center; min-width: 0;
+  height: calc(100svh - var(--app-pt) - var(--app-pb)); padding-block: 52px 6px; animation: figure-panel-in .55s ease-out both; }
+.figure-panel > * { grid-area: 1 / 1; }
+@keyframes figure-panel-in { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
+.figure-slot { box-sizing: border-box; width: min(100%, 680px); aspect-ratio: 4 / 3; max-height: 100%; display: grid; place-items: center; padding: 20px;
+  border-radius: 24px; border: 2px dashed rgba(255, 255, 255, .78); background: rgba(250, 242, 228, .16);
+  -webkit-backdrop-filter: blur(14px) saturate(140%); backdrop-filter: blur(14px) saturate(140%);
+  color: rgba(255, 255, 255, .94); text-align: center; font-size: 15px; font-weight: 700; line-height: 1.65; text-shadow: 0 1px 3px rgba(0, 0, 0, .5); }
+.figure-card { box-sizing: border-box; margin: 0; width: min(100%, 680px); max-height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 8px;
+  padding: 12px 12px 10px; border-radius: 22px; background: #fff;
+  box-shadow: 0 30px 60px -24px rgba(20, 12, 4, .65), 0 0 0 8px rgba(255, 255, 255, .38), 0 0 0 9px rgb(var(--theme-glow) / .35);
+  animation: figure-rise .5s cubic-bezier(.2, .9, .25, 1.15) both; }
+.figure-card img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; border-radius: 12px; user-select: none; -webkit-user-drag: none; }
+.figure-card figcaption { font-size: 12px; font-weight: 700; color: var(--ink-soft); text-align: right; }
+@keyframes figure-rise { from { opacity: 0; transform: translateY(70px) rotate(1.5deg) scale(.96); } to { opacity: 1; transform: none; } }
+.figure-missing { margin: 12px auto 0; padding: 8px 14px; border-radius: 14px; font-size: 13px; font-weight: 700; text-align: center; }
+@media (orientation: portrait) and (max-width: 900px) {
+  .swipe-app.has-figures { grid-template-columns: minmax(0, 1fr); }
+  .figure-panel { display: none; }
+}
+/* Landscape phones are short: the wordmark goes, the board shrinks (drag offsets use the same --card-zoom), and the
+   panel keeps clear of the streak badge in the top-right corner. */
+@media (max-height: 520px) {
+  .swipe-app.has-figures { --card-zoom: calc(min(var(--card-scale), 1.2) * .6); }
+  .swipe-app.has-figures .swipe-heading { display: none; }
+  .swipe-app.has-figures .swipe-deck-bar { margin-left: 52px; } /* clear of the sound button now that the wordmark is gone */
+  .swipe-app.has-figures .swipe-actions { margin-top: 6px; }
+  .figure-panel { padding-block: 56px 4px; }
+  .figure-slot { aspect-ratio: auto; height: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .swipe-app.has-figures > .swipe-game, .figure-panel, .figure-card { animation: none; } }
+
+/* 가로 화면 안내: fills the screen like 갑툭튀, but calm — black, with only the guidance. */
+.rotate-notice { position: fixed; inset: 0; z-index: 1000; display: grid; place-content: center; justify-items: center; gap: 14px;
+  padding: 24px max(24px, env(safe-area-inset-right, 0px)) 24px max(24px, env(safe-area-inset-left, 0px));
+  background: #000; color: #f4efe6; text-align: center; animation: rotate-fade .35s ease-out both; }
+.rotate-notice h2 { margin: 8px 0 0; font-size: 22px; font-weight: 800; letter-spacing: -.5px; }
+.rotate-notice p { margin: 0; font-size: 15px; line-height: 1.7; color: rgba(244, 239, 230, .72); }
+.rotate-notice button { margin-top: 18px; display: grid; gap: 2px; padding: 10px 22px; border-radius: 999px; border: 1px solid rgba(244, 239, 230, .35);
+  background: transparent; color: #f4efe6; font-size: 15px; font-weight: 700; cursor: pointer; }
+.rotate-notice button small { font-size: 12px; font-weight: 600; color: rgba(244, 239, 230, .6); }
+.rotate-notice button:focus-visible { outline: 2px solid var(--theme-base); outline-offset: 3px; }
+.rotate-notice-phone { position: relative; width: 46px; height: 78px; border: 3px solid #f4efe6; border-radius: 11px; animation: rotate-phone 2.4s ease-in-out infinite; }
+.rotate-notice-phone i { position: absolute; left: 50%; bottom: 6px; width: 10px; height: 3px; margin-left: -5px; border-radius: 2px; background: #f4efe6; }
+@keyframes rotate-phone { 0%, 25% { transform: rotate(0); } 55%, 80% { transform: rotate(-90deg); } 100% { transform: rotate(0); } }
+@keyframes rotate-fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .rotate-notice, .rotate-notice-phone { animation: none; } .rotate-notice-phone { transform: rotate(-90deg); } }

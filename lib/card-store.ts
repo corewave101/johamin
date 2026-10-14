@@ -8,11 +8,12 @@ export interface CardRow {
   id: string; deck_id: string; kind: 'choice' | 'written'; topic: string; badge: string | null;
   question: string; passage: string | null; answer: string; wrong: string[]; criteria: string[];
   explanation: string; source_label: string; source_page: number | null; source_slide: number | null; source_url: string | null; sort: number;
+  figure_src?: string | null; figure_alt?: string | null;
 }
 export interface LiveDeck { cards: SwipeCard[]; written: WrittenQuestion[] }
 export type LiveDecks = Record<string, LiveDeck>;
 
-const COLUMNS = 'id,deck_id,kind,topic,badge,question,passage,answer,wrong,criteria,explanation,source_label,source_page,source_slide,source_url,sort';
+const COLUMNS = 'id,deck_id,kind,topic,badge,question,passage,answer,wrong,criteria,explanation,source_label,source_page,source_slide,source_url,sort,figure_src,figure_alt';
 const CACHE_KEY = 'johamin-cards-cache-v1';
 const PAGE = 1000;
 
@@ -26,6 +27,7 @@ export function rowToCard(row: CardRow): SwipeCard {
   };
   if (row.badge) card.subject = row.badge;
   if (row.passage) card.passage = row.passage;
+  if (row.figure_src) card.figure = { src: row.figure_src, alt: row.figure_alt ?? '' };
   if (row.source_url) card.source = { title: row.source_label, label: row.source_label, url: row.source_url, page: row.source_page ?? 1 };
   else if (row.source_slide) card.sourceSlide = row.source_slide;
   else card.sourceNote = noteOf(row);

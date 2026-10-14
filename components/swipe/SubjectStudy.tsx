@@ -2,7 +2,7 @@ import { isHwangExam } from '../../data/hwang-exam';
 import { isShortQuestion } from '../../data/study-practice';
 import ChemistryLab from './ChemistryLab';
 import ObservationLab from './ObservationLab';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { SubjectDeck } from '../../data/swipe-subjects';
 import type { SwipeCard } from '../../data/swipe-cards';
 import { missedCards, seenCount } from '../../lib/progress';
@@ -12,14 +12,28 @@ import WrittenPractice, { blankWritten, type WrittenState } from './WrittenPract
 import CardHand, { type HandCard } from './CardHand';
 import ConceptReader from './ConceptReader';
 import { conceptsFor } from '../../data/study-concepts';
+import { usePortrait } from '../../lib/figure-mode';
+import RotateNotice from './RotateNotice';
 
 export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
   // 박상영T has its own card-style menus (see ParkStudy).
   if (deck.id === 'biology-park') return <ParkStudy deck={deck} onBack={onBack} />;
+  if (deck.figures) return <FigureStudy deck={deck} onBack={onBack} />;
   return <GeneralStudy deck={deck} onBack={onBack} />;
 }
 
-function GeneralStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
+/** A deck with 그림 카드: asks to rotate on an upright phone; upright, the figure cards are left out. */
+function FigureStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
+  const portrait = usePortrait();
+  const [upright, setUpright] = useState(false);
+  const shown = useMemo(() => portrait ? { ...deck, cards: deck.cards.filter(card => !card.figure) } : deck, [deck, portrait]);
+  return <>
+    <GeneralStudy deck={shown} onBack={onBack} figurePanel={!portrait} />
+    {portrait && !upright && <RotateNotice onContinue={() => setUpright(true)} />}
+  </>;
+}
+
+function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack: () => void; figurePanel?: boolean }) {
   const [mode, setMode] = useState<'menu' | 'concept' | 'problems' | 'choice' | 'missed' | 'written' | 'short' | 'practice'>('menu');
   const [retryCards, setRetryCards] = useState<SwipeCard[]>([]);
   const [read, setRead] = useState<string[]>([]);
@@ -48,8 +62,8 @@ function GeneralStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void 
   // A game goes back to the hand it came from: a unit card → the unit hand, otherwise the subject hand.
   const gameBack = mode === 'choice' && topics.length ? 'problems' : 'menu';
   const gameBackLabel = '← 카드 패';
-  if (mode === 'missed') return <SwipeGame cards={retryCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} />;
-  if (mode === 'choice') return <SwipeGame cards={choiceCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} />;
+  if (mode === 'missed') return <SwipeGame cards={retryCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
+  if (mode === 'choice') return <SwipeGame cards={choiceCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
   if (mode === 'practice') return deck.id === 'chemistry' ? <ChemistryLab onBack={() => setMode('menu')} /> : <ObservationLab onBack={() => setMode('menu')} />;
   const name = deck.fullName ?? deck.name;
   // 카드 패: the subject menu and the unit menu are hands of cards.

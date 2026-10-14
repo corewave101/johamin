@@ -11,6 +11,8 @@ export interface SwipeCard {
   sourceSlide?: number;
   sourceNote?: string;
   source?: { title: string; url: string; page: number; label?: string; teacher?: string };
+  /** 그림 카드: shown in the figure panel beside the card (landscape only). src is relative to the site root. */
+  figure?: { src: string; alt: string };
 }
 
 // A small authored demo deck. Directions are answer choices, not navigation.

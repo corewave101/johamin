@@ -50,4 +50,31 @@ assert.equal(correct('3′-GAU-5′'), 'CUA, CUG');
 assert.equal(correct('3′-UAI-5′'), '5′-AUG-3′');
 assert.equal(correct('Leu(류신)를 지정하는 코돈의 개수'), '6개');
 assert.equal(correct('GTP를 쓰지 않는 단계'), '펩타이드 결합 형성');
-console.log(`PASS: 조용민T 뭉탱이 ${editions.map(e => `${e.name} ${cards.filter(c => c.topic === e.name).length}`).join(', ')} — sizes, pages, sources, no repeats of the 기본 deck.`);
+
+// 그림 카드: real figure files, questions point at the tags in the figure, never turned into writing practice.
+const { rowToCard } = require('../lib/card-store.ts');
+const { biologyJoBulkWritten } = require('../data/biology-jo-bulk-cards.ts');
+const figureCards = cards.filter(c => c.figure);
+assert.equal(subjectDecks.find(d => d.id === 'biology-jo-bulk').figures, true);
+assert.ok(figureCards.length >= 20, `${figureCards.length} figure cards`);
+for (const c of figureCards) {
+  assert.match(c.figure.src, /^figures\/jo\/[a-z-]+\.webp$/, c.id);
+  assert.ok(fs.existsSync(`public/${c.figure.src}`), `${c.id}: missing ${c.figure.src}`);
+  assert.ok(c.figure.alt.length > 20, c.id);
+  assert.ok(c.question.includes('그림의'), `${c.id}: a figure question names the figure`);
+}
+for (const c of cards.filter(c => !c.figure)) assert.ok(!/그림의 \(/.test(c.question), `${c.id}: asks about a figure it does not have`);
+for (const e of editions) { // figure cards come after the text cards, so earlier ids never moved
+  const list = cards.filter(c => c.topic === e.name);
+  const first = list.findIndex(c => c.figure);
+  assert.ok(first > 0 && list.slice(first).every(c => c.figure), e.name);
+}
+assert.ok(!biologyJoBulkWritten.some(q => figureCards.some(c => q.id.endsWith(c.id))), 'figure cards are not writing practice');
+const { cards: exported } = require('../scripts/export-cards.cjs');
+for (const row of exported.filter(r => r.deck_id === 'biology-jo-bulk' && r.kind === 'choice')) {
+  const card = cards.find(c => c.id === row.id);
+  assert.equal(row.figure_src, card.figure?.src, row.id);
+  assert.deepEqual(rowToCard(row).figure, card.figure, row.id);
+}
+assert.ok(exported.filter(r => r.deck_id !== 'biology-jo-bulk').every(r => !('figure_src' in r)), 'other rows keep their exact shape');
+console.log(`PASS: 조용민T 뭉탱이 ${editions.map(e => `${e.name} ${cards.filter(c => c.topic === e.name).length}`).join(', ')} — sizes, pages, sources, no repeats of the 기본 deck, ${cards.filter(c => c.figure).length} figure cards.`);
