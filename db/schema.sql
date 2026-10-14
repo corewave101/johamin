@@ -35,6 +35,8 @@ create table if not exists public.cards (
   source_slide  int,                            -- slide number (황 deck)
   source_url    text,
   sort          int  not null default 0,        -- order inside the deck
+  figure_src    text,                           -- 그림 카드: image path under the site root ('figures/jo/trna.webp')
+  figure_alt    text,                           -- what the figure shows, for screen readers
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now(),
   updated_by    text,

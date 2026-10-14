@@ -35,7 +35,7 @@ function BackFace({ attempt }: { attempt: Attempt }) {
   </>;
 }
 
-export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱', deckId, onBack, backLabel = '← 과목' }: { cards?: SwipeCard[]; deckName?: string; deckId?: string; onBack?: () => void; backLabel?: string }) {
+export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱', deckId, onBack, backLabel = '← 과목', figurePanel }: { cards?: SwipeCard[]; deckName?: string; deckId?: string; onBack?: () => void; backLabel?: string; figurePanel?: boolean }) {
   const [game, setGame] = useState(() => newGame(cards));
   const gameRef = useRef(game);
   const scares = useRef(newTracker());
@@ -217,7 +217,9 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const verdict = !last ? '' : last.direction === 'unknown' ? '모름 · 다시 나와요' : last.correct ? '정답' : `오답 · 정답은 ${last.card.answers[last.card.correct]}`;
   const tone = !last ? 'is-idle' : last.direction === 'unknown' ? 'is-unknown' : last.correct ? 'is-correct' : 'is-wrong';
 
-  return <main className={`swipe-app ${onBack ? 'swipe-study' : ''}`}>
+  // 그림 카드: while the explanation card is up, the figure of the card just answered stays in the panel.
+  const figureCard = back && last ? last.card : card;
+  return <main className={`swipe-app ${onBack ? 'swipe-study' : ''} ${figurePanel ? 'has-figures' : ''}`}>
     <StreakFlame streak={game.streak} />
     <div className={`swipe-game ${card?.passage ? 'has-passage' : ''} ${finished ? 'is-finished' : ''}`}>
       <div className="swipe-main">
@@ -231,6 +233,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
         </div>
       </div>
       {card?.passage && <details key={card.id} open className="swipe-reading glass" onKeyDown={e => { if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) e.stopPropagation(); }}><summary>READ & SOLVE · 문제 지문</summary><small>지문 안에서 스크롤해 끝까지 읽고 카드의 문장·표현을 확인하세요.</small><p lang="en" tabIndex={0} aria-label="영어 문제 지문">{card.passage}</p></details>}
+      {!figurePanel && card?.figure && !back && <p className="figure-missing glass" role="note">이 문제는 그림이 있어요. 화면을 가로로 돌리면 그림 카드가 보여요.</p>}
       {finished ? <section className="swipe-complete glass" aria-label="최종 결과">
         <h2>깔끔하게 털었다!</h2>
         <p>{cards.length}장 완료 · 총 {game.attempts.length}번 선택</p>
@@ -293,5 +296,13 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
         </div>}
       </section>
     </div>
+    {figurePanel && !finished && <aside className="figure-panel" aria-label="그림">
+      <div className="figure-slot" aria-hidden={Boolean(figureCard?.figure)}><span>그림 문제가 나오면<br />여기로 그림 카드가 올라와요</span></div>
+      {figureCard?.figure && <figure key={figureCard.id} className="figure-card">
+        {/* Relative to the page, like the 황윤환T exam figures, so it works under the site's base path and offline. */}
+        <img src={figureCard.figure.src} alt={figureCard.figure.alt} draggable={false} />
+        <figcaption>그림 · {figureCard.source?.teacher ? `${figureCard.source.teacher} ` : ''}{figureCard.source ? `${figureCard.source.page}쪽` : ''}</figcaption>
+      </figure>}
+    </aside>}
   </main>;
 }

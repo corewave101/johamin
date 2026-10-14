@@ -121,6 +121,12 @@ git push -u origin 작업이름
   sourceNote: '성신제T 학습지 212 · 2쪽',  // 근거
 }
 ```
+그림 카드: 객관식 카드에 `figure: { src: 'figures/…/이름.webp', alt: '그림 설명' }`를 붙이고, 덱에 `figures: true`를 준다(지금은 `biology-jo-bulk`).
+- 그림은 `public/figures/`에 둔다. 답이 되는 이름표는 (가)(나)로 가린 깨끗한 원본 그림을 쓴다. 질문은 "그림의 (가)…"처럼 그림을 가리킨다.
+- 가로 화면에서만 오른쪽 그림 칸에 나온다. 세로 폰에서는 회전 안내가 뜨고, 세로로 계속하면 그림 카드는 빠진다.
+- 그림 카드 id는 같은 에디션 글 카드 뒤 번호로 붙인다(기존 id를 밀지 않는다). 단답·서술 연습으로 바꾸지 않는다.
+- DB에는 `figure_src`·`figure_alt` 열로 들어간다(`db/figures-3.8.0.sql`).
+
 서술형(`WrittenQuestion`, `data/biology-written.ts`): `id, topic, question, modelAnswer, criteria(채점 기준 1개 이상), sourceNote`.
 
 DB와 테스트가 검사하는 것(어기면 저장·합치기가 막힌다):
