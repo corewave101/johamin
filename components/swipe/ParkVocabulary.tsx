@@ -7,6 +7,7 @@ import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 import { geneticsCards } from '../../data/genetics-terms';
 import { parkVocabulary as terms, vocabularySource, type VocabularyTerm } from '../../data/park-vocabulary';
 import { compareAnswer, currentRecord, dayKey, gradeTerm, loadVocabulary, saveVocabulary, scoreKeywords, scoreMessage, streakDays, vocabularyPieces, type PieceSize, type KeywordScore } from '../../lib/vocabulary';
+import Confetti from './Confetti';
 import MenuCard from './MenuCard';
 import OrderDeck from './OrderDeck';
 import SwipeGame from './SwipeGame';
@@ -70,11 +71,14 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
   useEffect(() => { if (term && (screen === 'write' || screen === 'reverse')) input.current?.focus(); }, [index, screen, term]);
   useEffect(() => { if (score || reverseResult !== null) nextButton.current?.focus(); }, [score, reverseResult]);
 
+  // 원문 완벽: the definition written word for word fires silent confetti from the two bottom corners.
+  const [cheer, setCheer] = useState(0);
   const submit = () => {
     if (!term || !answer.trim() || score || reverseResult !== null) return;
     if (screen === 'reverse') { setReverseResult(compareAnswer(answer, term.term, true).correct); return; }
     const result = scoreKeywords(answer, term);
     setScore(result);
+    if (result.perfect) setCheer(c => c + 1);
     setProgress(p => gradeTerm(p, term, result, !hint));
     setDone(d => [...d, { id: term.id, got: result.got, total: result.total, perfect: result.perfect }]);
     if (result.got < result.total) again(term.id);
@@ -162,6 +166,7 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
         {hint && !score && <p className="vocab-hint">핵심어 {term.keywords.length}개: {term.keywords.map(k => initials(k.label)).join(' · ')}</p>}
         {score && <div className={`biology-model vocab-result ${score.got === score.total ? 'is-full' : ''}`} role="status">
           <h3>{scoreMessage(score)} <span className="vocab-score">{score.got} / {score.total}</span>{score.perfect && <span className="vocab-badge">원문 완벽 ✦</span>}</h3>
+          {score.perfect && <p className="vocab-perfect-cheer">🎉 한 글자도 안 틀리고 다 맞혔어요! 정답지 문구 그대로예요.</p>}
           {keywordChips(term, score.hits)}
           <p>{term.definition}</p>
           {score.got < score.total && <p className="biology-note">빠진 핵심어가 있는 용어는 전체 학습 끝에 한 번 더 나와요.</p>}
@@ -173,6 +178,7 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
         </div>}
         <p className="study-source">교사용 정답지 · {term.page}쪽</p>
       </section>
+      {cheer > 0 && <Confetti key={cheer} onDone={() => setCheer(0)} />}
     </div></main>;
   }
 
