@@ -421,6 +421,9 @@
 .vocab-result h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 19px; }
 .vocab-score { padding: 2px 10px; border-radius: 999px; background: #eef0f3; font-variant-numeric: tabular-nums; }
 .vocab-result.is-full .vocab-score { background: #dff3e4; color: #145c2c; }
+.vocab-perfect-cheer { margin: 4px 0 10px; padding: 9px 13px; border-radius: 12px; font-size: 15px; font-weight: 800; line-height: 1.5;
+  color: var(--theme-ink); background: linear-gradient(135deg, var(--theme-light), var(--theme-soft)); box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-base) 55%, transparent); }
+.confetti { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 900; pointer-events: none; }
 .vocab-badge { padding: 2px 10px; border-radius: 999px; background: linear-gradient(135deg, #fff1c2, #f2c75c); color: #5a3b00; font-size: 13px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
