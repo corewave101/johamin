@@ -152,7 +152,7 @@ export default function ParkVocabulary({ onBack, escapeRef }: { onBack: () => vo
         <form onSubmit={e => { e.preventDefault(); submit(); }}>
           <label htmlFor="vocabulary-answer" className="sr-only">{reverse ? '용어 입력' : '정의 입력'}</label>
           <textarea ref={input} id="vocabulary-answer" value={answer} onChange={e => setAnswer(e.target.value)} rows={reverse ? 2 : 5} maxLength={1200} disabled={Boolean(score) || reverseResult !== null} autoComplete="off" spellCheck={false}
-            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); submit(); } }} placeholder={reverse ? '용어' : '예) 상동염색체의 같은 위치에 있으며 …'} />
+            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); submit(); } }} placeholder={reverse ? '용어' : undefined} />
           {!score && reverseResult === null && <div className="biology-actions">
             <button type="submit" className="glass-button is-primary" disabled={!answer.trim()}>채점하기 <kbd>Enter</kbd></button>
             {!reverse && !hint && <button type="button" className="glass-button" onClick={() => setHint(true)}>핵심어 힌트 (XP 없음)</button>}
