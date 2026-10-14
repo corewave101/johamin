@@ -6,13 +6,13 @@ const examplesFor = (topic: string) => biologyJoBulkCards
   .filter(card => card.topic === topic)
   .map(card => ({ id: card.id, context: card.question, explanation: card.explanation, sourceNote: `조용민T · 유전자의 발현 PPT · ${card.source?.page}쪽` }));
 
-const lessonOf = (key: string, summary: string, sections: ConceptLesson['sections'], resources: ConceptLesson['resources']): ConceptLesson => {
+const lessonOf = (key: string, summary: string, sections: ConceptLesson['sections'], resources?: ConceptLesson['resources']): ConceptLesson => {
   const edition = biologyJoBulkEditions.find(e => e.key === key);
   if (!edition) throw new Error(`No edition ${key}`);
   return {
     id: `biology-jo-bulk-concept-${key}`, deckId: 'biology-jo-bulk', title: `${edition.name} · ${edition.pages[0]}~${edition.pages[1]}쪽`, summary, sections,
     topicKeys: [edition.name], sourceNote: `조용민T 유전자의 발현 PPT · ${edition.pages[0]}~${edition.pages[1]}쪽`,
-    examplesLabel: '이 에디션의 문제', examples: examplesFor(edition.name), resources,
+    examplesLabel: '이 에디션의 문제', examples: examplesFor(edition.name), ...(resources ? { resources } : {}),
   };
 };
 
@@ -72,5 +72,27 @@ export const biologyJoBulkConcepts: ConceptLesson[] = [
     ] },
   ], [
     { title: 'From RNA to Protein (Molecular Biology of the Cell)', url: 'https://www.ncbi.nlm.nih.gov/books/NBK26829/', publisher: 'NCBI Bookshelf', note: '유전 암호·tRNA·리보솜·번역 단계를 영어 교과서로 더 볼 수 있어요. 시험 기준은 조용민T PPT예요.' },
+  ]),
+  lessonOf('fig', 'PPT 그림 11장에서 답이 되는 이름표를 (가)(나)…로 가린 그림 문제만 모은 단원이다. 그림 속 위치(상류·하류, 왼쪽·오른쪽, 5′·3′ 끝)와 가려진 이름표의 역할을 함께 떠올리는 연습을 한다. 그림 카드는 가로 화면에서 오른쪽 그림 칸에 나온다.', [
+    { heading: '전사 쪽 그림', table: { columns: ['그림', '쪽', '가려진 이름표'], rows: [
+      ['원핵 RNA 중합효소', '6', '(가) σ 인자'],
+      ['원핵 프로모터', '7', '(가) -35 서열 TTGACA · (나) -10 서열 TATAAT'],
+      ['리보솜 rRNA 갈래', '10', '(가) 23S rRNA · (나) 18S rRNA'],
+      ['진핵 프로모터', '11', '(가) BRE · (나) TATA 상자 · (다) Inr · (라) DPE'],
+      ['성숙 mRNA', '12', '(가) 5′ UTR · (나) 3′ UTR'],
+      ['poly-A 꼬리 첨가', '14', '(가) AAUAAA · (나) GU-rich'],
+    ] } },
+    { heading: '번역 쪽 그림', table: { columns: ['그림', '쪽', '가려진 이름표'], rows: [
+      ['tRNA 2차 구조', '16', '(가) 아미노산 부착자리 · (나) 안티코돈'],
+      ['리보솜 단면', '19', '(가) E 자리 · (나) P 자리 · (다) A 자리'],
+      ['SD 서열', '20', '(가) SD 서열 AGGAGG · (나) anti-SD 서열 UCCUCC(16S rRNA)'],
+      ['폴리리보솜', '24', '(가)~(라) 리보솜: 3′ 쪽 (라)가 가장 먼저 시작'],
+      ['전사·번역 동시 진행', '25', '(가)~(라) RNA 중합효소: 전사 방향 끝의 (라)가 가장 먼저 결합'],
+    ] } },
+    { heading: '그림 문제 푸는 법', points: [
+      '위치 번호부터 본다: 음수(-)는 상류, 양수(+)는 하류, +1이 전사 시작점이다',
+      '방향을 본다: 리보솜은 mRNA 5′ → 3′로, RNA 중합효소는 전사 방향 쪽으로 간다. 멀리 간 것일수록 먼저 시작했다',
+      '가려진 이름표의 이름과 역할을 함께 떠올린다: 이름을 묻기도 하고, 그 자리에서 일어나는 일을 묻기도 한다',
+    ] },
   ]),
 ];

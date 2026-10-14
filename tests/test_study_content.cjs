@@ -9,7 +9,7 @@ const { englishWritten } = require('../data/english-written.ts');
 const { newGame, answerCard } = require('../lib/swipe-game.ts');
 assert.equal(englishCards.length, 170);
 assert.equal(englishWritten.length, 16);
-assert.equal(studyConcepts.length, 100); // +2: 조용민T 뭉탱이 전사·번역 에디션
+assert.equal(studyConcepts.length, 101); // +3: 조용민T 뭉탱이 전사·번역·그림 에디션
 const ids = new Set();
 const pending = subjectDecks.filter(deck => !deck.cards.length && !deck.writtenQuestions?.length);
 assert.deepEqual(pending.map(deck => deck.id), ['korean-classic'], 'Only parts waiting for class material may be empty');
