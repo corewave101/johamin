@@ -1,11 +1,12 @@
 import type { Direction, SwipeCard } from './swipe-cards';
+import type { WrittenQuestion } from './biology-written';
 
 // 생물(조용민T) · 뭉탱이: 「Ⅱ. 유전자의 발현」 PPT + 필기를 에디션 둘로 촘촘하게 판다.
 // 전사 에디션 = 3~14쪽, 번역 에디션 = 15~25쪽. (쪽 = PDF 쪽)
 // PPT 문구는 그대로 따르고, 필기가 사실과 다르면 사실에 맞게 고쳐서 낸다.
-// 다섯째 칸(review)은 검토용 메모다: ★ = 필기를 고쳐서 냄, ☆ = PPT 그대로 냈지만 확인해 볼 것.
+// 메모: ★ = 필기를 사실에 맞게 고쳐서 냄, ☆ = PPT 문구 그대로 냄(실제와 다를 수 있음).
 
-type Row = [question: string, choices: [string, string, string, string], explanation: string, page: number, review?: string];
+type Row = [question: string, choices: [string, string, string, string], explanation: string, page: number];
 // Correct text comes first; the game randomizes the four directions on every run and retry.
 interface Edition { key: string; name: string; pages: [number, number]; rows: Row[] }
 
@@ -27,9 +28,11 @@ const editions: Edition[] = [
     ['pre-rRNA 가공에 관여하는 ‘작은 핵인 RNA’는?', ['snoRNA', 'snRNA', 'siRNA', 'tRNA'], 'snoRNA(작은 핵인 RNA)는 가공 전 rRNA인 pre-rRNA의 가공에 관여한다.', 4],
     ['스플라이싱이 뜻하는 과정은?', ['인트론 제거, 엑손 연결', '엑손 제거, 인트론 연결', '5′ 캡 첨가', 'poly-A 꼬리 첨가'], '스플라이싱은 mRNA 전구체에서 인트론을 제거하고 엑손끼리 연결하는 과정이다.', 4],
     ['유전자 발현 조절에 관여하는 ‘마이크로 RNA’는?', ['miRNA', 'siRNA', 'snRNA', 'snoRNA'], 'miRNA(마이크로 RNA)는 RNAi에 속하며 유전자 발현을 조절한다.', 4],
-    ['소형 간섭 RNA(siRNA)의 역할은?', ['침입 DNA 제거', '유전자 발현 조절', '스플라이싱 관여', 'pre-rRNA 가공'], 'PPT에서 siRNA(소형 간섭 RNA)의 역할은 침입 DNA 제거다. 유전자 발현 조절은 miRNA의 역할이다.', 4, '☆ PPT 문구 그대로("침입 DNA 제거"). 실제로 siRNA는 바이러스 등 외부에서 들어온 RNA를 잘라 없앤다.'],
+    // ☆ PPT 문구 그대로("침입 DNA 제거"). 실제로 siRNA는 바이러스 등 외부에서 들어온 RNA를 잘라 없앤다.
+    ['소형 간섭 RNA(siRNA)의 역할은?', ['침입 DNA 제거', '유전자 발현 조절', '스플라이싱 관여', 'pre-rRNA 가공'], 'PPT에서 siRNA(소형 간섭 RNA)의 역할은 침입 DNA 제거다. 유전자 발현 조절은 miRNA의 역할이다.', 4],
     ['miRNA와 siRNA가 함께 속하는 묶음은?', ['RNAi(RNA 간섭)', 'rRNA', 'snRNP', 'coding RNA'], 'RNAi(RNA 간섭) 아래에 miRNA와 siRNA가 있다.', 4],
-    ['RNA 간섭(RNAi)이 작용하는 방식은?', ['상보적 RNA 분해·번역 억제', '프로모터에 붙어 전사 촉진', '인트론을 잘라 엑손 연결', '아미노산을 리보솜에 운반'], 'RNAi는 작은 RNA가 상보적인 RNA 가닥에 결합해 그 RNA를 분해하거나 번역을 억제하는 현상이다.', 4, '★ 필기 "상보적인 DNA, RNA 가닥에 결합" → RNAi가 결합하는 대상은 RNA라서 DNA는 뺐음.'],
+    // ★ 필기 "상보적인 DNA, RNA 가닥에 결합" → RNAi가 결합하는 대상은 RNA라서 DNA는 뺐음.
+    ['RNA 간섭(RNAi)이 작용하는 방식은?', ['상보적 RNA 분해·번역 억제', '프로모터에 붙어 전사 촉진', '인트론을 잘라 엑손 연결', '아미노산을 리보솜에 운반'], 'RNAi는 작은 RNA가 상보적인 RNA 가닥에 결합해 그 RNA를 분해하거나 번역을 억제하는 현상이다.', 4],
     ['miRNA가 표적 mRNA에 상보적으로 결합하면?', ['번역이 억제된다', '번역이 촉진된다', '전사가 시작된다', '스플라이싱된다'], 'miRNA가 표적 mRNA에 결합하면 리보솜이 번역하지 못해 유전자 발현이 억제된다.', 4],
     ['다음 중 ncRNA가 아닌 것은?', ['mRNA', 'tRNA', 'rRNA', 'snoRNA'], 'mRNA만 단백질을 암호화하는 coding RNA이고, tRNA·rRNA·snoRNA는 ncRNA다.', 4],
     // 5 전사
@@ -187,7 +190,8 @@ const editions: Edition[] = [
     ['안티코돈 첫 염기가 G이면 짝지을 수 있는 코돈 셋째 염기는?', ['U 또는 C', 'A 또는 G', 'U, C, A', 'C만'], '동요 규칙: U → A·G, G → U·C, I → U·C·A.', 18],
     ['안티코돈 첫 염기가 I이면 짝지을 수 있는 코돈 셋째 염기는?', ['U, C, A', 'A 또는 G', 'U 또는 C', 'G만'], 'I는 U·C·A 세 가지와 모두 짝지을 수 있어 가장 많은 코돈을 읽는다.', 18],
     ['안티코돈에 있는 염기 I의 이름은?', ['이노신', '아이소류신', '인돌', '아이소메레이스'], 'I는 이노신이다. 아미노산 Ile(아이소류신)과 헷갈리지 않게 주의한다.', 18],
-    ['안티코돈의 이노신(I)은 어떤 염기에서 유래하나?', ['구아닌', '사이토신', '우라실', '타이민'], 'PPT에서 I(이노신)는 구아닌 유래 염기로 소개된다.', 18, '☆ PPT 문구 그대로("구아닌 유래"). 실제로 이노신은 아데닌(A)이 변형되어 생긴다. 그래서 오답에 아데닌은 넣지 않았음.'],
+    // ☆ PPT 문구 그대로("구아닌 유래"). 실제로 이노신은 아데닌(A)이 변형되어 생긴다. 그래서 오답에 아데닌은 넣지 않았음.
+    ['안티코돈의 이노신(I)은 어떤 염기에서 유래하나?', ['구아닌', '사이토신', '우라실', '타이민'], 'PPT에서 I(이노신)는 구아닌 유래 염기로 소개된다.', 18],
     ['tRNA 종류가 코돈 종류보다 적어도 되는 까닭은?', ['동요 가설', '유전 암호의 보편성', '폴리솜 형성', '샤인-달가르노 서열'], 'tRNA는 약 45개, 코돈은 61개다. 동요 덕분에 tRNA 하나가 코돈 여럿을 읽어 부족하지 않다.', 18],
     ['동요 가설 슬라이드 기준 tRNA의 종류 수는?', ['약 45개', '61개', '64개', '20개'], 'tRNA 종류는 약 45개로 코돈 61개보다 적다.', 18],
     ['아미노산을 지정하는 코돈 수 61을 구하는 식은?', ['64 − 종결 코돈 3', '64 − 개시 코돈 1', '20 × 3 + 1', '4 × 4 × 4 − 1'], '전체 코돈 4³ = 64개에서 종결 코돈 3개를 빼면 61개다.', 18],
@@ -259,7 +263,7 @@ const editions: Edition[] = [
 ];
 
 const directions: Direction[] = ['up', 'left', 'right', 'down'];
-const pdfTitle = 'Ⅱ. 유전자의 발현 (PPT + 필기)';
+const source = { title: 'Ⅱ. 유전자의 발현', label: '유전자의 발현 PPT', url: 'https://drive.google.com/drive/folders/11Gk6oWVjSSNnPkcM7tAVmDiK4s7uA3-6' };
 
 export const biologyJoBulkEditions = editions.map(e => ({ key: e.key, name: e.name, pages: e.pages }));
 
@@ -270,9 +274,21 @@ export const biologyJoBulkCards: SwipeCard[] = editions.flatMap(edition =>
     answers: Object.fromEntries(directions.map((direction, i) => [direction, choices[i]])) as Record<Direction, string>,
     correct: 'up' as Direction, explanation,
     sourceNote: `조용민T PPT · ${page}쪽`,
-    source: { title: pdfTitle, url: '', page, label: `${page}쪽`, teacher: '조용민T' },
+    source: { title: source.title, url: source.url, page, label: source.label, teacher: '조용민T' },
   })));
 
-// 검토용: 카드 id → 메모(★ 필기 고침, ☆ PPT 확인). 배포 전에 지운다.
-export const biologyJoBulkReview: Record<string, string> = Object.fromEntries(editions.flatMap(edition =>
-  edition.rows.flatMap((row, index) => row[4] ? [[`biology-jo-bulk-${edition.key}-${String(index + 1).padStart(3, '0')}`, row[4]]] : [])));
+// 단답형·이유 서술 연습(성신제T 뭉탱이와 같은 방식): 답이 한 낱말·구로 떨어지는 카드만 고른다.
+// 짝짓기(A–B), '아닌 것' 류, 순서(→) 문제는 쓰기로 바꾸면 답이 여러 개라 뺀다.
+const writable = (card: SwipeCard) => !/[–→]/.test(card.answers[card.correct]) && !/(않은|아닌|않는|못하는|읽지 못|들어 있지|쓰지 않는|알맞은 것|옳은 것)/.test(card.question);
+const noteOf = (card: SwipeCard) => `조용민T 유전자의 발현 PPT · ${card.source?.page}쪽`;
+const practiceOf = (card: SwipeCard, kind: 'short' | 'written'): WrittenQuestion => {
+  const answer = card.answers[card.correct];
+  return kind === 'short'
+    ? { id: `practice-short-${card.id}`, topic: card.topic, question: `${card.question} (답을 하나만 쓰세요.)`, modelAnswer: answer, criteria: [`정답: ${answer}`], sourceNote: noteOf(card) }
+    : { id: `practice-written-${card.id}`, topic: card.topic, question: `${card.question} 답과 그 이유를 연결하여 서술하시오.`, modelAnswer: `${answer}. ${card.explanation}`, criteria: [`답: ${answer}`, '이유를 PPT 개념으로 설명', '답과 이유를 자연스럽게 연결'], sourceNote: noteOf(card) };
+};
+const practiceCards = biologyJoBulkCards.filter(writable);
+// 단답형은 정확히 같은 답을 쓰게 되므로 짧은 낱말·기호만(두 어절 이하, 10자 이하). 괄호·아래첨자·로마 숫자처럼 치기 힘든 답과 '~다' 문장은 뺀다.
+const shortable = (card: SwipeCard) => { const a = card.answers[card.correct]; return Array.from(a).length <= 10 && a.split(' ').length <= 2 && !/[()₂′ⅠⅡⅢ·]/.test(a) && !/다$/.test(a); };
+export const biologyJoBulkPractice = { short: practiceCards.filter(shortable).map(card => practiceOf(card, 'short')), written: practiceCards.map(card => practiceOf(card, 'written')) };
+export const biologyJoBulkWritten: WrittenQuestion[] = [...biologyJoBulkPractice.short, ...biologyJoBulkPractice.written];

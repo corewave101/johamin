@@ -2,6 +2,7 @@ import { sciencePractice } from './science-practice';
 import { scienceDepthConcepts } from './science-depth-concepts';
 import { physicsConcepts } from './physics-concepts';
 import { socialBulkConcepts } from './social-bulk-concepts';
+import { biologyJoBulkConcepts } from './biology-jo-bulk-concepts';
 import { socialJoConcepts } from './social-jo-concepts';
 import { koreanNewyorkConcepts } from './korean-newyork-concepts';
 export interface ConceptSection {
@@ -21,6 +22,7 @@ export const studyConcepts: ConceptLesson[] = [
   ...scienceDepthConcepts,
   ...physicsConcepts,
   ...socialBulkConcepts,
+  ...biologyJoBulkConcepts,
   ...socialJoConcepts,
   ...koreanNewyorkConcepts,
   {
