@@ -85,6 +85,18 @@
   /* Leave room for the corner buttons when the set is moved to an edge. */
   :root[data-layout="custom"] .swipe-app:has(> .swipe-game:not(.has-passage)) { padding: 70px 24px 40px; }
 }
+/* 그림 덱 (3.8.1): the right half belongs to the figure panel, so a moved card set goes back to the left column
+   and the screen keeps the usual two-column layout (otherwise the panel dropped below the game, bottom-left). */
+:root[data-layout="custom"] .swipe-app.has-figures:has(> .swipe-game:not(.has-passage)) { display: grid; }
+:root[data-layout="custom"] .swipe-app.has-figures:has(> .swipe-game:not(.has-passage))::before,
+:root[data-layout="custom"] .swipe-app.has-figures:has(> .swipe-game:not(.has-passage))::after { content: none; }
+:root[data-layout="custom"] .swipe-app.has-figures > .swipe-game:has(> .swipe-main):not(.has-passage) { width: 100%; margin-left: 0; display: flex; flex-direction: column; height: calc(100svh - var(--app-pt) - var(--app-pb)); }
+:root[data-layout="custom"] .swipe-app.has-figures > .swipe-game:has(> .swipe-main):not(.has-passage) > .swipe-main > * { flex-shrink: 0; }
+:root[data-layout="custom"] .swipe-app.has-figures > .swipe-game:has(> .swipe-main):not(.has-passage) > .swipe-feedback { flex: 0 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; margin-top: 12px; }
+:root[data-layout="custom"] .swipe-app.has-figures > .swipe-game:has(> .swipe-main):not(.has-passage) .swipe-actions { margin-top: 12px; }
+@media (min-width: 901px) {
+  :root[data-layout="custom"] .swipe-app.has-figures:has(> .swipe-game:not(.has-passage)) { padding: var(--app-pt) 24px var(--app-pb) clamp(28px, 6vw, 112px); }
+}
 
 /* Editor: card position and own scares */
 .layout-frames { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px; }

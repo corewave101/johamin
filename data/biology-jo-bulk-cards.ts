@@ -294,7 +294,10 @@ const editions: Edition[] = [
 const directions: Direction[] = ['up', 'left', 'right', 'down'];
 const source = { title: 'Ⅱ. 유전자의 발현', label: '유전자의 발현 PPT', url: 'https://drive.google.com/drive/folders/11Gk6oWVjSSNnPkcM7tAVmDiK4s7uA3-6' };
 
-export const biologyJoBulkEditions = editions.map(e => ({ key: e.key, name: e.name, pages: e.pages }));
+// 그림 에디션 (3.8.1): every 그림 카드 also gathered into one unit of its own. The ids stay tx-/tl- (from the edition
+// they were written for); only the topic says which unit they appear in.
+const FIGURE_UNIT = { key: 'fig', name: '그림 에디션', pages: [6, 25] as [number, number] };
+export const biologyJoBulkEditions = [...editions.map(e => ({ key: e.key, name: e.name, pages: e.pages })), FIGURE_UNIT];
 
 const cardOf = (edition: Edition, number: number, [question, choices, explanation, page]: Row): SwipeCard => ({
   id: `biology-jo-bulk-${edition.key}-${String(number).padStart(3, '0')}`,
@@ -308,7 +311,7 @@ const cardOf = (edition: Edition, number: number, [question, choices, explanatio
 export const biologyJoBulkCards: SwipeCard[] = [
   ...editions.flatMap(edition => edition.rows.map((row, index) => cardOf(edition, index + 1, row))),
   ...editions.flatMap(edition => edition.figures.map(([question, choices, explanation, page, figure, alt], index) =>
-    ({ ...cardOf(edition, edition.rows.length + index + 1, [question, choices, explanation, page]), figure: { src: `figures/jo/${figure}.webp`, alt } }))),
+    ({ ...cardOf(edition, edition.rows.length + index + 1, [question, choices, explanation, page]), topic: FIGURE_UNIT.name, figure: { src: `figures/jo/${figure}.webp`, alt } }))),
 ];
 
 // 단답형·이유 서술 연습(성신제T 뭉탱이와 같은 방식): 답이 한 낱말·구로 떨어지는 카드만 고른다.

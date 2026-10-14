@@ -35,7 +35,7 @@ for (const c of cards) {
 }
 for (const e of editions) {
   const n = cards.filter(c => c.topic === e.name).length;
-  assert.ok(n >= 50, `${e.name}: ${n} cards (an edition digs deep)`);
+  assert.ok(n >= (e.key === 'fig' ? 20 : 50), `${e.name}: ${n} cards (an edition digs deep)`);
   assert.ok(/에디션$/.test(e.name), e.name);
 }
 assert.equal(conceptsFor('biology-jo-bulk').length, editions.length);
@@ -64,11 +64,10 @@ for (const c of figureCards) {
   assert.ok(c.question.includes('그림의'), `${c.id}: a figure question names the figure`);
 }
 for (const c of cards.filter(c => !c.figure)) assert.ok(!/그림의 \(/.test(c.question), `${c.id}: asks about a figure it does not have`);
-for (const e of editions) { // figure cards come after the text cards, so earlier ids never moved
-  const list = cards.filter(c => c.topic === e.name);
-  const first = list.findIndex(c => c.figure);
-  assert.ok(first > 0 && list.slice(first).every(c => c.figure), e.name);
-}
+// 그림 에디션 holds exactly the figure cards; they sit at the end of the deck so earlier ids and order never moved.
+assert.deepEqual(cards.filter(c => c.topic === '그림 에디션'), figureCards);
+assert.deepEqual(cards.slice(-figureCards.length), figureCards);
+assert.ok(figureCards.every(c => /^biology-jo-bulk-(tx-1[2-3]\d|tl-(099|1\d\d))$/.test(c.id)), 'figure ids keep the edition they were written for');
 assert.ok(!biologyJoBulkWritten.some(q => figureCards.some(c => q.id.endsWith(c.id))), 'figure cards are not writing practice');
 const { cards: exported } = require('../scripts/export-cards.cjs');
 for (const row of exported.filter(r => r.deck_id === 'biology-jo-bulk' && r.kind === 'choice')) {
