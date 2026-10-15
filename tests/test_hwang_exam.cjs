@@ -20,7 +20,7 @@ const opt=short.find(q=>q.modelAnswer==='31.7');assert.ok(!gradeHwangAnswer('50.
 const exported=JSON.parse(fs.readFileSync('db/cards.json','utf8')).cards;
 for(const q of hwangExam){const row=exported.find(c=>c.id===q.id);assert.equal(row.answer,q.modelAnswer);assert.equal(row.deck_id,'astronomy-hwang');}
 // Cards added after 3.5.2 (사회 뭉탱이) are new rows, not changes to the cards this check protects.
-const prior=exported.filter(c=>!c.id.startsWith('hwang-exam-')&&c.deck_id!=='social-bulk'&&c.deck_id!=='biology-jo-bulk').sort((a,b)=>a.id.localeCompare(b.id));
+const prior=exported.filter(c=>!c.id.startsWith('hwang-exam-')&&c.deck_id!=='social-bulk'&&c.deck_id!=='biology-jo-bulk'&&c.deck_id!=='korean-classic').sort((a,b)=>a.id.localeCompare(b.id));
 assert.equal(prior.length,1663);
 assert.equal(require('node:crypto').createHash('sha256').update(JSON.stringify(prior)).digest('hex'), '310eedda11e5e81e0b46ec07ed894dbf6cdf26d18890b671dec0f21aece4c352', 'Existing cards changed');
 console.log('PASS: 250 short + 33 written; exact included pages, no excluded content, aliases/numeric distinctions, diagrams, 6-step/5-safety rubric, DB export, all existing cards preserved.');

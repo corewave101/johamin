@@ -12,6 +12,7 @@ import { socialCards } from './social-cards';
 import { socialJoCards, socialJoWritten } from './social-jo-cards';
 import { socialBulkCards, socialBulkWritten } from './social-bulk-cards';
 import { biologyJoBulkCards, biologyJoBulkWritten } from './biology-jo-bulk-cards';
+import { koreanClassicCards, koreanClassicWritten } from './korean-classic-cards';
 import { englishCards } from './english-cards';
 import { englishWritten } from './english-written';
 import { koreanGrammarCards, koreanGrammarWritten } from './korean-cards';
@@ -30,7 +31,7 @@ export const subjectMenu: SubjectGroup = {
       { id: 'korean', kind: 'group', name: '국어', direction: 'up', symbol: '가', description: '뉴욕제과점 · 문법 · 고전 시가.', children: [
         { id: 'korean-newyork', kind: 'deck', name: '뉴욕제과점', fullName: '국어(뉴욕제과점)', direction: 'left', symbol: '가', description: '김연수 「뉴욕제과점」: 구절 풀이·어머니·결말의 깨달음.', cards: koreanNewyorkCards, writtenQuestions: koreanNewyorkWritten },
         { id: 'korean-grammar', kind: 'deck', name: '문법', fullName: '국어(문법)', direction: 'up', symbol: '가', description: '우리말 바로 쓰기: 한글 맞춤법·띄어쓰기·헷갈리는 표기.', cards: koreanGrammarCards, writtenQuestions: koreanGrammarWritten },
-        { id: 'korean-classic', kind: 'deck', name: '고전 시가', fullName: '국어(고전 시가)', direction: 'right', symbol: '가', description: '수업 자료를 기다리는 중.', cards: [] },
+        { id: 'korean-classic', kind: 'deck', name: '고전 시가', fullName: '국어(고전 시가)', direction: 'right', symbol: '가', description: '고대 가요부터 가사까지 갈래의 흐름 · 이별의 정한 · 율격 · 제망매가와 시조 두 편.', cards: koreanClassicCards, writtenQuestions: koreanClassicWritten },
       ] },
       { id: 'social-group', kind: 'group', name: '사회', direction: 'left', symbol: '◎', description: '왼쪽은 성신제T, 오른쪽은 조안나T. 공부할 파트를 골라요.', children: [
         { id: 'social-sung', kind: 'group', name: '성신제T', direction: 'left', symbol: '◎', description: '왼쪽은 기본, 오른쪽은 학습지마다 촘촘한 뭉탱이.', children: [
