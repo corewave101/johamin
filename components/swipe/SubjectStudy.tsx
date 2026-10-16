@@ -14,6 +14,7 @@ import ConceptReader from './ConceptReader';
 import { conceptsFor } from '../../data/study-concepts';
 import { usePortrait } from '../../lib/figure-mode';
 import RotateNotice from './RotateNotice';
+import { isEnglishWordCard } from '../../data/english-words';
 
 export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
   // 박상영T has its own card-style menus (see ParkStudy).
@@ -34,13 +35,16 @@ function FigureStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }
 }
 
 function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack: () => void; figurePanel?: boolean }) {
-  const [mode, setMode] = useState<'menu' | 'concept' | 'problems' | 'choice' | 'missed' | 'written' | 'short' | 'practice'>('menu');
+  const [mode, setMode] = useState<'menu' | 'concept' | 'problems' | 'choice' | 'missed' | 'written' | 'short' | 'practice' | 'words' | 'word-game'>('menu');
+  const [wordList, setWordList] = useState<{ name: string; cards: SwipeCard[] }>({ name: '', cards: [] });
   const [retryCards, setRetryCards] = useState<SwipeCard[]>([]);
   const [read, setRead] = useState<string[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
   const [writtenTopic, setWrittenTopic] = useState('');
   const lessons = conceptsFor(deck.id);
-  const generalCards = deck.cards;
+  // 영어 단어 문제(뜻+품사)는 본문 문제와 따로 '단어 문제' 카드 패에서 푼다.
+  const generalCards = deck.cards.filter(card => !isEnglishWordCard(card));
+  const wordCards = deck.cards.filter(isEnglishWordCard);
   const choiceCards = topics.length ? generalCards.filter(card => topics.includes(card.topic)) : generalCards;
   const [written, setWritten] = useState<WrittenState>(() => {
     if (deck.id === 'astronomy-hwang') try { const saved = JSON.parse(localStorage.getItem('johamin-hwang-exam-drafts-v1') ?? 'null'); if (saved && typeof saved.index === 'number' && saved.drafts && saved.revealed) return saved; } catch { /* use an empty draft */ }
@@ -64,6 +68,7 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   const gameBackLabel = '← 카드 패';
   if (mode === 'missed') return <SwipeGame cards={retryCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
   if (mode === 'choice') return <SwipeGame cards={choiceCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
+  if (mode === 'word-game') return <SwipeGame cards={wordList.cards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · ${wordList.name}`} onBack={() => setMode('words')} backLabel={gameBackLabel} />;
   if (mode === 'practice') return deck.id === 'chemistry' ? <ChemistryLab onBack={() => setMode('menu')} /> : <ObservationLab onBack={() => setMode('menu')} />;
   const name = deck.fullName ?? deck.name;
   // 카드 패: the subject menu and the unit menu are hands of cards.
@@ -76,11 +81,22 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
       { id: 'concept', kicker: '개념', title: '개념 정리', note: `${lessons.length}단원`, disabled: !lessons.length, onPlay: () => setMode('concept') },
       { id: 'all', kicker: '객관식', title: '전체 풀기', note: `${generalCards.length}문제 · 푼 문제 ${seenCount(generalCards)}`, disabled: !generalCards.length, onPlay: () => { setTopics([]); setMode('choice'); } },
       { id: 'topics', kicker: '객관식', title: '단원 골라 풀기', note: `${topicCount}단원`, disabled: !generalCards.length, onPlay: () => { setTopics([]); setMode('problems'); } },
+      ...(wordCards.length ? [{ id: 'words', kicker: '단어', title: '단어 문제', note: `${wordCards.length}단어 · 뜻+품사`, onPlay: () => setMode('words') }] : []),
       ...(missedAll.length ? [{ id: 'missed', kicker: '복습', title: '오답만 다시', note: `${missedAll.length}문제`, onPlay: () => { setRetryCards(missedAll); setMode('missed'); } }] : []),
       ...(allShort.length ? [{ id: 'short', kicker: '단답형', title: '정답 하나 쓰기', note: `${allShort.length}문제`, onPlay: () => { setWrongOnly(false); setWrittenTopic(''); setWritten(w => ({ ...w, index: 0 })); setMode('short'); } }] : []),
       ...(allWritten.length ? [{ id: 'written', kicker: '서술형', title: '서술형 쓰기', note: `${allWritten.length}문제`, onPlay: () => { setWrongOnly(false); setWrittenTopic(''); setWritten(w => ({ ...w, index: 0 })); setMode('written'); } }] : []),
     ];
     return <CardHand key="menu" deckName={name} prompt="무엇을 할까요?" cards={hand} onBack={onBack} backLabel="과목·파트" start={exam ? hand.findIndex(c => c.id === 'short') : 1} />;
+  }
+  if (mode === 'words') {
+    const play = (name: string, cards: SwipeCard[]) => { setWordList({ name, cards }); setMode('word-game'); };
+    const missedWords = missedCards(wordCards);
+    const hand: HandCard[] = [
+      { id: 'w-all', kicker: '단어 · 뜻+품사', title: '전체 단어', note: `${wordCards.length}단어 · 푼 단어 ${seenCount(wordCards)}`, onPlay: () => play('단어 전체', wordCards) },
+      ...[...new Set(wordCards.map(card => card.topic))].map(topic => { const list = wordCards.filter(card => card.topic === topic); return { id: `w-${topic}`, kicker: `단어 · 푼 단어 ${seenCount(list)}`, title: topic, note: `${list.length}단어`, onPlay: () => play(topic, list) }; }),
+      ...(missedWords.length ? [{ id: 'w-missed', kicker: '복습', title: '틀린 단어만', note: `${missedWords.length}단어`, onPlay: () => play('틀린 단어', missedWords) }] : []),
+    ];
+    return <CardHand key="words" deckName={name} prompt="어느 단어를 풀까요?" cards={hand} onBack={() => setMode('menu')} backLabel="학습 메뉴" />;
   }
   if (mode === 'problems') {
     const byTopic = [...new Set(generalCards.map(card => card.topic))];

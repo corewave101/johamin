@@ -14,6 +14,7 @@ import { socialBulkCards, socialBulkWritten } from './social-bulk-cards';
 import { biologyJoBulkCards, biologyJoBulkWritten } from './biology-jo-bulk-cards';
 import { koreanClassicCards, koreanClassicWritten } from './korean-classic-cards';
 import { englishCards } from './english-cards';
+import { englishWordCards } from './english-words';
 import { englishWritten } from './english-written';
 import { koreanGrammarCards, koreanGrammarWritten } from './korean-cards';
 import { koreanNewyorkCards, koreanNewyorkWritten } from './korean-newyork-cards';
@@ -40,7 +41,7 @@ export const subjectMenu: SubjectGroup = {
         ] },
         { id: 'social-jo', kind: 'deck', name: '조안나T', fullName: '사회(조안나T)', direction: 'right', symbol: '◎', description: '인권 보장과 헌법: 기본권·기본권 제한·권력 분립·헌법재판소.', cards: socialJoCards, writtenQuestions: socialJoWritten },
       ] },
-      { id: 'english', kind: 'deck', name: '영어', direction: 'right', symbol: 'A', description: '고대 건축물·Bartleby·가정법·예술과 측정.', cards: englishCards, writtenQuestions: englishWritten },
+      { id: 'english', kind: 'deck', name: '영어', direction: 'right', symbol: 'A', description: '고대 건축물·Bartleby·가정법·예술과 측정 + 단어 문제(뜻+품사).', cards: [...englishCards, ...englishWordCards], writtenQuestions: englishWritten },
     ] },
     { id: 'science', kind: 'group', name: '과학', direction: 'right', symbol: '✳', description: '생물 · 지구과학 · 물리학Ⅱ · 화학을 골라요.', children: [
     { id: 'biology', kind: 'group', name: '생물', direction: 'up', symbol: '✳', description: '선생님별 객관식과 서술형 연습.', children: [

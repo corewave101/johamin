@@ -18,7 +18,7 @@ for (const deck of subjectDecks) {
   if (pending.includes(deck)) { assert.equal(lessons.length, 0, deck.id); continue; }
   assert.ok(lessons.length > 0, deck.id);
   assert.ok(deck.cards.length > 0, deck.id);
-  for (const card of deck.cards) {
+  for (const card of deck.cards.filter(card => !card.id.startsWith('english-word-'))) { // 영어 단어 문제는 개념 단원 없이 '단어 문제' 패에서 따로 푼다
     assert.ok(lessons.some(lesson => lesson.topicKeys.includes(card.topic)), `${deck.id}: missing concept for ${card.topic}`);
   }
   for (const lesson of lessons) {

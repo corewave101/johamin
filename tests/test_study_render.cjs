@@ -20,7 +20,9 @@ for (const deck of subjectDecks) {
   } else {
     // 카드 패 (3.4.1부터 기본): 개념 정리 · 전체 풀기 · 단원 골라 풀기 (+ 서술형 쓰기)
     assert.ok(menu.includes('class="hand-card') && menu.includes('개념 정리') && menu.includes('전체 풀기') && menu.includes('단원 골라 풀기'), deck.id);
-    assert.ok(menu.includes(`${deck.cards.length}문제`), deck.id);
+    const words = deck.cards.filter(card => card.id.startsWith('english-word-')).length;
+    assert.ok(menu.includes(`${deck.cards.length - words}문제`), deck.id);
+    if (words) assert.ok(menu.includes('단어 문제') && menu.includes(`${words}단어 · 뜻+품사`), `${deck.id}: 단어 문제 카드`);
     if (deck.writtenQuestions?.length) assert.ok(menu.includes('서술형 쓰기') && menu.includes(`${deck.writtenQuestions.filter(q=>!require('../data/study-practice.ts').isShortQuestion(q) && (deck.id !== 'astronomy-hwang' || q.id.startsWith('hwang-exam-'))).length}문제`), deck.id);
   }
   const lessons = conceptsFor(deck.id);
