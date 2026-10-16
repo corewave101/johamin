@@ -118,7 +118,7 @@ const rows: WordRow[] = [
   ['as if', '접', '마치 ~인 것처럼(= as though)', '(접) ~하는 한', 'As if long famishing for something to copy', 3, 1],
   ['extraordinary', '형', '엄청난, 비범한', '(형) 평범한', 'Bartleby did an extraordinary amount of writing', 3, 1],
   // ── 학습지3 · 2쪽 연민과 결단 ─────────────────────────────
-  ['particular', '형', '까다로운', '(명) 세부 사항', '“I would prefer not to. I am not particular,” he said.', 3, 2],
+  ['particular', '형', '까다로운', '(명) 세부 사항', 'I would prefer not to. I am not particular,', 3, 2],
   ['scandal', '명', '추문, 스캔들', '(형) 수치스러운', 'To avoid a public scandal, I went back', 3, 2],
   ['disturbed', '형', '불안해하는, 동요한', '(명) 방해', 'Everyone was disturbed.', 3, 2],
   ['tenant', '명', '세입자', '(명) 집주인', 'the new tenant of my old office came to me', 3, 2],
