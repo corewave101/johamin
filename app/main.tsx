@@ -2,6 +2,7 @@ import '../components/swipe/observation.css';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import AppStatus from '../components/swipe/AppStatus';
+import AuthGate from '../components/swipe/AuthGate';
 import Backdrop from '../components/swipe/Backdrop';
 import BlessingToggle from '../components/swipe/BlessingToggle';
 import CardSizeControl from '../components/swipe/CardSizeControl';
@@ -41,7 +42,7 @@ createRoot(document.getElementById('root')!).render(<>
   <SoundToggle />
   <BlessingToggle />
   <CardSizeControl />
-  {isDemo ? <SwipeGame /> : <SubjectPicker />}
+  <AuthGate>{isDemo ? <SwipeGame /> : <SubjectPicker />}</AuthGate>
   <AppStatus />
   <JumpscareLayer />
   <IntroHost />

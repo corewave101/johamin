@@ -58,11 +58,14 @@ export function withLiveCards(menu: SubjectGroup, live: LiveDecks): SubjectGroup
   return swap(menu) as SubjectGroup;
 }
 
-export async function fetchCardRows(signal?: AbortSignal): Promise<CardRow[]> {
+/** `token`: the signed-in user's access token. Cards are readable only by allowed accounts (db/login-3.11.0.sql). */
+export async function fetchCardRows(signal?: AbortSignal, token?: string | null): Promise<CardRow[]> {
   const rows: CardRow[] = [];
+  const headers: Record<string, string> = { apikey: SUPABASE_PUBLISHABLE_KEY };
+  if (token) headers.Authorization = `Bearer ${token}`;
   for (let from = 0; ; from += PAGE) {
     const response = await fetch(`${SUPABASE_URL}/rest/v1/cards?select=${COLUMNS}&order=deck_id,sort,id&offset=${from}&limit=${PAGE}`,
-      { headers: { apikey: SUPABASE_PUBLISHABLE_KEY }, signal });
+      { headers, signal });
     if (!response.ok) throw new Error(`cards ${response.status}`);
     const page = await response.json() as CardRow[];
     rows.push(...page);

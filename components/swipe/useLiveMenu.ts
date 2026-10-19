@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { subjectMenu, type SubjectGroup, type SubjectNode } from '../../data/swipe-subjects';
+import { accessToken } from '../../lib/auth';
 import { trackPromise } from '../../lib/boot';
 import { cachedRows, cacheRows, fetchCardRows, groupRows, withLiveCards } from '../../lib/card-store';
 
@@ -15,7 +16,8 @@ export function useLiveMenu(): SubjectGroup {
   });
   useEffect(() => {
     const controller = new AbortController();
-    trackPromise('cards', fetchCardRows(controller.signal)).then(rows => {
+    // An empty answer (e.g. this account is not allowed) never replaces the copy saved on this device.
+    trackPromise('cards', accessToken().then(token => fetchCardRows(controller.signal, token))).then(rows => {
       if (!rows.length) return;
       cacheRows(rows);
       setMenu(withLiveCards(subjectMenu, groupRows(rows)));
