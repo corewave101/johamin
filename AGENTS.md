@@ -24,7 +24,7 @@
 - 오프라인 앱(PWA): `public/sw.js`, `public/manifest.webmanifest`. 빌드 때 `vite.config.ts`가 캐시 목록·버전을 채운다.
 - 카드 DB: Supabase 프로젝트 `vlmwrkalgjaduagxavhb`(서울). 표 구조는 `db/README.md`, `db/schema.sql`.
 - **로그인(3.11.0~):** 학교 구글 계정으로 로그인해야 메뉴가 열린다(`components/swipe/AuthGate.tsx`, `lib/auth.ts`). 누가 통과하는지는 **코드가 아니라 DB**가 정한다: `public.member_rules`의 이메일 패턴 + `is_member()`(`db/login-3.11.0.sql`). 반을 추가할 때는 대시보드에서 `member_rules`에 행만 넣는다(예: 2반 `26102__@bsis.hs.kr`). 편집자는 항상 통과. `user_metadata`는 사용자가 바꿀 수 있으니 권한 판단에 쓰지 않는다.
-- 로그인 테스트용 Supabase 프로젝트 `johamin-auth-test`와 저장소 `johamin-auth-test`는 본 앱과 별개다(카드 없음).
+- 로그인 설정은 대시보드에 있다: Supabase(Authentication → URL Configuration: `https://corewave101.github.io/johamin/`, Google 제공자), Google 콘솔(리다이렉트 URI `https://vlmwrkalgjaduagxavhb.supabase.co/auth/v1/callback`, 앱 게시 상태 '프로덕션'). 개인정보처리방침은 `public/privacy.html`.
 
 | 폴더·파일 | 내용 |
 |---|---|
