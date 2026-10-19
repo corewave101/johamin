@@ -22,8 +22,10 @@ import './blessing.css';
 const isDemo = ['#demo', '#johamin/demo'].includes(window.location.hash);
 // Offline support: the service worker keeps the app on this device after the first visit (only in the built site).
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-  // Start without waiting for every external font or video to finish loading.
-  navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => { /* the site still works online */ });
+  // A few seconds in, so saving the offline copy never competes with the first screen (it does not wait for the video).
+  setTimeout(() => {
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => { /* the site still works online */ });
+  }, 4000);
 }
 
 /** The JO intro; shown again whenever the blessing changes. */

@@ -26,8 +26,9 @@ function offline(): Plugin {
         }
       };
       walk(outDir);
-      // index.html is saved as the app shell; the large original card PNG is not used by the app.
-      const precache = files.filter(file => !['sw.js', 'index.html'].includes(file) && !/^images\/.*\.png$/.test(file)).sort();
+      // index.html is saved as the app shell. The background videos are not precached: each device saves only the one
+      // size it actually plays (Backdrop asks the worker for it), so phones never download the 1080p file.
+      const precache = files.filter(file => !['sw.js', 'index.html'].includes(file) && !/^videos\/.*\.mp4$/.test(file)).sort();
       const swPath = join(outDir, 'sw.js');
       const hash = createHash('sha256');
       hash.update(readFileSync(swPath)); // Worker changes also need their own cache version.

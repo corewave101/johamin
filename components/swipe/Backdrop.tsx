@@ -37,12 +37,15 @@ export default function Backdrop() {
     clip.addEventListener('canplaythrough', load.done);
     clip.addEventListener('error', load.done);
     onProgress();
+    // Offline copy: once the video plays, ask the worker to save this size only (a while later, so it never competes with loading).
+    const save = setTimeout(() => navigator.serviceWorker?.controller?.postMessage({ type: 'cache-video', url: new URL(clip.currentSrc || source, location.href).href }), 15000);
     return () => {
+      clearTimeout(save);
       events.forEach(name => clip.removeEventListener(name, onProgress));
       clip.removeEventListener('canplaythrough', load.done);
       clip.removeEventListener('error', load.done);
     };
-  }, [kind]);
+  }, [kind, source]);
 
   useEffect(() => {
     const clip = video.current;

@@ -9,14 +9,16 @@ const SHELL = './';
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
-    // Skip the browser's HTTP cache so a new version never stores stale files.
+    // Skip the browser's HTTP cache so a new version never stores stale files. Files under assets/ have the content hash
+    // in their name, so the copy the page just downloaded is reused instead of fetching the big code file twice.
     // Code and the shell are essential. One unavailable picture/video must not disable offline learning.
+    const mode = url => /^\.\/assets\//.test(url) ? 'default' : 'reload';
     const essential = PRECACHE.filter(url => /\.(?:js|css|webmanifest|woff2?)$/.test(url) || url.includes('/icons/'));
-    await cache.addAll([SHELL, ...essential].map(url => new Request(url, { cache: 'reload' })));
+    await cache.addAll([SHELL, ...essential].map(url => new Request(url, { cache: mode(url) })));
     await Promise.allSettled(PRECACHE.filter(url => !essential.includes(url)).map(async url => {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 20000);
-      try { const response = await fetch(new Request(url, { cache: 'reload', signal: controller.signal })); if(response.ok) await cache.put(url,response); }
+      try { const response = await fetch(new Request(url, { cache: mode(url), signal: controller.signal })); if(response.ok) await cache.put(url,response); }
       finally { clearTimeout(timeout); }
     }));
     await self.skipWaiting();
@@ -28,6 +30,20 @@ self.addEventListener('activate', event => {
     const keys = await caches.keys();
     await Promise.all(keys.filter(key => key.startsWith('johamin-') && key !== CACHE && key !== RUNTIME).map(key => caches.delete(key)));
     await self.clients.claim();
+  })());
+});
+
+// The page tells the worker which background video this device plays; only that one is saved for offline use.
+self.addEventListener('message', event => {
+  const data = event.data;
+  if (!data || data.type !== 'cache-video' || typeof data.url !== 'string') return;
+  const url = new URL(data.url, self.location.href);
+  if (url.origin !== self.location.origin || !/\.mp4$/.test(url.pathname)) return;
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    if (await cache.match(url.href, { ignoreSearch: true })) return;
+    try { const response = await fetch(url.href, { cache: 'reload' }); if (response.ok && response.status === 200) await cache.put(url.href, response); }
+    catch { /* try again on the next visit */ }
   })());
 });
 
