@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { preloadImage, trackLoad, trackPromise } from '../../lib/boot';
+import { useBeta } from './useBeta';
 import { useTheme } from './useTheme';
 
 const POSTER = `${import.meta.env.BASE_URL}videos/johamin-bg-poster.webp`;
@@ -20,6 +21,8 @@ export default function Backdrop() {
   const video = useRef<HTMLVideoElement>(null);
   const [still] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
   const [source] = useState(pickSource);
+  // 베타 · 가벼운 화면: the background stays put instead of following the pointer or phone tilt.
+  const light = useBeta();
 
   // The intro screen waits until the poster is in and the video can play through.
   useEffect(() => {
@@ -60,7 +63,7 @@ export default function Backdrop() {
 
   useEffect(() => {
     const el = scene.current;
-    if (!el || still) return;
+    if (!el || still || light) { el?.style.setProperty('--px', '0'); el?.style.setProperty('--py', '0'); return; }
     let frame = 0, targetX = 0, targetY = 0, x = 0, y = 0;
     const step = () => {
       x += (targetX - x) * 0.07;
@@ -85,7 +88,7 @@ export default function Backdrop() {
       window.removeEventListener('deviceorientation', onTilt);
       cancelAnimationFrame(frame);
     };
-  }, [still]);
+  }, [still, light]);
 
   return <div className="scene" ref={scene} aria-hidden="true">
     {kind === 'none' ? <div className="scene-media scene-plain" />
