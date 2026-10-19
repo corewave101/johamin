@@ -73,3 +73,36 @@ export function AccountRow({ onSignOut }: { onSignOut?: () => void }) {
   if (!email) return null;
   return <div className="account-row"><span>{shortEmail(email)} 로그인 중</span><button type="button" className="glass-button" onClick={() => { onSignOut?.(); void signOut(); }}>로그아웃</button></div>;
 }
+
+/** While the card file is still coming (only on a very slow first visit). */
+export function LoadingCard() {
+  return <main className="swipe-app login-app">
+    <div className="swipe-game">
+      <header className="swipe-heading"><h1 className="glass">조하민<span>레츠고</span></h1></header>
+      <section className="login-board" aria-live="polite">
+        <div className="swipe-stack login-stack">
+          <div className="swipe-under swipe-under-two" /><div className="swipe-under swipe-under-one" />
+          <LaminatedCard className="is-current" topic="준비" question="카드 불러오는 중…" />
+        </div>
+      </section>
+    </div>
+  </main>;
+}
+
+/** The card file could not be loaded (connection dropped on the first visit). */
+export function LoadFailed() {
+  return <main className="swipe-app login-app">
+    <div className="swipe-game">
+      <header className="swipe-heading"><h1 className="glass">조하민<span>레츠고</span></h1></header>
+      <section className="login-board" aria-live="polite">
+        <div className="swipe-stack login-stack">
+          <div className="swipe-under swipe-under-two" /><div className="swipe-under swipe-under-one" />
+          <LaminatedCard className="is-current" topic="연결" question="카드를 불러오지 못했어요" />
+        </div>
+        <div className="login-actions">
+          <button type="button" className="glass-button is-primary login-main" autoFocus onClick={() => window.location.reload()}>다시 불러오기</button>
+        </div>
+      </section>
+    </div>
+  </main>;
+}

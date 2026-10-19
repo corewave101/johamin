@@ -1,17 +1,16 @@
 import '../components/swipe/observation.css';
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState, type ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
 import AppStatus from '../components/swipe/AppStatus';
-import AuthGate from '../components/swipe/AuthGate';
+import AuthGate, { LoadFailed, LoadingCard } from '../components/swipe/AuthGate';
 import Backdrop from '../components/swipe/Backdrop';
 import BlessingToggle from '../components/swipe/BlessingToggle';
 import CardSizeControl from '../components/swipe/CardSizeControl';
 import Intro from '../components/swipe/Intro';
 import JumpscareLayer from '../components/swipe/JumpscareLayer';
 import SoundToggle from '../components/swipe/SoundToggle';
-import SubjectPicker from '../components/swipe/SubjectPicker';
-import SwipeGame from '../components/swipe/SwipeGame';
 import UpdateLog from '../components/swipe/UpdateLog';
+import { trackPromise } from '../lib/boot';
 import './globals.css';
 import './scene.css';
 import './swipe.css';
@@ -20,6 +19,12 @@ import './blessing.css';
 
 // #demo (or the older #johamin/demo) opens the sample deck; every other address opens the subject menu.
 const isDemo = ['#demo', '#johamin/demo'].includes(window.location.hash);
+// The subject menu and every bundled card (about 2 MB) come in a separate file. It starts loading right away, in parallel
+// with the intro and the login check, so the first screen no longer waits for all the cards. The intro waits for it.
+const menuFile: Promise<{ default: ComponentType }> = trackPromise('menu',
+  (isDemo ? import('../components/swipe/SwipeGame') : import('../components/swipe/SubjectPicker')) as Promise<{ default: ComponentType }>)
+  .catch(() => ({ default: LoadFailed }));
+const Menu = lazy(() => menuFile);
 // Offline support: the service worker keeps the app on this device after the first visit (only in the built site).
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   // A few seconds in, so saving the offline copy never competes with the first screen (it does not wait for the video).
@@ -44,7 +49,7 @@ createRoot(document.getElementById('root')!).render(<>
   <SoundToggle />
   <BlessingToggle />
   <CardSizeControl />
-  <AuthGate>{isDemo ? <SwipeGame /> : <SubjectPicker />}</AuthGate>
+  <AuthGate><Suspense fallback={<LoadingCard />}><Menu /></Suspense></AuthGate>
   <AppStatus />
   <JumpscareLayer />
   <IntroHost />
