@@ -659,3 +659,18 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 @keyframes rotate-phone { 0%, 25% { transform: rotate(0); } 55%, 80% { transform: rotate(-90deg); } 100% { transform: rotate(0); } }
 @keyframes rotate-fade { from { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .rotate-notice, .rotate-notice-phone { animation: none; } .rotate-notice-phone { transform: rotate(-90deg); } }
+
+/* 로그인 (3.11.0): the same laminated card, with the action under it. */
+.login-board { display: grid; justify-items: center; gap: 34px; margin-top: 26px; }
+.login-stack { grid-column: auto; grid-row: auto; width: min(300px, 78vw); height: 370px; }
+.login-stack .swipe-card { cursor: default; }
+.login-actions { display: grid; justify-items: center; gap: 10px; width: min(320px, 100%); }
+.login-actions .glass-button { padding: 10px 22px; font-size: 15px; }
+.login-actions .login-main { min-width: 220px; padding: 12px 26px; font-size: 16px; }
+.login-actions .glass-button:disabled { opacity: .6; }
+.login-note, .login-message { margin: 0; padding: 7px 14px; border-radius: 14px; font-size: 13px; font-weight: 600; line-height: 1.45; text-align: center; color: var(--ink-soft); word-break: keep-all; }
+.login-note > *, .login-message > * { position: relative; }
+.login-message { color: #8a2a1d; }
+@media (max-width: 600px) { .login-board { gap: 28px; margin-top: 18px; } .login-stack { height: 330px; } }
+.account-row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 18px 6px; padding: 8px 12px; border-radius: 14px; background: rgba(255, 255, 255, .62); font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+.account-row .glass-button { padding: 4px 12px; font-size: 12.5px; }

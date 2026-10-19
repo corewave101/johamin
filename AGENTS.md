@@ -23,12 +23,14 @@
 - 사이트: https://corewave101.github.io/johamin/ — main에 합쳐지면 GitHub Actions(`deploy.yml`)가 자동 배포.
 - 오프라인 앱(PWA): `public/sw.js`, `public/manifest.webmanifest`. 빌드 때 `vite.config.ts`가 캐시 목록·버전을 채운다.
 - 카드 DB: Supabase 프로젝트 `vlmwrkalgjaduagxavhb`(서울). 표 구조는 `db/README.md`, `db/schema.sql`.
+- **로그인(3.11.0~):** 학교 구글 계정으로 로그인해야 메뉴가 열린다(`components/swipe/AuthGate.tsx`, `lib/auth.ts`). 누가 통과하는지는 **코드가 아니라 DB**가 정한다: `public.member_rules`의 이메일 패턴 + `is_member()`(`db/login-3.11.0.sql`). 반을 추가할 때는 대시보드에서 `member_rules`에 행만 넣는다(예: 2반 `26102__@bsis.hs.kr`). 편집자는 항상 통과. `user_metadata`는 사용자가 바꿀 수 있으니 권한 판단에 쓰지 않는다.
+- 로그인 테스트용 Supabase 프로젝트 `johamin-auth-test`와 저장소 `johamin-auth-test`는 본 앱과 별개다(카드 없음).
 
 | 폴더·파일 | 내용 |
 |---|---|
 | `app/` | 시작점 `main.tsx`, CSS(`swipe.css`가 대부분) |
 | `components/swipe/` | 화면. `SwipeGame`(문제 카드), `SubjectPicker`(과목 고르기), `SubjectStudy`(개념·문제 메뉴), `ParkStudy`·`ParkVocabulary`(박상영T 전용), `MenuCard`(카드형 메뉴), `CardHand`(베타 · 카드 패 메뉴), `OrderDeck`(문장 배치), `BlessingToggle`·`BlessingEditor`(가호) |
-| `lib/` | 로직. `card-store.ts`(DB 읽기·캐시), `swipe-game.ts`, `vocabulary.ts`, `theme.ts`, `jumpscare.ts` … |
+| `lib/` | 로직. `card-store.ts`(DB 읽기·캐시), `auth.ts`·`member.ts`(로그인), `swipe-game.ts`, `vocabulary.ts`, `theme.ts`, `jumpscare.ts` … |
 | `data/` | 코드에 들어 있는 카드(번들). `swipe-subjects.ts`가 과목·덱 목록 |
 | `db/` | DB 표 정의와 카드 사본(`cards.json`, `seed.sql`) |
 | `scripts/export-cards.cjs` | `data/*.ts` → `db/cards.json`·`db/seed.sql` 생성 |

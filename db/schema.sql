@@ -1,8 +1,9 @@
 -- 조하민레츠고 Supabase schema.
 -- For a fresh project: run once in Supabase → SQL Editor, then run db/seed.sql to load the cards.
 -- (Already applied to the live project as migrations; this file is the reference copy.)
--- Reading cards needs no login. Cards are edited in the Supabase dashboard (Table Editor), which bypasses RLS.
--- If the app ever gets a login, only emails in public.editors may write through the API.
+-- Cards are edited in the Supabase dashboard (Table Editor), which bypasses RLS. Only emails in public.editors may write through the API.
+-- 3.11.0: the app needs a school Google login. Who may read cards is in db/login-3.11.0.sql (member_rules + is_member()).
+--   The "readable" policies below are the pre-login version; after step 2 of that file they are replaced.
 
 -- ─── Decks ──────────────────────────────────────────────────────────────
 create table if not exists public.decks (

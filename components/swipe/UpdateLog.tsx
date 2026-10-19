@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { setBeta } from '../../lib/beta';
 import { parseChangelog } from '../../lib/changelog';
+import { AccountRow } from './AuthGate';
 import { useBeta } from './useBeta';
 
 /** 3.3.0-beta.1 → 3.3.0 베타.1 */
@@ -47,6 +48,7 @@ export default function UpdateLog({ version, changelog }: { version: string; cha
     {open && <div className="update-log" role="dialog" aria-modal="true" aria-labelledby="update-log-title" onClick={event => { if (event.target === event.currentTarget) setOpen(false); }}>
       <div className="update-log-panel glass">
         <header><h2 id="update-log-title">업데이트 기록</h2><button type="button" ref={close} className="glass-button" onClick={() => setOpen(false)}>닫기</button></header>
+        <AccountRow onSignOut={() => setOpen(false)} />
         <div className="update-log-list">
           {versions.length === 0 && <p>기록이 없어요.</p>}
           {versions.map((v, i) => <details key={v.version} open={i === 0} className="update-log-version">
