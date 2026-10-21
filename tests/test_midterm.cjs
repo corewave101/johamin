@@ -41,4 +41,4 @@ const picker = fs.readFileSync('components/swipe/SubjectPicker.tsx', 'utf8');
 assert.ok(picker.includes('MIDTERM_URL') && picker.includes('HOME_URL'));
 const auth = fs.readFileSync('lib/auth.ts', 'utf8');
 assert.ok(auth.includes('redirectTo: `${window.location.origin}${HOME_URL}`'));
-console.log(`PASS: ${finals.length} empty 기말 decks on new ids, ${subjectDecks.length} 중간고사 decks kept at /midterm/.`);
+console.log(`PASS: ${finals.length} 기말 decks on new ids, ${subjectDecks.length} 중간고사 decks kept at /midterm/.`);

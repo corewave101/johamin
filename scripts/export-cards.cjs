@@ -6,6 +6,7 @@ const path = require('node:path');
 const ts = require('typescript');
 require.extensions['.ts'] = (m, f) => m._compile(ts.transpileModule(fs.readFileSync(f, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText, f);
 const { subjectMenu } = require('../data/swipe-subjects.ts');
+const { finalMenu } = require('../data/final-subjects.ts');
 
 const root = path.join(__dirname, '..');
 const SPLIT_GROUPS = new Set(['humanities', 'science', 'physics-chemistry']); // groups whose children are separate subjects (국어 · 사회 · 영어)
@@ -34,8 +35,9 @@ function sourceOf(card, teacher) {
 const decks = [], cards = [];
 function walk(group, parent) {
   for (const node of group.children) {
-    if (node.kind === 'group') { walk(node, parent && !SPLIT_GROUPS.has(parent.id) ? parent : node); continue; } // 사회 › 성신제T › 기본 keeps subject 사회
+    if (node.kind === 'group') { walk(group.final ? { ...node, final: true } : node, parent && !SPLIT_GROUPS.has(parent.id) ? parent : node); continue; } // 사회 › 성신제T › 기본 keeps subject 사회
     const subject = !parent || SPLIT_GROUPS.has(parent.id) ? node.name : parent.name;
+    if (group.final && !node.cards.length && !node.writtenQuestions?.length) continue; // 기말 '준비 중' decks go to the DB once they have cards
     const teacher = teacherOf(node);
     decks.push({ id: node.id, subject, name: node.name, full_name: node.fullName ?? null, teacher, description: node.description, sort: decks.length });
     node.cards.forEach((card, i) => {
@@ -49,6 +51,7 @@ function walk(group, parent) {
   }
 }
 walk(subjectMenu, null);
+walk({ ...finalMenu, final: true }, null); // 기말고사 (first screen); 중간고사 decks above keep their order
 
 const sql = v => v === null || v === undefined ? 'null'
   : typeof v === 'number' ? String(v)
