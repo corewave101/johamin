@@ -1,5 +1,6 @@
 import type { SubjectGroup } from './swipe-subjects';
 import { socialJoFinalCards, socialJoFinalWritten } from './social-jo-final-cards';
+import { chemistryFinalCards, chemistryFinalWritten } from './chemistry-final-cards';
 
 // 기말고사 메뉴. 중간고사 카드(data/swipe-subjects.ts의 subjectMenu)는 /midterm/ 보관함으로 옮겼다.
 // 카드가 없는 덱은 '준비 중'으로 보인다. 카드는 아래 덱 id로 넣는다(DB의 deck_id도 같은 id). 중간고사 덱 id는 다시 쓰지 않는다.
@@ -19,7 +20,7 @@ export const finalMenu: SubjectGroup = {
       { id: 'astronomy-final', kind: 'deck', name: '지구과학', fullName: '지구과학(기말)', direction: 'left', symbol: '✦', description: '기말고사 지구과학 카드를 준비하고 있어요.', cards: [] },
       { id: 'physics-chemistry', kind: 'group', name: '물리 · 화학', direction: 'right', symbol: 'F', description: '왼쪽은 물리학Ⅱ, 오른쪽은 화학이에요.', children: [
         { id: 'physics-final', kind: 'deck', name: '물리학Ⅱ', fullName: '물리학Ⅱ(기말)', direction: 'left', symbol: 'F', description: '기말고사 물리학Ⅱ 카드를 준비하고 있어요.', cards: [] },
-        { id: 'chemistry-final', kind: 'deck', name: '화학', fullName: '화학(기말)', direction: 'right', symbol: '⚗', description: '기말고사 화학 카드를 준비하고 있어요.', cards: [] },
+        { id: 'chemistry-final', kind: 'deck', name: '화학', fullName: '화학(주민지T · 기말)', direction: 'right', symbol: '⚗', description: '탄소 화합물: 분산력 · 알케인 · 이성질 · 명명법 · 고리형 · 알켄 · 알카인 · 알코올.', cards: chemistryFinalCards, writtenQuestions: chemistryFinalWritten },
       ] },
     ] },
   ],
