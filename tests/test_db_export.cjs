@@ -2,7 +2,12 @@
 const assert = require('node:assert/strict');
 const { decks, cards } = require('../scripts/export-cards.cjs');
 const { subjectDecks } = require('../data/swipe-subjects.ts');
-assert.equal(decks.length, subjectDecks.length);
+const { finalMenu } = require('../data/final-subjects.ts');
+// 중간고사 decks + 기말 decks that already have cards ('준비 중' decks are not in the DB yet).
+const flatten = g => g.children.flatMap(n => n.kind === 'group' ? flatten(n) : [n]);
+const finals = flatten(finalMenu).filter(d => d.cards.length || d.writtenQuestions?.length);
+assert.equal(decks.length, subjectDecks.length + finals.length);
+for (const d of finals) assert.ok(decks.some(x => x.id === d.id && x.teacher !== undefined), d.id);
 assert.equal(new Set(cards.map(c => c.id)).size, cards.length, 'Card ids must be unique across all decks');
 for (const c of cards) {
   assert.ok(decks.some(d => d.id === c.deck_id), c.id);
