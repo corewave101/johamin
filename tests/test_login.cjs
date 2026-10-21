@@ -34,7 +34,9 @@ assert.equal(store.has(MEMBER_KEY), false);
 
 // Wiring: the menu sits behind the gate, cards are fetched with the login token, and only public keys are used.
 const main = fs.readFileSync('app/main.tsx', 'utf8');
-assert.ok(main.includes('<AuthGate>{isDemo ? <SwipeGame /> : <SubjectPicker />}</AuthGate>'));
+assert.ok(main.includes('<AuthGate><Suspense fallback={<LoadingCard />}><Menu /></Suspense></AuthGate>'));
+// 3.13.0: the menu (and every bundled card) is a separate file, so nothing in it loads before the gate.
+assert.ok(/import\('\.\.\/components\/swipe\/SubjectPicker'\)/.test(main) && !/^import SubjectPicker/m.test(main));
 assert.ok(fs.readFileSync('components/swipe/useLiveMenu.ts', 'utf8').includes('fetchCardRows(controller.signal, token)'));
 const auth = fs.readFileSync('lib/auth.ts', 'utf8');
 assert.ok(auth.includes("flowType: 'pkce'") && auth.includes('rpc/is_member'));

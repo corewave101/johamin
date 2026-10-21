@@ -4,7 +4,7 @@ import { playDesertWind } from '../../lib/intro-sound';
 import { coinTextScale, useTheme } from './useTheme';
 
 const MIN_MS = 1400;  // long enough to see the sand blow, even when everything is cached
-const MAX_MS = 7000;  // slow connections get the button anyway; the rest keeps loading behind
+const MAX_MS = 4000;  // slow connections get the button anyway; the video and the rest keep loading behind
 const EXIT_MS = 900;
 
 /**

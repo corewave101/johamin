@@ -8,7 +8,6 @@ const { geneticsCards, geneticsWritten } = require('../data/genetics-terms.ts');
 const { englishCards } = require('../data/english-cards.ts');
 const { englishWritten } = require('../data/english-written.ts');
 const { withLiveCards } = require('../lib/card-store.ts');
-const { portraitFor, portraits } = require('../data/card-portraits.ts');
 const React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
 const Card = require('../components/swipe/LaminatedCard.tsx').default;

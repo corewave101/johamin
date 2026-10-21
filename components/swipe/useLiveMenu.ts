@@ -24,7 +24,8 @@ export function useLiveMenu(): SubjectGroup {
     // An empty answer (e.g. this account is not allowed) never replaces the copy saved on this device.
     trackPromise('cards', accessToken().then(token => fetchCardRows(controller.signal, token))).then(rows => {
       if (!rows.length) return;
-      cacheRows(rows);
+      // Same cards as the saved copy (the usual case): nothing to write or redraw.
+      if (!cacheRows(rows)) return;
       setMenu(withLiveCards(baseMenu, groupRows(rows)));
     }).catch(() => { /* offline or database paused: keep what we have */ });
     return () => controller.abort();

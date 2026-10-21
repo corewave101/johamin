@@ -674,3 +674,12 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 @media (max-width: 600px) { .login-board { gap: 28px; margin-top: 18px; } .login-stack { height: 330px; } }
 .account-row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 18px 6px; padding: 8px 12px; border-radius: 14px; background: rgba(255, 255, 255, .62); font-size: 13px; font-weight: 700; color: var(--ink-soft); }
 .account-row .glass-button { padding: 4px 12px; font-size: 12.5px; }
+
+/* 베타 · 가벼운 화면 (3.13.0): the glass blur is redrawn on every frame of the background video, which is heavy for phone
+   graphics. With the beta on, blur is kept small on menus and removed where the card art already covers it. */
+:root[data-beta="on"] { --glass-bg: rgba(250, 242, 228, .62); }
+:root[data-beta="on"] .glass, :root[data-beta="on"] .glass-button { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+:root[data-beta="on"] .swipe-card { -webkit-backdrop-filter: none; backdrop-filter: none; background: linear-gradient(155deg, rgba(255, 255, 255, .78), rgba(255, 250, 242, .52)); }
+:root[data-beta="on"] .card-caption { -webkit-backdrop-filter: none; backdrop-filter: none; background: linear-gradient(180deg, rgba(22, 38, 54, .74), rgba(14, 27, 41, .9)); }
+:root[data-beta="on"] .swipe-under { -webkit-backdrop-filter: none; backdrop-filter: none; background: linear-gradient(155deg, rgba(255, 255, 255, .74), rgba(255, 244, 228, .5)); }
+:root[data-beta="on"] .figure-slot { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }

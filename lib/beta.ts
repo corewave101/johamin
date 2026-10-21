@@ -1,5 +1,6 @@
 // 베타 테스트: features still being tried out. Turned on/off from the update log (v0.0.-1), saved on this device.
 //   - 첫 화면 실습: ↑ opens 황윤환T 관측 실습 (the 카드 패 and 해설 카드 became regular features in 3.4.1)
+//   - 가벼운 화면 (3.13.0): smaller glass blur and a still background (app/swipe.css :root[data-beta="on"], Backdrop)
 const KEY = 'johamin-beta';
 const listeners = new Set<(on: boolean) => void>();
 let on = (() => { try { return localStorage.getItem(KEY) === '1'; } catch { return false; } })();

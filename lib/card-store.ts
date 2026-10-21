@@ -73,9 +73,17 @@ export async function fetchCardRows(signal?: AbortSignal, token?: string | null)
   }
 }
 
+// The saved copy as text, kept from the last read/write so an unchanged download is not written (and redrawn) again.
+let savedText: string | null = null;
+
 export function cachedRows(): CardRow[] | null {
-  try { const raw = localStorage.getItem(CACHE_KEY); return raw ? JSON.parse(raw) as CardRow[] : null; } catch { return null; }
+  try { const raw = localStorage.getItem(CACHE_KEY); savedText = raw; return raw ? JSON.parse(raw) as CardRow[] : null; } catch { return null; }
 }
-export function cacheRows(rows: CardRow[]) {
-  try { localStorage.setItem(CACHE_KEY, JSON.stringify(rows)); } catch { /* storage may be full or blocked */ }
+/** Saves the cards on this device. Returns false when they are exactly the copy already saved. */
+export function cacheRows(rows: CardRow[]): boolean {
+  const text = JSON.stringify(rows);
+  if (text === savedText) return false;
+  savedText = text;
+  try { localStorage.setItem(CACHE_KEY, text); } catch { /* storage may be full or blocked */ }
+  return true;
 }
