@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 import type { Direction } from '../../data/swipe-cards';
 import type { SubjectDeck, SubjectGroup } from '../../data/swipe-subjects';
+import { HOME_URL, isMidterm, MIDTERM_URL } from '../../lib/exam';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playTick } from '../../lib/sound';
 import LaminatedCard from './LaminatedCard';
@@ -19,8 +20,12 @@ export default function SubjectPicker() {
   // 베타 · 실습: the first screen's ↑ opens 황윤환T 관측 실습 directly.
   const beta = useBeta();
   const [lab, setLab] = useState(false);
-  const practiceSlot = beta && path.length === 0 && !menu.children.some(item => item.direction === 'up');
+  const practiceSlot = beta && path.length === 0 && isMidterm && !menu.children.some(item => item.direction === 'up');
   const current = findGroup(menu, path.at(-1)?.id) ?? menu;
+  // 첫 화면의 바로가기: 처음 화면 ↑ → 중간고사 보관함, 보관함 ↓ → 처음 화면(기말고사).
+  const link = path.length || subject || lab ? null
+    : isMidterm ? { direction: 'down' as Direction, label: '기말고사', note: '처음 화면으로', href: HOME_URL }
+    : { direction: 'up' as Direction, label: '중간고사', note: '지난 카드 보관함', href: MIDTERM_URL };
   const resetDrag = useCallback(() => { pointer.current = null; setDrag({ x: 0, y: 0 }); }, []);
   const back = useCallback(() => {
     if (lab) setLab(false);
@@ -33,6 +38,7 @@ export default function SubjectPicker() {
   const choose = useCallback((direction: Direction) => {
     if (subject || lab) return;
     if (direction === 'down' && path.length) { back(); return; }
+    if (link && direction === link.direction) { playTick(); window.location.assign(link.href); return; }
     if (direction === 'up' && practiceSlot) { playTick(); setLab(true); resetDrag(); return; }
     const next = current.children.find(item => item.direction === direction);
     if (!next) return;
@@ -40,7 +46,7 @@ export default function SubjectPicker() {
     if (next.kind === 'group') setPath(previous => [...previous, next]);
     else setSubject(next);
     resetDrag();
-  }, [subject, lab, practiceSlot, path.length, current, back, resetDrag]);
+  }, [subject, lab, practiceSlot, link, path.length, current, back, resetDrag]);
   useEffect(() => {
     const home = () => { setSubject(null); setPath([]); resetDrag(); };
     window.addEventListener('johamin:home', home);
@@ -74,7 +80,8 @@ export default function SubjectPicker() {
     const node = current.children.find(item => item.direction === direction);
     const isBack = direction === 'down' && path.length > 0;
     const isPractice = direction === 'up' && practiceSlot;
-    return { direction, node, enabled: Boolean(node || isBack || isPractice), label: node?.name ?? (isBack ? '이전' : isPractice ? '실습' : ''), practice: isPractice };
+    const isLink = link?.direction === direction && !node;
+    return { direction, node, enabled: Boolean(node || isBack || isPractice || isLink), label: node?.name ?? (isBack ? '이전' : isPractice ? '실습' : isLink ? link.label : ''), practice: isPractice, note: isLink ? link.note : '' };
   });
   const distance = Math.hypot(drag.x, drag.y);
   const activeDirection = distance > 18 ? directionOf(drag.x, drag.y) : null;
@@ -86,17 +93,17 @@ export default function SubjectPicker() {
     <div className="swipe-game">
       <header className="swipe-heading"><h1 className="glass" ref={heading} tabIndex={-1}>조하민<span>레츠고</span></h1></header>
       <section className="swipe-board" aria-label={`${current.name} 메뉴`}>
-        {options.map(({ direction, node, enabled, label, practice }) => <button type="button" key={direction} disabled={!enabled}
+        {options.map(({ direction, node, enabled, label, practice, note }) => <button type="button" key={direction} disabled={!enabled}
           className={`swipe-option swipe-option-${direction} ${enabled ? 'glass' : 'swipe-empty-option'} ${activeDirection === direction && enabled ? 'is-active' : ''}`}
           onClick={() => choose(direction)} aria-label={enabled ? `${arrows[direction]} ${label}` : '빈 선택지'}>
           <kbd>{arrows[direction]}</kbd>
-          {enabled && <span>{label}{practice && <small>황윤환T 관측 · 베타</small>}{node?.kind === 'deck' && (node.cards.length > 0 ? <small>{node.cards.length}장</small> : !node.writtenQuestions?.length && <small>준비 중</small>)}</span>}
+          {enabled && <span>{label}{practice && <small>황윤환T 관측 · 베타</small>}{note && <small>{note}</small>}{node?.kind === 'deck' && (node.cards.length > 0 ? <small>{node.cards.length}장</small> : !node.writtenQuestions?.length && <small>준비 중</small>)}</span>}
         </button>)}
         <div className="swipe-stack">
           <div className="swipe-under swipe-under-two" /><div className="swipe-under swipe-under-one" />
           <LaminatedCard key={current.id} className={`is-current ${pointer.current ? 'is-dragging' : ''}`}
             style={{ '--tx': `calc(${drag.x}px / var(--card-zoom, 1))`, '--ty': `calc(${drag.y}px / var(--card-zoom, 1))`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
-            topic={path.length ? current.name : '과목 선택'} question={path.length ? '어느 파트?' : '어떤 과목?'}
+            topic={path.length ? current.name : isMidterm ? '중간고사 · 과목 선택' : '과목 선택'} question={path.length ? '어느 파트?' : '어떤 과목?'}
             onPointerDown={event => { if (!event.isPrimary || event.button !== 0) return; pointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId); }}
             onPointerMove={move} onPointerUp={release} onPointerCancel={resetDrag} onLostPointerCapture={resetDrag}>
             {highlighted && <div className={`swipe-drag-label ${distance >= SWIPE_DISTANCE ? 'is-ready' : ''}`}>{arrows[highlighted.direction]} {highlighted.label}</div>}

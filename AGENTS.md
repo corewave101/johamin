@@ -21,6 +21,7 @@
 
 - React 19 + Vite + TypeScript 정적 사이트. 서버 없음.
 - 사이트: https://corewave101.github.io/johamin/ — main에 합쳐지면 GitHub Actions(`deploy.yml`)가 자동 배포.
+- **시험 시즌(3.12.0~):** 처음 화면(`/johamin/`)은 기말고사 메뉴(`data/final-subjects.ts`, 지금은 빈 덱), `/johamin/midterm/`은 중간고사 보관함(`data/swipe-subjects.ts`의 `subjectMenu`, 예전 카드 그대로). 같은 앱이고 주소로 메뉴만 고른다(`lib/exam.ts`). 빌드가 `dist/midterm/index.html`을 복사하고, 모든 페이지에 `<base href>`를 넣어 `figures/…` 같은 상대 경로가 두 주소에서 다 맞게 한다. **기말 카드는 `*-final` 덱 id로** 넣는다(중간고사 덱 id를 다시 쓰면 중간고사 카드가 처음 화면에 섞인다). 로그인은 항상 처음 화면 주소로 돌아오고, 보관함에서 눌렀으면 다시 보관함으로 보낸다.
 - 오프라인 앱(PWA): `public/sw.js`, `public/manifest.webmanifest`. 빌드 때 `vite.config.ts`가 캐시 목록·버전을 채운다.
 - 카드 DB: Supabase 프로젝트 `vlmwrkalgjaduagxavhb`(서울). 표 구조는 `db/README.md`, `db/schema.sql`.
 - **로그인(3.11.0~):** 학교 구글 계정으로 로그인해야 메뉴가 열린다(`components/swipe/AuthGate.tsx`, `lib/auth.ts`). 누가 통과하는지는 **코드가 아니라 DB**가 정한다: `public.member_rules`의 이메일 패턴 + `is_member()`(`db/login-3.11.0.sql`). 반을 추가할 때는 대시보드에서 `member_rules`에 행만 넣는다(예: 2반 `26102__@bsis.hs.kr`). 편집자는 항상 통과. `user_metadata`는 사용자가 바꿀 수 있으니 권한 판단에 쓰지 않는다.

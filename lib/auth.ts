@@ -2,7 +2,14 @@
 // 공개 키만 쓴다. 로그인 정보는 이 기기 localStorage('johamin-auth-v1')에만 저장된다.
 import { AuthClient, type Session } from '@supabase/auth-js';
 import { clearMark, readMark, saveMark, SCHOOL_DOMAIN, takeAuthError } from './member';
+import { HOME_URL, isMidterm, MIDTERM_URL } from './exam';
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from './supabase-config';
+
+// 로그인은 항상 처음 화면 주소로 돌아온다(Supabase에 등록된 주소). 중간고사 보관함에서 눌렀으면 끝난 뒤 그리로 다시 보낸다.
+const RETURN_KEY = 'johamin-after-login-v1';
+function takeReturn(): string | null {
+  try { const path = sessionStorage.getItem(RETURN_KEY); sessionStorage.removeItem(RETURN_KEY); return path; } catch { return null; }
+}
 
 export const auth = new AuthClient({
   url: `${SUPABASE_URL}/auth/v1`,
@@ -38,6 +45,7 @@ async function askMember(session: Session): Promise<boolean> {
 
 /** Finishes a login that just came back from Google (if any), then asks the database whether this account may enter. */
 export async function checkAccess(): Promise<Access> {
+  const returnTo = takeReturn();
   const urlError = takeAuthError(window.location.href);
   if (urlError.message) window.history.replaceState(window.history.state, '', urlError.clean);
   const { error: initError } = await auth.initialize();
@@ -53,6 +61,7 @@ export async function checkAccess(): Promise<Access> {
   try {
     const ok = await askMember(session);
     saveMark({ userId: session.user.id, email, ok, at: Date.now() });
+    if (ok && returnTo === MIDTERM_URL && !isMidterm) { window.location.replace(returnTo); return { state: 'checking' }; }
     return ok ? { state: 'ok', email } : { state: 'denied', email };
   } catch {
     const mark = readMark();
@@ -62,10 +71,11 @@ export async function checkAccess(): Promise<Access> {
 }
 
 export async function signIn() {
+  if (isMidterm) try { sessionStorage.setItem(RETURN_KEY, MIDTERM_URL); } catch { /* stays on the first screen after login */ }
   const { error } = await auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${window.location.origin}${window.location.pathname}`,
+      redirectTo: `${window.location.origin}${HOME_URL}`,
       // hd: 계정 고르는 화면에 학교 계정을 먼저 보여 준다(통과 판정은 DB가 한다).
       queryParams: { prompt: 'select_account', hd: SCHOOL_DOMAIN },
     },
