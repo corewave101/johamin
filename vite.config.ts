@@ -1,10 +1,23 @@
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { createHash } from 'node:crypto';
-import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const { version } = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')) as { version: string };
+
+/**
+ * 중간고사 보관함(/johamin/midterm/): the same app page is copied to midterm/index.html, and every page gets
+ * <base href> so relative files (figures/…, portraits/…) load from the site root on both addresses.
+ */
+function midterm(): Plugin {
+  let base = '/';
+  return {
+    name: 'johamin-midterm',
+    configResolved(config) { base = config.base; },
+    transformIndexHtml: html => html.replace('<head>', `<head>\n<base href="${base}"/>`),
+  };
+}
 
 /**
  * Offline support: after the build, writes the list of every file into dist/sw.js so the service worker
@@ -17,6 +30,8 @@ function offline(): Plugin {
     apply: 'build',
     configResolved(config) { outDir = config.build.outDir; },
     closeBundle() {
+      mkdirSync(join(outDir, 'midterm'), { recursive: true });
+      copyFileSync(join(outDir, 'index.html'), join(outDir, 'midterm', 'index.html'));
       const files: string[] = [];
       const walk = (dir: string) => {
         for (const name of readdirSync(dir)) {
@@ -45,7 +60,7 @@ export default defineConfig({
   // GitHub Pages serves the site under /johamin/; local dev and build stay at /.
   base: process.env.PAGES_BASE ?? '/',
   define: { __APP_VERSION__: JSON.stringify(version), __CHANGELOG__: JSON.stringify(readFileSync(new URL('./CHANGELOG.md', import.meta.url), 'utf8')) },
-  plugins: [react(), offline()],
+  plugins: [react(), midterm(), offline()],
   server: { host: '127.0.0.1', port: 5175, strictPort: true },
   build: { outDir: 'dist' },
 });

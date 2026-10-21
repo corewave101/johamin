@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
+import { finalMenu } from '../../data/final-subjects';
 import { subjectMenu, type SubjectGroup, type SubjectNode } from '../../data/swipe-subjects';
 import { accessToken } from '../../lib/auth';
 import { trackPromise } from '../../lib/boot';
 import { cachedRows, cacheRows, fetchCardRows, groupRows, withLiveCards } from '../../lib/card-store';
+import { isMidterm } from '../../lib/exam';
+
+// /midterm/ shows the 중간고사 decks; the first screen shows this exam's (기말고사) decks.
+const baseMenu = isMidterm ? subjectMenu : finalMenu;
 
 /**
  * The subject menu with cards from the Supabase database.
@@ -12,7 +17,7 @@ import { cachedRows, cacheRows, fetchCardRows, groupRows, withLiveCards } from '
 export function useLiveMenu(): SubjectGroup {
   const [menu, setMenu] = useState<SubjectGroup>(() => {
     const cached = cachedRows();
-    return cached?.length ? withLiveCards(subjectMenu, groupRows(cached)) : subjectMenu;
+    return cached?.length ? withLiveCards(baseMenu, groupRows(cached)) : baseMenu;
   });
   useEffect(() => {
     const controller = new AbortController();
@@ -20,7 +25,7 @@ export function useLiveMenu(): SubjectGroup {
     trackPromise('cards', accessToken().then(token => fetchCardRows(controller.signal, token))).then(rows => {
       if (!rows.length) return;
       cacheRows(rows);
-      setMenu(withLiveCards(subjectMenu, groupRows(rows)));
+      setMenu(withLiveCards(baseMenu, groupRows(rows)));
     }).catch(() => { /* offline or database paused: keep what we have */ });
     return () => controller.abort();
   }, []);
