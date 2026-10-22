@@ -7,7 +7,7 @@ const { socialJoFinalCards: cards, socialJoFinalWritten: written, NOTE, BOOK } =
 const { finalMenu } = require('../data/final-subjects.ts');
 const { conceptsFor } = require('../data/study-concepts.ts');
 
-// 기말 사회 = 성신제T(←, 준비 중) · 조안나T(→), like the 중간고사 menu.
+// 기말 사회 = 성신제T(←) · 조안나T(→), like the 중간고사 menu.
 const social = finalMenu.children.find(n => n.id === 'humanities').children.find(n => n.name === '사회');
 assert.equal(social.kind, 'group');
 assert.deepEqual(social.children.map(d => [d.id, d.name, d.direction]), [['social-sung-final', '성신제T', 'left'], ['social-jo-final', '조안나T', 'right']]);

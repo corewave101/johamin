@@ -8,6 +8,7 @@ import { socialJoConcepts } from './social-jo-concepts';
 import { koreanNewyorkConcepts } from './korean-newyork-concepts';
 import { socialJoFinalConcepts } from './social-jo-final-concepts';
 import { chemistryFinalConcepts } from './chemistry-final-concepts';
+import { socialSungFinalConcepts } from './social-sung-final-concepts';
 export interface ConceptSection {
   heading: string;
   paragraphs?: string[];
@@ -31,6 +32,7 @@ export const studyConcepts: ConceptLesson[] = [
   ...koreanNewyorkConcepts,
   ...socialJoFinalConcepts,
   ...chemistryFinalConcepts,
+  ...socialSungFinalConcepts,
   {
     "id": "biology-jo-concept-1",
     "deckId": "biology-jo",
