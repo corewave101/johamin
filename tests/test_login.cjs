@@ -45,4 +45,15 @@ assert.ok(!/sb_secret_|eyJ[A-Za-z0-9_-]{20,}/.test(auth + fs.readFileSync('lib/s
 const sql = fs.readFileSync('db/login-3.11.0.sql', 'utf8');
 assert.ok(sql.includes("auth.jwt() ->> 'email'") && sql.includes("'google'"));
 assert.ok(!/^[^-]*user_metadata/m.test(sql), 'is_member() never reads user_metadata');
+// 3.17.0 차단 명단: is_member()가 member_blocks를 확인하고, 거절된 기기는 카드 사본을 지운다.
+const blocks = fs.readFileSync('db/member-blocks-3.17.0.sql', 'utf8');
+assert.ok(blocks.includes('create table if not exists public.member_blocks') && blocks.includes('not exists (select 1 from public.member_blocks b'));
+assert.ok(!/^[^-]*user_metadata/m.test(blocks), 'is_member() never reads user_metadata');
+assert.ok(auth.includes('if (!ok) clearCachedRows();'));
+const { clearCachedRows, cacheRows, cachedRows } = require('../lib/card-store.ts');
+cacheRows([{ id: 'x' }]);
+assert.equal(cachedRows().length, 1);
+clearCachedRows();
+assert.equal(cachedRows(), null, 'the saved cards are gone');
+assert.equal(cacheRows([{ id: 'x' }]), true, 'saving again after clearing writes a fresh copy');
 console.log('PASS: login errors, school account names, remembered pass and the login gate wiring.');

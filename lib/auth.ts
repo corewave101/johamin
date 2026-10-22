@@ -1,6 +1,7 @@
 // 학교 구글 계정 로그인. 누가 들어올 수 있는지는 DB(public.member_rules + is_member())가 정한다.
 // 공개 키만 쓴다. 로그인 정보는 이 기기 localStorage('johamin-auth-v1')에만 저장된다.
 import { AuthClient, type Session } from '@supabase/auth-js';
+import { clearCachedRows } from './card-store';
 import { clearMark, readMark, saveMark, SCHOOL_DOMAIN, takeAuthError } from './member';
 import { HOME_URL, isMidterm, MIDTERM_URL } from './exam';
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from './supabase-config';
@@ -61,6 +62,9 @@ export async function checkAccess(): Promise<Access> {
   try {
     const ok = await askMember(session);
     saveMark({ userId: session.user.id, email, ok, at: Date.now() });
+    // 명단에서 빠졌거나 차단된 계정: 이 기기에 저장해 둔 카드 사본도 지운다(오프라인으로 계속 보지 못하게).
+    // 통과 기록은 위에서 ok=false로 바뀌어 오프라인 통과도 막힌다. 풀이 기록(progress)은 건드리지 않는다.
+    if (!ok) clearCachedRows();
     if (ok && returnTo === MIDTERM_URL && !isMidterm) { window.location.replace(returnTo); return { state: 'checking' }; }
     return ok ? { state: 'ok', email } : { state: 'denied', email };
   } catch {

@@ -25,7 +25,7 @@
 - 오프라인 앱(PWA): `public/sw.js`, `public/manifest.webmanifest`. 빌드 때 `vite.config.ts`가 캐시 목록·버전을 채운다. 배경 영상(mp4)은 미리 저장 목록에서 빠지고, 기기가 실제로 트는 크기 하나만 `Backdrop`이 워커에 저장을 부탁한다.
 - **파일 나누기(3.13.0~):** `app/main.tsx`는 과목 메뉴(`SubjectPicker`, 데모는 `SwipeGame`)를 `import()`로 따로 불러온다. 그래서 `data/*.ts`(카드 묶음)는 별도 파일로 빠진다. **시작 화면·로그인·가호·업데이트 기록처럼 처음 뜨는 화면에서 `data/`를 직접 import하지 않는다.** 그러면 카드 묶음이 다시 첫 파일에 섞여서 첫 화면이 느려진다.
 - 카드 DB: Supabase 프로젝트 `vlmwrkalgjaduagxavhb`(서울). 표 구조는 `db/README.md`, `db/schema.sql`.
-- **로그인(3.11.0~):** 학교 구글 계정으로 로그인해야 메뉴가 열린다(`components/swipe/AuthGate.tsx`, `lib/auth.ts`). 누가 통과하는지는 **코드가 아니라 DB**가 정한다: `public.member_rules`의 이메일 패턴 + `is_member()`(`db/login-3.11.0.sql`). 반을 추가할 때는 대시보드에서 `member_rules`에 행만 넣는다(예: 2반 `26102__@bsis.hs.kr`). 편집자는 항상 통과. `user_metadata`는 사용자가 바꿀 수 있으니 권한 판단에 쓰지 않는다.
+- **로그인(3.11.0~):** 학교 구글 계정으로 로그인해야 메뉴가 열린다(`components/swipe/AuthGate.tsx`, `lib/auth.ts`). 누가 통과하는지는 **코드가 아니라 DB**가 정한다: `public.member_rules`의 이메일 패턴 + `is_member()`(`db/login-3.11.0.sql`). 반을 추가할 때는 대시보드에서 `member_rules`에 행만 넣는다(예: 2반 `26102__@bsis.hs.kr`). **특정 계정 차단은 `public.member_blocks`에 이메일(소문자) 한 줄**(`db/member-blocks-3.17.0.sql`): 허용 명단에 맞아도 막히고, 앱은 거절 판정이 나면 그 기기의 카드 사본(`johamin-cards-cache-v1`)을 지운다(풀이 기록은 그대로). 편집자는 항상 통과. `user_metadata`는 사용자가 바꿀 수 있으니 권한 판단에 쓰지 않는다.
 - 로그인 설정은 대시보드에 있다: Supabase(Authentication → URL Configuration: `https://corewave101.github.io/johamin/`, Google 제공자), Google 콘솔(리다이렉트 URI `https://vlmwrkalgjaduagxavhb.supabase.co/auth/v1/callback`, 앱 게시 상태 '프로덕션'). 개인정보처리방침은 `public/privacy.html`.
 
 | 폴더·파일 | 내용 |
