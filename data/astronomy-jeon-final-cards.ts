@@ -8,7 +8,8 @@ import type { WrittenQuestion } from './biology-written';
 // 28쪽 아래 「나. 식 현상을 이용하는 방법」은 지워져 있어서 넣지 않았다.
 // 시선 속도 계산 문제는 필기한 식 Vr = c × (λ − λ₀)/λ₀로 만들고, tests/test_astronomy_jeon_final.cjs가 값을 다시 계산한다.
 export const SOURCE = { title: '행성우주과학 8번_261025_194008.pdf', url: 'https://drive.google.com/file/d/1QmhZvDL3hj7C3a7bh6EGgWc7R9LRXdVJ/view', teacher: '전효진T' };
-export const NOTE = (page: number) => `전효진T 학습지 8번 · ${page === 1 ? 27 : 28}쪽`;
+// 쪽 번호는 중간고사 덱처럼 PDF 쪽(1~2)이다. 학습지에 인쇄된 쪽 번호로는 27~28쪽.
+export const NOTE = (page: number) => `전효진T 행성우주과학 8번 · ${page}쪽`;
 
 const T1 = '외계 행성 찾기', T2 = '도플러 효과', T3 = '전자기파와 스펙트럼', T4 = '시선 속도', T5 = '중심별의 시선 속도 변화', T6 = '시선 속도 계산';
 export const ASTRONOMY_JEON_TOPICS = [T1, T2, T3, T4, T5, T6];
@@ -123,7 +124,7 @@ export const astronomyJeonFinalCards: SwipeCard[] = rows.map(([topic, question, 
   topic, question,
   answers: Object.fromEntries(directions.map((direction, i) => [direction, choices[i]])) as Record<Direction, string>,
   correct: 'up', explanation,
-  source: { ...SOURCE, page, label: NOTE(page).split(' · ')[0] },
+  source: { ...SOURCE, page },
 }));
 
 export const astronomyJeonFinalWritten: WrittenQuestion[] = [
