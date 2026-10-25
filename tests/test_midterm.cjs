@@ -20,7 +20,8 @@ assert.equal(new Set(finals.map(d => d.id)).size, finals.length, '기말 덱 id�
 // ↓는 뒤로, 처음 화면 ↑는 중간고사 바로가기 자리.
 (function directions(group, root) {
   assert.equal(new Set(group.children.map(n => n.direction)).size, group.children.length, group.id);
-  assert.ok(group.children.every(n => n.direction !== 'down'), group.id);
+  // 처음 화면에는 뒤로 갈 곳이 없어서 ↓도 과목 자리(수학). 그 안쪽 메뉴의 ↓는 뒤로.
+  if (!root) assert.ok(group.children.every(n => n.direction !== 'down'), group.id);
   if (root) assert.ok(group.children.every(n => n.direction !== 'up'), '처음 화면 ↑는 중간고사 바로가기');
   group.children.filter(n => n.kind === 'group').forEach(g => directions(g, false));
 })(finalMenu, true);

@@ -17,7 +17,7 @@
   position: relative; z-index: 1; min-height: 100svh; display: grid; justify-items: center; align-content: start;
   padding: 26px 20px 40px; color: var(--ink);
 }
-.swipe-game { width: min(100%, 760px); }
+.swipe-game { width: min(100%, 760px); min-width: 0; }
 
 /* Glass surfaces: frosted, edge-lit, with a coated sheen on the top half. */
 .glass, .glass-button {
@@ -43,7 +43,7 @@
 /* Deck bar with progress */
 .swipe-deck-bar { display: flex; align-items: center; justify-content: center; gap: 12px; width: fit-content; max-width: 100%; margin: 12px auto 0; padding: 5px 14px 5px 5px; border-radius: 999px; }
 .swipe-deck-bar:not(:has(button)) { padding-left: 16px; }
-.swipe-deck-bar > strong { font-size: 16px; font-weight: 700; white-space: nowrap; }
+.swipe-deck-bar > strong { font-size: 16px; font-weight: 700; white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .deck-progress { display: flex; align-items: center; gap: 8px; }
 .swipe-progress { width: 96px; height: 6px; border-radius: 6px; overflow: hidden; background: rgba(255, 255, 255, .45); box-shadow: inset 0 1px 2px rgba(28, 18, 8, .3); }
 .swipe-progress i { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, #3aa7bd, var(--accent)); transition: width .3s ease; }

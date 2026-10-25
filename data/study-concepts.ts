@@ -10,6 +10,7 @@ import { socialJoFinalConcepts } from './social-jo-final-concepts';
 import { chemistryFinalConcepts } from './chemistry-final-concepts';
 import { socialSungFinalConcepts } from './social-sung-final-concepts';
 import { englishFinalConcepts } from './english-final-concepts';
+import { mathTrigFinalConcepts } from './math-trig-final-concepts';
 export interface ConceptSection {
   heading: string;
   paragraphs?: string[];
@@ -35,6 +36,7 @@ export const studyConcepts: ConceptLesson[] = [
   ...chemistryFinalConcepts,
   ...socialSungFinalConcepts,
   ...englishFinalConcepts,
+  ...mathTrigFinalConcepts,
   {
     "id": "biology-jo-concept-1",
     "deckId": "biology-jo",
