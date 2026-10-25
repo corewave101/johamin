@@ -9,6 +9,9 @@ import { koreanNewyorkConcepts } from './korean-newyork-concepts';
 import { socialJoFinalConcepts } from './social-jo-final-concepts';
 import { chemistryFinalConcepts } from './chemistry-final-concepts';
 import { socialSungFinalConcepts } from './social-sung-final-concepts';
+import { englishFinalConcepts } from './english-final-concepts';
+import { mathTrigFinalConcepts } from './math-trig-final-concepts';
+import { astronomyJeonFinalConcepts } from './astronomy-jeon-final-concepts';
 export interface ConceptSection {
   heading: string;
   paragraphs?: string[];
@@ -33,6 +36,9 @@ export const studyConcepts: ConceptLesson[] = [
   ...socialJoFinalConcepts,
   ...chemistryFinalConcepts,
   ...socialSungFinalConcepts,
+  ...englishFinalConcepts,
+  ...mathTrigFinalConcepts,
+  ...astronomyJeonFinalConcepts,
   {
     "id": "biology-jo-concept-1",
     "deckId": "biology-jo",
