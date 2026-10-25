@@ -76,6 +76,12 @@ export async function fetchCardRows(signal?: AbortSignal, token?: string | null)
 // The saved copy as text, kept from the last read/write so an unchanged download is not written (and redrawn) again.
 let savedText: string | null = null;
 
+/** Removes the cards saved on this device (an account that is not allowed in any more must not keep studying offline). */
+export function clearCachedRows() {
+  savedText = null;
+  try { localStorage.removeItem(CACHE_KEY); } catch { /* storage may be blocked */ }
+}
+
 export function cachedRows(): CardRow[] | null {
   try { const raw = localStorage.getItem(CACHE_KEY); savedText = raw; return raw ? JSON.parse(raw) as CardRow[] : null; } catch { return null; }
 }
