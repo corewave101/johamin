@@ -3,7 +3,7 @@
 import { AuthClient, type Session } from '@supabase/auth-js';
 import { clearCachedRows } from './card-store';
 import { clearMark, readMark, saveMark, SCHOOL_DOMAIN, takeAuthError } from './member';
-import { ELICE_URL, HOME_URL, isElice, isMidterm, MIDTERM_URL } from './exam';
+import { examPage, HOME_URL, PAGE_URL } from './exam';
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from './supabase-config';
 import { countVisit } from './visits';
 
@@ -66,7 +66,7 @@ export async function checkAccess(): Promise<Access> {
     // 명단에서 빠졌거나 차단된 계정: 이 기기에 저장해 둔 카드 사본도 지운다(오프라인으로 계속 보지 못하게).
     // 통과 기록은 위에서 ok=false로 바뀌어 오프라인 통과도 막힌다. 풀이 기록(progress)은 건드리지 않는다.
     if (!ok) clearCachedRows();
-    if (ok && ((returnTo === MIDTERM_URL && !isMidterm) || (returnTo === ELICE_URL && !isElice))) { window.location.replace(returnTo); return { state: 'checking' }; }
+    if (ok && returnTo && returnTo !== HOME_URL && returnTo !== PAGE_URL[examPage] && Object.values(PAGE_URL).includes(returnTo)) { window.location.replace(returnTo); return { state: 'checking' }; }
     // 익명 접속 수: 하루 한 번 숫자만 1 올린다(누구인지는 보내지 않는다).
     if (ok) void countVisit(session.access_token);
     return ok ? { state: 'ok', email } : { state: 'denied', email };
@@ -78,7 +78,7 @@ export async function checkAccess(): Promise<Access> {
 }
 
 export async function signIn() {
-  if (isMidterm || isElice) try { sessionStorage.setItem(RETURN_KEY, isElice ? ELICE_URL : MIDTERM_URL); } catch { /* stays on the first screen after login */ }
+  if (examPage !== 'final') try { sessionStorage.setItem(RETURN_KEY, PAGE_URL[examPage]); } catch { /* stays on the first screen after login */ }
   const { error } = await auth.signInWithOAuth({
     provider: 'google',
     options: {

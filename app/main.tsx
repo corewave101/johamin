@@ -2,6 +2,7 @@ import '../components/swipe/observation.css';
 import '../components/swipe/optics.css';
 import '../components/swipe/structure.css';
 import '../components/swipe/elice.css';
+import '../components/swipe/lotte.css';
 import { lazy, Suspense, useEffect, useState, type ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
 import AppStatus from '../components/swipe/AppStatus';
@@ -11,10 +12,11 @@ import BlessingToggle from '../components/swipe/BlessingToggle';
 import CardSizeControl from '../components/swipe/CardSizeControl';
 import Intro from '../components/swipe/Intro';
 import JumpscareLayer from '../components/swipe/JumpscareLayer';
+import LottePeek from '../components/swipe/LottePeek';
 import SoundToggle from '../components/swipe/SoundToggle';
 import UpdateLog from '../components/swipe/UpdateLog';
 import { trackPromise } from '../lib/boot';
-import { isElice } from '../lib/exam';
+import { isElice, isLotte } from '../lib/exam';
 import './globals.css';
 import './scene.css';
 import './swipe.css';
@@ -55,6 +57,7 @@ createRoot(document.getElementById('root')!).render(<>
   {!isElice && <AppStatus />}
   {/* 정보 코딩 연습장: 가호 · 업데이트 확인 · 소리 · 버전을 위쪽 막대 오른쪽에 작게 모은다(components/swipe/elice.css). */}
   {isElice && <div className="elice-dock"><BlessingToggle /><AppStatus /><SoundToggle /><UpdateLog version={__APP_VERSION__} changelog={__CHANGELOG__} /></div>}
+  {!isLotte && <LottePeek />}
   <JumpscareLayer />
   <IntroHost />
   {!isElice && <UpdateLog version={__APP_VERSION__} changelog={__CHANGELOG__} />}

@@ -2,6 +2,7 @@
 //   ← → (or slide a finger across the hand) moves to the next card, ↑ / Enter / flicking the card up plays it,
 //   ↓ / Esc goes back. A mouse click plays a card; on touch the first tap lifts it and the second tap (or a flick up) plays it.
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
+import { BRAND } from '../../lib/exam';
 import { isTyping } from '../../lib/directions';
 import { playTick } from '../../lib/sound';
 import { modalOpen, useEscape } from './MenuCard';
@@ -101,7 +102,7 @@ export default function CardHand({ deckName, prompt, cards, onBack, backLabel, s
   const current = cards[at];
   return <main className="swipe-app hand-app">
     <div className="swipe-game hand-game">
-      <header className="swipe-heading"><h1 className="glass" ref={heading} tabIndex={-1}>조하민<span>레츠고</span></h1></header>
+      <header className="swipe-heading"><h1 className="glass" ref={heading} tabIndex={-1}>{BRAND.first}<span>{BRAND.rest}</span></h1></header>
       <div className="swipe-deck-bar glass">
         <button type="button" className="glass-button" onClick={onBack}>← {backLabel}</button>
         <strong>{deckName}</strong>

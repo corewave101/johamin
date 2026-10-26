@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
+import { BRAND } from '../../lib/exam';
 import { swipeCards, type Direction, type SwipeCard } from '../../data/swipe-cards';
 import { answerView, onAnswerViewChange, setAnswerView } from '../../lib/answer-view';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
@@ -223,7 +224,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     <StreakFlame streak={game.streak} />
     <div className={`swipe-game ${card?.passage ? 'has-passage' : ''} ${finished ? 'is-finished' : ''}`}>
       <div className="swipe-main">
-      <header className="swipe-heading"><h1 className="glass">조하민<span>레츠고</span></h1></header>
+      <header className="swipe-heading"><h1 className="glass">{BRAND.first}<span>{BRAND.rest}</span></h1></header>
       <div className="swipe-deck-bar glass">
         {onBack && <button type="button" className="glass-button" onClick={onBack}>{backLabel}</button>}
         <strong>{deckName}</strong>

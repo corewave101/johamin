@@ -5,7 +5,8 @@ const ts = require('typescript');
 require.extensions['.ts'] = (m, f) => m._compile(ts.transpileModule(fs.readFileSync(f, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText, f);
 const { finalMenu } = require('../data/final-subjects.ts');
 const { subjectDecks } = require('../data/swipe-subjects.ts');
-const { isMidterm, isElice, examPage, MIDTERM_URL, ELICE_URL, HOME_URL, NAV_TARGETS, navTargets } = require('../lib/exam.ts');
+const { isMidterm, isElice, isLotte, examPage, MIDTERM_URL, ELICE_URL, LOTTE_URL, HOME_URL, NAV_TARGETS, navTargets, BRAND, PAGE_URL } = require('../lib/exam.ts');
+const { lotteMenu } = require('../data/lotte-subjects.ts');
 const { subjectMenu } = require('../data/swipe-subjects.ts');
 
 const flatten = g => g.children.flatMap(n => n.kind === 'group' ? flatten(n) : [n]);
@@ -36,13 +37,22 @@ assert.equal(examPage, 'final');
 assert.equal(HOME_URL, '/');
 assert.equal(MIDTERM_URL, '/midterm/');
 assert.equal(ELICE_URL, '/elice/');
+assert.equal(LOTTE_URL, '/lotte/');
+assert.equal(isLotte, false);
+assert.deepEqual(BRAND, { first: '조하민', rest: '레츠고' });
+assert.deepEqual(Object.keys(PAGE_URL).sort(), ['elice', 'final', 'lotte', 'midterm']);
 // 이동 메뉴: 방향은 어디서나 같고(↑ 기말 · ← 중간 · → 정보), 지금 페이지 자리는 비운다.
 assert.deepEqual(NAV_TARGETS.map(t => `${t.direction}:${t.label}:${t.href}`), ['up:기말고사:/', 'left:중간고사:/midterm/', 'right:정보:/elice/']);
-assert.deepEqual(navTargets('final').map(t => t.direction), ['left', 'right']);
-assert.deepEqual(navTargets('midterm').map(t => t.direction), ['up', 'right']);
-assert.deepEqual(navTargets('elice').map(t => t.direction), ['up', 'left']);
+// 4.6.0: 롯데는 지금 페이지가 비운 자리에 들어간다. 롯데 페이지에서는 기말 · 중간 · 정보가 원래 자리.
+const show = from => navTargets(from).map(t => `${t.direction}:${t.label}`).sort();
+assert.deepEqual(show('final'), ['left:중간고사', 'right:정보', 'up:롯데']);
+assert.deepEqual(show('midterm'), ['left:롯데', 'right:정보', 'up:기말고사']);
+assert.deepEqual(show('elice'), ['left:중간고사', 'right:롯데', 'up:기말고사']);
+assert.deepEqual(show('lotte'), ['left:중간고사', 'right:정보', 'up:기말고사']);
 // 두 카드 메뉴 모두 첫 화면 ↑는 비어 있다(이동 자리). 중간고사 첫 화면 ↓는 베타 실습 자리라 비운다.
-for (const m of [finalMenu, subjectMenu]) assert.ok(m.children.every(n => n.direction !== 'up'), m.name);
+for (const m of [finalMenu, subjectMenu, lotteMenu]) assert.ok(m.children.every(n => n.direction !== 'up'), m.name);
+// 롯데 메뉴: 문제는 아직 비어 있다(준비 중). 덱 id는 'lotte-'로 시작한다.
+assert.ok(flatten(lotteMenu).every(d => d.id.startsWith('lotte-') && d.cards.length === 0 && !midtermIds.has(d.id)));
 assert.ok(subjectMenu.children.every(n => n.direction !== 'down'));
 // 정보 페이지(4.3.0~)는 카드가 아니라 엘리스식 코딩 연습장이다(tests/test_elice.cjs). 문제 id는 'info-'로 시작해 덱 id와 겹치지 않는다.
 const { eliceProblems } = require('../data/elice-problems.ts');
@@ -50,11 +60,11 @@ assert.ok(eliceProblems.every(p => p.id.startsWith('info-') && !midtermIds.has(p
 
 // Wiring: the menu picks its decks by address, the build makes midterm/index.html, login returns to the registered address.
 const live = fs.readFileSync('components/swipe/useLiveMenu.ts', 'utf8');
-assert.ok(live.includes('const baseMenu = isMidterm ? subjectMenu : finalMenu;'));
+assert.ok(live.includes('const baseMenu = isLotte ? lotteMenu : isMidterm ? subjectMenu : finalMenu;'));
 const vite = fs.readFileSync('vite.config.ts', 'utf8');
-assert.ok(vite.includes("for (const dir of ['midterm', 'elice'])") && vite.includes("join(outDir, dir, 'index.html')") && vite.includes('<base href='));
+assert.ok(vite.includes("for (const dir of ['midterm', 'elice', 'lotte'])") && vite.includes("join(outDir, dir, 'index.html')") && vite.includes('<base href='));
 const picker = fs.readFileSync('components/swipe/SubjectPicker.tsx', 'utf8');
 assert.ok(picker.includes('navTargets(examPage)') && picker.includes("setNav(true)") && picker.includes('window.location.assign(target.href)'));
 const auth = fs.readFileSync('lib/auth.ts', 'utf8');
-assert.ok(auth.includes('redirectTo: `${window.location.origin}${HOME_URL}`') && auth.includes('isElice ? ELICE_URL : MIDTERM_URL'));
-console.log(`PASS: ${finals.length} 기말 decks on new ids, ${subjectDecks.length} 중간고사 decks kept at /midterm/, 정보 코딩 연습장 at /elice/, 이동 menu on ↑ everywhere.`);
+assert.ok(auth.includes('redirectTo: `${window.location.origin}${HOME_URL}`') && auth.includes('sessionStorage.setItem(RETURN_KEY, PAGE_URL[examPage])'));
+console.log(`PASS: ${finals.length} 기말 decks on new ids, ${subjectDecks.length} 중간고사 decks kept at /midterm/, 정보 코딩 연습장 at /elice/, 롯데 at /lotte/, 이동 menu on ↑ everywhere.`);

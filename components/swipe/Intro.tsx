@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { loadState, onLoadChange, trackPromise } from '../../lib/boot';
 import { playDesertWind } from '../../lib/intro-sound';
 import { coinTextScale, useTheme } from './useTheme';
+import { BRAND } from '../../lib/exam';
 
 const MIN_MS = 1400;  // long enough to see the sand blow, even when everything is cached
 const MAX_MS = 4000;  // slow connections get the button anyway; the video and the rest keep loading behind
@@ -57,10 +58,10 @@ export default function Intro() {
 
   if (gone) return null;
   const percent = ready ? 100 : load.total ? Math.min(99, Math.round(load.progress * 100)) : 0;
-  return <div className={`intro${ready ? ' is-ready' : ''}${leaving ? ' is-leaving' : ''}`} role="dialog" aria-modal="true" aria-label="조하민레츠고 시작 화면">
+  return <div className={`intro${ready ? ' is-ready' : ''}${leaving ? ' is-leaving' : ''}`} role="dialog" aria-modal="true" aria-label={`${BRAND.first}${BRAND.rest} 시작 화면`}>
     <SandCanvas rushing={leaving} color={theme.palette.light} />
     <div className="intro-haze" aria-hidden="true" />
-    <p className="intro-title">조하민레츠고</p>
+    <p className="intro-title">{BRAND.first}{BRAND.rest}</p>
     <div className="intro-center">
       <div className="intro-loading" role="progressbar" aria-label="불러오는 중" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-hidden={ready}>
         <div className="intro-bar"><span style={{ transform: `scaleX(${percent / 100})` }} /></div>
