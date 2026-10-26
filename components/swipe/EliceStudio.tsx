@@ -73,8 +73,8 @@ function CourseList({ records }: { records: Record<string, EliceRecord> }) {
     <header className="elice-course-head">
       <div>
         <p className="elice-kicker"><span aria-hidden="true">⌘</span> 정보 · 엘리스 수행 대비</p>
-        <h1>코드 빈칸 완성하기</h1>
-        <p className="elice-lead">빈칸(<code>____</code>)을 채우고 <b>실행</b> · <b>제출</b>하면 브라우저 안 파이썬이 바로 채점해요.</p>
+        <h1>엘리스 코딩 연습</h1>
+        <p className="elice-lead">입력 받는 코드 밑에 나머지를 짜고 <b>실행</b> · <b>제출</b>하면 브라우저 안 파이썬이 바로 채점해요. DFS(스택)만 빈칸(<code>____</code>) 채우기예요.</p>
       </div>
       <nav className="elice-nav" aria-label="이동">
         {navTargets('elice').map(target => <a key={target.page} className="glass-button" href={target.href}><span aria-hidden="true">{ARROW[target.direction]}</span> {target.label}</a>)}
@@ -141,7 +141,8 @@ function useRunner() {
 function ProblemView({ problem, record, onRecord }: { problem: EliceProblem; record?: EliceRecord; onRecord: (all: Record<string, EliceRecord>) => void }) {
   const index = eliceProblems.indexOf(problem);
   const chapter = ELICE_CHAPTERS.find(c => c.id === problem.chapter)!;
-  const [code, setCode] = useState(record?.code ?? problem.template);
+  // 4.3.0 때 빈칸 코드로 저장된 것은 새 처음 코드(입력 부분만)로 바꾼다. 점수는 그대로.
+  const [code, setCode] = useState(() => record?.code && !(record.code.includes('____') && !problem.blanks) ? record.code : problem.template);
   const [tab, setTab] = useState<'problem' | 'code'>('problem');
   const [stdinPick, setStdinPick] = useState<number | 'custom'>(0);
   const [custom, setCustom] = useState(problem.examples[0].input);
@@ -275,7 +276,7 @@ function ProblemView({ problem, record, onRecord }: { problem: EliceProblem; rec
         </details> : null}
         <details className="elice-answer">
           <summary>정답 코드 보기</summary>
-          <p className="elice-answer-blanks">{problem.blanks.map((blank, i) => <span key={i}><b>{'①②③④⑤⑥⑦⑧⑨'[i]}</b> <code>{blank}</code></span>)}</p>
+          {problem.blanks && <p className="elice-answer-blanks">{problem.blanks.map((blank, i) => <span key={i}><b>{'①②③④⑤⑥⑦⑧⑨'[i]}</b> <code>{blank}</code></span>)}</p>}
           <pre className="elice-answer-code">{highlight(solution)}</pre>
         </details>
         <p className="elice-source">근거: {problem.source}</p>
@@ -285,7 +286,7 @@ function ProblemView({ problem, record, onRecord }: { problem: EliceProblem; rec
         <div className="elice-filetab">
           <span className="elice-file"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v5h5" /></svg>main.py</span>
           <span className="elice-filetab-gap" />
-          <button type="button" className="elice-tool" onClick={nextBlank} disabled={!blanksLeft} title="다음 빈칸 고르기 (빈칸을 고른 채 Tab)">다음 빈칸{blanksLeft > 0 && ` · ${blanksLeft}`}</button>
+          {problem.blanks && <button type="button" className="elice-tool" onClick={nextBlank} disabled={!blanksLeft} title="다음 빈칸 고르기 (빈칸을 고른 채 Tab)">다음 빈칸{blanksLeft > 0 && ` · ${blanksLeft}`}</button>}
           <button type="button" className="elice-tool" onClick={reset}>초기화</button>
         </div>
         <CodeEditor ref={editor} value={code} onChange={setCode} label="main.py 코드" onShortcut={kind => void (kind === 'submit' ? submit() : run())} />
