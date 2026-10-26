@@ -5,6 +5,7 @@ import { clearCachedRows } from './card-store';
 import { clearMark, readMark, saveMark, SCHOOL_DOMAIN, takeAuthError } from './member';
 import { ELICE_URL, HOME_URL, isElice, isMidterm, MIDTERM_URL } from './exam';
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from './supabase-config';
+import { countVisit } from './visits';
 
 // 로그인은 항상 처음 화면 주소로 돌아온다(Supabase에 등록된 주소). 중간고사 보관함에서 눌렀으면 끝난 뒤 그리로 다시 보낸다.
 const RETURN_KEY = 'johamin-after-login-v1';
@@ -66,6 +67,8 @@ export async function checkAccess(): Promise<Access> {
     // 통과 기록은 위에서 ok=false로 바뀌어 오프라인 통과도 막힌다. 풀이 기록(progress)은 건드리지 않는다.
     if (!ok) clearCachedRows();
     if (ok && ((returnTo === MIDTERM_URL && !isMidterm) || (returnTo === ELICE_URL && !isElice))) { window.location.replace(returnTo); return { state: 'checking' }; }
+    // 익명 접속 수: 하루 한 번 숫자만 1 올린다(누구인지는 보내지 않는다).
+    if (ok) void countVisit(session.access_token);
     return ok ? { state: 'ok', email } : { state: 'denied', email };
   } catch {
     const mark = readMark();
