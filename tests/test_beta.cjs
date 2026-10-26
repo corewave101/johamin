@@ -28,8 +28,22 @@ assert.ok(hand.includes('aria-selected="true"') && hand.includes('전체 풀기 
 assert.ok(!hand.includes('hand-beta'), 'no 베타 badge on the hand any more');
 setBeta(true);
 assert.equal(render(), hand, 'the switch no longer changes the subject menu');
-// SwipeGame and SubjectStudy no longer read the switch; only the first-screen 실습 does.
-for (const f of ['SwipeGame.tsx', 'SubjectStudy.tsx', 'CardHand.tsx']) assert.ok(!/useBeta|betaOn/.test(fs.readFileSync('components/swipe/' + f, 'utf8')), f);
+// SwipeGame and CardHand don't read the switch. The first-screen 실습 and (4.0.1) 양동비T 빛과 렌즈 실습 do.
+for (const f of ['SwipeGame.tsx', 'CardHand.tsx']) assert.ok(!/useBeta|betaOn/.test(fs.readFileSync('components/swipe/' + f, 'utf8')), f);
 assert.ok(/useBeta/.test(fs.readFileSync('components/swipe/SubjectPicker.tsx', 'utf8')), '실습 stays behind the switch');
+const study = fs.readFileSync('components/swipe/SubjectStudy.tsx', 'utf8');
+assert.equal((study.match(/\bbeta\b/g) ?? []).length, 2, 'SubjectStudy reads the switch only for the optics lab (const beta = useBeta(); deck.lab === optics && beta)');
+// 양동비T: beta off → 준비 중 (unchanged), beta on → the hand shows only the lab card, with no 베타 badge.
+const { finalMenu } = require('../data/final-subjects.ts');
+const flat = g => g.children.flatMap(n => n.kind === 'group' ? flat(n) : [n]);
+const yang = flat(finalMenu).find(d => d.id === 'physics-yang-final');
+const renderYang = () => renderToStaticMarkup(React.createElement(SubjectStudy, { deck: yang, onBack: () => {} }));
+setBeta(false);
+const off = renderYang();
+assert.ok(off.includes('준비 중') && !off.includes('광선 작도하기'), 'beta off: 양동비T is still 준비 중');
+setBeta(true);
+const on = renderYang();
+assert.ok(on.includes('광선 작도하기') && !on.includes('준비 중') && !/베타|beta/i.test(on.replace(/data-[a-z-]+="[^"]*"/g, '')), 'beta on: the lab card, no 베타 label');
+assert.equal((on.match(/class="hand-card/g) ?? []).length, 1, 'only the lab card (no disabled empty cards)');
 setBeta(false);
 console.log(`PASS: beta switch at v0.0.-1, version shown as "3.3.0 베타.1", subject menu is a ${cards}-card hand without beta; the switch only gates 실습.`);

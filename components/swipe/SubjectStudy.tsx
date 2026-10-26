@@ -2,6 +2,8 @@ import { isHwangExam } from '../../data/hwang-exam';
 import { isShortQuestion } from '../../data/study-practice';
 import ChemistryLab from './ChemistryLab';
 import ObservationLab from './ObservationLab';
+import OpticsLab from './OpticsLab';
+import { useBeta } from './useBeta';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { SubjectDeck } from '../../data/swipe-subjects';
 import type { SwipeCard } from '../../data/swipe-cards';
@@ -42,6 +44,9 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   const [topics, setTopics] = useState<string[]>([]);
   const [writtenTopic, setWrittenTopic] = useState('');
   const lessons = conceptsFor(deck.id);
+  // 양동비T 빛과 렌즈 실습: 베타 테스트를 켠 기기에서만 학습 메뉴에 나온다(화면에 따로 표시하지 않음).
+  const beta = useBeta();
+  const optics = deck.lab === 'optics' && beta;
   // 영어 단어 문제(뜻+품사)는 본문 문제와 따로 '단어 문제' 카드 패에서 푼다.
   const generalCards = deck.cards.filter(card => !isEnglishWordCard(card));
   const wordCards = deck.cards.filter(isEnglishWordCard);
@@ -59,7 +64,7 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   const activeWritten = mode === 'short' ? allShort : allWritten;
   const scopedQuestions = writtenTopic ? activeWritten.filter(q => q.topic === writtenTopic) : activeWritten;
   const questions = wrongOnly && mode === 'short' ? scopedQuestions.filter(q => written.drafts[q.id]?.correct === false) : scopedQuestions;
-  const pending = !deck.cards.length && !questions.length && !lessons.length; // a part whose class material has not arrived yet
+  const pending = !deck.cards.length && !questions.length && !lessons.length && !optics; // a part whose class material has not arrived yet
   const title = useRef<HTMLHeadingElement>(null);
   useEffect(() => { title.current?.focus(); }, [mode, written.index]);
   // The parent handles Esc; mode navigation uses explicit buttons.
@@ -69,13 +74,14 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   if (mode === 'missed') return <SwipeGame cards={retryCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
   if (mode === 'choice') return <SwipeGame cards={choiceCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
   if (mode === 'word-game') return <SwipeGame cards={wordList.cards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · ${wordList.name}`} onBack={() => setMode('words')} backLabel={gameBackLabel} />;
-  if (mode === 'practice') return deck.id === 'chemistry' ? <ChemistryLab onBack={() => setMode('menu')} /> : <ObservationLab onBack={() => setMode('menu')} />;
+  if (mode === 'practice') return optics ? <OpticsLab onBack={() => setMode('menu')} /> : deck.id === 'chemistry' ? <ChemistryLab onBack={() => setMode('menu')} /> : <ObservationLab onBack={() => setMode('menu')} />;
   const name = deck.fullName ?? deck.name;
   // 카드 패: the subject menu and the unit menu are hands of cards.
   if (mode === 'menu' && !pending) {
     const missedAll = missedCards(generalCards);
     const topicCount = new Set(generalCards.map(card => card.topic)).size;
     const hand: HandCard[] = [
+      ...(optics ? [{ id: 'practice', kicker: '빛과 렌즈 실습', title: '광선 작도하기', note: '렌즈 · 거울 · 스크린 상맺힘', onPlay: () => setMode('practice') }] : []),
       ...(deck.id === 'chemistry' ? [{ id: 'practice', kicker: '화학 실험', title: '직접 연습하기', note: '적정 곡선 · 완충 · 5% 규칙', onPlay: () => setMode('practice') }] : []),
       ...(deck.id === 'astronomy-hwang' ? [{ id: 'practice', kicker: '관측 실습', title: '직접 연습하기', note: '정렬 · 천구 좌표 · 기록', onPlay: () => setMode('practice') }] : []),
       { id: 'concept', kicker: '개념', title: '개념 정리', note: `${lessons.length}단원`, disabled: !lessons.length, onPlay: () => setMode('concept') },
@@ -86,7 +92,9 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
       ...(allShort.length ? [{ id: 'short', kicker: '단답형', title: '정답 하나 쓰기', note: `${allShort.length}문제`, onPlay: () => { setWrongOnly(false); setWrittenTopic(''); setWritten(w => ({ ...w, index: 0 })); setMode('short'); } }] : []),
       ...(allWritten.length ? [{ id: 'written', kicker: '서술형', title: '서술형 쓰기', note: `${allWritten.length}문제`, onPlay: () => { setWrongOnly(false); setWrittenTopic(''); setWritten(w => ({ ...w, index: 0 })); setMode('written'); } }] : []),
     ];
-    return <CardHand key="menu" deckName={name} prompt="무엇을 할까요?" cards={hand} onBack={onBack} backLabel="과목·파트" start={exam ? hand.findIndex(c => c.id === 'short') : 1} />;
+    // 카드가 아직 없는 파트(실습만 있는 파트)는 비활성 카드 없이 실습만 보여 준다.
+    const shown = deck.cards.length ? hand : hand.filter(card => !card.disabled);
+    return <CardHand key="menu" deckName={name} prompt="무엇을 할까요?" cards={shown} onBack={onBack} backLabel="과목·파트" start={exam ? shown.findIndex(c => c.id === 'short') : Math.min(1, shown.length - 1)} />;
   }
   if (mode === 'words') {
     const play = (name: string, cards: SwipeCard[]) => { setWordList({ name, cards }); setMode('word-game'); };

@@ -1,4 +1,5 @@
 import '../components/swipe/observation.css';
+import '../components/swipe/optics.css';
 import { lazy, Suspense, useEffect, useState, type ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
 import AppStatus from '../components/swipe/AppStatus';
