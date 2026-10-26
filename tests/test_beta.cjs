@@ -28,22 +28,18 @@ assert.ok(hand.includes('aria-selected="true"') && hand.includes('전체 풀기 
 assert.ok(!hand.includes('hand-beta'), 'no 베타 badge on the hand any more');
 setBeta(true);
 assert.equal(render(), hand, 'the switch no longer changes the subject menu');
-// SwipeGame and CardHand don't read the switch. The first-screen 실습 and (4.0.1) 양동비T 빛과 렌즈 실습 do.
-for (const f of ['SwipeGame.tsx', 'CardHand.tsx']) assert.ok(!/useBeta|betaOn/.test(fs.readFileSync('components/swipe/' + f, 'utf8')), f);
+// SwipeGame, SubjectStudy and CardHand don't read the switch; only the first-screen 실습 does.
+// (양동비T 빛과 렌즈 실습은 4.0.1에 베타로 나왔다가 4.1.0에 정식 기능이 됐다.)
+for (const f of ['SwipeGame.tsx', 'SubjectStudy.tsx', 'CardHand.tsx']) assert.ok(!/useBeta|betaOn/.test(fs.readFileSync('components/swipe/' + f, 'utf8')), f);
 assert.ok(/useBeta/.test(fs.readFileSync('components/swipe/SubjectPicker.tsx', 'utf8')), '실습 stays behind the switch');
-const study = fs.readFileSync('components/swipe/SubjectStudy.tsx', 'utf8');
-assert.equal((study.match(/\bbeta\b/g) ?? []).length, 2, 'SubjectStudy reads the switch only for the optics lab (const beta = useBeta(); deck.lab === optics && beta)');
-// 양동비T (4.0.2부터 카드가 있다): beta off → 카드 패에 실습 없음, beta on → 실습 카드가 맨 앞에 더해지고 '베타' 글자는 없다.
 const { finalMenu } = require('../data/final-subjects.ts');
 const flat = g => g.children.flatMap(n => n.kind === 'group' ? flat(n) : [n]);
 const yang = flat(finalMenu).find(d => d.id === 'physics-yang-final');
 const renderYang = () => renderToStaticMarkup(React.createElement(SubjectStudy, { deck: yang, onBack: () => {} }));
 setBeta(false);
 const off = renderYang();
-assert.ok(off.includes('전체 풀기') && !off.includes('광선 작도하기'), 'beta off: 양동비T has cards but no lab');
+assert.ok(off.includes('광선 작도하기') && off.includes('전체 풀기'), '양동비T: the lab card is there without the switch');
 setBeta(true);
-const on = renderYang();
-assert.ok(on.includes('광선 작도하기') && !/베타|beta/i.test(on.replace(/data-[a-z-]+="[^"]*"/g, '')), 'beta on: the lab card, no 베타 label');
-assert.equal((on.match(/class="hand-card/g) ?? []).length, (off.match(/class="hand-card/g) ?? []).length + 1, 'beta on adds exactly the lab card');
+assert.equal(renderYang(), off, 'the switch does not change 양동비T');
 setBeta(false);
-console.log(`PASS: beta switch at v0.0.-1, version shown as "3.3.0 베타.1", subject menu is a ${cards}-card hand without beta; the switch only gates 실습.`);
+console.log(`PASS: beta switch at v0.0.-1, version shown as "3.3.0 베타.1", subject menu is a ${cards}-card hand without beta; the switch only gates the first-screen 실습.`);

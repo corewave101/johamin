@@ -3,7 +3,6 @@ import { isShortQuestion } from '../../data/study-practice';
 import ChemistryLab from './ChemistryLab';
 import ObservationLab from './ObservationLab';
 import OpticsLab from './OpticsLab';
-import { useBeta } from './useBeta';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { SubjectDeck } from '../../data/swipe-subjects';
 import type { SwipeCard } from '../../data/swipe-cards';
@@ -44,9 +43,8 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   const [topics, setTopics] = useState<string[]>([]);
   const [writtenTopic, setWrittenTopic] = useState('');
   const lessons = conceptsFor(deck.id);
-  // 양동비T 빛과 렌즈 실습: 베타 테스트를 켠 기기에서만 학습 메뉴에 나온다(화면에 따로 표시하지 않음).
-  const beta = useBeta();
-  const optics = deck.lab === 'optics' && beta;
+  // 양동비T 빛과 렌즈 실습(4.1.0부터 정식 기능): 덱에 lab: 'optics'가 있으면 학습 메뉴 맨 앞에 나온다.
+  const optics = deck.lab === 'optics';
   // 영어 단어 문제(뜻+품사)는 본문 문제와 따로 '단어 문제' 카드 패에서 푼다.
   const generalCards = deck.cards.filter(card => !isEnglishWordCard(card));
   const wordCards = deck.cards.filter(isEnglishWordCard);
