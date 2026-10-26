@@ -75,7 +75,7 @@ const ALKANE = ['', '메테인', '에테인', '프로페인', '뷰테인', '펜�
 const ALKENE = ['', '', '에텐', '프로펜', '뷰텐', '펜텐', '헥센', '헵텐', '옥텐', '노넨', '데센'];
 const ALKYNE = ['', '', '에타인', '프로파인', '뷰타인', '펜타인', '헥사인', '헵타인', '옥타인', '노나인', '데카인'];
 const ALCOHOL = ['', '메탄올', '에탄올', '프로판올', '뷰탄올', '펜탄올', '헥산올', '헵탄올', '옥탄올', '노난올', '데칸올'];
-const MULTIPLIER = ['', '', '다이', '트라이', '테트라'];
+const MULTIPLIER = ['', '', '다이', '트라이', '테트라', '펜타', '헥사'];
 export const MAX_CHAIN = 10;
 
 interface Group { ko: string; key: string; size: number }
@@ -182,7 +182,7 @@ export function nameOf(mol: Mol): NameResult {
   return { ok: true, name: render(best.plan), plan: best.plan };
 }
 
-type Candidate = { plan: Plan; stereoState?: Stereo | 'none' | 'unknown' | 'unsupported'; length: number; subCount: number };
+type Candidate = { plan: Plan; stereoState?: Stereo | 'none' | 'unknown' | 'unsupported'; length: number; subCount: number; /** 표에 없는 가지가 있는 사슬(이름은 못 붙이지만 순위 비교에는 넣는다). */ bad?: boolean };
 
 function candidatePlans(mol: Mol): { list: Candidate[]; all: Candidate[] } | { reason: string } {
   const adj = adjacency(mol);
@@ -280,15 +280,16 @@ function candidatePlans(mol: Mol): { list: Candidate[]; all: Candidate[] } | { r
     const subs: Sub[] = [];
     let oh: number | undefined;
     let bad = false;
+    let branches = 0;
     parent.forEach((atom, k) => {
       for (const nb of adj[atom]) {
         if (inChain.has(nb.to)) continue;
         if (mol.atoms[nb.to].el === 'O') { oh = k + 1; continue; }
+        branches += 1;
         const g = groupOf(nb.to, atom);
-        if (!g) bad = true; else subs.push({ group: g, locant: k + 1 });
+        if (!g) { bad = true; subs.push({ group: { ko: '?', key: '?', size: 9 }, locant: k + 1 }); } else subs.push({ group: g, locant: k + 1 });
       }
     });
-    if (bad) continue;
     let multiInfo: Plan['multi'];
     let stereoState: Candidate['stereoState'];
     if (multi) {
@@ -298,18 +299,25 @@ function candidatePlans(mol: Mol): { list: Candidate[]; all: Candidate[] } | { r
     }
     const category: Category = oh ? 'alcohol' : multi ? (multi.order === 3 ? 'alkyne' : 'alkene') : 'alkane';
     const plan: Plan = { category, ring: false, parent, subs, oh, multi: multiInfo, stereo: stereoState === 'cis' || stereoState === 'trans' ? stereoState : undefined };
-    all.push({ plan, stereoState, length: parent.length, subCount: subs.length });
+    all.push({ plan, stereoState, length: parent.length, subCount: branches, bad });
   }
-  if (!all.length) return { reason: '수업에서 배운 치환기(메틸 · 에틸 · 프로필 · 아이소프로필 · 뷰틸들 · 클로로 · 브로모)만 쓸 수 있어요.' };
+  if (!all.some(c => !c.bad)) return { reason: '수업에서 배운 치환기(메틸 · 에틸 · 프로필 · 아이소프로필 · 뷰틸들 · 클로로 · 브로모)만 쓸 수 있어요.' };
   const maxLength = Math.max(...all.map(c => c.length));
   const longest = all.filter(c => c.length === maxLength);
   const maxSubs = Math.max(...longest.map(c => c.subCount));
-  const list = longest.filter(c => c.subCount === maxSubs).sort((x, y) => compareKeys(numberingKey(x.plan), numberingKey(y.plan)));
+  const tier = longest.filter(c => c.subCount === maxSubs);
+  // 주사슬 후보 중에 표에 없는 가지(1-메틸뷰틸 같은)를 가진 사슬이 있으면, 그 사슬이 정답일 수 있으니 이름을 붙이지 않는다.
+  if (tier.some(c => c.bad)) return { reason: '수업에서 배운 치환기로는 이름을 붙일 수 없는 가지가 있어요.' };
+  const list = tier.sort((x, y) => compareKeys(numberingKey(x.plan), numberingKey(y.plan)));
   const best = list[0];
+  // 번호까지 똑같은데 치환기 종류가 다른 사슬이 남으면, 수업에서 안 배운 규칙(곁가지 탄소 수 비교)이 필요하다.
+  const same = (c: Candidate) => compareKeys(numberingKey(c.plan).slice(0, 3), numberingKey(best.plan).slice(0, 3)) === 0;
+  const kinds = (c: Candidate) => c.plan.subs.map(x => x.group.ko).sort().join();
+  if (list.some(c => same(c) && kinds(c) !== kinds(best))) return { reason: '주사슬을 고르는 데 수업 범위 밖의 규칙이 필요한 화합물이에요.' };
   const keys = new Set(best.plan.subs.map(s => s.group.key));
   const kos = new Set(best.plan.subs.map(s => s.group.ko));
   if (keys.size !== kos.size) return { reason: '뷰틸 종류 두 가지를 함께 쓰는 화합물은 수업 범위 밖이에요.' };
-  return { list, all };
+  return { list, all: all.filter(c => !c.bad) };
 }
 
 /** Plan → 한국어 이름. alphabetical=false면 번호 순서로 늘어놓은(틀린) 이름. */
@@ -547,7 +555,7 @@ export const PPT_EXAMPLES: { smiles: string; name: string; stereo?: Stereo; page
   { smiles: 'CC(C)(O)CCCCBr', name: '6-브로모-2-메틸-2-헥산올', page: 'PPT 5 · 11쪽' },
 ];
 
-export interface Puzzle { mol: Mol; name: string; category: Category; page?: string; plan: Plan }
+export interface Puzzle { mol: Mol; name: string; category: Category; page?: string; plan: Plan; spec?: HardSpec }
 
 const pick = <T,>(list: T[], rng: Rng) => list[Math.floor(rng() * list.length)];
 const weighted = <T,>(items: [T, number][], rng: Rng) => {
@@ -632,9 +640,113 @@ function generate(category: Category, rng: Rng): { smiles: string; stereo?: Ster
   return { smiles: chainSmiles(n, branches, undefined, ohAt) };
 }
 
+// ── 고난도: 주사슬 7~10개, 치환기 3~6개(표 22.2 전부 · 할로젠), 시스 · 트랜스 ─────────────────
+/** 고난도 문제의 설계도. 보기(헷갈리는 다른 분자)를 만들 때 조금씩 바꿔 쓴다. */
+export interface HardSpec { ring: boolean; n: number; subs: [number, string][]; multi?: { at: number; order: 2 | 3 }; ohAt?: number; stereo?: Stereo }
+/** 붙은 탄소에서 가지 끝까지 탄소 수(이보다 주사슬 남은 쪽이 짧으면 주사슬이 바뀐다). */
+const REACH: Record<string, number> = { methyl: 1, ethyl: 2, propyl: 3, isopropyl: 2, butyl: 4, 'sec-butyl': 3, isobutyl: 3, 'tert-butyl': 2, chloro: 0, bromo: 0 };
+const BUTYLS = ['butyl', 'sec-butyl', 'isobutyl', 'tert-butyl'];
+
+function specSmiles(spec: HardSpec): string {
+  const branches = new Map<number, string[]>();
+  for (const [k, g] of spec.subs) branches.set(k, [...(branches.get(k) ?? []), ALKYL_SMILES[g]]);
+  if (!spec.ring) return chainSmiles(spec.n, branches, spec.multi, spec.ohAt);
+  let s = '';
+  for (let k = 0; k < spec.n; k += 1) {
+    s += k === 0 ? 'C1' : k === 1 && spec.multi ? '=C' : 'C';
+    for (const b of branches.get(k) ?? []) s += `(${b})`;
+  }
+  return `${s}1`;
+}
+
+function validSpec(spec: HardSpec): boolean {
+  const count = new Map<number, number>();
+  const butyls = new Set(spec.subs.map(([, g]) => g).filter(g => BUTYLS.includes(g)));
+  if (butyls.size > 1) return false;
+  for (const [k, g] of spec.subs) {
+    if (k < 0 || k >= spec.n) return false;
+    count.set(k, (count.get(k) ?? 0) + 1);
+    if (spec.ring) { if (GROUPS[g].size >= spec.n) return false; continue; }
+    const end = k === 0 || k === spec.n - 1;
+    if (end && g !== 'chloro' && g !== 'bromo') return false;
+    if (REACH[g] > Math.min(k, spec.n - 1 - k) && !end) return false;
+    if (spec.multi && (k === spec.multi.at || k === spec.multi.at + 1)) return false; // 시스 · 트랜스가 또렷하게
+    if (k === spec.ohAt && g !== 'methyl' && g !== 'ethyl') return false;
+  }
+  for (const [k, c] of count) {
+    const end = !spec.ring && (k === 0 || k === spec.n - 1);
+    const limit = spec.ring ? 2 : end ? 1 : k === spec.ohAt ? 1 : 2;
+    if (c > limit) return false;
+  }
+  return true;
+}
+
+function hardSpec(category: Category, rng: Rng): HardSpec {
+  const alkyls: [string, number][] = [['methyl', 4], ['ethyl', 3], ['propyl', 1.5], ['isopropyl', 2], ['tert-butyl', 1.2], ['sec-butyl', 0.8], ['isobutyl', 0.8], ['butyl', 0.5]];
+  if (category === 'cyclo') {
+    const n = 5 + Math.floor(rng() * 4);
+    const spec: HardSpec = { ring: true, n, subs: [], multi: rng() < 0.35 ? { at: 0, order: 2 } : undefined };
+    const want = 3 + Math.floor(rng() * 2);
+    for (let i = 0; i < 30 && spec.subs.length < want; i += 1) {
+      const next: HardSpec = { ...spec, subs: [...spec.subs, [Math.floor(rng() * n), weighted(alkyls, rng)]] };
+      if (validSpec(next)) spec.subs = next.subs;
+    }
+    return spec;
+  }
+  const n = 7 + Math.floor(rng() * 4);
+  const spec: HardSpec = { ring: false, n, subs: [] };
+  if (category === 'alkene' || category === 'alkyne') {
+    spec.multi = { at: 1 + Math.floor(rng() * (n - 3)), order: category === 'alkene' ? 2 : 3 };
+    if (category === 'alkene') spec.stereo = rng() < 0.5 ? 'cis' : 'trans';
+  }
+  if (category === 'alcohol') spec.ohAt = Math.floor(rng() * n);
+  const groups: [string, number][] = category === 'alcohol' ? [...alkyls, ['chloro', 2.5], ['bromo', 2.5]] : alkyls;
+  const want = 3 + Math.floor(rng() * (category === 'alcohol' ? 3 : 4));
+  for (let i = 0; i < 40 && spec.subs.length < want; i += 1) {
+    const next: HardSpec = { ...spec, subs: [...spec.subs, [Math.floor(rng() * n), weighted(groups, rng)]] };
+    if (validSpec(next)) spec.subs = next.subs;
+  }
+  return spec;
+}
+
+const SIMILAR: Record<string, string[]> = {
+  methyl: ['ethyl'], ethyl: ['methyl', 'propyl'], propyl: ['isopropyl', 'ethyl'], isopropyl: ['propyl', 'ethyl'],
+  butyl: ['sec-butyl', 'propyl'], 'sec-butyl': ['butyl', 'isobutyl'], isobutyl: ['sec-butyl', 'tert-butyl'], 'tert-butyl': ['isobutyl', 'isopropyl'],
+  chloro: ['bromo'], bromo: ['chloro'],
+};
+/** 설계도를 한 군데만 바꾼 비슷한 분자들(치환기 자리 · 종류, 다중 결합 · OH 자리, 시스 ↔ 트랜스). */
+function mutations(spec: HardSpec, rng: Rng): HardSpec[] {
+  const out: HardSpec[] = [];
+  spec.subs.forEach(([k, g], i) => {
+    for (const d of [-1, 1]) out.push({ ...spec, subs: spec.subs.map((x, j) => (j === i ? [k + d, g] as [number, string] : x)) });
+    for (const other of SIMILAR[g] ?? []) out.push({ ...spec, subs: spec.subs.map((x, j) => (j === i ? [k, other] as [number, string] : x)) });
+  });
+  if (spec.multi && !spec.ring) for (const d of [-1, 1]) out.push({ ...spec, multi: { ...spec.multi, at: spec.multi.at + d } });
+  if (spec.ohAt !== undefined) for (const d of [-1, 1]) out.push({ ...spec, ohAt: spec.ohAt + d });
+  if (spec.stereo) out.push({ ...spec, stereo: spec.stereo === 'cis' ? 'trans' : 'cis' });
+  for (let i = out.length - 1; i > 0; i -= 1) { const j = Math.floor(rng() * (i + 1)); [out[i], out[j]] = [out[j], out[i]]; }
+  return out.filter(m => validSpec(m) && (!m.multi || m.ring || (m.multi.at >= 1 && m.multi.at + 1 <= m.n - 2)) && (m.ohAt === undefined || (m.ohAt >= 0 && m.ohAt < m.n)));
+}
+
+function puzzleFromSpec(spec: HardSpec, rng: Rng): Puzzle | null {
+  const base = parseSmiles(specSmiles(spec));
+  const mol = layout(base, spec.stereo, rng);
+  if (!mol) return null;
+  const named = nameOf(mol);
+  if (!named.ok) return null;
+  return { mol, name: named.name, category: named.plan.category, plan: named.plan, spec };
+}
+
 /** 문제 하나. PPT 화합물이 자주 나오고, 나머지는 범위 안에서 새로 만든다. */
-export function makePuzzle(categories: Category[], rng: Rng = Math.random, options: { minCarbons?: number } = {}): Puzzle {
+export function makePuzzle(categories: Category[], rng: Rng = Math.random, options: { minCarbons?: number; hard?: boolean } = {}): Puzzle {
   const minCarbons = options.minCarbons ?? 1;
+  if (options.hard) for (let tries = 0; tries < 400; tries += 1) {
+    const category = pick(categories, rng);
+    const p = puzzleFromSpec(hardSpec(category, rng), rng);
+    if (!p || p.category !== category || p.plan.subs.length < 3 || p.name.length < 18) continue;
+    if (category === 'alkene' && !p.plan.stereo) continue;
+    return p;
+  }
   for (let tries = 0; tries < 400; tries += 1) {
     let spec: { smiles: string; stereo?: Stereo; page?: string };
     if (rng() < 0.35) {
@@ -667,6 +779,12 @@ function categoryOfSmiles(smiles: string): Category {
 /** 이름 맞히기 보기 네 개(정답 + 헷갈리는 이름 셋). */
 export function nameChoices(puzzle: Puzzle, rng: Rng = Math.random): string[] {
   const wrong = new Set(wrongNames(puzzle.mol));
+  // 고난도: 한 군데만 다른 분자(자리 · 종류 · 시스/트랜스)가 보기로 나온다.
+  if (puzzle.spec) for (const m of mutations(puzzle.spec, rng)) {
+    if (wrong.size >= 10) break;
+    const other = puzzleFromSpec(m, rng);
+    if (other && other.name !== puzzle.name) wrong.add(other.name);
+  }
   // 비슷한 다른 분자: 같은 범위에서 몇 개 만들어 탄소 수가 가까운 것.
   for (let i = 0; i < 60 && wrong.size < 8; i += 1) {
     const other = makePuzzle([puzzle.category], rng);
@@ -678,7 +796,7 @@ export function nameChoices(puzzle: Puzzle, rng: Rng = Math.random): string[] {
   for (let i = list.length - 1; i > 0; i -= 1) { const j = Math.floor(rng() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
   // 틀린 번호 · 순서 이름을 먼저(시험 함정), 다른 분자는 그다음.
   const traps = wrongNames(puzzle.mol);
-  const chosen = [...new Set([...traps.filter(() => rng() < 0.8), ...list])].slice(0, 3);
+  const chosen = [...new Set([...traps.filter(() => rng() < (puzzle.spec ? 0.5 : 0.8)), ...list])].slice(0, 3);
   const all = [puzzle.name, ...chosen];
   for (let i = all.length - 1; i > 0; i -= 1) { const j = Math.floor(rng() * (i + 1)); [all[i], all[j]] = [all[j], all[i]]; }
   return all;

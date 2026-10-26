@@ -13,6 +13,9 @@ import MenuCard from './MenuCard';
 type Page = 'menu' | 'name' | 'draw' | 'free';
 const CATEGORIES: Category[] = ['alkane', 'cyclo', 'alkene', 'alkyne', 'alcohol'];
 const RANGE_KEY = 'johamin-structure-range-v1';
+const LEVEL_KEY = 'johamin-structure-level-v1';
+type Level = 'basic' | 'hard';
+const loadLevel = (): Level => { try { return localStorage.getItem(LEVEL_KEY) === 'hard' ? 'hard' : 'basic'; } catch { return 'basic'; } };
 
 function loadRange(): Category[] {
   try {
@@ -49,27 +52,32 @@ export function MoleculeSvg({ mol, numbers, label, className = '' }: { mol: Mol;
 export default function StructureLab({ onBack }: { onBack: () => void }) {
   const [page, setPage] = useState<Page>('menu');
   const [range, setRange] = useState<Category[]>(loadRange);
-  useEffect(() => { try { localStorage.setItem(RANGE_KEY, JSON.stringify(range)); } catch { /* not saved */ } }, [range]);
+  const [level, setLevel] = useState<Level>(loadLevel);
+  useEffect(() => { try { localStorage.setItem(RANGE_KEY, JSON.stringify(range)); localStorage.setItem(LEVEL_KEY, level); } catch { /* not saved */ } }, [range, level]);
   const toMenu = useCallback(() => { playTick(); setPage('menu'); }, []);
   if (page === 'menu') return <MenuCard topic="주민지T · 구조식 실습" question="무엇을 해 볼까요?"
     up={{ label: '이름 맞히기', note: '골격 구조식 → 이름', onChoose: () => setPage('name') }}
-    left={{ label: '구조식 그리기', note: '이름 → 점 잇기', onChoose: () => setPage('draw') }}
+    left={{ label: '구조식 그리기', note: '이름 → 그림판에 그리기', onChoose: () => setPage('draw') }}
     right={{ label: '자유 그리기', note: '그리면 이름을 알려 줘요', onChoose: () => setPage('free') }}
     onBack={onBack} backLabel="학습 메뉴">
     <p className="structure-menu-note glass">H는 그리지 않는 골격 구조식이에요. 꺾이는 점과 끝점이 탄소예요.</p>
   </MenuCard>;
-  const rangeBar = page === 'free' ? null : <div className="structure-range" role="group" aria-label="범위">{CATEGORIES.map(c => <button key={c} type="button" className="glass-button" aria-pressed={range.includes(c)}
-    onClick={() => setRange(r => r.includes(c) ? (r.length > 1 ? r.filter(x => x !== c) : r) : [...r, c])}>{CATEGORY_LABEL[c]}</button>)}</div>;
+  const rangeBar = page === 'free' ? null : <div className="structure-filters">
+    <div className="structure-level" role="group" aria-label="난이도">{(['basic', 'hard'] as Level[]).map(l => <button key={l} type="button" className={`glass-button${l === 'hard' ? ' is-hard' : ''}`} aria-pressed={level === l} onClick={() => setLevel(l)}>{l === 'basic' ? '기본' : '🔥 고난도'}</button>)}</div>
+    <div className="structure-range" role="group" aria-label="범위">{CATEGORIES.map(c => <button key={c} type="button" className="glass-button" aria-pressed={range.includes(c)}
+      onClick={() => setRange(r => r.includes(c) ? (r.length > 1 ? r.filter(x => x !== c) : r) : [...r, c])}>{CATEGORY_LABEL[c]}</button>)}</div>
+  </div>;
+  const hard = level === 'hard';
   return <main className="swipe-app biology-app structure-app"><div className="biology-study">
     <header className="biology-header glass"><button type="button" className="glass-button" onClick={toMenu}>← 구조식 실습</button><h1>{page === 'name' ? '이름 맞히기' : page === 'draw' ? '구조식 그리기' : '자유 그리기'}</h1></header>
-    {page === 'name' ? <NameQuiz key={range.join()} range={range} rangeBar={rangeBar} />
-      : <DrawPractice key={`${page}-${range.join()}`} free={page === 'free'} range={range} rangeBar={rangeBar} />}
+    {page === 'name' ? <NameQuiz key={`${level}-${range.join()}`} range={range} hard={hard} rangeBar={rangeBar} />
+      : <DrawPractice key={`${page}-${level}-${range.join()}`} free={page === 'free'} range={range} hard={hard} rangeBar={rangeBar} />}
   </div></main>;
 }
 
 // ── 이름 맞히기: 네 방향 보기(방향키 = 밀기 = 누르기) ─────────────────────────────
-function NameQuiz({ range, rangeBar }: { range: Category[]; rangeBar: React.ReactNode }) {
-  const next = useCallback(() => { const p = makePuzzle(range, Math.random, { minCarbons: 2 }); return { puzzle: p, choices: nameChoices(p) }; }, [range]);
+function NameQuiz({ range, hard, rangeBar }: { range: Category[]; hard: boolean; rangeBar: React.ReactNode }) {
+  const next = useCallback(() => { const p = makePuzzle(range, Math.random, { minCarbons: 2, hard }); return { puzzle: p, choices: nameChoices(p) }; }, [range, hard]);
   const [round, setRound] = useState(next);
   const [picked, setPicked] = useState<Direction | null>(null);
   const [score, setScore] = useState({ right: 0, total: 0 });
@@ -107,7 +115,7 @@ function NameQuiz({ range, rangeBar }: { range: Category[]; rangeBar: React.Reac
   const p = round.puzzle;
   return <section className="biology-menu glass structure-panel">
     <div className="structure-top">{rangeBar}<p className="structure-score">맞힌 문제 <b>{score.right}</b> / {score.total}</p></div>
-    <div className="structure-quiz">
+    <div className={`structure-quiz${hard ? ' is-hard' : ''}`}>
       {directions.map(d => <button key={d} type="button" className={`structure-choice choice-${d}${picked ? (d === answer ? ' is-right' : d === picked ? ' is-wrong' : ' is-dim') : ''}`} onClick={() => choose(d)} disabled={!slots[d]}>
         <kbd>{arrows[d]}</kbd><span>{slots[d]}</span></button>)}
       <div className="structure-card" style={{ transform: `translate(${drag.x * 0.35}px, ${drag.y * 0.35}px) rotate(${drag.x * 0.02}deg)` }}
@@ -128,147 +136,179 @@ function NameQuiz({ range, rangeBar }: { range: Category[]; rangeBar: React.Reac
   </section>;
 }
 
-// ── 구조식 그리기: 점을 누르고 이어서 결합 ─────────────────────────────────────
-// 판 크기: PC는 가로로 넓게, 폰은 점 간격이 넓게(노네인 주사슬 9개가 들어가는 크기).
-const boardSize = () => (typeof window !== 'undefined' && window.innerWidth < 560 ? { COLS: 10, ROWS: 9 } : { COLS: 13, ROWS: 7 });
-const SQ3 = Math.sqrt(3) / 2;
-type Key = string;
-const keyOf = (c: number, r: number): Key => `${c},${r}`;
-/** 판의 점 위치(SVG 좌표, 아래가 +). 세로 줄은 간격 1, 옆 줄은 반 칸 어긋나서 이웃 점 6개가 모두 거리 1이다. */
-const pos = (key: Key) => { const [c, r] = key.split(',').map(Number); return { x: c * SQ3, y: r + (c % 2 ? 0.5 : 0) }; };
-const neighbors = (a: Key, b: Key) => { const p = pos(a), q = pos(b); return Math.abs(Math.hypot(p.x - q.x, p.y - q.y) - 1) < 0.01; };
-interface Sketch { atoms: Record<Key, El>; bonds: { a: Key; b: Key; order: Order }[] }
-const EMPTY: Sketch = { atoms: {}, bonds: [] };
-type Tool = 'C' | 'O' | 'Cl' | 'Br' | 'erase';
-const TOOL_LABEL: Record<Tool, string> = { C: '탄소 잇기', O: 'OH', Cl: 'Cl', Br: 'Br', erase: '지우개' };
+// ── 구조식 그리기: 위에서 원자 · 결합을 고르고, 그림판에 툭 누르면 그 자리에 생긴다 ─────────────────
+const UNIT = 44; // 그림판 px → 분자 단위(결합 하나 ≈ 44px). 시스 · 트랜스 판정에 쓴다.
+const HIT_ATOM = 20, HIT_BOND = 11;
+const REACH_PX = UNIT * 1.9; // 고른 원자에서 이만큼 안쪽을 누르면 이어지고, 더 멀면 따로 시작한다
+type Tool = 'C' | 'O' | 'Cl' | 'Br' | 1 | 2 | 3 | 'move' | 'erase';
+const ATOM_TOOLS: Tool[] = ['C', 'O', 'Cl', 'Br'];
+const BOND_TOOLS: Tool[] = [1, 2, 3];
+const TOOL_LABEL: Record<string, string> = { C: '탄소', O: 'OH', Cl: 'Cl', Br: 'Br', 1: '단일 C–C', 2: '이중 C=C', 3: '삼중 C≡C', move: '✥ 옮기기', erase: '지우개' };
+const isAtomTool = (t: Tool): t is El => t === 'C' || t === 'O' || t === 'Cl' || t === 'Br';
+const isBondTool = (t: Tool): t is Order => t === 1 || t === 2 || t === 3;
+interface CAtom { id: number; el: El; x: number; y: number }
+interface CBond { a: number; b: number; order: Order }
+interface Drawing { atoms: CAtom[]; bonds: CBond[] }
+const EMPTY: Drawing = { atoms: [], bonds: [] };
 
-function sketchToMol(s: Sketch): Mol {
-  const keys = Object.keys(s.atoms);
-  const index = new Map(keys.map((k, i) => [k, i]));
-  return {
-    atoms: keys.map(k => { const p = pos(k); return { el: s.atoms[k], x: p.x, y: -p.y }; }), // 분자 좌표는 위가 +
-    bonds: s.bonds.map(b => ({ a: index.get(b.a)!, b: index.get(b.b)!, order: b.order })),
-  };
+function drawingToMol(d: Drawing): Mol {
+  const index = new Map(d.atoms.map((a, i) => [a.id, i]));
+  return { atoms: d.atoms.map(a => ({ el: a.el, x: a.x / UNIT, y: -a.y / UNIT })), bonds: d.bonds.map(b => ({ a: index.get(b.a)!, b: index.get(b.b)!, order: b.order })) };
 }
-/** 결합이 없는 탄소 점은 지운다(OH · Cl · Br도 결합이 없으면 지운다). */
-const tidy = (s: Sketch): Sketch => {
-  const used = new Set(s.bonds.flatMap(b => [b.a, b.b]));
-  return { atoms: Object.fromEntries(Object.entries(s.atoms).filter(([k]) => used.has(k))), bonds: s.bonds };
+const segmentDistance = (p: { x: number; y: number }, a: CAtom, b: CAtom) => {
+  const vx = b.x - a.x, vy = b.y - a.y, len2 = vx * vx + vy * vy || 1;
+  const t = Math.max(0, Math.min(1, ((p.x - a.x) * vx + (p.y - a.y) * vy) / len2));
+  return Math.hypot(p.x - (a.x + vx * t), p.y - (a.y + vy * t));
 };
 
-function DrawPractice({ free, range, rangeBar }: { free: boolean; range: Category[]; rangeBar: React.ReactNode }) {
-  const newTarget = useCallback(() => makePuzzle(range, Math.random, { minCarbons: 2 }), [range]);
+function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: Category[]; hard: boolean; rangeBar: React.ReactNode }) {
+  const newTarget = useCallback(() => makePuzzle(range, Math.random, { minCarbons: 2, hard }), [range, hard]);
   const [target, setTarget] = useState<Puzzle>(newTarget);
-  const [sketch, setSketch] = useState<Sketch>(EMPTY);
-  const [history, setHistory] = useState<Sketch[]>([]);
+  const [drawing, setDrawing] = useState<Drawing>(EMPTY);
+  const [history, setHistory] = useState<Drawing[]>([]);
   const [tool, setTool] = useState<Tool>('C');
-  const [{ COLS, ROWS }] = useState(boardSize);
-  const [selected, setSelected] = useState<Key | null>(null);
-  const [cursor, setCursor] = useState<Key>(keyOf(2, 3));
+  const [selected, setSelected] = useState<number | null>(null);
   const [result, setResult] = useState<{ ok: boolean; lines: string[] } | null>(null);
   const [reveal, setReveal] = useState(false);
   const [score, setScore] = useState({ right: 0, total: 0 });
-  const [hover, setHover] = useState<Key | null>(null);
+  const [hover, setHover] = useState<{ x: number; y: number } | null>(null);
+  const [size, setSize] = useState({ w: 800, h: 460 });
+  const [cursor, setCursor] = useState<{ x: number; y: number } | null>(null);
   const svg = useRef<SVGSVGElement>(null);
-  const down = useRef<{ key: Key | null; id: number } | null>(null);
+  const nextId = useRef(1);
+  const press = useRef<{ id: number; start: { x: number; y: number }; atom: number | null; moved: boolean; before: Drawing } | null>(null);
 
-  const commit = (next: Sketch) => { setHistory(h => [...h.slice(-40), sketch]); setSketch(tidy(next)); setResult(null); };
-  const undo = () => { const last = history.at(-1); if (!last) return; setHistory(h => h.slice(0, -1)); setSketch(last); setResult(null); };
-  const clear = () => { if (Object.keys(sketch.atoms).length) commit(EMPTY); setSelected(null); };
+  // 그림판 크기 = 화면에 보이는 크기(px). 좁은 폰에서는 조금 낮게.
+  useEffect(() => {
+    const el = svg.current;
+    if (!el) return;
+    const fit = () => { const w = Math.max(280, Math.round(el.clientWidth)); setSize({ w, h: w < 560 ? Math.round(w * 1.05) : 460 }); };
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
-  const connect = (a: Key, b: Key) => {
-    if (!neighbors(a, b)) return false;
-    const existing = sketch.bonds.find(x => (x.a === a && x.b === b) || (x.a === b && x.b === a));
-    if (existing) {
-      // 같은 두 점을 다시 이으면 단일 → 이중 → 삼중 → 없음
-      const bonds = existing.order === 3 ? sketch.bonds.filter(x => x !== existing) : sketch.bonds.map(x => x === existing ? { ...x, order: (x.order + 1) as Order } : x);
-      commit({ atoms: sketch.atoms, bonds });
+  const atomAt = (p: { x: number; y: number }, list = drawing.atoms) => {
+    let best: CAtom | null = null, dist = HIT_ATOM;
+    for (const a of list) { const d = Math.hypot(a.x - p.x, a.y - p.y); if (d < dist) { dist = d; best = a; } }
+    return best;
+  };
+  const bondAt = (p: { x: number; y: number }) => {
+    const byId = new Map(drawing.atoms.map(a => [a.id, a]));
+    let best = -1, dist = HIT_BOND;
+    drawing.bonds.forEach((b, i) => { const d = segmentDistance(p, byId.get(b.a)!, byId.get(b.b)!); if (d < dist) { dist = d; best = i; } });
+    return best;
+  };
+  const commit = (next: Drawing, before = drawing) => { setHistory(h => [...h.slice(-60), before]); setDrawing(next); setResult(null); };
+  const undo = () => { const last = history.at(-1); if (!last) return; setHistory(h => h.slice(0, -1)); setDrawing(last); setSelected(null); setResult(null); };
+  const clear = () => { if (drawing.atoms.length) commit(EMPTY); setSelected(null); };
+  const place = (d: Drawing, el: El, p: { x: number; y: number }) => {
+    const atom = { id: nextId.current++, el, x: Math.max(14, Math.min(size.w - 14, p.x)), y: Math.max(14, Math.min(size.h - 14, p.y)) };
+    return { drawing: { ...d, atoms: [...d.atoms, atom] }, atom };
+  };
+  const bond = (d: Drawing, a: number, b: number, order: Order, overwrite: boolean): Drawing => {
+    if (a === b) return d;
+    const i = d.bonds.findIndex(x => (x.a === a && x.b === b) || (x.a === b && x.b === a));
+    if (i < 0) return { ...d, bonds: [...d.bonds, { a, b, order }] };
+    return overwrite ? { ...d, bonds: d.bonds.map((x, j) => (j === i ? { ...x, order } : x)) } : d;
+  };
+  const removeAtom = (d: Drawing, id: number): Drawing => ({ atoms: d.atoms.filter(a => a.id !== id), bonds: d.bonds.filter(b => b.a !== id && b.b !== id) });
+
+  /** 그림판을 한 번 툭 눌렀을 때(마우스 · 손가락 · Enter 모두 여기로). */
+  const tap = (p: { x: number; y: number }) => {
+    const hit = atomAt(p);
+    if (tool === 'erase') {
+      if (hit) { commit(removeAtom(drawing, hit.id)); setSelected(null); return; }
+      const bi = bondAt(p);
+      if (bi >= 0) commit({ ...drawing, bonds: drawing.bonds.filter((_, i) => i !== bi) });
+      return;
+    }
+    if (tool === 'move') { setSelected(hit ? hit.id : null); return; }
+    if (isBondTool(tool)) {
+      if (hit) {
+        if (selected !== null && selected !== hit.id && drawing.atoms.some(a => a.id === selected)) { commit(bond(drawing, selected, hit.id, tool, true)); setSelected(null); playTick(); }
+        else setSelected(selected === hit.id ? null : hit.id);
+        return;
+      }
+      const bi = bondAt(p);
+      if (bi >= 0) { commit({ ...drawing, bonds: drawing.bonds.map((b, i) => (i === bi ? { ...b, order: tool } : b)) }); playTick(); return; }
+      setSelected(null);
+      return;
+    }
+    // 원자 도구: 빈 곳 → 그 자리에 원자(고른 원자가 있으면 결합까지), 원자 → 고르기 · 잇기
+    const el = tool as El;
+    const fromAtom = drawing.atoms.find(a => a.id === selected);
+    const near = (q: { x: number; y: number }) => fromAtom && Math.hypot(q.x - fromAtom.x, q.y - fromAtom.y) <= REACH_PX;
+    if (!hit) {
+      const made = place(drawing, el, p);
+      const link = fromAtom && near(p);
+      commit(link ? bond(made.drawing, fromAtom.id, made.atom.id, 1, false) : made.drawing);
+      setSelected(el === 'C' ? made.atom.id : null);
       playTick();
-      return true;
-    }
-    const atoms = { ...sketch.atoms };
-    if (!atoms[a]) atoms[a] = 'C';
-    if (!atoms[b]) atoms[b] = tool === 'O' || tool === 'Cl' || tool === 'Br' ? tool : 'C';
-    commit({ atoms, bonds: [...sketch.bonds, { a, b, order: 1 }] });
-    playTick();
-    return true;
-  };
-  const eraseAt = (key: Key) => {
-    if (sketch.atoms[key]) commit({ atoms: sketch.atoms, bonds: sketch.bonds.filter(b => b.a !== key && b.b !== key) });
-  };
-  const tapDot = (key: Key) => {
-    if (tool === 'erase') { eraseAt(key); setSelected(null); return; }
-    if (selected && selected !== key) {
-      if (connect(selected, key)) { setSelected(null); return; }
-      setSelected(key);
       return;
     }
-    if (selected === key) { setSelected(null); return; }
-    // OH · Cl · Br 도구로 이미 있는 점을 누르면 그 원자로 바꾼다.
-    if ((tool === 'O' || tool === 'Cl' || tool === 'Br' || tool === 'C') && sketch.atoms[key] && sketch.atoms[key] !== tool && tool !== 'C') {
-      commit({ atoms: { ...sketch.atoms, [key]: tool }, bonds: sketch.bonds });
-      return;
-    }
-    if (tool === 'C' && sketch.atoms[key] && sketch.atoms[key] !== 'C' && !selected) {
-      commit({ atoms: { ...sketch.atoms, [key]: 'C' }, bonds: sketch.bonds });
-      return;
-    }
-    setSelected(key);
-  };
-  const tapBond = (index: number) => {
-    const bond = sketch.bonds[index];
-    if (tool === 'erase') { commit({ atoms: sketch.atoms, bonds: sketch.bonds.filter((_, i) => i !== index) }); return; }
-    const bonds = bond.order === 3 ? sketch.bonds.filter((_, i) => i !== index) : sketch.bonds.map((b, i) => i === index ? { ...b, order: (b.order + 1) as Order } : b);
-    commit({ atoms: sketch.atoms, bonds });
-    playTick();
+    if (fromAtom?.id === hit.id) { setSelected(null); return; }
+    if (fromAtom && near(hit)) { commit(bond(drawing, fromAtom.id, hit.id, 1, false)); setSelected(hit.el === 'C' ? hit.id : null); playTick(); return; }
+    setSelected(hit.id);
   };
 
-  const at = (event: PointerEvent<SVGSVGElement>) => {
-    const el = svg.current!;
-    const pt = el.createSVGPoint();
-    pt.x = event.clientX; pt.y = event.clientY;
-    const p = pt.matrixTransform(el.getScreenCTM()!.inverse());
-    let best: Key | null = null, dist = 0.42;
-    for (let c = 0; c < COLS; c += 1) for (let r = 0; r < ROWS; r += 1) { const q = pos(keyOf(c, r)); const d = Math.hypot(q.x - p.x, q.y - p.y); if (d < dist) { dist = d; best = keyOf(c, r); } }
-    return { key: best, p };
+  const point = (event: PointerEvent<SVGSVGElement>) => {
+    const r = svg.current!.getBoundingClientRect();
+    return { x: (event.clientX - r.left) * size.w / r.width, y: (event.clientY - r.top) * size.h / r.height };
   };
   const onDown = (event: PointerEvent<SVGSVGElement>) => {
-    const { key } = at(event);
-    down.current = { key, id: event.pointerId };
+    const p = point(event);
+    press.current = { id: event.pointerId, start: p, atom: atomAt(p)?.id ?? null, moved: false, before: drawing };
     svg.current?.setPointerCapture(event.pointerId);
   };
-  const onMove = (event: PointerEvent<SVGSVGElement>) => { const { key } = at(event); setHover(key); };
+  const onMove = (event: PointerEvent<SVGSVGElement>) => {
+    const p = point(event);
+    setHover(p);
+    const pr = press.current;
+    if (!pr || pr.id !== event.pointerId) return;
+    if (Math.hypot(p.x - pr.start.x, p.y - pr.start.y) > 8) pr.moved = true;
+    if (tool === 'move' && pr.atom !== null && pr.moved) setDrawing(d => ({ ...d, atoms: d.atoms.map(a => (a.id === pr.atom ? { ...a, x: Math.max(14, Math.min(size.w - 14, p.x)), y: Math.max(14, Math.min(size.h - 14, p.y)) } : a)) }));
+  };
   const onUp = (event: PointerEvent<SVGSVGElement>) => {
-    const start = down.current;
-    down.current = null;
-    if (!start || start.id !== event.pointerId) return;
-    const { key, p } = at(event);
-    if (start.key && key && key !== start.key) { if (tool === 'erase') return; if (!connect(start.key, key)) setSelected(key); else setSelected(null); setCursor(key); return; }
-    if (key && key === start.key) { setCursor(key); tapDot(key); return; }
-    // 점이 아닌 곳: 결합 가운데를 누르면 결합 차수를 바꾼다.
-    const i = sketch.bonds.findIndex(b => { const m1 = pos(b.a), m2 = pos(b.b); return Math.hypot((m1.x + m2.x) / 2 - p.x, (m1.y + m2.y) / 2 - p.y) < 0.3; });
-    if (i >= 0) tapBond(i); else setSelected(null);
+    const pr = press.current;
+    press.current = null;
+    if (!pr || pr.id !== event.pointerId) return;
+    const p = point(event);
+    if (!pr.moved) { tap(p); return; }
+    if (tool === 'move') { if (pr.atom !== null) { setHistory(h => [...h.slice(-60), pr.before]); setResult(null); } return; }
+    // 원자에서 끌어서 놓기: 다른 원자 위면 결합, 빈 곳이면 새 원자 + 결합
+    if (pr.atom === null || tool === 'erase') return;
+    const end = atomAt(p);
+    if (end && end.id === pr.atom) return;
+    const order: Order = isBondTool(tool) ? tool : 1;
+    if (end) { commit(bond(drawing, pr.atom, end.id, order, isBondTool(tool))); setSelected(end.el === 'C' ? end.id : null); playTick(); return; }
+    const el: El = isAtomTool(tool) ? tool : 'C';
+    const made = place(drawing, el, p);
+    commit(bond(made.drawing, pr.atom, made.atom.id, order, false));
+    setSelected(el === 'C' ? made.atom.id : null);
+    playTick();
   };
   const onKeyDown = (event: ReactKeyboardEvent<SVGSVGElement>) => {
-    const [c, r] = cursor.split(',').map(Number);
-    const move: Record<string, [number, number]> = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
-    if (move[event.key]) { event.preventDefault(); const [dc, dr] = move[event.key]; setCursor(keyOf(Math.max(0, Math.min(COLS - 1, c + dc)), Math.max(0, Math.min(ROWS - 1, r + dr)))); return; }
-    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); tapDot(cursor); return; }
-    if (event.key === 'Backspace' || event.key === 'Delete') { event.preventDefault(); eraseAt(cursor); }
+    const c = cursor ?? { x: size.w / 2, y: size.h / 2 };
+    const step = event.shiftKey ? 8 : UNIT * 0.5;
+    const moves: Record<string, [number, number]> = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
+    if (moves[event.key]) { event.preventDefault(); const [dx, dy] = moves[event.key]; setCursor({ x: Math.max(10, Math.min(size.w - 10, c.x + dx)), y: Math.max(10, Math.min(size.h - 10, c.y + dy)) }); return; }
+    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setCursor(c); tap(c); return; }
+    if (event.key === 'Backspace' || event.key === 'Delete') { event.preventDefault(); const hit = atomAt(c); if (hit) { commit(removeAtom(drawing, hit.id)); setSelected(null); } }
   };
   useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (isTyping(event)) { if ((event.ctrlKey || event.metaKey) && event.key === 'z') { event.preventDefault(); undo(); } return; }
-    };
+    const onKey = (event: KeyboardEvent) => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); undo(); } };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   });
 
-  const mol = useMemo(() => sketchToMol(sketch), [sketch]);
-  const drawnName = useMemo(() => (Object.keys(sketch.atoms).length ? nameOf(mol) : null), [mol, sketch]);
+  const mol = useMemo(() => drawingToMol(drawing), [drawing]);
+  const drawnName = useMemo(() => (drawing.atoms.length ? nameOf(mol) : null), [mol, drawing.atoms.length]);
+  const overfull = useMemo(() => new Set(drawing.atoms.filter(a => a.el === 'C' && drawing.bonds.filter(b => b.a === a.id || b.b === a.id).reduce((s, b) => s + b.order, 0) > 4).map(a => a.id)), [drawing]);
   const check = () => {
     const lines: string[] = [];
-    if (!drawnName) { setResult({ ok: false, lines: ['먼저 점을 이어서 구조식을 그려요.'] }); return; }
+    if (!drawnName) { setResult({ ok: false, lines: ['먼저 구조식을 그려요.'] }); return; }
     const same = sameMolecule(mol, target.mol);
     const stereoOk = !target.plan.stereo || (drawnName.ok && drawnName.plan.stereo === target.plan.stereo);
     const ok = same && stereoOk;
@@ -276,7 +316,7 @@ function DrawPractice({ free, range, rangeBar }: { free: boolean; range: Categor
     else if (!drawnName.ok) lines.push(drawnName.reason);
     else {
       lines.push(`그린 구조는 「${drawnName.name}」예요.`);
-      if (same && !stereoOk) lines.push(`연결은 맞는데 ${target.plan.stereo === 'cis' ? '시스(이중 결합 양쪽 사슬이 같은 쪽)' : '트랜스(양쪽 사슬이 반대쪽)'}로 그려야 해요.`);
+      if (same && !stereoOk) lines.push(`연결은 맞는데 ${target.plan.stereo === 'cis' ? '시스(이중 결합 양쪽 사슬이 같은 쪽)' : '트랜스(양쪽 사슬이 반대쪽)'}로 그려야 해요. 옮기기 도구로 원자를 끌어 바꿔요.`);
       else if (formula(mol) === formula(target.mol)) lines.push('분자식은 같아요(이성질체). 주사슬 길이와 가지 위치를 확인해요.');
       else lines.push(`분자식이 달라요: 그림 ${formula(mol)}, 정답 ${formula(target.mol)} (탄소 ${carbonCount(mol)}개 / ${carbonCount(target.mol)}개)`);
     }
@@ -284,37 +324,39 @@ function DrawPractice({ free, range, rangeBar }: { free: boolean; range: Categor
     setScore(s => ({ right: s.right + (ok ? 1 : 0), total: s.total + 1 }));
     playResult(ok);
   };
-  const nextTarget = () => { setTarget(newTarget()); setSketch(EMPTY); setHistory([]); setResult(null); setReveal(false); setSelected(null); playTick(); };
+  const nextTarget = () => { setTarget(newTarget()); setDrawing(EMPTY); setHistory([]); setResult(null); setReveal(false); setSelected(null); playTick(); };
 
-  const dots: Key[] = [];
-  for (let c = 0; c < COLS; c += 1) for (let r = 0; r < ROWS; r += 1) dots.push(keyOf(c, r));
-  const view = { x: -0.6, y: -0.6, w: (COLS - 1) * SQ3 + 1.2, h: ROWS + 0.6 };
-  const drawn = skeleton(mol);
-  const center = Object.keys(sketch.atoms);
+  const { strokes, labels } = skeleton(mol);
+  const sel = drawing.atoms.find(a => a.id === selected);
+  const hint = tool === 'erase' ? '지울 원자나 결합을 눌러요.' : tool === 'move' ? '원자를 끌어서 옮겨요(시스 · 트랜스 모양 바꾸기).'
+    : isBondTool(tool) ? `원자 두 개를 차례로 누르거나 이미 있는 결합을 누르면 ${TOOL_LABEL[tool].slice(0, 2)} 결합이 돼요.`
+    : sel ? `고른 원자 근처를 누르면 ${tool === 'O' ? 'OH' : tool === 'C' ? '탄소' : tool}가 이어서 생겨요(가까운 원자를 누르면 고리처럼 이어져요). 멀리 누르면 따로 시작해요.` : `빈 곳을 누르면 그 자리에 ${tool === 'O' ? 'OH' : tool === 'C' ? '탄소' : tool}가 생겨요. 이미 있는 원자를 누르면 거기서부터 이어 그려요.`;
   return <section className="biology-menu glass structure-panel">
     <div className="structure-top">{rangeBar}{!free && <p className="structure-score">맞힌 문제 <b>{score.right}</b> / {score.total}</p>}</div>
-    {free ? <p className="structure-prompt">점을 이어 아무 구조식이나 그려 보세요. <b>이름을 바로 알려 줘요.</b></p>
-      : <p className="structure-prompt">이 이름의 구조식을 그려요: <b>{target.name}</b></p>}
-    <div className="structure-tools" role="group" aria-label="도구">
-      {(['C', 'O', 'Cl', 'Br', 'erase'] as Tool[]).map(t => <button key={t} type="button" className="glass-button" aria-pressed={tool === t} onClick={() => { setTool(t); setSelected(null); }}>{TOOL_LABEL[t]}</button>)}
-      <span className="structure-tools-gap" />
-      <button type="button" className="glass-button" onClick={undo} disabled={!history.length} aria-label="되돌리기">↶ 되돌리기</button>
-      <button type="button" className="glass-button" onClick={clear} disabled={!center.length}>모두 지우기</button>
+    {free ? <p className="structure-prompt">아무 구조식이나 그려 보세요. <b>이름을 바로 알려 줘요.</b></p>
+      : <p className={`structure-prompt${hard ? ' is-hard' : ''}`}>이 이름의 구조식을 그려요: <b>{target.name}</b></p>}
+    <div className="structure-palette" role="toolbar" aria-label="그리기 도구">
+      <div role="group" aria-label="원자">{ATOM_TOOLS.map(t => <button key={t} type="button" className="glass-button" aria-pressed={tool === t} onClick={() => { setTool(t); setSelected(null); }}>{TOOL_LABEL[t]}</button>)}</div>
+      <div role="group" aria-label="결합">{BOND_TOOLS.map(t => <button key={t} type="button" className="glass-button" aria-pressed={tool === t} onClick={() => { setTool(t); setSelected(null); }}>{TOOL_LABEL[t]}</button>)}</div>
+      <div role="group" aria-label="편집">{(['move', 'erase'] as Tool[]).map(t => <button key={t} type="button" className="glass-button" aria-pressed={tool === t} onClick={() => { setTool(t); setSelected(null); }}>{TOOL_LABEL[t]}</button>)}
+        <button type="button" className="glass-button" onClick={undo} disabled={!history.length} aria-label="되돌리기">↶</button>
+        <button type="button" className="glass-button" onClick={clear} disabled={!drawing.atoms.length}>모두 지우기</button></div>
     </div>
-    <svg ref={svg} className="structure-board" viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`} tabIndex={0} role="application"
-      aria-label="구조식 그리기 판. 방향키로 점을 옮기고 Enter로 점을 골라 이어요."
+    <svg ref={svg} className={`structure-canvas tool-${tool}`} viewBox={`0 0 ${size.w} ${size.h}`} style={{ aspectRatio: `${size.w} / ${size.h}` }} tabIndex={0} role="application"
+      aria-label="구조식 그림판. 방향키로 십자선을 옮기고 Enter로 누른 것처럼 놓아요."
       onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={() => setHover(null)} onKeyDown={onKeyDown}>
-      {dots.map(k => { const p = pos(k); return <circle key={k} cx={p.x} cy={p.y} r={0.07} className="structure-dot" />; })}
-      {selected && dots.filter(k => neighbors(selected, k)).map(k => { const p = pos(k); return <circle key={`n${k}`} cx={p.x} cy={p.y} r={0.16} className="structure-near" />; })}
-      {drawn.strokes.map((s, i) => <line key={i} x1={s.x1} y1={-s.y1} x2={s.x2} y2={-s.y2} className={`structure-bond ${s.kind}`} />)}
-      {Object.entries(sketch.atoms).map(([k, el]) => { const p = pos(k); return el === 'C'
-        ? <circle key={k} cx={p.x} cy={p.y} r={0.1} className="structure-atom" />
-        : <g key={k}><rect x={p.x - 0.36} y={p.y - 0.26} width={0.72} height={0.52} rx={0.12} className="structure-label-bg" /><text x={p.x} y={p.y} className="structure-label">{el === 'O' ? 'OH' : el}</text></g>; })}
-      {hover && <circle cx={pos(hover).x} cy={pos(hover).y} r={0.2} className="structure-hover" />}
-      {selected && <circle cx={pos(selected).x} cy={pos(selected).y} r={0.24} className="structure-selected" />}
-      <circle cx={pos(cursor).x} cy={pos(cursor).y} r={0.3} className="structure-cursor" />
+      <defs><pattern id="structure-grid" width={UNIT / 2} height={UNIT / 2} patternUnits="userSpaceOnUse"><circle cx={UNIT / 4} cy={UNIT / 4} r={1} className="structure-grid-dot" /></pattern></defs>
+      <rect x={0} y={0} width={size.w} height={size.h} fill="url(#structure-grid)" />
+      {sel && hover && isAtomTool(tool) && !atomAt(hover) && <line x1={sel.x} y1={sel.y} x2={hover.x} y2={hover.y} className="structure-ghost" />}
+      {strokes.map((s, i) => <line key={i} x1={s.x1 * UNIT} y1={-s.y1 * UNIT} x2={s.x2 * UNIT} y2={-s.y2 * UNIT} className={`structure-ink ${s.kind}`} />)}
+      {drawing.atoms.map(a => a.el === 'C'
+        ? <circle key={a.id} cx={a.x} cy={a.y} r={overfull.has(a.id) ? 7 : 4} className={`structure-c${overfull.has(a.id) ? ' is-over' : ''}`} />
+        : null)}
+      {labels.map((l, i) => <g key={`l${i}`}><rect x={l.x * UNIT - 15} y={-l.y * UNIT - 11} width={30} height={22} rx={6} className="structure-label-bg" /><text x={l.x * UNIT} y={-l.y * UNIT} className="structure-canvas-label">{l.text}</text></g>)}
+      {sel && <circle cx={sel.x} cy={sel.y} r={12} className="structure-selected" />}
+      {cursor && <g className="structure-crosshair"><line x1={cursor.x - 10} y1={cursor.y} x2={cursor.x + 10} y2={cursor.y} /><line x1={cursor.x} y1={cursor.y - 10} x2={cursor.x} y2={cursor.y + 10} /></g>}
     </svg>
-    <p className="structure-hint">점을 누르고 옆 점을 누르면(또는 끌면) 결합이 생겨요. 같은 결합을 다시 이으면 이중 → 삼중 → 지우기. OH · Cl · Br 도구로 끝 점을 바꿔요.</p>
+    <p className="structure-hint">{hint}</p>
     {free ? <div className="structure-result" role="status">
       {!drawnName ? <p>아직 그린 게 없어요.</p> : drawnName.ok ? <>
         <h2>{drawnName.name}</h2>
@@ -323,7 +365,7 @@ function DrawPractice({ free, range, rangeBar }: { free: boolean; range: Categor
       </> : <p>{drawnName.reason}</p>}
     </div> : <>
       <div className="structure-actions">
-        <button type="button" className="glass-button is-primary" onClick={check} disabled={!center.length}>채점하기</button>
+        <button type="button" className="glass-button is-primary" onClick={check} disabled={!drawing.atoms.length}>채점하기</button>
         <button type="button" className="glass-button" onClick={() => setReveal(v => !v)}>{reveal ? '정답 가리기' : '정답 보기'}</button>
         <button type="button" className="glass-button" onClick={nextTarget}>다음 문제 →</button>
       </div>
