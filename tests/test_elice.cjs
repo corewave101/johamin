@@ -1,0 +1,92 @@
+// 정보(엘리스 수행) 코딩 연습장: 문제 규격, 빈칸 수, 정답 코드를 python3로 실제로 돌려 예제 출력과 같은지 확인한다.
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const { spawnSync } = require('node:child_process');
+const ts = require('typescript');
+require.extensions['.ts'] = (m, f) => m._compile(ts.transpileModule(fs.readFileSync(f, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText, f);
+const { eliceProblems: problems, ELICE_CHAPTERS, BLANK, solutionOf } = require('../data/elice-problems.ts');
+const { normalizeOutput, sameOutput, fillBlanks, blankCount } = require('../lib/elice.ts');
+
+const python = ['python3', 'python'].find(cmd => spawnSync(cmd, ['--version']).status === 0);
+assert.ok(python, 'python3가 있어야 정답 코드를 확인할 수 있어요');
+const run = (code, input, timeout = 20000) => {
+  const r = spawnSync(python, ['-I', '-c', code], { input, encoding: 'utf8', timeout });
+  return { out: r.stdout ?? '', err: r.stderr ?? '', status: r.status, timedOut: r.error?.code === 'ETIMEDOUT' };
+};
+
+assert.ok(problems.length >= 26, `${problems.length} problems`);
+assert.equal(new Set(problems.map(p => p.id)).size, problems.length);
+assert.ok(problems.every((p, i) => p.id === `info-${String(i + 1).padStart(2, '0')}`), 'ids in order');
+const must = problems.filter(p => p.must);
+assert.deepEqual(must.map(p => p.title), ['DFS 방문 순서 (스택)', '덩어리 개수 세기', '미로 최단 거리 (출발점 · 도착점)', '두 개의 카드', '도서관 책 찾기', '리본 자르기']);
+assert.ok(must.every(p => p.chapter === 'must'));
+const chapterIds = ELICE_CHAPTERS.map(c => c.id);
+for (const c of chapterIds) assert.ok(problems.some(p => p.chapter === c), c);
+
+let verified = 0;
+for (const p of problems) {
+  assert.ok(chapterIds.includes(p.chapter), p.id);
+  assert.ok(p.title && p.statement.length && p.input.length && p.output.length && p.examples.length && p.source, p.id);
+  // 빈칸: ____ 개수 = 정답 개수, 그 밖의 밑줄 4개 이상 금지(헷갈림 방지).
+  assert.equal(blankCount(p.template), p.blanks.length, `${p.id} blanks`);
+  assert.ok(p.blanks.length >= 2 && p.blanks.every(b => b && !b.includes(BLANK)), p.id);
+  assert.ok(!/_{5,}/.test(p.template), `${p.id}: only ____ blanks`);
+  assert.equal(fillBlanks(p.template, p.blanks), solutionOf(p));
+  assert.ok(!solutionOf(p).includes(BLANK), p.id);
+  // 카드 한 장만 보고 풀 수 있게: 문제 안에서 다른 자료를 가리키지 않는다.
+  assert.ok(!/(위 그림|학습지에서|앞 문제|위 자료)/.test(p.statement.join(' ')), p.id);
+  assert.ok(p.tests.length >= 4, `${p.id} tests`);
+  assert.ok(p.tests.every(t => (t.input === undefined) !== (t.gen === undefined)), `${p.id} input xor gen`);
+  // 예제는 숨은 테스트에도 들어 있다(예제를 맞히고 제출하면 적어도 그 점수는 받는다).
+  for (const ex of p.examples) assert.ok(p.tests.some(t => t.input === ex.input), `${p.id} example in tests`);
+
+  const solution = solutionOf(p);
+  for (const [i, ex] of p.examples.entries()) {
+    const r = run(solution, ex.input + '\n');
+    assert.equal(r.err, '', `${p.id} example ${i + 1}: ${r.err}`);
+    assert.ok(sameOutput(r.out, ex.output), `${p.id} example ${i + 1}: got ${JSON.stringify(normalizeOutput(r.out))}`);
+    verified += 1;
+  }
+  // 숨은 테스트: 정답 코드가 오류 없이 출력을 낸다(큰 입력은 gen으로 만든다).
+  for (const [i, t] of p.tests.entries()) {
+    const input = t.gen ? run(t.gen, '').out : t.input + '\n';
+    assert.ok(input.trim(), `${p.id} test ${i + 1} input`);
+    const r = run(solution, input);
+    assert.equal(r.status, 0, `${p.id} test ${i + 1}: ${r.err}`);
+    assert.ok(r.out.trim(), `${p.id} test ${i + 1} output`);
+  }
+  // 빈칸을 안 채우고 내면 틀린다.
+  const blank = run(p.template, p.examples[0].input + '\n');
+  assert.ok(blank.status !== 0 || !sameOutput(blank.out, p.examples[0].output), `${p.id}: unfilled template must fail`);
+}
+
+// 자료 코드의 함정이 숨은 테스트로 걸러지는지: 미로를 pop()으로 풀면 틀리는 테스트가 있다.
+const maze = problems.find(p => p.id === 'info-03');
+const popVersion = solutionOf(maze).replace('queue.popleft()', 'queue.pop()');
+const trapped = maze.tests.filter(t => t.input).some(t => run(popVersion, t.input + '\n').out.trim() !== run(solutionOf(maze), t.input + '\n').out.trim());
+assert.ok(trapped, 'maze: pop() 버전을 잡는 테스트');
+// 두 수의 합: range(i, n) 버전을 잡는 테스트
+const twoSum = problems.find(p => p.id === 'info-19');
+const selfPair = solutionOf(twoSum).replace('range(i + 1, n)', 'range(i, n)');
+assert.ok(twoSum.tests.some(t => run(selfPair, t.input + '\n').out.trim() !== run(solutionOf(twoSum), t.input + '\n').out.trim()), 'two_sum: range(i, n)');
+// 이진탐색: while low < high 버전을 잡는 테스트
+const bs = problems.find(p => p.id === 'info-23');
+const lessThan = solutionOf(bs).replace('while low <= high', 'while low < high');
+assert.ok(bs.tests.filter(t => t.input).some(t => run(lessThan, t.input + '\n').out.trim() !== run(solutionOf(bs), t.input + '\n').out.trim()), 'binary search: <');
+
+// 출력 비교: 줄 끝 공백과 마지막 빈 줄은 무시, 나머지는 그대로.
+assert.ok(sameOutput('1 2 \n3\n\n', '1 2\n3'));
+assert.ok(!sameOutput('1 2', '1  2'));
+assert.ok(!sameOutput('Yes', 'yes'));
+
+// 화면: 카드 묶음(data/)은 정보 페이지 파일만 불러온다. 처음 뜨는 화면은 data/를 직접 import하지 않는다.
+const main = fs.readFileSync('app/main.tsx', 'utf8');
+assert.ok(/isElice \? import\('\.\.\/components\/swipe\/EliceStudio'\)/.test(main), 'main.tsx: /elice/는 EliceStudio');
+const worker = fs.readFileSync('public/py-worker.js', 'utf8');
+const { PYODIDE_URL } = require('../lib/elice.ts');
+assert.ok(/^https:\/\/cdn\.jsdelivr\.net\/npm\/pyodide@\d+\.\d+\.\d+\/$/.test(PYODIDE_URL), PYODIDE_URL);
+assert.ok(worker.includes('importScripts') && worker.includes('indexURL'), 'worker loads Pyodide');
+const sw = fs.readFileSync('public/sw.js', 'utf8');
+assert.ok(sw.includes('/npm/pyodide@'), 'service worker keeps Pyodide for offline use');
+
+console.log(`PASS: 정보 코딩 연습장 ${problems.length}문제(필수 ${must.length}) · 예제 ${verified}개를 정답 코드로 실행해 확인 · 자료 함정(pop · range(i, n) · <) 테스트`);

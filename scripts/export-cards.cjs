@@ -7,7 +7,6 @@ const ts = require('typescript');
 require.extensions['.ts'] = (m, f) => m._compile(ts.transpileModule(fs.readFileSync(f, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText, f);
 const { subjectMenu } = require('../data/swipe-subjects.ts');
 const { finalMenu } = require('../data/final-subjects.ts');
-const { eliceMenu } = require('../data/elice-subjects.ts');
 
 const root = path.join(__dirname, '..');
 const SPLIT_GROUPS = new Set(['humanities', 'science', 'physics-chemistry']); // groups whose children are separate subjects (국어 · 사회 · 영어)
@@ -53,7 +52,6 @@ function walk(group, parent) {
 }
 walk(subjectMenu, null);
 walk({ ...finalMenu, final: true }, null); // 기말고사 (first screen); 중간고사 decks above keep their order
-walk({ ...eliceMenu, final: true }, null); // 정보(/elice/): empty decks wait like 기말 '준비 중' decks
 
 const sql = v => v === null || v === undefined ? 'null'
   : typeof v === 'number' ? String(v)

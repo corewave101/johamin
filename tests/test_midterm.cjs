@@ -6,7 +6,6 @@ require.extensions['.ts'] = (m, f) => m._compile(ts.transpileModule(fs.readFileS
 const { finalMenu } = require('../data/final-subjects.ts');
 const { subjectDecks } = require('../data/swipe-subjects.ts');
 const { isMidterm, isElice, examPage, MIDTERM_URL, ELICE_URL, HOME_URL, NAV_TARGETS, navTargets } = require('../lib/exam.ts');
-const { eliceMenu } = require('../data/elice-subjects.ts');
 const { subjectMenu } = require('../data/swipe-subjects.ts');
 
 const flatten = g => g.children.flatMap(n => n.kind === 'group' ? flatten(n) : [n]);
@@ -42,21 +41,20 @@ assert.deepEqual(NAV_TARGETS.map(t => `${t.direction}:${t.label}:${t.href}`), ['
 assert.deepEqual(navTargets('final').map(t => t.direction), ['left', 'right']);
 assert.deepEqual(navTargets('midterm').map(t => t.direction), ['up', 'right']);
 assert.deepEqual(navTargets('elice').map(t => t.direction), ['up', 'left']);
-// 세 메뉴 모두 첫 화면 ↑는 비어 있다(이동 자리). 중간고사 첫 화면 ↓는 베타 실습 자리라 비운다.
-for (const m of [finalMenu, subjectMenu, eliceMenu]) assert.ok(m.children.every(n => n.direction !== 'up'), m.name);
+// 두 카드 메뉴 모두 첫 화면 ↑는 비어 있다(이동 자리). 중간고사 첫 화면 ↓는 베타 실습 자리라 비운다.
+for (const m of [finalMenu, subjectMenu]) assert.ok(m.children.every(n => n.direction !== 'up'), m.name);
 assert.ok(subjectMenu.children.every(n => n.direction !== 'down'));
-// 정보 메뉴: 아직 빈 덱(준비 중) 하나, 다른 메뉴와 덱 id가 겹치지 않는다.
-const eliceDecks = flatten(eliceMenu);
-assert.deepEqual(eliceDecks.map(d => d.id), ['info-elice']);
-assert.ok(eliceDecks.every(d => d.id.startsWith('info-') && !midtermIds.has(d.id) && !finals.some(f => f.id === d.id) && d.cards.length === 0));
+// 정보 페이지(4.3.0~)는 카드가 아니라 엘리스식 코딩 연습장이다(tests/test_elice.cjs). 문제 id는 'info-'로 시작해 덱 id와 겹치지 않는다.
+const { eliceProblems } = require('../data/elice-problems.ts');
+assert.ok(eliceProblems.every(p => p.id.startsWith('info-') && !midtermIds.has(p.id) && !finals.some(f => f.id === p.id)));
 
 // Wiring: the menu picks its decks by address, the build makes midterm/index.html, login returns to the registered address.
 const live = fs.readFileSync('components/swipe/useLiveMenu.ts', 'utf8');
-assert.ok(live.includes('const baseMenu = isElice ? eliceMenu : isMidterm ? subjectMenu : finalMenu;'));
+assert.ok(live.includes('const baseMenu = isMidterm ? subjectMenu : finalMenu;'));
 const vite = fs.readFileSync('vite.config.ts', 'utf8');
 assert.ok(vite.includes("for (const dir of ['midterm', 'elice'])") && vite.includes("join(outDir, dir, 'index.html')") && vite.includes('<base href='));
 const picker = fs.readFileSync('components/swipe/SubjectPicker.tsx', 'utf8');
 assert.ok(picker.includes('navTargets(examPage)') && picker.includes("setNav(true)") && picker.includes('window.location.assign(target.href)'));
 const auth = fs.readFileSync('lib/auth.ts', 'utf8');
 assert.ok(auth.includes('redirectTo: `${window.location.origin}${HOME_URL}`') && auth.includes('isElice ? ELICE_URL : MIDTERM_URL'));
-console.log(`PASS: ${finals.length} 기말 decks on new ids, ${subjectDecks.length} 중간고사 decks kept at /midterm/, 정보 page at /elice/, 이동 menu on ↑ everywhere.`);
+console.log(`PASS: ${finals.length} 기말 decks on new ids, ${subjectDecks.length} 중간고사 decks kept at /midterm/, 정보 코딩 연습장 at /elice/, 이동 menu on ↑ everywhere.`);

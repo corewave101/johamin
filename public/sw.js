@@ -55,7 +55,10 @@ self.addEventListener('fetch', event => {
     if (request.mode === 'navigate') event.respondWith(page(request));
     else event.respondWith(asset(request));
   } else if (url.hostname === 'cdn.jsdelivr.net') {
-    event.respondWith(fromCdn(request));
+    // 정보 코딩 연습장의 파이썬(Pyodide)은 버전이 주소에 박혀 있어 바뀌지 않는다: 한 번 받으면 다시 받지 않는다.
+    // (워커의 importScripts처럼 no-cors로 오는 작은 파일은 브라우저 캐시에 맡긴다.)
+    if (url.pathname.startsWith('/npm/pyodide@')) { if (request.mode === 'cors') event.respondWith(pinned(request)); }
+    else event.respondWith(fromCdn(request));
   }
   // Everything else (the card database) goes straight to the network; the app keeps its own copy of the cards.
 });
@@ -112,4 +115,14 @@ async function fromCdn(request) {
     return response;
   }).catch(() => undefined);
   return cached ?? (await fresh) ?? Response.error();
+}
+
+// Versioned files (Pyodide): the saved copy forever, the network only the first time.
+async function pinned(request) {
+  const cache = await caches.open(RUNTIME);
+  const cached = await cache.match(request, { ignoreSearch: true });
+  if (cached) return cached;
+  const response = await fetch(request);
+  if (response.ok) await cache.put(request, response.clone());
+  return response;
 }

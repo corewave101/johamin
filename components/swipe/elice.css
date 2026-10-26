@@ -1,0 +1,190 @@
+/* 정보(엘리스 수행) 코딩 연습장 · /elice/. 앱의 유리 패널과 가호 색 위에 엘리스 화면 배치(문제 | main.py | 실행 결과). */
+.elice-app {
+  --code-bg: #1f2029; --code-panel: #262733; --code-line: #33354a; --code-ink: #e4e5ee; --code-soft: #8b8fa8;
+  --mono: "JetBrains Mono", "D2Coding", "Cascadia Code", Consolas, "SFMono-Regular", Menlo, "Noto Sans Mono CJK KR", monospace;
+  position: relative; z-index: 1; height: 100svh; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+  padding: 64px 14px 56px; color: var(--ink);
+}
+.elice-app code { font-family: var(--mono); font-size: .9em; padding: 1px 5px; border-radius: 5px; background: rgba(31, 53, 80, .09); color: #b2213a; }
+
+/* ── 문제 목록 ── */
+.elice-course { width: min(100%, 860px); margin: 0 auto; padding: 26px 28px 22px; border-radius: 24px; }
+.elice-course > * { position: relative; }
+.elice-course-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; flex-wrap: wrap; }
+.elice-kicker { margin: 0; font-size: 13px; font-weight: 800; letter-spacing: .02em; color: var(--theme-ink); }
+.elice-kicker span { display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 4px; border-radius: 7px; background: var(--theme-base); color: var(--theme-ink); font-size: 13px; }
+.elice-course h1 { margin: 6px 0 4px; font-size: 28px; font-weight: 900; letter-spacing: -.03em; line-height: 1.2; color: var(--navy); }
+.elice-lead { margin: 0; font-size: 14.5px; color: var(--ink-soft); word-break: keep-all; }
+.elice-nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.elice-nav a { text-decoration: none; font-weight: 700; }
+.elice-progress { display: flex; align-items: center; gap: 14px; margin: 18px 0 6px; }
+.elice-progress p { margin: 0; font-size: 14px; color: var(--ink-soft); white-space: nowrap; }
+.elice-progress b { color: var(--ink); font-size: 16px; }
+.elice-progress-bar { flex: 1; height: 8px; border-radius: 99px; background: rgba(31, 53, 80, .12); overflow: hidden; }
+.elice-progress-bar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--theme-soft), var(--theme-base)); transition: width .4s; }
+.elice-chapter { margin-top: 18px; }
+.elice-chapter h2 { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; font-size: 17px; font-weight: 900; color: var(--navy); }
+.elice-chapter h2 small { font-size: 12.5px; font-weight: 600; color: var(--ink-soft); }
+.elice-chapter ol { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.elice-row { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 12px; padding: 10px 14px 10px 10px; border-radius: 14px;
+  background: rgba(255, 255, 255, .58); border: 1px solid rgba(255, 255, 255, .7); color: var(--ink); text-decoration: none; transition: background .15s, transform .15s; }
+.elice-row:hover, .elice-row:focus-visible { background: rgba(255, 255, 255, .9); transform: translateX(3px); outline: none; box-shadow: 0 0 0 2px var(--theme-base); }
+.elice-chapter.is-must .elice-row { background: color-mix(in srgb, var(--theme-light) 70%, rgba(255, 255, 255, .5)); }
+.elice-row-num { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: var(--code-bg); color: #fff; font-family: var(--mono); font-size: 13px; font-weight: 700; }
+.elice-row-title { font-size: 15.5px; font-weight: 700; word-break: keep-all; }
+.elice-row-score { min-width: 54px; text-align: right; font-size: 14px; font-weight: 800; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.elice-row-score.is-part { color: #b06a0c; }
+.elice-row-score.is-full { color: #17804a; }
+.elice-must { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 99px; font-size: 11.5px; font-style: normal; font-weight: 800; vertical-align: 2px;
+  background: var(--theme-base); color: var(--theme-ink); white-space: nowrap; }
+
+/* ── 문제 화면: 엘리스 배치 ── */
+.elice-shell { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; height: calc(100svh - 120px); }
+.elice-top { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 6px 8px 6px 6px; border-radius: 14px; background: rgba(26, 27, 36, .9); color: #fff;
+  box-shadow: var(--glass-shadow); }
+.elice-menu { display: grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 10px; color: #fff; }
+.elice-menu:hover, .elice-menu:focus-visible { background: rgba(255, 255, 255, .14); outline: none; }
+.elice-menu svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.elice-crumb { display: flex; align-items: center; gap: 8px; min-width: 0; margin: 0; font-size: 15px; }
+.elice-crumb span { color: rgba(255, 255, 255, .7); white-space: nowrap; }
+.elice-crumb b { color: rgba(255, 255, 255, .45); }
+.elice-crumb strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; }
+.elice-top .elice-must { margin-left: 0; vertical-align: 0; }
+.elice-switch { display: none; margin-left: auto; padding: 3px; border-radius: 11px; background: rgba(255, 255, 255, .1); }
+.elice-switch button { position: relative; padding: 5px 14px; border-radius: 8px; color: rgba(255, 255, 255, .75); font-size: 14px; font-weight: 800; }
+.elice-switch button[aria-selected="true"] { background: var(--theme-base); color: var(--theme-ink); }
+.elice-switch-count { display: inline-grid; place-items: center; min-width: 18px; height: 18px; margin-left: 5px; border-radius: 99px; background: rgba(0, 0, 0, .25); font-size: 11px; }
+
+.elice-body { display: grid; grid-template-columns: minmax(300px, 40%) minmax(0, 1fr); gap: 10px; min-height: 0; }
+.elice-problem { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 18px 24px 22px; border-radius: 16px; background: rgba(255, 255, 255, .93);
+  box-shadow: var(--glass-shadow); font-size: 15.5px; line-height: 1.75; word-break: keep-all; }
+.elice-problem h2 { margin: 22px 0 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(0, 0, 0, .18); font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
+.elice-problem h2:first-child { margin-top: 4px; }
+.elice-problem p { margin: 0 0 10px; }
+.elice-problem ul { margin: 0 0 6px; padding-left: 20px; }
+.elice-problem li { margin-bottom: 8px; }
+.elice-example h3 { margin: 14px 0 6px; font-size: 16px; font-weight: 700; }
+.elice-io { position: relative; border-radius: 8px; background: var(--code-bg); }
+.elice-io pre { margin: 0; padding: 12px 16px; overflow-x: auto; font-family: var(--mono); font-size: 14px; line-height: 1.55; color: #f0c674; white-space: pre; }
+.elice-copy { position: absolute; top: 5px; right: 6px; padding: 0 6px; border-radius: 4px; background: #fff; color: #333; font-size: 11.5px; font-weight: 700; line-height: 1.5; }
+.elice-limits, .elice-source { margin-top: 14px !important; font-size: 13px; color: var(--ink-soft); }
+.elice-tips, .elice-answer { margin-top: 14px; border-radius: 12px; background: color-mix(in srgb, var(--theme-light) 55%, #fff); border: 1px solid color-mix(in srgb, var(--theme-base) 40%, transparent); }
+.elice-answer { background: rgba(31, 53, 80, .06); border-color: rgba(31, 53, 80, .14); }
+.elice-tips summary, .elice-answer summary { padding: 8px 14px; font-weight: 800; cursor: pointer; }
+.elice-tips ul { margin: 0; padding: 0 16px 10px 34px; font-size: 14.5px; }
+.elice-answer-blanks { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0 14px 8px !important; font-size: 14px; }
+.elice-answer-code { margin: 0 10px 10px; padding: 12px 14px; border-radius: 10px; overflow-x: auto; background: var(--code-bg); color: var(--code-ink); font-family: var(--mono); font-size: 13.5px; line-height: 1.6; }
+
+.elice-ide { display: flex; flex-direction: column; min-height: 0; overflow: hidden; border-radius: 16px; background: var(--code-bg); color: var(--code-ink); box-shadow: var(--glass-shadow); }
+.elice-filetab { display: flex; align-items: stretch; gap: 6px; flex: none; padding: 0 8px 0 0; background: #191a22; border-bottom: 1px solid var(--code-line); }
+.elice-file { display: flex; align-items: center; gap: 7px; padding: 9px 18px; background: var(--code-bg); border-top: 2px solid var(--theme-base); font-size: 14px; font-weight: 700; }
+.elice-file svg { width: 16px; height: 16px; fill: none; stroke: var(--theme-soft); stroke-width: 1.8; stroke-linejoin: round; }
+.elice-filetab-gap { flex: 1; }
+.elice-tool { align-self: center; padding: 4px 11px; border-radius: 8px; color: var(--code-soft); font-size: 13px; font-weight: 700; white-space: nowrap; }
+.elice-tool:hover:not(:disabled), .elice-tool:focus-visible { background: rgba(255, 255, 255, .08); color: #fff; outline: none; }
+.elice-tool:disabled { opacity: .4; }
+
+.code-scroll { display: flex; align-items: flex-start; flex: 1 1 0; min-height: 140px; overflow: auto; overscroll-behavior: contain; background: var(--code-bg);
+  font-family: var(--mono); font-size: 14.5px; line-height: 1.65; }
+.code-gutter { position: sticky; left: 0; z-index: 2; display: flex; flex-direction: column; flex: none; min-width: 3em; min-height: 100%; padding: 12px 12px 40px 10px;
+  background: var(--code-bg); color: #5f6380; text-align: right; user-select: none; -webkit-user-select: none; font-variant-numeric: tabular-nums; }
+.code-gutter span { display: block; }
+.code-stack { display: grid; flex: 1 0 auto; min-height: 100%; }
+.code-paint, .code-input { grid-area: 1 / 1; margin: 0; padding: 12px 24px 40px 6px; border: 0; font: inherit; letter-spacing: 0; tab-size: 4; white-space: pre; word-wrap: normal; overflow-wrap: normal; }
+.code-paint { color: var(--code-ink); pointer-events: none; }
+.code-input { width: 100%; height: 100%; min-height: 100%; resize: none; overflow: hidden; outline: none; background: transparent; color: transparent; caret-color: #fff; -webkit-text-fill-color: transparent; }
+.code-input::selection { background: rgba(120, 140, 255, .38); -webkit-text-fill-color: transparent; }
+.py-keyword { color: #c792ea; font-style: italic; }
+.py-builtin { color: #82aaff; }
+.py-function { color: #82aaff; font-weight: 700; }
+.py-string { color: #c3e88d; }
+.py-number, .py-constant { color: #f78c6c; }
+.py-comment { color: #7a7f99; font-style: italic; }
+.py-blank { border-radius: 3px; color: var(--theme-soft); background: color-mix(in srgb, var(--theme-base) 26%, transparent); box-shadow: inset 0 -2px 0 var(--theme-base); }
+
+.elice-toolbar { display: flex; align-items: center; gap: 10px; flex: none; flex-wrap: wrap; padding: 10px 14px; background: var(--code-panel); border-top: 1px solid var(--code-line); }
+.elice-run, .elice-submit { min-width: 76px; padding: 8px 18px; border-radius: 9px; font-size: 15px; font-weight: 800; transition: filter .15s, transform .15s; }
+.elice-run { background: #3d4adf; color: #fff; }
+.elice-submit { background: var(--theme-base); color: var(--theme-ink); }
+.elice-run:hover:not(:disabled), .elice-submit:hover:not(:disabled) { filter: brightness(1.1); }
+.elice-run:active, .elice-submit:active { transform: scale(.97); }
+.elice-run:disabled, .elice-submit:disabled { opacity: .5; }
+.elice-stat { display: grid; padding-left: 10px; border-left: 1px solid var(--code-line); line-height: 1.35; }
+.elice-stat:first-of-type { border-left: 0; }
+.elice-stat small { font-size: 11.5px; color: var(--code-soft); }
+.elice-stat b { font-size: 14px; font-weight: 700; white-space: nowrap; }
+.elice-python { margin-left: auto; font-size: 12px; color: var(--code-soft); }
+.elice-python.is-ready::before { content: ''; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: #3ecf7a; vertical-align: 1px; }
+.elice-python.is-loading::before { content: ''; display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 50%; border: 2px solid var(--code-soft); border-top-color: transparent; vertical-align: -1px; animation: elice-spin .8s linear infinite; }
+.elice-python button { padding: 3px 9px; border-radius: 7px; background: #b8323f; color: #fff; font-size: 12px; font-weight: 700; }
+@keyframes elice-spin { to { transform: rotate(360deg); } }
+.elice-stdin-pick { display: flex; align-items: center; gap: 6px; flex: none; flex-wrap: wrap; padding: 7px 14px 0; background: var(--code-panel); font-size: 12.5px; color: var(--code-soft); }
+.elice-stdin-pick span { margin-right: 2px; font-weight: 700; }
+.elice-stdin-pick button { padding: 2px 10px; border-radius: 99px; border: 1px solid var(--code-line); color: var(--code-soft); font-size: 12.5px; font-weight: 700; }
+.elice-stdin-pick button[aria-checked="true"] { border-color: var(--theme-base); color: var(--theme-soft); background: color-mix(in srgb, var(--theme-base) 14%, transparent); }
+.elice-stdin { flex: none; height: 74px; margin: 0; padding: 8px 14px; border: 0; border-bottom: 1px solid var(--code-line); resize: vertical; outline: none;
+  background: var(--code-panel); color: #f0c674; font-family: var(--mono); font-size: 13.5px; line-height: 1.5; }
+.elice-terminal { flex: 0 0 32%; min-height: 110px; overflow: auto; overscroll-behavior: contain; padding: 12px 16px 16px; background: var(--code-panel); font-family: var(--mono); font-size: 14px; line-height: 1.6; }
+.elice-terminal p { margin: 0 0 6px; }
+.elice-terminal pre { margin: 0 0 8px; white-space: pre-wrap; word-break: break-all; font: inherit; }
+.term-idle { color: #b4a7f5; font-weight: 800; }
+.term-note { color: var(--code-soft); }
+.term-out { color: var(--code-ink); }
+.term-err { color: #ff8a80; }
+.term-bad { color: #ff9e80; font-family: "Pretendard Variable", Pretendard, sans-serif; font-weight: 700; }
+.term-good { color: #7ee0a3; font-family: "Pretendard Variable", Pretendard, sans-serif; font-weight: 700; }
+.term-time { color: var(--code-soft); font-size: 12.5px; }
+.term-diff { margin-top: 4px; }
+.term-diff > p:nth-child(2) { color: var(--code-soft); font-size: 12.5px; margin-bottom: 2px; }
+.term-diff pre { color: #f0c674; }
+.term-score { font-family: "Pretendard Variable", Pretendard, sans-serif; font-size: 16px; font-weight: 700; color: #ffd28a; }
+.term-score b { font-size: 26px; font-weight: 900; margin-right: 2px; }
+.term-score.is-full { color: #7ee0a3; }
+.term-tests { display: grid; gap: 3px; margin: 6px 0 0; padding: 0; list-style: none; }
+.term-tests li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 3px 0; border-bottom: 1px dashed rgba(255, 255, 255, .07); }
+.term-test-name { min-width: 7.5em; color: var(--code-soft); }
+.term-test-name small { font-size: 11.5px; }
+.term-verdict { min-width: 6em; font-weight: 700; }
+.term-tests .is-pass .term-verdict { color: #7ee0a3; }
+.term-tests .is-wrong .term-verdict, .term-tests .is-error .term-verdict { color: #ff8a80; }
+.term-tests .is-time .term-verdict { color: #ffcb6b; }
+.term-tests .is-skip, .term-tests .is-wait { opacity: .55; }
+.term-sec { color: var(--code-soft); font-size: 12.5px; }
+.term-detail { flex-basis: 100%; padding-left: 7.5em; color: #ffab91; font-size: 12.5px; }
+
+.elice-pager { display: flex; justify-content: center; align-items: center; gap: 22px; }
+.elice-pager button { padding: 7px 18px; border-radius: 10px; font-size: 14.5px; font-weight: 800; }
+.elice-prev { background: rgba(26, 27, 36, .78); color: #fff; }
+.elice-next { background: var(--theme-base); color: var(--theme-ink); }
+.elice-pager button:disabled { opacity: .35; }
+.elice-count { padding: 4px 14px; border-radius: 99px; background: rgba(26, 27, 36, .78); color: #fff; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* 폰 · 좁은 화면: 문제 / 코드를 탭으로 바꿔 본다. */
+@media (max-width: 900px) {
+  .elice-app { padding: 62px 10px 60px; }
+  .elice-course { padding: 20px 16px 18px; border-radius: 20px; }
+  .elice-course h1 { font-size: 24px; }
+  .elice-row { grid-template-columns: 30px 1fr auto; gap: 10px; padding: 9px 12px 9px 8px; }
+  .elice-row-num { width: 28px; height: 28px; }
+  .elice-row-title { font-size: 14.5px; }
+  .elice-shell { height: auto; min-height: calc(100svh - 122px); grid-template-rows: auto auto auto; }
+  .elice-top { flex-wrap: wrap; row-gap: 6px; }
+  .elice-crumb { flex: 1 1 0; font-size: 14px; }
+  .elice-crumb span, .elice-crumb b { display: none; }
+  .elice-switch { display: flex; }
+  .elice-top .elice-must { order: 3; }
+  .elice-body { grid-template-columns: minmax(0, 1fr); }
+  .elice-shell.show-problem .elice-ide, .elice-shell.show-code .elice-problem { display: none; }
+  .elice-problem { padding: 14px 16px 18px; font-size: 15px; }
+  .elice-ide { min-height: 0; }
+  .code-scroll { flex: none; height: 52svh; min-height: 260px; font-size: 14px; }
+  .code-input { font-size: 16px; } /* iOS: 16px 미만이면 입력할 때 화면이 커진다 → 겹치는 글도 같은 크기로 */
+  .code-scroll { font-size: 16px; line-height: 1.55; }
+  .elice-toolbar { gap: 8px; padding: 9px 10px; }
+  .elice-python { flex-basis: 100%; margin-left: 0; }
+  .elice-stat + .elice-stat { display: none; }
+  .elice-terminal { flex: none; min-height: 190px; max-height: 60svh; font-size: 13.5px; }
+  .term-detail { padding-left: 0; }
+  .elice-pager { gap: 12px; }
+  .elice-pager button { padding: 7px 14px; }
+}
