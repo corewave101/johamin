@@ -1,0 +1,97 @@
+/* 양동비T 빛과 렌즈 실습 (OpticsLab). 작도판은 어느 가호에서도 같은 색으로 읽히도록 흰 칠판처럼 그린다. */
+.optics-app .biology-study { width: min(1080px, calc(100% - 32px)); }
+.optics-panel h2 { margin: 0 0 12px; font-size: 18px; }
+.optics-panel h3 { margin: 16px 0 8px; font-size: 15px; }
+.optics-panel ul { margin: 0 0 14px; padding-left: 1.2em; line-height: 1.7; }
+
+.optics-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.optics-tabs .glass-button { display: grid; gap: 2px; text-align: left; padding: 8px 14px; border-radius: 14px; }
+.optics-tabs.small .glass-button { padding: 6px 12px; }
+.optics-tabs small { font-size: 12px; opacity: .78; font-weight: 600; }
+.optics-panel .glass-button[aria-pressed="true"] { background: var(--theme-base, #e7b54a); color: var(--theme-ink, #3b2508); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .7); }
+.optics-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.optics-toolbar > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.optics-toggle { padding: 6px 12px; font-size: 14px; border-radius: 999px; }
+.optics-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.optics-panel button:disabled { opacity: .45; cursor: default; }
+
+.optics-board {
+  --ray-in: #2563eb; --ray-out: #e11d48; --ray-center: #0f766e; --ray-final: #f59e0b; --ray-axis: #202838; --ray-muted: #667085;
+  --ray-object: #111827; --ray-real: #059669; --ray-virtual: #d97706; --ray-ok: #059669; --ray-miss: #e11d48; --ray-ghost: #7c3aed;
+  display: block; width: 100%; height: auto; max-height: 62vh; border-radius: 16px; background: #fbfcff; border: 1px solid #d7deea;
+  touch-action: none; user-select: none; -webkit-user-select: none;
+}
+.optics-grid line { stroke: #dce3ed; stroke-width: .12; }
+.ink-in { stroke: var(--ray-in); } .fill-in { fill: var(--ray-in); }
+.ink-out { stroke: var(--ray-out); } .fill-out { fill: var(--ray-out); }
+.ink-center { stroke: var(--ray-center); } .fill-center { fill: var(--ray-center); }
+.ink-final { stroke: var(--ray-final); } .fill-final { fill: var(--ray-final); }
+.ink-axis { stroke: var(--ray-axis); } .fill-axis { fill: var(--ray-axis); }
+.ink-muted { stroke: var(--ray-muted); } .fill-muted { fill: var(--ray-muted); }
+.ink-object, .ink-ink { stroke: var(--ray-object); } .fill-object, .fill-ink { fill: var(--ray-object); }
+.ink-real, .ink-ok { stroke: var(--ray-real); } .fill-real, .fill-ok { fill: var(--ray-real); }
+.ink-virtual { stroke: var(--ray-virtual); } .fill-virtual { fill: var(--ray-virtual); }
+.ink-miss { stroke: var(--ray-miss); } .fill-miss { fill: var(--ray-miss); }
+.ink-ghost { stroke: var(--ray-ghost); opacity: .75; } .fill-ghost { fill: var(--ray-ghost); }
+.optics-board line { stroke-linecap: round; }
+.optics-label text { font-weight: 700; font-family: Pretendard, "Noto Sans KR", system-ui, sans-serif; fill: #34405a; }
+.optics-label rect { fill: #fff; stroke: #d7deea; }
+.optics-label.tone-real rect { fill: #e7f8f0; } .optics-label.tone-real text { fill: #047857; }
+.optics-label.tone-virtual rect, .optics-label.tone-warn rect { fill: #fff7dc; } .optics-label.tone-virtual text, .optics-label.tone-warn text { fill: #b45309; }
+.optics-label.tone-info rect { fill: #eef3ff; } .optics-label.tone-info text { fill: #1e40af; }
+.optics-label.tone-bare text { fill: #667085; font-weight: 800; }
+.optics-lens { stroke-width: .3; }
+.optics-lens.convex { fill: rgba(37, 99, 235, .10); stroke: #2563eb; }
+.optics-lens.concave, .optics-lens.eye { fill: rgba(124, 58, 237, .10); stroke: #7c3aed; }
+.optics-mark line { stroke: #202838; stroke-width: .14; }
+.optics-mark.faint line { stroke: #9aa4b2; }
+.optics-mirror .hatch { stroke: #9aa4b2; stroke-width: .15; }
+.optics-mirror .surface { fill: none; stroke-width: .36; }
+.optics-mirror .surface.concave { stroke: #2563eb; } .optics-mirror .surface.convex { stroke: #7c3aed; }
+.optics-screen > rect:first-child { fill: #334155; }
+.optics-screen .spot { fill: #fde047; }
+.optics-object { cursor: grab; outline: none; }
+.optics-object .hit { fill: transparent; }
+.optics-object:focus-visible .hit { stroke: #79baff; stroke-width: .35; stroke-dasharray: .8 .5; }
+.optics-snap { fill: none; stroke: var(--ray-ghost); stroke-width: .22; }
+.optics-hint { margin: 10px 2px 0; font-size: 13px; line-height: 1.6; opacity: .85; }
+
+.optics-grid-panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; align-items: start; }
+.optics-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 12px; }
+.optics-metrics div { padding: 10px 12px; border-radius: 12px; background: rgba(255, 255, 255, .55); }
+.optics-metrics dt { font-size: 12px; opacity: .75; }
+.optics-metrics dd { margin: 2px 0 0; font-weight: 800; font-size: 15px; }
+.optics-equation { padding: 12px 14px; border-radius: 12px; background: rgba(255, 255, 255, .5); margin-bottom: 8px; }
+.optics-equation h3 { margin-top: 0; }
+.optics-equation p { margin: 4px 0; font-size: 13px; line-height: 1.6; }
+.optics-equation .formula { font-size: 18px; font-weight: 800; }
+.optics-equation .working { font-variant-numeric: tabular-nums; font-weight: 700; }
+.optics-hidden { padding: 14px; border-radius: 12px; background: rgba(255, 255, 255, .45); font-weight: 700; }
+.optics-good { font-weight: 800; color: #047857; }
+
+.optics-screenview { display: block; width: min(100%, 320px); margin: 4px auto 10px; border-radius: 14px; }
+.optics-screenview .screen-bg { fill: #1e293b; }
+.optics-screenview.lit .screen-bg { fill: #273449; }
+.optics-screenview .screen-wash { fill: rgba(253, 224, 71, .12); }
+.optics-screenview .glyph-stem { stroke: #fde047; stroke-width: 2.2; stroke-linecap: round; }
+.optics-screenview .glyph-head, .optics-screenview .glyph-flag { fill: #fde047; }
+.optics-screenview.eye .screen-bg { fill: #e0f2fe; }
+.optics-screenview.eye .glyph-stem { stroke: #b45309; } .optics-screenview.eye .glyph-head, .optics-screenview.eye .glyph-flag { fill: #b45309; }
+
+.optics-steps { margin: 0 0 8px; padding: 0; list-style: none; display: grid; gap: 6px; }
+.optics-steps li { padding: 9px 12px; border-radius: 12px; background: rgba(255, 255, 255, .35); opacity: .7; }
+.optics-steps li.done { opacity: 1; background: rgba(209, 250, 229, .7); }
+.optics-steps li.now { opacity: 1; background: rgba(255, 255, 255, .7); box-shadow: inset 0 0 0 2px var(--theme-base, #e7b54a); }
+.optics-steps li span { display: block; margin-top: 4px; font-size: 14px; line-height: 1.6; }
+
+.optics-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+.optics-legend .lg::before { content: ''; display: inline-block; width: 18px; height: 0; border-top: 3px solid; vertical-align: middle; margin-right: 6px; }
+.optics-legend .in::before { border-color: #2563eb; } .optics-legend .out::before { border-color: #e11d48; }
+.optics-legend .real::before { border-color: #059669; } .optics-legend .virtual::before { border-color: #d97706; border-top-style: dashed; }
+.optics-legend .dash::before { border-color: #667085; border-top-style: dashed; }
+
+@media (max-width: 760px) {
+  .optics-grid-panels { grid-template-columns: minmax(0, 1fr); }
+  .optics-app .biology-study { width: 100%; }
+  .optics-toolbar { justify-content: flex-start; }
+}

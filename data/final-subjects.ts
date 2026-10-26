@@ -28,7 +28,9 @@ export const finalMenu: SubjectGroup = {
         { id: 'astronomy-jeon-final', kind: 'deck', name: '전효진T', fullName: '행성우주과학(전효진T · 기말)', direction: 'right', symbol: '✧', description: '외계 행성 탐사: 도플러 효과 · 적색·청색 편이 · 시선 속도 · 중심별의 시선 속도 변화.', cards: astronomyJeonFinalCards, writtenQuestions: astronomyJeonFinalWritten },
       ] },
       { id: 'physics-chemistry', kind: 'group', name: '물리 · 화학', direction: 'right', symbol: 'F', description: '왼쪽은 물리학Ⅱ, 오른쪽은 화학이에요.', children: [
-        { id: 'physics-final', kind: 'deck', name: '물리학Ⅱ', fullName: '물리학Ⅱ(기말)', direction: 'left', symbol: 'F', description: '기말고사 물리학Ⅱ 카드를 준비하고 있어요.', cards: [] },
+        { id: 'physics-final-group', kind: 'group', name: '물리학Ⅱ', direction: 'left', symbol: 'F', description: '공부할 선생님 파트를 골라요.', children: [
+          { id: 'physics-yang-final', kind: 'deck', name: '양동비T', fullName: '물리학Ⅱ(양동비T · 기말)', direction: 'left', symbol: 'F', description: '기말고사 양동비T 카드를 준비하고 있어요.', cards: [], lab: 'optics' },
+        ] },
         { id: 'chemistry-final', kind: 'deck', name: '화학', fullName: '화학(주민지T · 기말)', direction: 'right', symbol: '⚗', description: '탄소 화합물: 분산력 · 알케인 · 이성질 · 명명법 · 고리형 · 알켄 · 알카인 · 알코올.', cards: chemistryFinalCards, writtenQuestions: chemistryFinalWritten },
       ] },
     ] },
