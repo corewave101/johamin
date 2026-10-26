@@ -5,6 +5,7 @@ import { socialSungFinalCards, socialSungFinalWritten } from './social-sung-fina
 import { englishFinalCards, englishFinalWritten } from './english-final-cards';
 import { mathTrigFinalCards, mathTrigFinalWritten } from './math-trig-final-cards';
 import { astronomyJeonFinalCards, astronomyJeonFinalWritten } from './astronomy-jeon-final-cards';
+import { physicsYangFinalCards, physicsYangFinalWritten } from './physics-yang-final-cards';
 
 // 기말고사 메뉴. 중간고사 카드(data/swipe-subjects.ts의 subjectMenu)는 /midterm/ 보관함으로 옮겼다.
 // 처음 화면에서 ↓는 뒤로 갈 곳이 없어서 수학 자리로 쓴다(↑는 중간고사 바로가기).
@@ -29,7 +30,7 @@ export const finalMenu: SubjectGroup = {
       ] },
       { id: 'physics-chemistry', kind: 'group', name: '물리 · 화학', direction: 'right', symbol: 'F', description: '왼쪽은 물리학Ⅱ, 오른쪽은 화학이에요.', children: [
         { id: 'physics-final-group', kind: 'group', name: '물리학Ⅱ', direction: 'left', symbol: 'F', description: '공부할 선생님 파트를 골라요.', children: [
-          { id: 'physics-yang-final', kind: 'deck', name: '양동비T', fullName: '물리학Ⅱ(양동비T · 기말)', direction: 'left', symbol: 'F', description: '기말고사 양동비T 카드를 준비하고 있어요.', cards: [], lab: 'optics' },
+          { id: 'physics-yang-final', kind: 'deck', name: '양동비T', fullName: '물리학Ⅱ(양동비T · 기말)', direction: 'left', symbol: 'F', description: '광학 기기의 원리: 렌즈 · 거울의 상 · 렌즈 방정식 · 전반사 · 망원경 · 현미경 · 수차.', cards: physicsYangFinalCards, writtenQuestions: physicsYangFinalWritten, lab: 'optics' },
         ] },
         { id: 'chemistry-final', kind: 'deck', name: '화학', fullName: '화학(주민지T · 기말)', direction: 'right', symbol: '⚗', description: '탄소 화합물: 분산력 · 알케인 · 이성질 · 명명법 · 고리형 · 알켄 · 알카인 · 알코올.', cards: chemistryFinalCards, writtenQuestions: chemistryFinalWritten },
       ] },

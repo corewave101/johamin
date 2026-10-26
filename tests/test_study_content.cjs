@@ -9,7 +9,7 @@ const { englishWritten } = require('../data/english-written.ts');
 const { newGame, answerCard } = require('../lib/swipe-game.ts');
 assert.equal(englishCards.length, 170);
 assert.equal(englishWritten.length, 16);
-assert.equal(studyConcepts.length, 122); // +3: 조용민T 뭉탱이 전사·번역·그림 에디션, +4: 국어 고전 시가, +3: 기말 사회 조안나T, +4: 기말 화학 주민지T, +1: 기말 사회 성신제T 213, +2: 기말 영어 진달래T, +4: 기말 수학 황종철T 각 변환, +3: 기말 행성우주과학 전효진T
+assert.equal(studyConcepts.length, 126); // +3: 조용민T 뭉탱이 전사·번역·그림 에디션, +4: 국어 고전 시가, +3: 기말 사회 조안나T, +4: 기말 화학 주민지T, +1: 기말 사회 성신제T 213, +2: 기말 영어 진달래T, +4: 기말 수학 황종철T 각 변환, +3: 기말 행성우주과학 전효진T, +4: 기말 물리학Ⅱ 양동비T
 const ids = new Set();
 const pending = subjectDecks.filter(deck => !deck.cards.length && !deck.writtenQuestions?.length);
 assert.deepEqual(pending.map(deck => deck.id), [], 'Every part has class material now (고전 시가 filled in 3.9.0)');
