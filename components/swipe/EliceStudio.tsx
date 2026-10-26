@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useHomeScreen } from '../../lib/home-screen';
 import { ELICE_CHAPTERS, eliceProblems, solutionOf, type EliceProblem } from '../../data/elice-problems';
 import { cleanTraceback, explainError, loadRecords, normalizeOutput, sameOutput, saveRecord, scoreOf, type EliceRecord } from '../../lib/elice';
 import { navTargets } from '../../lib/exam';
@@ -42,6 +43,8 @@ export default function EliceStudio() {
     return () => { window.removeEventListener('hashchange', sync); window.removeEventListener('johamin:home', home); };
   }, []);
   const problem = eliceProblems.find(p => p.id === openId);
+  // 문제를 푸는 동안은 구석의 롯데 로고를 숨긴다(목록에서만 보임).
+  useHomeScreen(!problem);
   // 위쪽 막대 오른쪽의 가호 · 업데이트 · 소리 · 버전 묶음(app/main.tsx)만큼 자리를 비운다.
   const app = useRef<HTMLElement>(null);
   useEffect(() => {

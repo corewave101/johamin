@@ -67,4 +67,8 @@ const picker = fs.readFileSync('components/swipe/SubjectPicker.tsx', 'utf8');
 assert.ok(picker.includes('navTargets(examPage)') && picker.includes("setNav(true)") && picker.includes('window.location.assign(target.href)'));
 const auth = fs.readFileSync('lib/auth.ts', 'utf8');
 assert.ok(auth.includes('redirectTo: `${window.location.origin}${HOME_URL}`') && auth.includes('sessionStorage.setItem(RETURN_KEY, PAGE_URL[examPage])'));
+// 4.6.1: 구석의 롯데 로고는 메인 화면(과목 메뉴 첫 화면 · 정보 문제 목록)에서만. 문제 · 과목 · 이동 메뉴 안에서는 숨는다.
+assert.ok(picker.includes('useHomeScreen(atRoot && !nav)'), 'peek only on the first menu screen');
+assert.ok(fs.readFileSync('components/swipe/EliceStudio.tsx', 'utf8').includes('useHomeScreen(!problem)'), 'peek only on the elice list');
+assert.ok(fs.readFileSync('components/swipe/lotte.css', 'utf8').includes(':root:not(.at-home) .lotte-peek'), 'peek hidden off home');
 console.log(`PASS: ${finals.length} 기말 decks on new ids, ${subjectDecks.length} 중간고사 decks kept at /midterm/, 정보 코딩 연습장 at /elice/, 롯데 at /lotte/, 이동 menu on ↑ everywhere.`);
