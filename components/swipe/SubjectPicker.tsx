@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
+import { useHomeScreen } from '../../lib/home-screen';
 import type { Direction } from '../../data/swipe-cards';
 import type { SubjectDeck, SubjectGroup } from '../../data/swipe-subjects';
 import { examPage, isMidterm, navTargets, BRAND } from '../../lib/exam';
@@ -26,6 +27,8 @@ export default function SubjectPicker() {
   const current = findGroup(menu, path.at(-1)?.id) ?? menu;
   const atRoot = !path.length && !subject && !lab;
   const targets = navTargets(examPage);
+  // 구석의 롯데 로고는 메인 화면(첫 화면, 이동 메뉴가 닫힌 때)에서만 보인다.
+  useHomeScreen(atRoot && !nav);
   const resetDrag = useCallback(() => { pointer.current = null; setDrag({ x: 0, y: 0 }); }, []);
   const back = useCallback(() => {
     if (nav) setNav(false);

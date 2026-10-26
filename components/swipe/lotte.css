@@ -8,6 +8,8 @@
 .lotte-peek.is-gone { opacity: 0; transition: opacity .15s; }
 @keyframes lotte-peek { 0%, 86%, 100% { right: -44px; transform: rotate(-20deg); } 90% { right: -26px; transform: rotate(-10deg); } 94% { right: -34px; transform: rotate(-16deg); } }
 :root.intro-open .lotte-peek { visibility: hidden; }
+/* 메인 화면(과목 메뉴 첫 화면 · 정보 문제 목록)에서만 보인다. 문제를 푸는 중에는 숨는다(lib/home-screen.ts). */
+:root:not(.at-home) .lotte-peek:not(.is-gone) { visibility: hidden; opacity: 0; pointer-events: none; animation: none; }
 :root[data-page="elice"] .lotte-peek { bottom: 72px; }
 
 .lotte-launch { position: fixed; inset: 0; z-index: 950; display: grid; place-items: center; overflow: hidden; pointer-events: all;
