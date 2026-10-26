@@ -64,3 +64,32 @@
   .structure-svg { max-height: 200px; }
   .structure-prompt b { font-size: 17px; }
 }
+
+/* 4.4.1 난이도 · 고난도 · 그림판 */
+.structure-filters { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.structure-level { display: flex; gap: 6px; }
+.structure-level .glass-button { padding: 6px 12px; font-size: 13.5px; font-weight: 800; }
+.structure-panel .structure-level .glass-button.is-hard[aria-pressed="true"] { background: #c2410c; color: #fff; }
+.structure-quiz.is-hard { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr); }
+.structure-quiz.is-hard .structure-choice { font-size: 14px; line-height: 1.35; word-break: break-all; }
+@media (min-width: 701px) { .structure-quiz.is-hard .structure-svg { max-height: 300px; } }
+.structure-prompt.is-hard b { display: block; margin-top: 4px; font-size: 18px; line-height: 1.4; word-break: break-all; }
+.structure-palette { display: flex; flex-wrap: wrap; gap: 8px 14px; }
+.structure-palette > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.structure-palette .glass-button { padding: 7px 13px; font-size: 14px; font-weight: 800; min-width: 44px; }
+.structure-canvas { display: block; width: 100%; height: auto; border-radius: 16px; background: #fbfcff; border: 1px solid #d7deea; touch-action: none; user-select: none; -webkit-user-select: none; outline: none; cursor: crosshair; }
+.structure-canvas.tool-move { cursor: grab; } .structure-canvas.tool-erase { cursor: not-allowed; }
+.structure-canvas:focus-visible { box-shadow: 0 0 0 3px #79baff; }
+.structure-grid-dot { fill: #dfe5ee; }
+.structure-ink { stroke: #1d2433; stroke-width: 3.2; stroke-linecap: round; }
+.structure-ink.inner, .structure-ink.outer { stroke-width: 2.8; }
+.structure-c { fill: #1d2433; }
+.structure-c.is-over { fill: #d64545; }
+.structure-ghost { stroke: var(--theme-deep); stroke-width: 2; stroke-dasharray: 5 5; opacity: .7; }
+.structure-canvas-label { font: 800 17px Pretendard, "Noto Sans KR", system-ui, sans-serif; fill: #b4232f; text-anchor: middle; dominant-baseline: central; }
+.structure-canvas .structure-selected { fill: color-mix(in srgb, var(--theme-base) 25%, transparent); stroke: var(--theme-deep); stroke-width: 2.5; }
+.structure-crosshair line { stroke: #2f80ed; stroke-width: 2; }
+@media (max-width: 700px) {
+  .structure-quiz.is-hard { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .structure-palette .glass-button { padding: 6px 10px; font-size: 13px; min-width: 40px; }
+}
