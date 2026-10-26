@@ -94,7 +94,7 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
     ];
     // 카드가 아직 없는 파트(실습만 있는 파트)는 비활성 카드 없이 실습만 보여 준다.
     const shown = deck.cards.length ? hand : hand.filter(card => !card.disabled);
-    return <CardHand key="menu" deckName={name} prompt="무엇을 할까요?" cards={shown} onBack={onBack} backLabel="과목·파트" start={exam ? shown.findIndex(c => c.id === 'short') : Math.min(1, shown.length - 1)} />;
+    return <CardHand key="menu" deckName={name} prompt="무엇을 할까요?" cards={shown} onBack={onBack} backLabel="과목·파트" start={exam ? shown.findIndex(c => c.id === 'short') : Math.max(0, shown.findIndex(c => c.id === 'all'))} />;
   }
   if (mode === 'words') {
     const play = (name: string, cards: SwipeCard[]) => { setWordList({ name, cards }); setMode('word-game'); };

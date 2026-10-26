@@ -12,6 +12,7 @@ import { socialSungFinalConcepts } from './social-sung-final-concepts';
 import { englishFinalConcepts } from './english-final-concepts';
 import { mathTrigFinalConcepts } from './math-trig-final-concepts';
 import { astronomyJeonFinalConcepts } from './astronomy-jeon-final-concepts';
+import { physicsYangFinalConcepts } from './physics-yang-final-concepts';
 export interface ConceptSection {
   heading: string;
   paragraphs?: string[];
@@ -39,6 +40,7 @@ export const studyConcepts: ConceptLesson[] = [
   ...englishFinalConcepts,
   ...mathTrigFinalConcepts,
   ...astronomyJeonFinalConcepts,
+  ...physicsYangFinalConcepts,
   {
     "id": "biology-jo-concept-1",
     "deckId": "biology-jo",
