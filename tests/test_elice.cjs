@@ -16,10 +16,14 @@ const run = (code, input, timeout = 20000) => {
 
 assert.ok(problems.length >= 26, `${problems.length} problems`);
 assert.equal(new Set(problems.map(p => p.id)).size, problems.length);
-assert.ok(problems.every((p, i) => p.id === `info-${String(i + 1).padStart(2, '0')}`), 'ids in order');
+// id는 기록(코드 · 점수)이 붙는 이름이라 바꾸지 않는다. 자리를 옮겨도 id는 그대로(4.5.1: 최단 거리 info-09가 필수, 미로 info-03은 6장).
+assert.ok(problems.every(p => /^info-\d{2}$/.test(p.id)), 'id 모양');
+assert.deepEqual(problems.map(p => p.id).sort(), problems.map((_, i) => `info-${String(i + 1).padStart(2, '0')}`), '빠진 번호 없이');
+assert.equal(problems.find(p => p.id === 'info-03').title, '미로 최단 거리 (격자 BFS)');
+assert.equal(problems.find(p => p.id === 'info-09').title, '최단 거리 (BFS)');
 const must = problems.filter(p => p.must);
 assert.deepEqual(problems.filter(p => p.blanks).map(p => p.id), ['info-01'], '빈칸 문제는 DFS(스택) 하나');
-assert.deepEqual(must.map(p => p.title), ['DFS 방문 순서 (스택)', '덩어리 개수 세기', '미로 최단 거리 (출발점 · 도착점)', '두 개의 카드', '도서관 책 찾기', '리본 자르기']);
+assert.deepEqual(must.map(p => p.title), ['DFS 방문 순서 (스택)', '덩어리 개수 세기', '최단 거리 (BFS)', '두 개의 카드', '도서관 책 찾기', '리본 자르기']);
 assert.ok(must.every(p => p.chapter === 'must'));
 const chapterIds = ELICE_CHAPTERS.map(c => c.id);
 for (const c of chapterIds) assert.ok(problems.some(p => p.chapter === c), c);

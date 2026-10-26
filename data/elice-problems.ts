@@ -201,81 +201,51 @@ print(count_comp(graph))
     source: '6. DFS와 BFS · 4-1 연결 요소 세기',
   },
   {
-    id: 'info-03', chapter: 'must', must: true, title: '미로 최단 거리 (출발점 · 도착점)',
-    statement: [
-      '`N`×`M` 미로가 주어진다. `0`은 지나갈 수 있는 칸, `1`은 벽이다. 한 번에 상하좌우로 한 칸씩 움직일 수 있다.',
-      '출발점에서 도착점까지 가는 **최단 거리(움직인 칸 수)** 를 BFS로 구하는 프로그램을 작성하시오. 갈 수 없으면 `-1`을 출력한다.',
-    ],
-    input: ['첫째 줄에 `N`과 `M`이 주어진다. (1 ≤ N, M ≤ 30)', '다음 `N`줄에 미로의 각 줄이 `0`과 `1`로 공백을 두고 주어진다.', '마지막 줄에 출발점 `sx sy`와 도착점 `gx gy`가 주어진다. 좌표는 (행, 열)이고 0부터 센다. 출발점과 도착점은 항상 `0`이다.'],
-    output: ['최단 거리를 출력한다. 도착할 수 없으면 `-1`을 출력한다.'],
-    examples: [
-      { input: [...MATERIAL_MAZE, '0 0 4 4'].join('\n'), output: '8' },
-      { input: [...MATERIAL_MAZE, '0 0 0 4'].join('\n'), output: '8' },
-    ],
+    id: 'info-09', chapter: 'must', must: true, title: '최단 거리 (BFS)',
+    statement: ['가중치가 없는 그래프에서 BFS는 최단 거리를 구한다. 시작 정점에서 갈 수 있는 모든 정점까지의 최단 거리를 구하는 프로그램을 작성하시오.', '`dist` 딕셔너리가 거리 기록과 방문 표시(visited)를 함께 맡는다.'],
+    input: ['첫째 줄에 정점 수 `N`과 시작 정점 `S`가 주어진다. (1 ≤ N ≤ 26)', '다음 `N`줄에 정점 이름과 그 정점의 이웃들이 공백으로 주어진다.'],
+    output: ['갈 수 있는 정점을 이름 순으로 `S → 정점 : 거리칸` 꼴로 한 줄에 하나씩 출력한다.'],
+    examples: [{ input: graphLines(['7 A', ...MATERIAL_GRAPH]), output: 'A → A : 0칸\nA → B : 1칸\nA → C : 1칸\nA → D : 2칸\nA → E : 3칸' }],
     template: py`
-n, m = map(int, input().split())
-maze = [list(map(int, input().split())) for _ in range(n)]
-sx, sy, gx, gy = map(int, input().split())
+n, start = input().split()
+graph = {}
+for _ in range(int(n)):
+    line = input().split()
+    graph[line[0]] = line[1:]
 `,
     solution: py`
 from collections import deque
 
-# 상하좌우 이동
-moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-
-def maze_bfs(maze, start, goal):
-    n, m = len(maze), len(maze[0])
-    dist = {start: 0}
+def bfs_distance(graph, start):
+    dist = {start: 0}                 # 시작점까지의 거리는 0
     queue = deque([start])
 
     while queue:
-        x, y = queue.popleft()
-        if (x, y) == goal:
-            return dist[(x, y)]
+        node = queue.popleft()
+        for next in graph[node]:
+            if next not in dist:          # dist 가 visited 역할도 함
+                dist[next] = dist[node] + 1
+                queue.append(next)
 
-        for dx, dy in moves:
-            nx, ny = x + dx, y + dy
-            if 0 <= nx < n and 0 <= ny < m:      # 격자 밖으로 나가지 않기
-                if maze[nx][ny] == 0 and (nx, ny) not in dist:
-                    dist[(nx, ny)] = dist[(x, y)] + 1
-                    queue.append((nx, ny))
-
-    return -1                                     # 도달 불가
+    return dist
 
 
-n, m = map(int, input().split())
-maze = [list(map(int, input().split())) for _ in range(n)]
-sx, sy, gx, gy = map(int, input().split())
-print(maze_bfs(maze, (sx, sy), (gx, gy)))
+n, start = input().split()
+graph = {}
+for _ in range(int(n)):
+    line = input().split()
+    graph[line[0]] = line[1:]
+
+result = bfs_distance(graph, start)
+for v in sorted(result):
+    print(f"{start} → {v} : {result[v]}칸")
 `,
     tests: [
-      { input: [...MATERIAL_MAZE, '0 0 4 4'].join('\n') }, { input: [...MATERIAL_MAZE, '0 0 0 4'].join('\n') }, { input: [...MATERIAL_MAZE, '4 0 0 3'].join('\n') },
-      { input: ['3 3', '0 1 0', '0 1 0', '0 1 0', '0 0 2 2'].join('\n') },
-      { input: ['5 5', '0 0 0 0 0', '0 0 0 0 0', '0 0 0 0 0', '0 0 0 0 0', '0 0 0 0 0', '2 2 0 0'].join('\n') },
-      { input: ['4 6', '0 0 0 0 0 0', '0 0 0 0 0 0', '0 0 0 0 0 0', '0 0 0 0 0 0', '0 0 3 5'].join('\n') },
-      { input: ['1 1', '0', '0 0 0 0'].join('\n') },
-      { gen: py`
-import random
-random.seed(3)
-n, m = 30, 30
-print(n, m)
-for i in range(n):
-    row = []
-    for j in range(m):
-        wall = 1 if random.random() < 0.25 else 0
-        if (i, j) in ((0, 0), (n - 1, m - 1)):
-            wall = 0
-        row.append(wall)
-    print(*row)
-print(0, 0, n - 1, m - 1)
-` },
+      { input: graphLines(['7 A', ...MATERIAL_GRAPH]) }, { input: graphLines(['7 E', ...MATERIAL_GRAPH]) }, { input: graphLines(['7 F', ...MATERIAL_GRAPH]) },
+      { input: graphLines(['12 A', ...BIG_GRAPH]) }, { input: graphLines(['8 H', ...TREE]) }, { input: graphLines(['6 A', ...CYCLE]) },
     ],
-    tips: [
-      '자료 코드는 `queue.pop()`이에요. 그러면 뒤에서 꺼내 스택처럼 움직여서 BFS가 아니고, 미로에 따라 최단 거리보다 길게 나와요. 숨은 테스트에 그런 미로가 있어요. 꼭 `popleft()`!',
-      '범위 검사를 빼면 파이썬은 `maze[-1][0]`처럼 음수 인덱스를 허용해서 반대편 칸으로 넘어가요.',
-      '좌표는 튜플로 써야 딕셔너리 키나 집합에 넣을 수 있어요.',
-    ],
-    source: '6. DFS와 BFS · 5 격자에서의 탐색',
+    tips: ['수업 코드 `bfs_distance(graph, start)` 그대로예요: `dist = {start: 0}`, `popleft()`, `if next not in dist`, `dist[next] = dist[node] + 1`.', '꺼낸 정점(`node`)의 거리 + 1이 이웃의 거리예요. BFS는 가까운 정점부터 꺼내니까 처음 기록한 거리가 곧 최단 거리예요.'],
+    source: '6. DFS와 BFS · 4-2 최단 거리',
   },
   {
     id: 'info-04', chapter: 'must', must: true, title: '두 개의 카드',
@@ -529,53 +499,6 @@ print(*dfs_recursive(graph, start))
     source: '6. DFS와 BFS · 3-2 재귀로 쓰는 DFS',
   },
   {
-    id: 'info-09', chapter: 'graph', title: '모든 정점까지의 거리',
-    statement: ['가중치가 없는 그래프에서 BFS는 최단 거리를 구한다. 시작 정점에서 갈 수 있는 모든 정점까지의 최단 거리를 구하는 프로그램을 작성하시오.', '`dist` 딕셔너리가 거리 기록과 방문 표시(visited)를 함께 맡는다.'],
-    input: ['첫째 줄에 정점 수 `N`과 시작 정점 `S`가 주어진다. (1 ≤ N ≤ 26)', '다음 `N`줄에 정점 이름과 그 정점의 이웃들이 공백으로 주어진다.'],
-    output: ['갈 수 있는 정점을 이름 순으로 `S → 정점 : 거리칸` 꼴로 한 줄에 하나씩 출력한다.'],
-    examples: [{ input: graphLines(['7 A', ...MATERIAL_GRAPH]), output: 'A → A : 0칸\nA → B : 1칸\nA → C : 1칸\nA → D : 2칸\nA → E : 3칸' }],
-    template: py`
-n, start = input().split()
-graph = {}
-for _ in range(int(n)):
-    line = input().split()
-    graph[line[0]] = line[1:]
-`,
-    solution: py`
-from collections import deque
-
-def bfs_distance(graph, start):
-    dist = {start: 0}                 # 시작점까지의 거리는 0
-    queue = deque([start])
-
-    while queue:
-        node = queue.popleft()
-        for next in graph[node]:
-            if next not in dist:          # dist 가 visited 역할도 함
-                dist[next] = dist[node] + 1
-                queue.append(next)
-
-    return dist
-
-
-n, start = input().split()
-graph = {}
-for _ in range(int(n)):
-    line = input().split()
-    graph[line[0]] = line[1:]
-
-result = bfs_distance(graph, start)
-for v in sorted(result):
-    print(f"{start} → {v} : {result[v]}칸")
-`,
-    tests: [
-      { input: graphLines(['7 A', ...MATERIAL_GRAPH]) }, { input: graphLines(['7 E', ...MATERIAL_GRAPH]) }, { input: graphLines(['7 F', ...MATERIAL_GRAPH]) },
-      { input: graphLines(['12 A', ...BIG_GRAPH]) }, { input: graphLines(['8 H', ...TREE]) }, { input: graphLines(['6 A', ...CYCLE]) },
-    ],
-    tips: ['꺼낸 정점(`node`)의 거리 + 1이 이웃의 거리예요. BFS는 가까운 정점부터 꺼내니까 처음 기록한 거리가 곧 최단 거리예요.'],
-    source: '6. DFS와 BFS · 4-2 최단 거리',
-  },
-  {
     id: 'info-10', chapter: 'graph', title: '갈 수 있을까?',
     statement: ['그래프와 두 정점 `S`, `T`가 주어진다. `S`에서 출발해 `T`에 갈 수 있는지 BFS로 확인하는 프로그램을 작성하시오.'],
     input: ['첫째 줄에 정점 수 `N`이 주어진다. (1 ≤ N ≤ 26)', '다음 `N`줄에 정점 이름과 그 정점의 이웃들이 공백으로 주어진다.', '마지막 줄에 `S`와 `T`가 주어진다.'],
@@ -666,6 +589,83 @@ print(count)
     ],
     tips: ['자료의 이 셀은 `for v in graph`로 돌면서 `dfs_recursive(graph2, v)`를 불러서 graph2의 H, I 덩어리를 세지 못하고 2가 나와요. 셀 그래프와 탐색할 그래프가 같아야 3이 나와요.'],
     source: '6. DFS와 BFS · 4-1 연결 요소 세기 (재귀)',
+  },
+  {
+    id: 'info-03', chapter: 'graph', title: '미로 최단 거리 (격자 BFS)',
+    statement: [
+      '`N`×`M` 미로가 주어진다. `0`은 지나갈 수 있는 칸, `1`은 벽이다. 한 번에 상하좌우로 한 칸씩 움직일 수 있다.',
+      '출발점에서 도착점까지 가는 **최단 거리(움직인 칸 수)** 를 BFS로 구하는 프로그램을 작성하시오. 갈 수 없으면 `-1`을 출력한다.',
+    ],
+    input: ['첫째 줄에 `N`과 `M`이 주어진다. (1 ≤ N, M ≤ 30)', '다음 `N`줄에 미로의 각 줄이 `0`과 `1`로 공백을 두고 주어진다.', '마지막 줄에 출발점 `sx sy`와 도착점 `gx gy`가 주어진다. 좌표는 (행, 열)이고 0부터 센다. 출발점과 도착점은 항상 `0`이다.'],
+    output: ['최단 거리를 출력한다. 도착할 수 없으면 `-1`을 출력한다.'],
+    examples: [
+      { input: [...MATERIAL_MAZE, '0 0 4 4'].join('\n'), output: '8' },
+      { input: [...MATERIAL_MAZE, '0 0 0 4'].join('\n'), output: '8' },
+    ],
+    template: py`
+n, m = map(int, input().split())
+maze = [list(map(int, input().split())) for _ in range(n)]
+sx, sy, gx, gy = map(int, input().split())
+`,
+    solution: py`
+from collections import deque
+
+# 상하좌우 이동
+moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+def maze_bfs(maze, start, goal):
+    n, m = len(maze), len(maze[0])
+    dist = {start: 0}
+    queue = deque([start])
+
+    while queue:
+        x, y = queue.popleft()
+        if (x, y) == goal:
+            return dist[(x, y)]
+
+        for dx, dy in moves:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < n and 0 <= ny < m:      # 격자 밖으로 나가지 않기
+                if maze[nx][ny] == 0 and (nx, ny) not in dist:
+                    dist[(nx, ny)] = dist[(x, y)] + 1
+                    queue.append((nx, ny))
+
+    return -1                                     # 도달 불가
+
+
+n, m = map(int, input().split())
+maze = [list(map(int, input().split())) for _ in range(n)]
+sx, sy, gx, gy = map(int, input().split())
+print(maze_bfs(maze, (sx, sy), (gx, gy)))
+`,
+    tests: [
+      { input: [...MATERIAL_MAZE, '0 0 4 4'].join('\n') }, { input: [...MATERIAL_MAZE, '0 0 0 4'].join('\n') }, { input: [...MATERIAL_MAZE, '4 0 0 3'].join('\n') },
+      { input: ['3 3', '0 1 0', '0 1 0', '0 1 0', '0 0 2 2'].join('\n') },
+      { input: ['5 5', '0 0 0 0 0', '0 0 0 0 0', '0 0 0 0 0', '0 0 0 0 0', '0 0 0 0 0', '2 2 0 0'].join('\n') },
+      { input: ['4 6', '0 0 0 0 0 0', '0 0 0 0 0 0', '0 0 0 0 0 0', '0 0 0 0 0 0', '0 0 3 5'].join('\n') },
+      { input: ['1 1', '0', '0 0 0 0'].join('\n') },
+      { gen: py`
+import random
+random.seed(3)
+n, m = 30, 30
+print(n, m)
+for i in range(n):
+    row = []
+    for j in range(m):
+        wall = 1 if random.random() < 0.25 else 0
+        if (i, j) in ((0, 0), (n - 1, m - 1)):
+            wall = 0
+        row.append(wall)
+    print(*row)
+print(0, 0, n - 1, m - 1)
+` },
+    ],
+    tips: [
+      '자료 코드는 `queue.pop()`이에요. 그러면 뒤에서 꺼내 스택처럼 움직여서 BFS가 아니고, 미로에 따라 최단 거리보다 길게 나와요. 숨은 테스트에 그런 미로가 있어요. 꼭 `popleft()`!',
+      '범위 검사를 빼면 파이썬은 `maze[-1][0]`처럼 음수 인덱스를 허용해서 반대편 칸으로 넘어가요.',
+      '좌표는 튜플로 써야 딕셔너리 키나 집합에 넣을 수 있어요.',
+    ],
+    source: '6. DFS와 BFS · 5 격자에서의 탐색',
   },
   {
     id: 'info-12', chapter: 'graph', title: '섬의 개수 (격자 덩어리)',
