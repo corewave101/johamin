@@ -83,7 +83,7 @@ assert.ok(mic.di1 > 0 && mic.m1 < 0 && mic.do2 < 8 && mic.di2 < 0 && mic.totalM 
 const bounds = microscopeBounds(5, 30); assert.ok(bounds.min > 5 && bounds.max >= 12);
 assert.ok(close(prismState(1.52, 48).critical, Math.asin(1 / 1.52) * 180 / Math.PI) && prismState(1.52, 48).totalReflection && !prismState(1.52, 30).totalReflection);
 
-// 메뉴: 과학 → 물리 · 화학 → 물리학Ⅱ → 양동비T. 실습 카드는 베타 스위치가 켜졌을 때만, '베타' 글자 없이.
+// 메뉴: 과학 → 물리 · 화학 → 물리학Ⅱ → 양동비T. 실습 카드는 4.1.0부터 누구에게나 보인다.
 const { finalMenu } = require('../data/final-subjects.ts');
 const pc = finalMenu.children.find(n => n.id === 'science').children.find(n => n.id === 'physics-chemistry');
 const physics = pc.children.find(n => n.id === 'physics-final-group');
@@ -91,10 +91,10 @@ assert.equal(physics.direction, 'left');
 const yang = physics.children.find(n => n.id === 'physics-yang-final');
 assert.ok(yang && yang.name === '양동비T' && yang.lab === 'optics');
 const study = fs.readFileSync('components/swipe/SubjectStudy.tsx', 'utf8');
-assert.ok(/deck\.lab === 'optics' && beta/.test(study), '실습은 베타 스위치 뒤에');
+assert.ok(/const optics = deck\.lab === 'optics';/.test(study) && !/useBeta/.test(study), '4.1.0: 실습은 정식 기능(베타 스위치 없음)');
 const component = fs.readFileSync('components/swipe/OpticsLab.tsx', 'utf8');
 assert.ok(!/베타|beta/i.test(component), '실습 화면에 베타 딱지 없음');
 assert.ok(!/cdn-cgi|challenge-platform|modelContext|registerTool|clipboard/.test(component + fs.readFileSync('lib/optics-lab.ts', 'utf8')), '원본의 추적 스크립트 · WebMCP · 복사 기능은 뗐다');
 assert.ok(!/from '\.\.\/\.\.\/data\//.test(component), '실습 화면은 카드 묶음을 불러오지 않는다');
 
-console.log(`PASS: 빛과 렌즈 실습 — 렌즈·거울 상, 스크린 상맺힘, 작도 가이드 ${planned}가지 배치 채점 확인, 망원경·현미경·프리즘, 베타 스위치(딱지 없음)`);
+console.log(`PASS: 빛과 렌즈 실습 — 렌즈·거울 상, 스크린 상맺힘, 작도 가이드 ${planned}가지 배치 채점 확인, 망원경·현미경·프리즘, 메뉴 연결`);

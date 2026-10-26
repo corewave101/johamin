@@ -49,6 +49,31 @@ for (const c of cards) {
   }
 }
 assert.ok(computed >= 70, `computed ${computed}`);
+// 스넬 법칙 n₁ sin θ₁ = n₂ sin θ₂ (4.0.3~): 모든 계산 카드를 다시 계산하고, 전반사 판정도 확인한다.
+const val = t => t === '√2' ? Math.SQRT2 : t === '√3' ? Math.sqrt(3) : Number(t);
+const sin = d => Math.sin(d * Math.PI / 180);
+let snell = 0;
+for (const c of cards) {
+  const right = c.answers[c.correct];
+  let m;
+  if ((m = c.question.match(/^굴절률 (\S+)인 매질에서 굴절률 (\S+)인 매질로 입사각 (\d+)°로 들어간 빛의 굴절각은\?$/))) {
+    const s2 = val(m[1]) * sin(Number(m[3])) / val(m[2]);
+    assert.ok(s2 <= 1 && Math.abs(sin(parseFloat(right)) - s2) < 1e-9, `${c.id} ${right}`); snell += 1;
+  } else if ((m = c.question.match(/^굴절률 (\S+)인 매질에서 굴절률 (\S+)인 매질로 sin θ₁ = ([\d.]+)(?:으로|로) 입사했다\. 굴절하는 빛은\?$/))) {
+    const s2 = Number(m[1]) * Number(m[3]) / Number(m[2]);
+    if (s2 > 1) assert.equal(right, '전반사가 일어난다', c.id);
+    else assert.ok(Math.abs(Number(right.replace('sin θ₂ = ', '')) - s2) < 1e-3, `${c.id} ${right}`);
+    snell += 1;
+  } else if ((m = c.question.match(/^n₁ = (\S+)인 매질에서 sin θ₁ = ([\d.]+)(?:으로|로) 입사해 sin θ₂ = ([\d.]+)(?:으로|로) 굴절했다\. n₂는\?$/))) {
+    assert.ok(Math.abs(Number(right) - Number(m[1]) * Number(m[2]) / Number(m[3])) < 1e-3, `${c.id} ${right}`); snell += 1;
+  } else if ((m = c.question.match(/^굴절률 (\S+)인 매질에서 굴절률 (\S+)인 매질로 빛이 갈 때 임계각은\?$/))) {
+    assert.ok(Math.abs(sin(parseFloat(right)) - val(m[2]) / val(m[1])) < 1e-9, `${c.id} ${right}`); snell += 1;
+  } else if ((m = c.question.match(/^굴절률 (\S+)인 매질에서 굴절률 (\S+)인 매질로 갈 때 임계각 θc의 sin 값은\?$/))) {
+    assert.ok(Math.abs(Number(right.replace('sin θc = ', '')) - Number(m[2]) / Number(m[1])) < 1e-3, `${c.id} ${right}`); snell += 1;
+  }
+}
+assert.ok(snell >= 35, `snell ${snell}`);
+assert.ok(cards.some(c => c.question === '스넬 법칙을 바르게 나타낸 것은?'));
 // 확인 문제 1: a = 20, b = 100 → f = 50/3, a = 10 → b = −25, m = 2.5
 const f1 = 1 / (1 / 20 + 1 / 100);
 assert.ok(Math.abs(f1 - 50 / 3) < 1e-9);
@@ -62,4 +87,4 @@ const lessons = conceptsFor('physics-yang-final');
 assert.equal(lessons.length, 4);
 assert.deepEqual([...new Set(lessons.flatMap(l => l.topicKeys))].sort(), [...topics].sort());
 
-console.log(`PASS: 물리학Ⅱ 양동비T 광학 기기의 원리 ${cards.length}장 (렌즈 방정식 ${computed}장 다시 계산) · 서술형 ${written.length} · 개념 ${lessons.length}`);
+console.log(`PASS: 물리학Ⅱ 양동비T 광학 기기의 원리 ${cards.length}장 (렌즈 방정식 ${computed}장 · 스넬 법칙 ${snell}장 다시 계산) · 서술형 ${written.length} · 개념 ${lessons.length}`);

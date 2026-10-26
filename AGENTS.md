@@ -31,7 +31,7 @@
 | 폴더·파일 | 내용 |
 |---|---|
 | `app/` | 시작점 `main.tsx`, CSS(`swipe.css`가 대부분) |
-| `components/swipe/` | 화면. `SwipeGame`(문제 카드), `SubjectPicker`(과목 고르기), `SubjectStudy`(개념·문제 메뉴), `ParkStudy`·`ParkVocabulary`(박상영T 전용), `MenuCard`(카드형 메뉴), `CardHand`(베타 · 카드 패 메뉴), `OrderDeck`(문장 배치), `BlessingToggle`·`BlessingEditor`(가호), `ObservationLab`·`ChemistryLab`·`OpticsLab`(실습. `OpticsLab`은 덱에 `lab: 'optics'`가 있고 베타 테스트가 켜졌을 때만 학습 메뉴에 나온다. 계산은 `lib/optics-lab.ts`) |
+| `components/swipe/` | 화면. `SwipeGame`(문제 카드), `SubjectPicker`(과목 고르기), `SubjectStudy`(개념·문제 메뉴), `ParkStudy`·`ParkVocabulary`(박상영T 전용), `MenuCard`(카드형 메뉴), `CardHand`(베타 · 카드 패 메뉴), `OrderDeck`(문장 배치), `BlessingToggle`·`BlessingEditor`(가호), `ObservationLab`·`ChemistryLab`·`OpticsLab`(실습. `OpticsLab`은 덱에 `lab: 'optics'`가 있으면 학습 메뉴 맨 앞에 나온다. 계산은 `lib/optics-lab.ts`) |
 | `lib/` | 로직. `card-store.ts`(DB 읽기·캐시), `auth.ts`·`member.ts`(로그인), `swipe-game.ts`, `vocabulary.ts`, `theme.ts`, `jumpscare.ts` … |
 | `data/` | 코드에 들어 있는 카드(번들). `swipe-subjects.ts`가 과목·덱 목록 |
 | `db/` | DB 표 정의와 카드 사본(`cards.json`, `seed.sql`) |

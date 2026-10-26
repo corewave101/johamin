@@ -5,8 +5,9 @@ import type { WrittenQuestion } from './biology-written';
 // 1쪽 기본 개념 · 볼록 렌즈 작도와 상 · 오목 렌즈 · 거울 / 2쪽 렌즈 방정식 유도 · 부호 · 배율 · 굴절과 전반사 /
 // 3쪽 망원경 · 현미경 · 수차 / 4~5쪽 확인 문제 1~4.
 // 필기는 모두 맞았다. ⚠ 수차 옆 "(1, 2, 3의 렌즈 두께 다름)"은 대략적인 설명이라, 카드는 학습지 문장대로
-// "광축 가까운 부분과 가장자리를 지나는 광선의 초점 위치가 다르다"로 냈다. 스넬 법칙 옆 "(범X)" 표시에 따라 스넬 법칙 계산은 넣지 않았다.
-// 렌즈 방정식 계산 카드는 1/a + 1/b = 1/f, m = −b/a로 만들고 tests/test_physics_yang_final.cjs가 다시 계산한다.
+// "광축 가까운 부분과 가장자리를 지나는 광선의 초점 위치가 다르다"로 냈다. 스넬 법칙 옆 "(유도X)"는 유도만 빼라는 뜻이라, 식을 쓰는 계산(4.0.3)은 넣었다(유도 문제는 없음).
+// 렌즈 방정식 계산 카드는 1/a + 1/b = 1/f, m = −b/a로, 스넬 법칙 카드는 n₁ sin θ₁ = n₂ sin θ₂로 만들고 tests/test_physics_yang_final.cjs가 다시 계산한다.
+// ⚠ 카드 id는 만들어지는 순서로 붙는다. 새 카드는 맨 뒤(스넬 법칙 묶음 뒤)에 붙인다.
 export const NOTE = (page: number) => `양동비T 물리 20번 · ${page}쪽`;
 
 const T1 = '광학 기기의 기본 개념', T2 = '볼록 렌즈의 작도', T3 = '볼록 렌즈의 상', T4 = '오목 렌즈와 거울', T5 = '렌즈 방정식과 배율',
@@ -153,6 +154,64 @@ for (const [f, as] of LENSES) for (const a of as) {
   if (new Set(mChoices).size === 4 && Math.abs(m) !== 1) rows.push([T6, `초점 거리 ${fAbs} cm인 ${lens} 렌즈 앞 ${a} cm 물체의 배율과 상은?`, mChoices as [string, string, string, string],
     `b = ${fmt(b)} cm이므로 m = −b/a = ${fmt(m)}다. ${m < 0 ? '음수라 도립' : '양수라 정립'}, |m| ${Math.abs(m) > 1 ? '> 1이라 확대' : '< 1이라 축소'}된 ${b > 0 ? '실상' : '허상'}이다.`, 2]);
 }
+
+// ── 스넬 법칙: n₁ sin θ₁ = n₂ sin θ₂ (2쪽 ★, 유도는 범위 밖) · 4.0.3에 맨 뒤로 붙였다 ──────────────
+const dec = (v: number) => String(Math.round(v * 1000) / 1000);
+const TIR = '전반사가 일어난다';
+/** 0.6으로 · 0.8로처럼 마지막 숫자 읽기에 맞춘 조사 */
+const ro = (v: number) => /[036]$/.test(String(v)) ? '으로' : '로';
+rows.push(
+  [T7, '스넬 법칙을 바르게 나타낸 것은?', ['n₁ sin θ₁ = n₂ sin θ₂', 'n₁ sin θ₂ = n₂ sin θ₁', 'n₁ θ₁ = n₂ θ₂', 'n₁ cos θ₁ = n₂ cos θ₂'], '입사각 θ₁, 굴절각 θ₂를 법선에서 잰 각으로 쓰면 n₁ sin θ₁ = n₂ sin θ₂다.', 2],
+  [T7, 'n₂ > n₁일 때 입사각 θ₁과 굴절각 θ₂의 크기는?', ['θ₁ > θ₂', 'θ₁ < θ₂', 'θ₁ = θ₂', '항상 θ₂ = 90°'], 'n₁ sin θ₁ = n₂ sin θ₂에서 n₂ > n₁이면 sin θ₂ < sin θ₁이라 θ₁ > θ₂, 법선에 가까운 쪽으로 꺾인다.', 2],
+  [T7, 'n₂ < n₁일 때 입사각 θ₁과 굴절각 θ₂의 크기는?', ['θ₁ < θ₂', 'θ₁ > θ₂', 'θ₁ = θ₂', '항상 θ₂ = 0°'], 'n₁ sin θ₁ = n₂ sin θ₂에서 n₂ < n₁이면 sin θ₂ > sin θ₁이라 θ₁ < θ₂, 법선에서 먼 쪽으로 꺾인다.', 2],
+  [T7, '스넬 법칙에서 θ₁, θ₂는 무엇을 기준으로 잰 각인가?', ['법선', '경계면', '광축', '입사 광선'], '입사각과 굴절각은 경계면에 수직인 법선과 광선이 이루는 각이다.', 2],
+  [T7, '스넬 법칙으로 임계각을 구할 때 굴절각 θ₂에 넣는 값은?', ['90°', '0°', '45°', '입사각과 같은 값'], '임계각은 굴절각이 90°가 되는 입사각이라 n₁ sin θc = n₂ sin 90°로 구한다.', 2],
+);
+// 특수각: sin 30° = 1/2, sin 45° = √2/2, sin 60° = √3/2, sin 90° = 1
+const SNELL_ANGLES: [string, number, string, number, number][] = [
+  // [n₁ 글자, n₁, n₂ 글자, n₂, θ₁(°)] → θ₂
+  ['1', 1, '√3', Math.sqrt(3), 60], ['1', 1, '√2', Math.SQRT2, 45], ['√3', Math.sqrt(3), '1', 1, 30], ['√2', Math.SQRT2, '1', 1, 30],
+  ['√2', Math.SQRT2, '√3', Math.sqrt(3), 60], ['√3', Math.sqrt(3), '√2', Math.SQRT2, 45], ['2', 2, '√2', Math.SQRT2, 30],
+];
+const sinD = (d: number) => Math.sin(d * Math.PI / 180);
+for (const [t1, n1, t2, n2, a1] of SNELL_ANGLES) {
+  const s2 = n1 * sinD(a1) / n2;
+  const a2 = Math.round(Math.asin(Math.min(1, s2)) * 180 / Math.PI);
+  const wrong = [30, 45, 60, 90].filter(x => x !== a2);
+  rows.push([T7, `굴절률 ${t1}인 매질에서 굴절률 ${t2}인 매질로 입사각 ${a1}°로 들어간 빛의 굴절각은?`, [`${a2}°`, ...wrong.map(x => `${x}°`)] as [string, string, string, string],
+    `${t1} × sin ${a1}° = ${t2} × sin θ₂이므로 sin θ₂ = ${dec(s2) === '0.5' ? '1/2' : dec(s2) === '0.707' ? '√2/2' : dec(s2) === '0.866' ? '√3/2' : dec(s2)}, θ₂ = ${a2}°다. ${n2 > n1 ? '굴절률이 큰 쪽으로 가서 법선 쪽으로 꺾였다' : '굴절률이 작은 쪽으로 가서 법선에서 멀어졌다'}.`
+    , 2]);
+}
+// sin 값으로 계산
+const SNELL_SIN: [number, number, number][] = [
+  [1, 1.5, 0.6], [1, 1.2, 0.6], [1, 2, 0.8], [1, 1.6, 0.8], [1.2, 1.5, 0.5], [1.5, 2, 0.4], [1.2, 1.6, 0.4], [1, 1.25, 0.5],
+  [1.5, 1, 0.6], [1.2, 1, 0.5], [2, 1.6, 0.4], [1.5, 1.2, 0.4], [1.6, 1.2, 0.6], [2, 1.5, 0.3],
+  [1.5, 1, 0.8], [2, 1, 0.6], [1.6, 1.2, 0.8], [2, 1.5, 0.9],
+];
+for (const [n1, n2, s1] of SNELL_SIN) {
+  const s2 = n1 * s1 / n2, total = s2 > 1;
+  const right = total ? TIR : `sin θ₂ = ${dec(s2)}`;
+  const cand = [right, `sin θ₂ = ${dec(n2 * s1 / n1)}`, `sin θ₂ = ${dec(s1)}`, total ? `sin θ₂ = ${dec(n1 / n2)}` : TIR, `sin θ₂ = ${dec(n1 * n2 * s1)}`];
+  const choices = Array.from(new Set(cand)).filter(c => c !== 'sin θ₂ = 1').slice(0, 4) as [string, string, string, string];
+  rows.push([T7, `굴절률 ${n1}인 매질에서 굴절률 ${n2}인 매질로 sin θ₁ = ${s1}${ro(s1)} 입사했다. 굴절하는 빛은?`, choices,
+    total ? `n₁ sin θ₁ = ${dec(n1 * s1)}인데 n₂ sin θ₂는 최대 ${n2}이므로 같게 만들 수 없다. 입사각이 임계각보다 커서 전반사가 일어난다.`
+      : `${n1} × ${s1} = ${n2} × sin θ₂이므로 sin θ₂ = ${dec(n1 * s1)}/${n2} = ${dec(s2)}이다.`, 2]);
+}
+const SNELL_N: [number, number, number][] = [[1, 0.6, 0.4], [1, 0.8, 0.5], [1, 0.9, 0.6], [1.2, 0.5, 0.4], [1.5, 0.4, 0.3], [1, 0.6, 0.5]];
+for (const [n1, s1, s2] of SNELL_N) {
+  const n2 = n1 * s1 / s2;
+  rows.push([T7, `n₁ = ${n1}인 매질에서 sin θ₁ = ${s1}${ro(s1)} 입사해 sin θ₂ = ${s2}${ro(s2)} 굴절했다. n₂는?`,
+    [dec(n2), dec(n1 * s2 / s1), dec(n1 * s1 * s2), dec(n1 + s1 - s2)].map(String) as [string, string, string, string],
+    `n₂ = n₁ sin θ₁ / sin θ₂ = ${n1} × ${s1} / ${s2} = ${dec(n2)}이다.`, 2]);
+}
+const SNELL_CRIT: [string, number, string, number, string][] = [
+  ['2', 2, '1', 1, '30°'], ['√2', Math.SQRT2, '1', 1, '45°'], ['2', 2, '√3', Math.sqrt(3), '60°'], ['2', 2, '√2', Math.SQRT2, '45°'],
+];
+for (const [t1, , t2, , ans] of SNELL_CRIT) rows.push([T7, `굴절률 ${t1}인 매질에서 굴절률 ${t2}인 매질로 빛이 갈 때 임계각은?`, [ans, ...['30°', '45°', '60°', '90°'].filter(x => x !== ans)] as [string, string, string, string],
+  `n₁ sin θc = n₂ sin 90°이므로 sin θc = ${t2}/${t1}, θc = ${ans}다.`, 2]);
+for (const [n1, n2] of [[1.25, 1], [1.5, 1.2], [2, 1.5], [1.6, 1.2], [2, 1.6]]) rows.push([T7, `굴절률 ${n1}인 매질에서 굴절률 ${n2}인 매질로 갈 때 임계각 θc의 sin 값은?`,
+  Array.from(new Set([n2 / n1, n1 / n2, n1 - n2, n1 * n2, 1 - n2 / n1, n2 / (2 * n1)].map(v => `sin θc = ${dec(v)}`))).slice(0, 4) as [string, string, string, string],
+  `n₁ sin θc = n₂ sin 90°이므로 sin θc = n₂/n₁ = ${n2}/${n1} = ${dec(n2 / n1)}이다.`, 2]);
 
 const directions: Direction[] = ['up', 'left', 'right', 'down'];
 export const physicsYangFinalCards: SwipeCard[] = rows.map(([topic, question, choices, explanation, page], index) => ({
