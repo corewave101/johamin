@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import { eliceMenu } from '../../data/elice-subjects';
 import { finalMenu } from '../../data/final-subjects';
 import { subjectMenu, type SubjectGroup, type SubjectNode } from '../../data/swipe-subjects';
 import { accessToken } from '../../lib/auth';
 import { trackPromise } from '../../lib/boot';
 import { cachedRows, cacheRows, fetchCardRows, groupRows, withLiveCards } from '../../lib/card-store';
-import { isElice, isMidterm } from '../../lib/exam';
+import { isMidterm } from '../../lib/exam';
 
-// /midterm/ shows the 중간고사 decks, /elice/ the 정보 page; the first screen shows this exam's (기말고사) decks.
-const baseMenu = isElice ? eliceMenu : isMidterm ? subjectMenu : finalMenu;
+// /midterm/ shows the 중간고사 decks; the first screen shows this exam's (기말고사) decks. /elice/ is the 정보 코딩 연습장 (EliceStudio, no cards).
+const baseMenu = isMidterm ? subjectMenu : finalMenu;
 
 /**
  * The subject menu with cards from the Supabase database.

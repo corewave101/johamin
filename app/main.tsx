@@ -1,5 +1,6 @@
 import '../components/swipe/observation.css';
 import '../components/swipe/optics.css';
+import '../components/swipe/elice.css';
 import { lazy, Suspense, useEffect, useState, type ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
 import AppStatus from '../components/swipe/AppStatus';
@@ -12,18 +13,19 @@ import JumpscareLayer from '../components/swipe/JumpscareLayer';
 import SoundToggle from '../components/swipe/SoundToggle';
 import UpdateLog from '../components/swipe/UpdateLog';
 import { trackPromise } from '../lib/boot';
+import { isElice } from '../lib/exam';
 import './globals.css';
 import './scene.css';
 import './swipe.css';
 import './intro.css';
 import './blessing.css';
 
-// #demo (or the older #johamin/demo) opens the sample deck; every other address opens the subject menu.
+// #demo (or the older #johamin/demo) opens the sample deck; /elice/ opens the 정보 코딩 연습장; every other address opens the subject menu.
 const isDemo = ['#demo', '#johamin/demo'].includes(window.location.hash);
 // The subject menu and every bundled card (about 2 MB) come in a separate file. It starts loading right away, in parallel
 // with the intro and the login check, so the first screen no longer waits for all the cards. The intro waits for it.
 const menuFile: Promise<{ default: ComponentType }> = trackPromise('menu',
-  (isDemo ? import('../components/swipe/SwipeGame') : import('../components/swipe/SubjectPicker')) as Promise<{ default: ComponentType }>)
+  (isElice ? import('../components/swipe/EliceStudio') : isDemo ? import('../components/swipe/SwipeGame') : import('../components/swipe/SubjectPicker')) as Promise<{ default: ComponentType }>)
   .catch(() => ({ default: LoadFailed }));
 const Menu = lazy(() => menuFile);
 // Offline support: the service worker keeps the app on this device after the first visit (only in the built site).
@@ -49,7 +51,7 @@ createRoot(document.getElementById('root')!).render(<>
   <Backdrop />
   <SoundToggle />
   <BlessingToggle />
-  <CardSizeControl />
+  {!isElice && <CardSizeControl />}
   <AuthGate><Suspense fallback={<LoadingCard />}><Menu /></Suspense></AuthGate>
   <AppStatus />
   <JumpscareLayer />
