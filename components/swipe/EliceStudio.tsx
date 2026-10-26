@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { ELICE_CHAPTERS, eliceProblems, solutionOf, type EliceProblem } from '../../data/elice-problems';
 import { cleanTraceback, explainError, loadRecords, normalizeOutput, sameOutput, saveRecord, scoreOf, type EliceRecord } from '../../lib/elice';
 import { navTargets } from '../../lib/exam';
@@ -42,7 +42,18 @@ export default function EliceStudio() {
     return () => { window.removeEventListener('hashchange', sync); window.removeEventListener('johamin:home', home); };
   }, []);
   const problem = eliceProblems.find(p => p.id === openId);
-  return <main className="elice-app">
+  // 위쪽 막대 오른쪽의 가호 · 업데이트 · 소리 · 버전 묶음(app/main.tsx)만큼 자리를 비운다.
+  const app = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const dock = document.querySelector<HTMLElement>('.elice-dock');
+    if (!dock) return;
+    const fit = () => app.current?.style.setProperty('--dock-w', `${Math.ceil(dock.getBoundingClientRect().width)}px`);
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(dock);
+    return () => observer.disconnect();
+  }, []);
+  return <main className="elice-app" ref={app}>
     {problem
       ? <ProblemView key={problem.id} problem={problem} record={records[problem.id]} onRecord={setRecords} />
       : <CourseList records={records} />}
@@ -138,6 +149,40 @@ function useRunner() {
   return state;
 }
 
+// ── 칸 크기 조절: 문제 | 코드, 코드 / 실행 결과 사이 막대를 끌거나 방향키로 ─────────────────────
+const LAYOUT_KEY = 'johamin-elice-layout-v1';
+interface Layout { left: number; editor: number }
+const DEFAULT_LAYOUT: Layout = { left: 0.4, editor: 0.6 };
+const clampLayout = (l: Layout): Layout => ({ left: Math.min(0.72, Math.max(0.18, l.left)), editor: Math.min(0.88, Math.max(0.15, l.editor)) });
+function loadLayout(): Layout {
+  try { const saved = JSON.parse(localStorage.getItem(LAYOUT_KEY) ?? 'null'); if (saved && typeof saved.left === 'number' && typeof saved.editor === 'number') return clampLayout(saved); } catch { /* default */ }
+  return DEFAULT_LAYOUT;
+}
+const saveLayout = (l: Layout) => { try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(l)); } catch { /* not saved */ } };
+
+/** 끌 수 있는 칸 나눔 막대. axis='x'면 좌우, 'y'면 위아래. value는 0~1(앞 칸 비율). */
+function Splitter({ axis, value, label, onChange, onDone, area }: { axis: 'x' | 'y'; value: number; label: string; onChange: (v: number) => void; onDone: () => void; area: () => DOMRect | undefined }) {
+  const dragging = useRef(false);
+  const at = (event: PointerEvent) => {
+    const r = area();
+    if (!r) return value;
+    return axis === 'x' ? (event.clientX - r.left) / r.width : (event.clientY - r.top) / r.height;
+  };
+  return <div className={`elice-split is-${axis}`} role="separator" aria-orientation={axis === 'x' ? 'vertical' : 'horizontal'} aria-label={label}
+    aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(value * 100)} tabIndex={0} title={`${label} (끌기 · 방향키 · 두 번 눌러 처음대로)`}
+    onPointerDown={event => { dragging.current = true; event.currentTarget.setPointerCapture(event.pointerId); event.preventDefault(); }}
+    onPointerMove={event => { if (dragging.current) onChange(at(event.nativeEvent)); }}
+    onPointerUp={() => { if (dragging.current) { dragging.current = false; onDone(); } }}
+    onPointerCancel={() => { dragging.current = false; onDone(); }}
+    onDoubleClick={() => { onChange(-1); onDone(); }}
+    onKeyDown={event => {
+      const step = event.shiftKey ? 0.1 : 0.03;
+      const less = axis === 'x' ? 'ArrowLeft' : 'ArrowUp', more = axis === 'x' ? 'ArrowRight' : 'ArrowDown';
+      if (event.key === less || event.key === more) { event.preventDefault(); onChange(value + (event.key === more ? step : -step)); onDone(); }
+      else if (event.key === 'Home') { event.preventDefault(); onChange(-1); onDone(); }
+    }}><span aria-hidden="true" /></div>;
+}
+
 function ProblemView({ problem, record, onRecord }: { problem: EliceProblem; record?: EliceRecord; onRecord: (all: Record<string, EliceRecord>) => void }) {
   const index = eliceProblems.indexOf(problem);
   const chapter = ELICE_CHAPTERS.find(c => c.id === problem.chapter)!;
@@ -151,6 +196,13 @@ function ProblemView({ problem, record, onRecord }: { problem: EliceProblem; rec
   const [party, setParty] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
   const editor = useRef<CodeEditorHandle>(null);
+  const body = useRef<HTMLDivElement>(null);
+  const ide = useRef<HTMLElement>(null);
+  const [layout, setLayout] = useState<Layout>(loadLayout);
+  const layoutRef = useRef(layout);
+  layoutRef.current = layout;
+  const resize = (key: keyof Layout) => (v: number) => setLayout(l => clampLayout({ ...l, [key]: v < 0 ? DEFAULT_LAYOUT[key] : v }));
+  const keepLayout = () => saveLayout(layoutRef.current);
   const runner = useRunner();
   const solution = useMemo(() => solutionOf(problem), [problem]);
   const blanksLeft = (code.match(/____/g) ?? []).length;
@@ -240,7 +292,7 @@ function ProblemView({ problem, record, onRecord }: { problem: EliceProblem; rec
   };
   const nextBlank = () => { if (!editor.current?.nextBlank()) editor.current?.focus(); };
 
-  return <div className={`elice-shell show-${tab}`}>
+  return <div className={`elice-shell show-${tab}`} style={{ '--left': `${layout.left * 100}%`, '--editor': `${layout.editor * 100}%` } as CSSProperties}>
     {party && <Confetti onDone={() => setParty(false)} />}
     <header className="elice-top">
       <a className="elice-menu" href={window.location.pathname} onClick={event => { event.preventDefault(); toList(); }} aria-label="문제 목록 (Esc)" title="문제 목록 (Esc)">
@@ -248,13 +300,18 @@ function ProblemView({ problem, record, onRecord }: { problem: EliceProblem; rec
       </a>
       <p className="elice-crumb"><span>{chapter.name}</span><b aria-hidden="true">›</b><strong>{problem.title}</strong></p>
       {problem.must && <em className="elice-must">수행 출제</em>}
+      <nav className="elice-pager" aria-label="문제 넘기기">
+        <button type="button" onClick={() => go(-1)} disabled={index === 0} aria-label="이전 문제" title="이전 문제">‹</button>
+        <span className="elice-count"><b>{index + 1}</b> / {eliceProblems.length}</span>
+        <button type="button" className="elice-next" onClick={() => go(1)} disabled={index === eliceProblems.length - 1} aria-label="다음 문제" title="다음 문제">›</button>
+      </nav>
       <div className="elice-switch" role="tablist" aria-label="보기">
         <button type="button" role="tab" aria-selected={tab === 'problem'} onClick={() => setTab('problem')}>문제</button>
         <button type="button" role="tab" aria-selected={tab === 'code'} onClick={() => setTab('code')}>코드{blanksLeft > 0 && <span className="elice-switch-count">{blanksLeft}</span>}</button>
       </div>
     </header>
 
-    <div className="elice-body">
+    <div className="elice-body" ref={body}>
       <article className="elice-problem" aria-label="문제">
         <h2>문제</h2>
         {problem.statement.map((text, i) => <p key={i}>{rich(text)}</p>)}
@@ -281,8 +338,10 @@ function ProblemView({ problem, record, onRecord }: { problem: EliceProblem; rec
         </details>
         <p className="elice-source">근거: {problem.source}</p>
       </article>
+      <Splitter axis="x" value={layout.left} label="문제 칸 너비" onChange={resize('left')} onDone={keepLayout} area={() => body.current?.getBoundingClientRect()} />
 
-      <section className="elice-ide" aria-label="코드">
+      <section className="elice-ide" aria-label="코드" ref={ide}>
+        <div className="elice-code-area">
         <div className="elice-filetab">
           <span className="elice-file"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v5h5" /></svg>main.py</span>
           <span className="elice-filetab-gap" />
@@ -290,6 +349,9 @@ function ProblemView({ problem, record, onRecord }: { problem: EliceProblem; rec
           <button type="button" className="elice-tool" onClick={reset}>초기화</button>
         </div>
         <CodeEditor ref={editor} value={code} onChange={setCode} label="main.py 코드" onShortcut={kind => void (kind === 'submit' ? submit() : run())} />
+        </div>
+        <Splitter axis="y" value={layout.editor} label="코드 칸 높이" onChange={resize('editor')} onDone={keepLayout} area={() => ide.current?.getBoundingClientRect()} />
+        <div className="elice-run-area">
         <div className="elice-toolbar">
           <button type="button" className="elice-run" onClick={() => void run()} disabled={busy} title="실행 (Ctrl+Enter)">실행</button>
           <button type="button" className="elice-submit" onClick={() => void submit()} disabled={busy} title="제출 (Ctrl+Shift+Enter)">제출</button>
@@ -304,14 +366,9 @@ function ProblemView({ problem, record, onRecord }: { problem: EliceProblem; rec
         </div>
         {stdinPick === 'custom' && <textarea className="elice-stdin" value={custom} onChange={event => setCustom(event.target.value)} aria-label="직접 넣을 입력" spellCheck={false} />}
         <TerminalView terminal={terminal} />
+        </div>
       </section>
     </div>
-
-    <footer className="elice-pager">
-      <button type="button" className="elice-prev" onClick={() => go(-1)} disabled={index === 0}>‹ 이전 문제</button>
-      <span className="elice-count"><b>{index + 1}</b> / {eliceProblems.length}</span>
-      <button type="button" className="elice-next" onClick={() => go(1)} disabled={index === eliceProblems.length - 1}>다음 ›</button>
-    </footer>
   </div>;
 }
 

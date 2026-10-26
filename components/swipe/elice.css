@@ -3,12 +3,12 @@
   --code-bg: #1f2029; --code-panel: #262733; --code-line: #33354a; --code-ink: #e4e5ee; --code-soft: #8b8fa8;
   --mono: "JetBrains Mono", "D2Coding", "Cascadia Code", Consolas, "SFMono-Regular", Menlo, "Noto Sans Mono CJK KR", monospace;
   position: relative; z-index: 1; height: 100svh; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
-  padding: 64px 14px 56px; color: var(--ink);
+  padding: 10px 12px; color: var(--ink);
 }
 .elice-app code { font-family: var(--mono); font-size: .9em; padding: 1px 5px; border-radius: 5px; background: rgba(31, 53, 80, .09); color: #b2213a; }
 
 /* ── 문제 목록 ── */
-.elice-course { width: min(100%, 860px); margin: 0 auto; padding: 26px 28px 22px; border-radius: 24px; }
+.elice-course { width: min(100%, 860px); margin: 48px auto 16px; padding: 26px 28px 22px; border-radius: 24px; }
 .elice-course > * { position: relative; }
 .elice-course-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; flex-wrap: wrap; }
 .elice-kicker { margin: 0; font-size: 13px; font-weight: 800; letter-spacing: .02em; color: var(--theme-ink); }
@@ -39,8 +39,8 @@
   background: var(--theme-base); color: var(--theme-ink); white-space: nowrap; }
 
 /* ── 문제 화면: 엘리스 배치 ── */
-.elice-shell { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; height: calc(100svh - 120px); }
-.elice-top { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 6px 8px 6px 6px; border-radius: 14px; background: rgba(26, 27, 36, .9); color: #fff;
+.elice-shell { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 8px; height: calc(100svh - 20px); }
+.elice-top { display: flex; align-items: center; gap: 10px; min-width: 0; min-height: 48px; box-sizing: border-box; padding: 6px calc(var(--dock-w, 0px) + 16px) 6px 6px; border-radius: 14px; background: rgba(26, 27, 36, .9); color: #fff;
   box-shadow: var(--glass-shadow); }
 .elice-menu { display: grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 10px; color: #fff; }
 .elice-menu:hover, .elice-menu:focus-visible { background: rgba(255, 255, 255, .14); outline: none; }
@@ -55,7 +55,7 @@
 .elice-switch button[aria-selected="true"] { background: var(--theme-base); color: var(--theme-ink); }
 .elice-switch-count { display: inline-grid; place-items: center; min-width: 18px; height: 18px; margin-left: 5px; border-radius: 99px; background: rgba(0, 0, 0, .25); font-size: 11px; }
 
-.elice-body { display: grid; grid-template-columns: minmax(300px, 40%) minmax(0, 1fr); gap: 10px; min-height: 0; }
+.elice-body { display: grid; grid-template-columns: minmax(220px, var(--left, 40%)) 10px minmax(320px, 1fr); min-height: 0; }
 .elice-problem { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 18px 24px 22px; border-radius: 16px; background: rgba(255, 255, 255, .93);
   box-shadow: var(--glass-shadow); font-size: 15.5px; line-height: 1.75; word-break: keep-all; }
 .elice-problem h2 { margin: 22px 0 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(0, 0, 0, .18); font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
@@ -84,7 +84,7 @@
 .elice-tool:hover:not(:disabled), .elice-tool:focus-visible { background: rgba(255, 255, 255, .08); color: #fff; outline: none; }
 .elice-tool:disabled { opacity: .4; }
 
-.code-scroll { display: flex; align-items: flex-start; flex: 1 1 0; min-height: 140px; overflow: auto; overscroll-behavior: contain; background: var(--code-bg);
+.code-scroll { display: flex; align-items: flex-start; flex: 1 1 0; min-height: 40px; overflow: auto; overscroll-behavior: contain; background: var(--code-bg);
   font-family: var(--mono); font-size: 14.5px; line-height: 1.65; }
 .code-gutter { position: sticky; left: 0; z-index: 2; display: flex; flex-direction: column; flex: none; min-width: 3em; min-height: 100%; padding: 12px 12px 40px 10px;
   background: var(--code-bg); color: #5f6380; text-align: right; user-select: none; -webkit-user-select: none; font-variant-numeric: tabular-nums; }
@@ -124,7 +124,7 @@
 .elice-stdin-pick button[aria-checked="true"] { border-color: var(--theme-base); color: var(--theme-soft); background: color-mix(in srgb, var(--theme-base) 14%, transparent); }
 .elice-stdin { flex: none; height: 74px; margin: 0; padding: 8px 14px; border: 0; border-bottom: 1px solid var(--code-line); resize: vertical; outline: none;
   background: var(--code-panel); color: #f0c674; font-family: var(--mono); font-size: 13.5px; line-height: 1.5; }
-.elice-terminal { flex: 0 0 32%; min-height: 110px; overflow: auto; overscroll-behavior: contain; padding: 12px 16px 16px; background: var(--code-panel); font-family: var(--mono); font-size: 14px; line-height: 1.6; }
+.elice-terminal { flex: 1 1 auto; min-height: 40px; overflow: auto; overscroll-behavior: contain; padding: 12px 16px 16px; background: var(--code-panel); font-family: var(--mono); font-size: 14px; line-height: 1.6; }
 .elice-terminal p { margin: 0 0 6px; }
 .elice-terminal pre { margin: 0 0 8px; white-space: pre-wrap; word-break: break-all; font: inherit; }
 .term-idle { color: #b4a7f5; font-weight: 800; }
@@ -152,39 +152,67 @@
 .term-sec { color: var(--code-soft); font-size: 12.5px; }
 .term-detail { flex-basis: 100%; padding-left: 7.5em; color: #ffab91; font-size: 12.5px; }
 
-.elice-pager { display: flex; justify-content: center; align-items: center; gap: 22px; }
-.elice-pager button { padding: 7px 18px; border-radius: 10px; font-size: 14.5px; font-weight: 800; }
-.elice-prev { background: rgba(26, 27, 36, .78); color: #fff; }
-.elice-next { background: var(--theme-base); color: var(--theme-ink); }
-.elice-pager button:disabled { opacity: .35; }
-.elice-count { padding: 4px 14px; border-radius: 99px; background: rgba(26, 27, 36, .78); color: #fff; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.elice-pager { display: flex; align-items: center; gap: 4px; margin-left: auto; flex: none; }
+.elice-pager button { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; font-size: 20px; font-weight: 800; line-height: 1; background: rgba(255, 255, 255, .12); color: #fff; }
+.elice-pager .elice-next { background: var(--theme-base); color: var(--theme-ink); }
+.elice-pager button:disabled { opacity: .3; }
+.elice-count { padding: 0 6px; color: #fff; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 칸 크기 조절 막대 */
+.elice-split { position: relative; display: grid; place-items: center; touch-action: none; outline: none; z-index: 2; }
+.elice-split.is-x { cursor: col-resize; }
+.elice-split.is-y { flex: none; height: 10px; cursor: row-resize; background: var(--code-panel); border-top: 1px solid var(--code-line); }
+.elice-split > span { border-radius: 99px; background: rgba(255, 255, 255, .55); box-shadow: 0 0 0 1px rgba(0, 0, 0, .12); transition: background .15s, transform .15s; }
+.elice-split.is-x > span { width: 4px; height: 44px; }
+.elice-split.is-y > span { width: 44px; height: 4px; background: rgba(255, 255, 255, .28); box-shadow: none; }
+.elice-split:hover > span, .elice-split:focus-visible > span, .elice-split:active > span { background: var(--theme-base); transform: scale(1.15); }
+.elice-code-area { display: flex; flex-direction: column; flex: 0 0 calc(var(--editor, 60%) - 5px); min-height: 0; }
+.elice-run-area { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; overflow: hidden; }
+.elice-run-area > :not(.elice-terminal) { flex: none; }
+
+/* 가호 · 업데이트 확인 · 소리 · 버전: 위쪽 막대 오른쪽에 작게(app/main.tsx의 .elice-dock) */
+.elice-dock { position: fixed; top: 16px; right: 18px; z-index: 60; display: flex; align-items: center; gap: 6px; height: 40px; }
+.elice-dock .blessing-toggle, .elice-dock .sound-toggle, .elice-dock .app-status, .elice-dock .app-version { position: static; inset: auto; translate: none; margin: 0; }
+.elice-dock .blessing-toggle { display: flex; align-items: center; height: 30px; padding: 0 10px; border-radius: 9px; }
+.elice-dock .blessing-toggle strong { max-width: 92px; font-size: 12px; }
+.elice-dock .blessing-best { display: none; }
+.elice-dock .sound-toggle { width: 30px; height: 30px; border-radius: 9px; }
+.elice-dock .sound-toggle svg { width: 16px; height: 16px; }
+.elice-dock .app-status { position: relative; height: 30px; box-sizing: border-box; max-width: none; padding: 0 3px 0 9px; border-radius: 9px; font-size: 11px; }
+.elice-dock .app-status button { padding: 3px 8px; border-radius: 7px; font-size: 11px; }
+.elice-dock .app-status-message { position: absolute; top: 36px; right: 0; padding: 4px 9px; border-radius: 8px; background: rgba(20, 22, 30, .9); color: #fff; font-size: 11.5px; white-space: nowrap; }
+.elice-dock .app-version { height: 30px; padding: 0 7px; border-radius: 9px; background: rgba(26, 27, 36, .55); color: rgba(255, 255, 255, .85); font-size: 11px; }
+:root.intro-open .elice-dock .blessing-toggle, :root.intro-open .elice-dock .app-version { visibility: hidden; }
 
 /* 폰 · 좁은 화면: 문제 / 코드를 탭으로 바꿔 본다. */
 @media (max-width: 900px) {
-  .elice-app { padding: 62px 10px 60px; }
-  .elice-course { padding: 20px 16px 18px; border-radius: 20px; }
+  .elice-app { padding: 52px 8px 8px; }
+  .elice-dock { top: 8px; right: 8px; height: 36px; }
+  .elice-dock .app-status > span:not(.app-status-message) { display: none; }
+  .elice-top { padding-right: 6px; }
+  .elice-course { margin-top: 4px; padding: 20px 16px 18px; border-radius: 20px; }
   .elice-course h1 { font-size: 24px; }
   .elice-row { grid-template-columns: 30px 1fr auto; gap: 10px; padding: 9px 12px 9px 8px; }
   .elice-row-num { width: 28px; height: 28px; }
   .elice-row-title { font-size: 14.5px; }
-  .elice-shell { height: auto; min-height: calc(100svh - 122px); grid-template-rows: auto auto auto; }
+  .elice-shell { height: calc(100svh - 60px); }
   .elice-top { flex-wrap: wrap; row-gap: 6px; }
-  .elice-crumb { flex: 1 1 0; font-size: 14px; }
+  .elice-crumb { flex: 1 1 calc(100% - 52px); font-size: 14px; }
+  .elice-top .elice-pager { margin-left: 0; }
+  .elice-switch { margin-left: auto; }
   .elice-crumb span, .elice-crumb b { display: none; }
   .elice-switch { display: flex; }
   .elice-top .elice-must { order: 3; }
   .elice-body { grid-template-columns: minmax(0, 1fr); }
+  .elice-split.is-x { display: none; }
   .elice-shell.show-problem .elice-ide, .elice-shell.show-code .elice-problem { display: none; }
   .elice-problem { padding: 14px 16px 18px; font-size: 15px; }
   .elice-ide { min-height: 0; }
-  .code-scroll { flex: none; height: 52svh; min-height: 260px; font-size: 14px; }
   .code-input { font-size: 16px; } /* iOS: 16px 미만이면 입력할 때 화면이 커진다 → 겹치는 글도 같은 크기로 */
   .code-scroll { font-size: 16px; line-height: 1.55; }
   .elice-toolbar { gap: 8px; padding: 9px 10px; }
   .elice-python { flex-basis: 100%; margin-left: 0; }
   .elice-stat + .elice-stat { display: none; }
-  .elice-terminal { flex: none; min-height: 190px; max-height: 60svh; font-size: 13.5px; }
+  .elice-terminal { font-size: 13.5px; }
   .term-detail { padding-left: 0; }
-  .elice-pager { gap: 12px; }
-  .elice-pager button { padding: 7px 14px; }
 }
