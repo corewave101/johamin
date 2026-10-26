@@ -30,8 +30,11 @@ function offline(): Plugin {
     apply: 'build',
     configResolved(config) { outDir = config.build.outDir; },
     closeBundle() {
-      mkdirSync(join(outDir, 'midterm'), { recursive: true });
-      copyFileSync(join(outDir, 'index.html'), join(outDir, 'midterm', 'index.html'));
+      // 같은 앱을 /midterm/(중간고사 보관함)과 /elice/(정보)에도 둔다. 메뉴는 주소로 고른다(lib/exam.ts).
+      for (const dir of ['midterm', 'elice']) {
+        mkdirSync(join(outDir, dir), { recursive: true });
+        copyFileSync(join(outDir, 'index.html'), join(outDir, dir, 'index.html'));
+      }
       const files: string[] = [];
       const walk = (dir: string) => {
         for (const name of readdirSync(dir)) {
