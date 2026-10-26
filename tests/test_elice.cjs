@@ -18,6 +18,7 @@ assert.ok(problems.length >= 26, `${problems.length} problems`);
 assert.equal(new Set(problems.map(p => p.id)).size, problems.length);
 assert.ok(problems.every((p, i) => p.id === `info-${String(i + 1).padStart(2, '0')}`), 'ids in order');
 const must = problems.filter(p => p.must);
+assert.deepEqual(problems.filter(p => p.blanks).map(p => p.id), ['info-01'], '빈칸 문제는 DFS(스택) 하나');
 assert.deepEqual(must.map(p => p.title), ['DFS 방문 순서 (스택)', '덩어리 개수 세기', '미로 최단 거리 (출발점 · 도착점)', '두 개의 카드', '도서관 책 찾기', '리본 자르기']);
 assert.ok(must.every(p => p.chapter === 'must'));
 const chapterIds = ELICE_CHAPTERS.map(c => c.id);
@@ -27,12 +28,22 @@ let verified = 0;
 for (const p of problems) {
   assert.ok(chapterIds.includes(p.chapter), p.id);
   assert.ok(p.title && p.statement.length && p.input.length && p.output.length && p.examples.length && p.source, p.id);
-  // 빈칸: ____ 개수 = 정답 개수, 그 밖의 밑줄 4개 이상 금지(헷갈림 방지).
-  assert.equal(blankCount(p.template), p.blanks.length, `${p.id} blanks`);
-  assert.ok(p.blanks.length >= 2 && p.blanks.every(b => b && !b.includes(BLANK)), p.id);
-  assert.ok(!/_{5,}/.test(p.template), `${p.id}: only ____ blanks`);
-  assert.equal(fillBlanks(p.template, p.blanks), solutionOf(p));
   assert.ok(!solutionOf(p).includes(BLANK), p.id);
+  if (p.blanks) {
+    // 빈칸 문제(4.3.1~ DFS 스택 하나): ____ 개수 = 정답 개수, 그 밖의 밑줄 5개 이상 금지, 채우면 정답 코드.
+    assert.equal(blankCount(p.template), p.blanks.length, `${p.id} blanks`);
+    assert.ok(p.blanks.length >= 2 && p.blanks.every(b => b && !b.includes(BLANK)), p.id);
+    assert.ok(!/_{5,}/.test(p.template), `${p.id}: only ____ blanks`);
+    assert.equal(fillBlanks(p.template, p.blanks), solutionOf(p));
+  } else {
+    // 나머지: 처음 코드는 입력 받는 줄만. 빈칸 없음, 모든 줄이 input()을 쓰거나 입력 받기(그래프 · 반복) 줄이다.
+    assert.equal(blankCount(p.template), 0, `${p.id}: no blanks`);
+    assert.ok(p.template.includes('input()'), `${p.id}: reads input`);
+    assert.ok(p.template.split('\n').length <= 7, `${p.id}: input lines only`);
+    assert.ok(!/\bprint\(|\bdef |\bimport /.test(p.template), `${p.id}: no answer code in the starter`);
+    // 입력 받는 줄은 정답 코드에도 그대로 있다(15번 명단 확인만 리스트 → 집합으로 바꾸는 게 문제라 예외).
+    if (p.id !== 'info-15') for (const line of p.template.split('\n').filter(l => l.includes('input()'))) assert.ok(solutionOf(p).includes(line.replace(/\s+#.*$/, '')), `${p.id}: ${line}`);
+  }
   // 카드 한 장만 보고 풀 수 있게: 문제 안에서 다른 자료를 가리키지 않는다.
   assert.ok(!/(위 그림|학습지에서|앞 문제|위 자료)/.test(p.statement.join(' ')), p.id);
   assert.ok(p.tests.length >= 4, `${p.id} tests`);
@@ -55,9 +66,10 @@ for (const p of problems) {
     assert.equal(r.status, 0, `${p.id} test ${i + 1}: ${r.err}`);
     assert.ok(r.out.trim(), `${p.id} test ${i + 1} output`);
   }
-  // 빈칸을 안 채우고 내면 틀린다.
+  // 처음 코드 그대로 내면 틀린다. 입력만 받는 코드는 예제 입력으로 오류 없이 돌아간다(입력 형식이 맞는지).
   const blank = run(p.template, p.examples[0].input + '\n');
   assert.ok(blank.status !== 0 || !sameOutput(blank.out, p.examples[0].output), `${p.id}: unfilled template must fail`);
+  if (!p.blanks) for (const ex of p.examples) assert.equal(run(p.template, ex.input + '\n').status, 0, `${p.id}: starter reads the input`);
 }
 
 // 자료 코드의 함정이 숨은 테스트로 걸러지는지: 미로를 pop()으로 풀면 틀리는 테스트가 있다.
