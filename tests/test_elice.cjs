@@ -98,6 +98,10 @@ assert.ok(!sameOutput('Yes', 'yes'));
 // 화면: 카드 묶음(data/)은 정보 페이지 파일만 불러온다. 처음 뜨는 화면은 data/를 직접 import하지 않는다.
 const main = fs.readFileSync('app/main.tsx', 'utf8');
 assert.ok(/isElice \? import\('\.\.\/components\/swipe\/EliceStudio'\)/.test(main), 'main.tsx: /elice/는 EliceStudio');
+// 4.5.2: 가호 · 업데이트 확인 · 소리 · 버전은 정보 페이지에서 위쪽 막대(.elice-dock)에 모이고, 세 칸은 막대로 크기를 바꾼다.
+assert.ok(main.includes('<div className="elice-dock"><BlessingToggle /><AppStatus /><SoundToggle /><UpdateLog'), 'elice dock');
+const studio = fs.readFileSync('components/swipe/EliceStudio.tsx', 'utf8');
+assert.ok(studio.includes("const LAYOUT_KEY = 'johamin-elice-layout-v1';") && (studio.match(/<Splitter /g) ?? []).length === 2, '칸 나눔 막대 2개');
 const worker = fs.readFileSync('public/py-worker.js', 'utf8');
 const { PYODIDE_URL } = require('../lib/elice.ts');
 assert.ok(/^https:\/\/cdn\.jsdelivr\.net\/npm\/pyodide@\d+\.\d+\.\d+\/$/.test(PYODIDE_URL), PYODIDE_URL);

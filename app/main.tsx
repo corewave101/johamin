@@ -50,12 +50,12 @@ function IntroHost() {
 
 createRoot(document.getElementById('root')!).render(<>
   <Backdrop />
-  <SoundToggle />
-  <BlessingToggle />
-  {!isElice && <CardSizeControl />}
+  {!isElice && <><SoundToggle /><BlessingToggle /><CardSizeControl /></>}
   <AuthGate><Suspense fallback={<LoadingCard />}><Menu /></Suspense></AuthGate>
-  <AppStatus />
+  {!isElice && <AppStatus />}
+  {/* 정보 코딩 연습장: 가호 · 업데이트 확인 · 소리 · 버전을 위쪽 막대 오른쪽에 작게 모은다(components/swipe/elice.css). */}
+  {isElice && <div className="elice-dock"><BlessingToggle /><AppStatus /><SoundToggle /><UpdateLog version={__APP_VERSION__} changelog={__CHANGELOG__} /></div>}
   <JumpscareLayer />
   <IntroHost />
-  <UpdateLog version={__APP_VERSION__} changelog={__CHANGELOG__} />
+  {!isElice && <UpdateLog version={__APP_VERSION__} changelog={__CHANGELOG__} />}
 </>);
