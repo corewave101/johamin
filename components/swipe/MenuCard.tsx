@@ -2,6 +2,7 @@
 // Arrow keys, swiping the card and tapping the choices all do the same thing, so nobody has to switch
 // from keys to mouse or from swiping to tapping in the middle of studying.
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
+import { BRAND } from '../../lib/exam';
 import type { Direction } from '../../data/swipe-cards';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playTick } from '../../lib/sound';
@@ -72,7 +73,7 @@ export default function MenuCard({ topic, subject, question, up, left, right, on
 
   return <main className="swipe-app subject-app menu-card-app">
     <div className="swipe-game">
-      <header className="swipe-heading"><h1 className="glass" ref={heading} tabIndex={-1}>조하민<span>레츠고</span></h1></header>
+      <header className="swipe-heading"><h1 className="glass" ref={heading} tabIndex={-1}>{BRAND.first}<span>{BRAND.rest}</span></h1></header>
       <section className="swipe-board menu-board" aria-label={`${subject ?? question} 메뉴`}>
         {directions.map(direction => {
           const slot = slots[direction];

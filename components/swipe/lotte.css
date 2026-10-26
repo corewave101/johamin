@@ -1,0 +1,52 @@
+/* 롯데 자이언츠: 구석의 로고(LottePeek)와 /lotte/ 페이지(원중이레츠고). 로고 색은 롯데 남색 · 빨강 · 하늘색. */
+.lotte-peek { position: fixed; right: -44px; bottom: 96px; z-index: 13; width: 96px; padding: 0; border: 0; background: none; cursor: pointer;
+  transform: rotate(-20deg); transform-origin: 100% 50%; transition: right .35s cubic-bezier(.3, 1.5, .5, 1), transform .35s cubic-bezier(.3, 1.5, .5, 1), filter .2s;
+  filter: drop-shadow(0 6px 10px rgba(4, 36, 69, .45)); animation: lotte-peek 7s ease-in-out 3s infinite; }
+.lotte-peek img { display: block; width: 100%; height: auto; pointer-events: none; }
+.lotte-peek:hover, .lotte-peek:focus-visible { right: -14px; transform: rotate(-6deg) scale(1.06); filter: drop-shadow(0 8px 16px rgba(208, 16, 49, .55)); animation: none; outline: none; }
+.lotte-peek:focus-visible { filter: drop-shadow(0 0 0 #79baff) drop-shadow(0 0 6px #79baff); }
+.lotte-peek.is-gone { opacity: 0; transition: opacity .15s; }
+@keyframes lotte-peek { 0%, 86%, 100% { right: -44px; transform: rotate(-20deg); } 90% { right: -26px; transform: rotate(-10deg); } 94% { right: -34px; transform: rotate(-16deg); } }
+:root.intro-open .lotte-peek { visibility: hidden; }
+:root[data-page="elice"] .lotte-peek { bottom: 72px; }
+
+.lotte-launch { position: fixed; inset: 0; z-index: 950; display: grid; place-items: center; overflow: hidden; pointer-events: all;
+  background: radial-gradient(circle at 50% 50%, rgba(98, 177, 227, .35), rgba(4, 36, 69, .82) 62%); animation: lotte-dim .5s ease-out both; }
+@keyframes lotte-dim { from { opacity: 0; } to { opacity: 1; } }
+.lotte-fireworks { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.lotte-coin { position: relative; display: grid; place-items: center; width: min(62vw, 300px); aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #e9f3fb 55%, #bcd9ef); box-shadow: 0 0 0 6px #d01031, 0 0 0 12px #fff, 0 0 60px 18px rgba(98, 177, 227, .8), 0 24px 60px rgba(0, 0, 0, .5);
+  animation: lotte-fly 1s cubic-bezier(.2, .9, .25, 1.15) both, lotte-pulse 1.1s ease-in-out 1s infinite; }
+.lotte-coin img { position: relative; z-index: 2; width: 84%; height: auto; }
+@keyframes lotte-fly {
+  from { transform: translate(var(--fx), var(--fy)) scale(.28) rotate(-40deg); }
+  70% { transform: translate(0, 0) scale(1.12) rotate(6deg); }
+  to { transform: translate(0, 0) scale(1) rotate(0); }
+}
+@keyframes lotte-pulse { 50% { box-shadow: 0 0 0 6px #d01031, 0 0 0 12px #fff, 0 0 90px 30px rgba(255, 211, 77, .85), 0 24px 60px rgba(0, 0, 0, .5); } }
+.lotte-rays { position: absolute; z-index: 0; inset: -45%; border-radius: 50%; opacity: 0;
+  background: repeating-conic-gradient(rgba(255, 255, 255, .55) 0 7deg, transparent 7deg 22deg);
+  -webkit-mask: radial-gradient(circle, #000 30%, transparent 70%); mask: radial-gradient(circle, #000 30%, transparent 70%);
+  animation: lotte-rays-in .4s ease-out .7s forwards, lotte-spin 6s linear .7s infinite; }
+@keyframes lotte-rays-in { to { opacity: 1; } }
+@keyframes lotte-spin { to { rotate: 360deg; } }
+.lotte-twinkle { position: absolute; z-index: 3; left: 50%; top: 50%; width: 26px; height: 26px; margin: -13px; opacity: 0;
+  background: #fff; clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  transform: rotate(calc(var(--i) * 45deg)) translateY(calc(min(62vw, 300px) * -0.62)) scale(.4);
+  animation: lotte-twinkle .9s ease-in-out calc(.75s + var(--i) * .11s) infinite; }
+.lotte-twinkle:nth-of-type(odd) { background: #ffd34d; }
+@keyframes lotte-twinkle { 0%, 100% { opacity: 0; scale: .4; } 50% { opacity: 1; scale: 1.25; } }
+.lotte-shout { position: absolute; left: 0; right: 0; bottom: max(12vh, 60px); margin: 0; text-align: center; font-size: clamp(28px, 6vw, 48px); font-weight: 900; letter-spacing: -.03em;
+  color: #fff; text-shadow: 0 3px 0 #d01031, 0 6px 18px rgba(0, 0, 0, .5); opacity: 0; animation: lotte-shout .5s cubic-bezier(.3, 1.6, .5, 1) .8s forwards; }
+@keyframes lotte-shout { from { opacity: 0; transform: scale(.4) translateY(20px); } to { opacity: 1; transform: none; } }
+
+/* /lotte/ 페이지: 원중이레츠고 글자는 롯데 색, 하민의 가호 카드 사진 자리에는 원중이 */
+:root[data-page="lotte"] .swipe-heading h1 { color: #042445; }
+:root[data-page="lotte"] .swipe-heading h1 > span { color: #d01031; }
+:root[data-page="lotte"]:not([data-theme="custom"]):not([data-theme="none"]) .card-art {
+  background: url('/lotte/player.webp') center 8% / auto 122% no-repeat, linear-gradient(165deg, #62b1e3 0%, #1b5b93 48%, #042445 100%); }
+@media (max-width: 700px) {
+  .lotte-peek { width: 78px; right: -36px; bottom: 92px; }
+  @keyframes lotte-peek { 0%, 86%, 100% { right: -36px; transform: rotate(-20deg); } 90% { right: -20px; transform: rotate(-10deg); } 94% { right: -28px; transform: rotate(-16deg); } }
+}
+@media (prefers-reduced-motion: reduce) { .lotte-peek { animation: none; } }

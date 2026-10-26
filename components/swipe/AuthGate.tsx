@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
+import { BRAND } from '../../lib/exam';
 import { auth, checkAccess, signIn, signOut, type Access } from '../../lib/auth';
 import { trackPromise } from '../../lib/boot';
 import { shortEmail } from '../../lib/member';
@@ -43,7 +44,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
 
   return <main className="swipe-app login-app">
     <div className="swipe-game">
-      <header className="swipe-heading"><h1 className="glass">조하민<span>레츠고</span></h1></header>
+      <header className="swipe-heading"><h1 className="glass">{BRAND.first}<span>{BRAND.rest}</span></h1></header>
       <section className="login-board" aria-live="polite">
         <div className="swipe-stack login-stack">
           <div className="swipe-under swipe-under-two" /><div className="swipe-under swipe-under-one" />
@@ -78,7 +79,7 @@ export function AccountRow({ onSignOut }: { onSignOut?: () => void }) {
 export function LoadingCard() {
   return <main className="swipe-app login-app">
     <div className="swipe-game">
-      <header className="swipe-heading"><h1 className="glass">조하민<span>레츠고</span></h1></header>
+      <header className="swipe-heading"><h1 className="glass">{BRAND.first}<span>{BRAND.rest}</span></h1></header>
       <section className="login-board" aria-live="polite">
         <div className="swipe-stack login-stack">
           <div className="swipe-under swipe-under-two" /><div className="swipe-under swipe-under-one" />
@@ -93,7 +94,7 @@ export function LoadingCard() {
 export function LoadFailed() {
   return <main className="swipe-app login-app">
     <div className="swipe-game">
-      <header className="swipe-heading"><h1 className="glass">조하민<span>레츠고</span></h1></header>
+      <header className="swipe-heading"><h1 className="glass">{BRAND.first}<span>{BRAND.rest}</span></h1></header>
       <section className="login-board" aria-live="polite">
         <div className="swipe-stack login-stack">
           <div className="swipe-under swipe-under-two" /><div className="swipe-under swipe-under-one" />

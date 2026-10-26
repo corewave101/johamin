@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 import type { Direction } from '../../data/swipe-cards';
 import type { SubjectDeck, SubjectGroup } from '../../data/swipe-subjects';
-import { examPage, isMidterm, navTargets } from '../../lib/exam';
+import { examPage, isMidterm, navTargets, BRAND } from '../../lib/exam';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playTick } from '../../lib/sound';
 import LaminatedCard from './LaminatedCard';
@@ -104,7 +104,7 @@ export default function SubjectPicker() {
 
   return <main className="swipe-app subject-app">
     <div className="swipe-game">
-      <header className="swipe-heading"><h1 className="glass" ref={heading} tabIndex={-1}>조하민<span>레츠고</span></h1></header>
+      <header className="swipe-heading"><h1 className="glass" ref={heading} tabIndex={-1}>{BRAND.first}<span>{BRAND.rest}</span></h1></header>
       <section className="swipe-board" aria-label={nav ? '이동 메뉴' : `${current.name} 메뉴`}>
         {options.map(({ direction, node, enabled, label, practice, note }) => <button type="button" key={direction} disabled={!enabled}
           className={`swipe-option swipe-option-${direction} ${enabled ? 'glass' : 'swipe-empty-option'} ${activeDirection === direction && enabled ? 'is-active' : ''}`}
@@ -116,7 +116,7 @@ export default function SubjectPicker() {
           <div className="swipe-under swipe-under-two" /><div className="swipe-under swipe-under-one" />
           <LaminatedCard key={nav ? 'nav' : current.id} className={`is-current ${pointer.current ? 'is-dragging' : ''}`}
             style={{ '--tx': `calc(${drag.x}px / var(--card-zoom, 1))`, '--ty': `calc(${drag.y}px / var(--card-zoom, 1))`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
-            topic={nav ? '이동' : path.length ? current.name : examPage === 'midterm' ? '중간고사 · 과목 선택' : examPage === 'elice' ? '정보 · 엘리스 수행' : '과목 선택'} question={nav ? '어디로 갈까요?' : path.length ? '어느 파트?' : '어떤 과목?'}
+            topic={nav ? '이동' : path.length ? current.name : examPage === 'midterm' ? '중간고사 · 과목 선택' : examPage === 'elice' ? '정보 · 엘리스 수행' : examPage === 'lotte' ? '롯데 자이언츠' : '과목 선택'} question={nav ? '어디로 갈까요?' : path.length ? '어느 파트?' : '어떤 과목?'}
             onPointerDown={event => { if (!event.isPrimary || event.button !== 0) return; pointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId); }}
             onPointerMove={move} onPointerUp={release} onPointerCancel={resetDrag} onLostPointerCapture={resetDrag}>
             {highlighted && <div className={`swipe-drag-label ${distance >= SWIPE_DISTANCE ? 'is-ready' : ''}`}>{arrows[highlighted.direction]} {highlighted.label}</div>}
