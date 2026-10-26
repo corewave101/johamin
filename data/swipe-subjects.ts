@@ -22,7 +22,7 @@ import { parkCards, joCards } from './biology-cards';
 import { geneticsCards, geneticsWritten } from './genetics-terms';
 import { parkWritten, joWritten, type WrittenQuestion } from './biology-written';
 interface MenuItem { id: string; name: string; direction: Direction; symbol: string; description: string }
-export interface SubjectDeck extends MenuItem { kind: 'deck'; cards: SwipeCard[]; fullName?: string; writtenQuestions?: WrittenQuestion[]; /** Has 그림 카드: asks for landscape and shows the figure panel. */ figures?: boolean; /** 실습 화면(베타 테스트를 켜면 학습 메뉴에 나온다). */ lab?: 'optics' }
+export interface SubjectDeck extends MenuItem { kind: 'deck'; cards: SwipeCard[]; fullName?: string; writtenQuestions?: WrittenQuestion[]; /** Has 그림 카드: asks for landscape and shows the figure panel. */ figures?: boolean; /** 실습 화면: 학습 메뉴 맨 앞에 나온다(optics 빛과 렌즈 · structure 구조식). */ lab?: 'optics' | 'structure' }
 export interface SubjectGroup extends MenuItem { kind: 'group'; children: SubjectNode[] }
 export type SubjectNode = SubjectDeck | SubjectGroup;
 export const subjectMenu: SubjectGroup = {

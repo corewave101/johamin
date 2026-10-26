@@ -1,5 +1,6 @@
 import '../components/swipe/observation.css';
 import '../components/swipe/optics.css';
+import '../components/swipe/structure.css';
 import '../components/swipe/elice.css';
 import { lazy, Suspense, useEffect, useState, type ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
