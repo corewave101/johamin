@@ -2,7 +2,7 @@
 // 곡 파일은 IndexedDB(lib/lotte-music.ts)에만 있고 서버로 가지 않는다. 소리 끄기(스피커 버튼)를 따르고,
 // 브라우저가 첫 누름 전에는 소리를 막으니 시작 화면을 누르는 순간 이어서 튼다.
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { addTracks, deleteTrack, listTracks, loadRadio, nextIndex, saveRadio, type LotteTrack, type RadioState } from '../../lib/lotte-music';
+import { addTracks, deleteTrack, importPlaylist, listTracks, loadRadio, nextIndex, playlistToJson, saveRadio, type LotteTrack, type RadioState } from '../../lib/lotte-music';
 import { isMuted, onMutedChange, setMuted } from '../../lib/sound';
 
 const LOGO = `${import.meta.env.BASE_URL}lotte/logo.svg`;
@@ -22,6 +22,8 @@ export default function LotteRadio() {
   const tracksRef = useRef(tracks);
   tracksRef.current = tracks;
   const file = useRef<HTMLInputElement>(null);
+  const playlistFile = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState<null | 'save' | 'open'>(null);
   const title = useRef<HTMLHeadingElement>(null);
 
   const update = useCallback((patch: Partial<RadioState>) => {
@@ -153,6 +155,42 @@ export default function LotteRadio() {
     }
     if (file.current) file.current.value = '';
   };
+  // 플리 파일: 가호 파일처럼 곡을 통째로 .json 하나에 묶어 저장하고, 다른 기기에서 불러온다.
+  const savePlaylist = async () => {
+    if (!list.length || busy) return;
+    setBusy('save');
+    setMessage('플리를 파일로 묶는 중…');
+    try {
+      const url = URL.createObjectURL(new Blob([await playlistToJson(list)], { type: 'application/json' }));
+      const link = document.createElement('a');
+      link.href = url;
+      // 한글 파일 이름은 일부 크롬에서 "download"로 바뀌어서 영어로.
+      link.download = `johamin-lotte-playlist-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+      setMessage(`${list.length}곡을 플리 파일로 저장했어요. 다른 기기에서 "플리 파일 불러오기"로 열 수 있어요.`);
+    } catch {
+      setMessage('플리 파일을 만들지 못했어요. 곡이 많으면 몇 곡씩 나눠서 해 보세요.');
+    }
+    setBusy(null);
+  };
+  const openPlaylist = async (picked: File | undefined) => {
+    if (!picked) return;
+    setBusy('open');
+    setMessage('플리 파일을 여는 중…');
+    try {
+      const { added, skipped } = await importPlaylist(picked, list);
+      await refresh();
+      setMessage(added ? `플리에서 ${added}곡을 넣었어요.${skipped.length ? ` ${skipped.length}곡은 이미 있어서 뺐어요.` : ''}` : '플리의 곡이 이미 다 있어요.');
+      if (added && !list.length) { radioRef.current = { ...radioRef.current, paused: false }; update({ index: 0, paused: false }); }
+    } catch (error) {
+      setMessage(error instanceof Error && error.message ? error.message : '플리 파일을 열지 못했어요.');
+    }
+    setBusy(null);
+    if (playlistFile.current) playlistFile.current.value = '';
+  };
   const remove = async (track: LotteTrack, i: number) => {
     await deleteTrack(track.id).catch(() => undefined);
     setConfirm(null);
@@ -216,9 +254,14 @@ export default function LotteRadio() {
         <div className="lotte-radio-actions">
           <button type="button" className="lotte-radio-add" onClick={() => file.current?.click()}>+ 곡 넣기</button>
           <input ref={file} type="file" accept="audio/*,.mp3,.m4a" multiple hidden onChange={event => void add(event.target.files)} />
+          <div className="lotte-radio-files">
+            <button type="button" onClick={() => void savePlaylist()} disabled={!list.length || busy !== null}>{busy === 'save' ? '묶는 중…' : '플리 파일로 저장'}</button>
+            <button type="button" onClick={() => playlistFile.current?.click()} disabled={busy !== null}>{busy === 'open' ? '여는 중…' : '플리 파일 불러오기'}</button>
+            <input ref={playlistFile} type="file" accept=".json,application/json" hidden onChange={event => void openPlaylist(event.target.files?.[0])} />
+          </div>
         </div>
         {message && <p className="lotte-radio-note" role="status">{message}</p>}
-        <p className="lotte-radio-note is-small">곡 파일은 이 기기에만 저장돼요. 서버로 보내지 않고, 다른 사람 기기에는 없어요.</p>
+        <p className="lotte-radio-note is-small">곡 파일은 이 기기에만 저장돼요. 서버로 보내지 않아요. 플리 파일에는 곡이 통째로 들어가서 크기가 커요.</p>
       </div>
     </div>}
   </>;

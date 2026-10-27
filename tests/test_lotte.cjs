@@ -39,6 +39,27 @@ assert.ok(music.RADIO_KEY.startsWith('johamin-'));
 const store = fs.readFileSync('lib/lotte-music.ts', 'utf8');
 assert.ok(store.includes("const DB = 'johamin-lotte-music';"), 'songs live in this device only');
 
+// 플리 파일(4.7.1~): 가호 파일처럼 곡을 base64로 묶어 저장하고, 불러오면 같은 곡이 그대로 나온다.
+(async () => {
+  const bytes = Uint8Array.from({ length: 70000 }, (_, i) => (i * 37) % 256);
+  const json = await music.playlistToJson([{ name: '부산갈매기', blob: new Blob([bytes], { type: 'audio/mpeg' }) }, { name: '뱃노래', blob: new Blob([bytes.slice(0, 10)], { type: '' }) }]);
+  const data = JSON.parse(json);
+  assert.equal(data.type, 'johamin-lotte-playlist');
+  assert.equal(music.checkPlaylistFile(data), null);
+  const songs = await music.songsFromPlaylist(data);
+  assert.deepEqual(songs.map(s => s.name), ['부산갈매기', '뱃노래'], 'order and names kept');
+  assert.deepEqual(new Uint8Array(await songs[0].blob.arrayBuffer()), bytes, 'song bytes survive the round trip');
+  assert.equal(songs[1].blob.type, 'audio/mpeg', 'unknown type saved as mp3');
+  assert.match(music.checkPlaylistFile({ type: 'johamin-blessing' }), /플리 파일이 아니/);
+  assert.match(music.checkPlaylistFile({ type: 'johamin-lotte-playlist', version: 1, tracks: [] }), /곡이 없/);
+  assert.match(music.checkPlaylistFile({ type: 'johamin-lotte-playlist', version: 1, tracks: [{ name: 'x', data: 'data:image/png;base64,AAAA' }] }), /곡 파일/);
+  assert.match(music.checkPlaylistFile({ type: 'johamin-lotte-playlist', version: 1, tracks: [{ name: '', data: 'data:audio/mpeg;base64,AAAA' }] }), /이름/);
+  assert.equal(music.audioType({ name: 'a.M4A', type: '' }), 'audio/mp4');
+  const radio = fs.readFileSync('components/swipe/LotteRadio.tsx', 'utf8');
+  assert.ok(/link\.download = `johamin-lotte-playlist-\$\{/.test(radio), 'download name is ASCII');
+  console.log('PASS: 플리 파일 저장 → 불러오기(곡 그대로) · 잘못된 파일 거르기');
+})().catch(error => { console.error(error); process.exit(1); });
+
 // 음원은 저장소에 넣지 않는다(저작권). public/ 어디에도 음악 파일이 없어야 한다.
 const audioFiles = [];
 const walk = dir => { for (const e of fs.readdirSync(dir, { withFileTypes: true })) { const f = path.join(dir, e.name); if (e.isDirectory()) walk(f); else if (/\.(mp3|m4a|aac|ogg|oga|wav|flac)$/i.test(e.name)) audioFiles.push(f); } };
