@@ -17,7 +17,7 @@ export const finalMenu: SubjectGroup = {
     { id: 'humanities', kind: 'group', name: '인문', direction: 'left', symbol: '가', description: '국어 · 사회 · 영어를 방향으로 골라요.', children: [
       { id: 'korean-final', kind: 'deck', name: '국어', fullName: '국어(기말)', direction: 'up', symbol: '가', description: '기말고사 국어 카드를 준비하고 있어요.', cards: [] },
       { id: 'social-final-group', kind: 'group', name: '사회', direction: 'left', symbol: '◎', description: '왼쪽은 성신제T, 오른쪽은 조안나T. 공부할 파트를 골라요.', children: [
-        { id: 'social-sung-final', kind: 'deck', name: '성신제T', fullName: '사회(성신제T · 기말)', direction: 'left', symbol: '◎', description: '학습지 하나 = 에디션 하나. 213 피라미드 에디션: 인구 분포 · 인구 구조 · 인구 피라미드 · 인구 정책.', cards: socialSungFinalCards, writtenQuestions: socialSungFinalWritten },
+        { id: 'social-sung-final', kind: 'deck', name: '성신제T', fullName: '사회(성신제T · 기말)', direction: 'left', symbol: '◎', description: '학습지 하나 = 에디션 하나. 213 피라미드 에디션(인구 분포 · 인구 구조 · 인구 정책), 214 부양비 에디션(인구 변천 · 인구 지표 · 인구 이동).', cards: socialSungFinalCards, writtenQuestions: socialSungFinalWritten },
         { id: 'social-jo-final', kind: 'deck', name: '조안나T', fullName: '사회(조안나T · 기말)', direction: 'right', symbol: '◎', description: '자본주의의 발달과 시장경제: 상업·산업·수정 자본주의·신자유주의 · 경제 체제.', cards: socialJoFinalCards, writtenQuestions: socialJoFinalWritten },
       ] },
       { id: 'english-final', kind: 'deck', name: '영어', fullName: '영어(진달래T · 기말)', direction: 'right', symbol: 'A', description: '연결사와 접속사: 역접 · 인과 · 전치사와의 차이 · 자주 쓰는 표현.', cards: englishFinalCards, writtenQuestions: englishFinalWritten },

@@ -1,4 +1,4 @@
-// 기말고사 · 사회(성신제T): 중간고사 뭉탱이처럼 학습지 하나 = 에디션 하나. 학습지 213(피라미드 에디션)부터.
+// 기말고사 · 사회(성신제T): 중간고사 뭉탱이처럼 학습지 하나 = 에디션 하나. 학습지 213(피라미드 에디션), 214(부양비 에디션).
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const ts = require('typescript');
@@ -52,4 +52,14 @@ assert.equal(correct('일본과 한국의 인구 피라미드'), '방추형→�
 assert.equal(correct('프랑스와 스웨덴이'), '출산 장려 정책');
 assert.equal(correct('성비가 105'), '남초');
 assert.equal(correct('가임 기간은'), '15~49세');
+// Facts from 학습지 214.
+assert.equal(editions[1].key, '214');
+assert.equal(correct('사망률이 출생률보다 높아져 인구가 자연적으로'), '5단계 감소기');
+assert.equal(correct('유소년층 인구에 대한 노년층 인구의 비율'), '노령화 지수');
+assert.equal(correct('고령 사회의 범위'), '14~20%');
+assert.equal(correct('고령 30%인 지역의 노령화 지수'), '150');
+assert.equal(correct('2050년(추정)은'), '16.7% → 39.4%');
+assert.equal(correct('로힝야족'), '미얀마');
+assert.equal(correct('투발루 난민'), '환경적 원인');
+assert.equal(correct('76%로 가장 높은'), '싱가포르');
 console.log(`PASS: 기말 성신제T ${editions.map(e => `${e.key} ${e.name}`).join(', ')} — ${cards.length} choices + ${rubrics.length} rubrics + ${short.length} short + ${reasons.length} reason-writing, sizes, sources, no repeats of 중간고사.`);
