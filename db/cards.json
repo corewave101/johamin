@@ -132,7 +132,7 @@
       "name": "성신제T",
       "full_name": "사회(성신제T · 기말)",
       "teacher": "성신제T",
-      "description": "학습지 하나 = 에디션 하나. 213 피라미드 에디션: 인구 분포 · 인구 구조 · 인구 피라미드 · 인구 정책.",
+      "description": "학습지 하나 = 에디션 하나. 213 피라미드 에디션(인구 분포 · 인구 구조 · 인구 정책), 214 부양비 에디션(인구 변천 · 인구 지표 · 인구 이동).",
       "sort": 14
     },
     {
@@ -100221,6 +100221,2052 @@
       "sort": 65
     },
     {
+      "id": "social-sung-final-214-001",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형에서 출생률과 사망률이 모두 높아 인구 증가율이 낮은 단계는?",
+      "passage": null,
+      "answer": "1단계 고위 정체기",
+      "wrong": [
+        "2단계 초기 팽창기",
+        "4단계 저위 정체기",
+        "5단계 감소기"
+      ],
+      "criteria": [],
+      "explanation": "1단계 고위 정체기는 출생률이 높지만 질병·자연재해·식량 부족 등으로 사망률도 높아 인구 증가율이 낮다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 66
+    },
+    {
+      "id": "social-sung-final-214-002",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "의학 발달·생활 환경 개선으로 사망률이 빠르게 줄어 인구가 급성장하는 단계는?",
+      "passage": null,
+      "answer": "2단계 초기 팽창기",
+      "wrong": [
+        "3단계 후기 팽창기",
+        "1단계 고위 정체기",
+        "4단계 저위 정체기"
+      ],
+      "criteria": [],
+      "explanation": "2단계 초기 팽창기는 출생률이 높은 채로 의학 발달·생활 환경 개선 등으로 사망률이 빠르게 감소해 인구가 급성장한다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 67
+    },
+    {
+      "id": "social-sung-final-214-003",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "여성의 사회 활동 증가, 산아 제한 정책 효과 등으로 출생률이 줄어드는 단계는?",
+      "passage": null,
+      "answer": "3단계 후기 팽창기",
+      "wrong": [
+        "2단계 초기 팽창기",
+        "4단계 저위 정체기",
+        "5단계 감소기"
+      ],
+      "criteria": [],
+      "explanation": "3단계 후기 팽창기는 여성의 사회 활동 증가, 산아 제한 정책의 효과 등으로 출생률이 감소해 인구 증가율이 점차 둔화된다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 68
+    },
+    {
+      "id": "social-sung-final-214-004",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "출생률과 사망률이 모두 낮아 인구 성장이 정체되고 고령화가 심해지는 단계는?",
+      "passage": null,
+      "answer": "4단계 저위 정체기",
+      "wrong": [
+        "1단계 고위 정체기",
+        "3단계 후기 팽창기",
+        "2단계 초기 팽창기"
+      ],
+      "criteria": [],
+      "explanation": "4단계 저위 정체기는 출생률과 사망률이 모두 낮아 인구 증가율이 낮고(인구 성장의 정체), 인구 고령화 현상이 심화된다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 69
+    },
+    {
+      "id": "social-sung-final-214-005",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "저출산으로 사망률이 출생률보다 높아져 인구가 자연적으로 줄어드는 단계는?",
+      "passage": null,
+      "answer": "5단계 감소기",
+      "wrong": [
+        "4단계 저위 정체기",
+        "1단계 고위 정체기",
+        "3단계 후기 팽창기"
+      ],
+      "criteria": [],
+      "explanation": "5단계 감소기는 저출산으로 출생률보다 사망률이 높아 인구가 자연적으로 감소한다. 일부 선진국에서 고령화와 맞물려 자연 증가율이 음(−)이 된다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 70
+    },
+    {
+      "id": "social-sung-final-214-006",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형 1단계에서 사망률이 높은 까닭은?",
+      "passage": null,
+      "answer": "질병·자연재해·식량 부족",
+      "wrong": [
+        "의학의 발달",
+        "산아 제한 정책",
+        "출산 가치관 변화"
+      ],
+      "criteria": [],
+      "explanation": "1단계 고위 정체기에는 질병·자연재해·식량 부족 등으로 사망률이 높다. 의학 발달은 2단계에 사망률을 낮춘 요인이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 71
+    },
+    {
+      "id": "social-sung-final-214-007",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형 4단계에서 출생률이 낮게 유지되는 까닭은?",
+      "passage": null,
+      "answer": "출산 가치관·인식 변화",
+      "wrong": [
+        "질병의 확산",
+        "의학의 발달",
+        "식량 부족"
+      ],
+      "criteria": [],
+      "explanation": "4단계 저위 정체기에는 출산에 대한 가치관·인식이 변하여 출생률이 낮다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 72
+    },
+    {
+      "id": "social-sung-final-214-008",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형에서 인구 증가율이 가장 높게 나타나는 시기는?",
+      "passage": null,
+      "answer": "2단계 말~3단계 초",
+      "wrong": [
+        "1단계 고위 정체기",
+        "4단계 저위 정체기",
+        "5단계 감소기"
+      ],
+      "criteria": [],
+      "explanation": "사망률이 빠르게 떨어진 뒤 출생률이 아직 높은 2단계 말~3단계 초에 인구 증가율이 가장 높고, 이후 출생률이 낮아지며 둔화된다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 73
+    },
+    {
+      "id": "social-sung-final-214-009",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형의 가로축이 나타내는 것은?",
+      "passage": null,
+      "answer": "경제 발전 수준",
+      "wrong": [
+        "인구 밀도",
+        "평균 기온",
+        "국토 면적"
+      ],
+      "criteria": [],
+      "explanation": "인구 변천 모형의 가로축은 경제 발전 수준으로, 왼쪽이 낮음(1차 산업 중심), 오른쪽이 높음(3차 산업 중심)이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 74
+    },
+    {
+      "id": "social-sung-final-214-010",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형에서 경제 발전 수준이 가장 높은 쪽의 중심 산업은?",
+      "passage": null,
+      "answer": "3차 산업",
+      "wrong": [
+        "1차 산업",
+        "2차 산업",
+        "자급 농업"
+      ],
+      "criteria": [],
+      "explanation": "인구 변천 모형의 가로축은 경제 발전 수준이 낮은 1차 산업 중심에서 높은 3차 산업 중심으로 간다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 75
+    },
+    {
+      "id": "social-sung-final-214-011",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2025년 기준 우리나라의 출산율은?",
+      "passage": null,
+      "answer": "0.80명",
+      "wrong": [
+        "0.78명",
+        "1.66명",
+        "1.22명"
+      ],
+      "criteria": [],
+      "explanation": "2025년 기준 우리나라의 출산율은 0.80명이다. 0.78명은 2022년, 1.66명은 1994년 합계 출산율이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 76
+    },
+    {
+      "id": "social-sung-final-214-012",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "우리나라 합계 출산율의 1994년 → 2022년 변화는?",
+      "passage": null,
+      "answer": "1.66명 → 0.78명",
+      "wrong": [
+        "0.78명 → 1.66명",
+        "1.72명 → 1.22명",
+        "2.32명 → 0.80명"
+      ],
+      "criteria": [],
+      "explanation": "통계청(2023) 자료에서 우리나라 합계 출산율은 1994년 1.66명에서 2022년 0.78명으로 낮아졌다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 77
+    },
+    {
+      "id": "social-sung-final-214-013",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 자료에서 1970년 우리나라 0~14세 인구 비율은?",
+      "passage": null,
+      "answer": "42.5%",
+      "wrong": [
+        "25.6%",
+        "13.9%",
+        "54.4%"
+      ],
+      "criteria": [],
+      "explanation": "1970년 우리나라는 0~14세 42.5%, 15~64세 54.4%, 65세 이상 3.1%였다. 25.6%는 1990년 0~14세 비율이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 78
+    },
+    {
+      "id": "social-sung-final-214-014",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 자료의 연도 중 우리나라 65세 이상 비율이 처음 7% 이상이 된 해는?",
+      "passage": null,
+      "answer": "2000년",
+      "wrong": [
+        "1990년",
+        "2015년",
+        "2020년"
+      ],
+      "criteria": [],
+      "explanation": "65세 이상 비율은 1990년 5.1%, 2000년 7.2%, 2015년 13.1%, 2020년 15.7%다. 2000년에 처음 7%를 넘었다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 79
+    },
+    {
+      "id": "social-sung-final-214-015",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 추정에서 2050년 우리나라 65세 이상 인구 비율은?",
+      "passage": null,
+      "answer": "37.4%",
+      "wrong": [
+        "24.3%",
+        "9.9%",
+        "52.7%"
+      ],
+      "criteria": [],
+      "explanation": "2050년 추정은 0~14세 9.9%, 15~64세 52.7%, 65세 이상 37.4%다. 24.3%는 2030년 65세 이상 비율이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 80
+    },
+    {
+      "id": "social-sung-final-214-016",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 자료에서 우리나라 15~64세 인구 비율이 가장 높은 해는?",
+      "passage": null,
+      "answer": "2015년",
+      "wrong": [
+        "1970년",
+        "2000년",
+        "2050년"
+      ],
+      "criteria": [],
+      "explanation": "15~64세 비율은 1970년 54.4%, 2000년 71.7%, 2015년 73.0%로 가장 높고, 2050년에는 52.7%로 낮아질 것으로 추정된다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 81
+    },
+    {
+      "id": "social-sung-final-214-017",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 자료에서 우리나라 2015년 → 2020년에 일어난 인구 구조 변화는?",
+      "passage": null,
+      "answer": "65세 이상이 0~14세 추월",
+      "wrong": [
+        "0~14세가 65세 이상 추월",
+        "15~64세 비율 증가",
+        "0~14세 비율 증가"
+      ],
+      "criteria": [],
+      "explanation": "2015년 0~14세 13.9%·65세 이상 13.1%에서 2020년 0~14세 13.2%·65세 이상 15.7%로 노년층이 유소년층보다 많아졌다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 82
+    },
+    {
+      "id": "social-sung-final-214-018",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "우리나라 인구 피라미드의 1960년 → 2015년 → 2060년 변화는?",
+      "passage": null,
+      "answer": "피라미드형→방추형→역피라미드형",
+      "wrong": [
+        "피라미드형→종형→방추형",
+        "종형→피라미드형→방추형",
+        "방추형→종형→피라미드형"
+      ],
+      "criteria": [],
+      "explanation": "통계청(2016) 인구 피라미드에서 우리나라는 1960년 피라미드형, 2015년 방추형, 2060년(추정) 역피라미드형이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 83
+    },
+    {
+      "id": "social-sung-final-214-019",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "저출생·고령 사회 정책(2023)에서 저출생 분야의 핵심 과제는?",
+      "passage": null,
+      "answer": "일·육아 병행",
+      "wrong": [
+        "의료–돌봄 연계",
+        "고령 친화적 주거 환경",
+        "고용·일자리 지원"
+      ],
+      "criteria": [],
+      "explanation": "저출생 분야 핵심 과제는 돌봄과 교육, 일·육아 병행, 주거, 양육 비용, 건강이다. 의료–돌봄 연계, 고령 친화적 주거, 고용·일자리 지원은 고령 사회 분야다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 84
+    },
+    {
+      "id": "social-sung-final-214-020",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "저출생·고령 사회 정책(2023)에서 고령 사회 분야의 핵심 과제는?",
+      "passage": null,
+      "answer": "의료–돌봄 연계",
+      "wrong": [
+        "양육 비용",
+        "일·육아 병행",
+        "돌봄과 교육"
+      ],
+      "criteria": [],
+      "explanation": "고령 사회 분야 핵심 과제는 의료–돌봄 연계, 고령 친화적 주거 환경, 사회 서비스 혁신, 복지 시스템 지속가능성 제고, 고용·일자리 지원이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 1,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 85
+    },
+    {
+      "id": "social-sung-final-214-021",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "청장년층 인구에 대한 유소년층 인구의 비율(×100)은?",
+      "passage": null,
+      "answer": "유소년 부양비",
+      "wrong": [
+        "노년 부양비",
+        "노령화 지수",
+        "고령화 지수"
+      ],
+      "criteria": [],
+      "explanation": "유소년 부양비 = 유소년층 인구 ÷ 청장년층 인구 × 100이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 86
+    },
+    {
+      "id": "social-sung-final-214-022",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "청장년층 인구에 대한 노년층 인구의 비율(×100)은?",
+      "passage": null,
+      "answer": "노년 부양비",
+      "wrong": [
+        "유소년 부양비",
+        "노령화 지수",
+        "총 부양비"
+      ],
+      "criteria": [],
+      "explanation": "노년 부양비 = 노년층 인구 ÷ 청장년층 인구 × 100이다. 노령화 지수는 분모가 유소년층이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 87
+    },
+    {
+      "id": "social-sung-final-214-023",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "(유소년층 + 노년층) ÷ 청장년층 × 100으로 구하는 지표는?",
+      "passage": null,
+      "answer": "총 부양비",
+      "wrong": [
+        "노령화 지수",
+        "고령화 지수",
+        "자연 증가율"
+      ],
+      "criteria": [],
+      "explanation": "인구(총) 부양비 = (유소년층 인구 + 노년층 인구) ÷ 청장년층 인구 × 100으로, 유소년 부양비와 노년 부양비의 합이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 88
+    },
+    {
+      "id": "social-sung-final-214-024",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년층 인구에 대한 노년층 인구의 비율(×100)로 노령화 정도를 보는 지표는?",
+      "passage": null,
+      "answer": "노령화 지수",
+      "wrong": [
+        "고령화 지수",
+        "노년 부양비",
+        "총 부양비"
+      ],
+      "criteria": [],
+      "explanation": "노령화 지수(%) = 노년층 인구수 ÷ 유소년층 인구수 × 100으로, 인구의 노령화 정도를 나타낸다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 89
+    },
+    {
+      "id": "social-sung-final-214-025",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "총인구에서 노년층 인구가 차지하는 비율(%)을 나타내는 지표는?",
+      "passage": null,
+      "answer": "고령화 지수",
+      "wrong": [
+        "노령화 지수",
+        "노년 부양비",
+        "유소년 부양비"
+      ],
+      "criteria": [],
+      "explanation": "고령화 지수(%) = 노년층 인구 ÷ 총인구 × 100이다. 이 값으로 고령화 사회·고령 사회·초고령 사회를 나눈다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 90
+    },
+    {
+      "id": "social-sung-final-214-026",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "고령화 지수 기준으로 고령 사회의 범위는?",
+      "passage": null,
+      "answer": "14~20%",
+      "wrong": [
+        "7~14%",
+        "20% 이상",
+        "5~7%"
+      ],
+      "criteria": [],
+      "explanation": "고령화 지수 기준으로 고령화 사회는 7~14%, 고령 사회는 14~20%, 초고령 사회는 20% 이상이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 91
+    },
+    {
+      "id": "social-sung-final-214-027",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "고령화 지수가 20% 이상인 사회는?",
+      "passage": null,
+      "answer": "초고령 사회",
+      "wrong": [
+        "고령 사회",
+        "고령화 사회",
+        "초저출산 사회"
+      ],
+      "criteria": [],
+      "explanation": "총인구에서 노년층이 20% 이상이면 초고령 사회, 14~20%는 고령 사회, 7~14%는 고령화 사회다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 92
+    },
+    {
+      "id": "social-sung-final-214-028",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "고령화 지수가 7% 이상 14% 미만인 사회는?",
+      "passage": null,
+      "answer": "고령화 사회",
+      "wrong": [
+        "고령 사회",
+        "초고령 사회",
+        "초저출산 사회"
+      ],
+      "criteria": [],
+      "explanation": "고령화 지수 7~14%는 고령화 사회, 14~20%는 고령 사회, 20% 이상은 초고령 사회다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 93
+    },
+    {
+      "id": "social-sung-final-214-029",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "다른 조건이 같을 때 청장년층 비중이 높아질수록 총 부양비는?",
+      "passage": null,
+      "answer": "낮아진다",
+      "wrong": [
+        "높아진다",
+        "변하지 않는다",
+        "0이 된다"
+      ],
+      "criteria": [],
+      "explanation": "총 부양비는 청장년층 인구가 분모이므로, 청장년층 비중이 높을수록 총 부양비는 낮아진다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 94
+    },
+    {
+      "id": "social-sung-final-214-030",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "출생률·사망률·자연 증가율을 나타내는 단위는?",
+      "passage": null,
+      "answer": "‰(퍼밀)",
+      "wrong": [
+        "%(퍼센트)",
+        "명/㎢",
+        "배"
+      ],
+      "criteria": [],
+      "explanation": "출생률(‰) = 그해 출생자 수 ÷ 그해 전체 인구 × 1000처럼, 인구 1000명당 수인 ‰(퍼밀)로 나타낸다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 95
+    },
+    {
+      "id": "social-sung-final-214-031",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "(출생자 수 − 사망자 수) ÷ 전체 인구 × 1000으로 구하는 지표는?",
+      "passage": null,
+      "answer": "자연 증가율",
+      "wrong": [
+        "사회적 증가율",
+        "출생률",
+        "총 부양비"
+      ],
+      "criteria": [],
+      "explanation": "자연 증가율(‰) = (그해 출생자 수 − 그해 사망자 수) ÷ 그해 전체 인구 × 1000이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 96
+    },
+    {
+      "id": "social-sung-final-214-032",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "전체 인구 증가율을 구하는 식은?",
+      "passage": null,
+      "answer": "자연적+사회적 증가율",
+      "wrong": [
+        "출생률+사망률",
+        "자연적−사회적 증가율",
+        "출생률−사회적 증가율"
+      ],
+      "criteria": [],
+      "explanation": "전체 인구 증가율 = 자연적 증가율(출생·사망) + 사회적 증가율(전입·전출 등 인구 이동)이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 97
+    },
+    {
+      "id": "social-sung-final-214-033",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 증가율이 낮아지고 있지만 아직 0 이상일 때 인구 수는?",
+      "passage": null,
+      "answer": "계속 증가한다",
+      "wrong": [
+        "줄어든다",
+        "변하지 않는다",
+        "곧바로 0이 된다"
+      ],
+      "criteria": [],
+      "explanation": "인구 증가율이 낮아지더라도 0 이상이면 인구 수는 증가한다. 증가 속도가 느려질 뿐이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 98
+    },
+    {
+      "id": "social-sung-final-214-034",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "한 지역의 자원으로 얼마만큼의 인구를 수용할 수 있는지 나타내는 척도는?",
+      "passage": null,
+      "answer": "인구 부양력",
+      "wrong": [
+        "총 부양비",
+        "인구 밀도",
+        "노령화 지수"
+      ],
+      "criteria": [],
+      "explanation": "인구 부양력은 한 나라의 인구가 그 나라의 사용 가능한 자원에 의하여 생활할 수 있는 능력으로, 지역이 얼마만큼의 인구를 수용할 수 있는가를 나타내는 척도다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 99
+    },
+    {
+      "id": "social-sung-final-214-035",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "출산 가능한 여성(15~49세)이 평생 낳는 평균 자녀 수를 나타내는 지표는?",
+      "passage": null,
+      "answer": "합계 출산율",
+      "wrong": [
+        "출생률",
+        "자연 증가율",
+        "유소년 부양비"
+      ],
+      "criteria": [],
+      "explanation": "합계 출산율은 출산 가능한 여성(15~49세)이 평생 동안 낳는 평균 자녀 수다. 출생률은 전체 인구 1000명당 출생자 수다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 100
+    },
+    {
+      "id": "social-sung-final-214-036",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년층 30%, 청장년층 60%, 노년층 10%인 지역의 총 부양비는?",
+      "passage": null,
+      "answer": "약 66.7",
+      "wrong": [
+        "40",
+        "50",
+        "약 33.3"
+      ],
+      "criteria": [],
+      "explanation": "총 부양비 = (30 + 10) ÷ 60 × 100 ≒ 66.7이다. 유소년 부양비 50과 노년 부양비 약 16.7의 합이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 101
+    },
+    {
+      "id": "social-sung-final-214-037",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 20%, 생산연령 50%, 고령 30%인 지역의 노령화 지수는?",
+      "passage": null,
+      "answer": "150",
+      "wrong": [
+        "60",
+        "40",
+        "30"
+      ],
+      "criteria": [],
+      "explanation": "노령화 지수 = 노년층 ÷ 유소년층 × 100 = 30 ÷ 20 × 100 = 150이다. 60은 노년 부양비, 40은 유소년 부양비, 30은 고령화 지수다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 102
+    },
+    {
+      "id": "social-sung-final-214-038",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 40%, 생산연령 50%, 고령 10%인 지역의 유소년 부양비는?",
+      "passage": null,
+      "answer": "80",
+      "wrong": [
+        "20",
+        "100",
+        "25"
+      ],
+      "criteria": [],
+      "explanation": "유소년 부양비 = 40 ÷ 50 × 100 = 80이다. 노년 부양비는 20, 총 부양비는 100, 노령화 지수는 25다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 103
+    },
+    {
+      "id": "social-sung-final-214-039",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 60%, 생산연령 35%, 고령 5%인 지역의 인구(총) 부양비는?",
+      "passage": null,
+      "answer": "약 185.7",
+      "wrong": [
+        "100",
+        "약 171.4",
+        "약 14.3"
+      ],
+      "criteria": [],
+      "explanation": "총 부양비 = (60 + 5) ÷ 35 × 100 ≒ 185.7이다. 유소년 부양비 약 171.4, 노년 부양비 약 14.3의 합이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 104
+    },
+    {
+      "id": "social-sung-final-214-040",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 60%, 생산연령 35%, 고령 5%인 지역의 노령화 지수는?",
+      "passage": null,
+      "answer": "약 8.3",
+      "wrong": [
+        "5",
+        "약 14.3",
+        "약 171.4"
+      ],
+      "criteria": [],
+      "explanation": "노령화 지수 = 5 ÷ 60 × 100 ≒ 8.3이다. 고령화 지수는 5, 노년 부양비는 약 14.3이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 105
+    },
+    {
+      "id": "social-sung-final-214-041",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "총인구의 30%가 노년층인 지역은 고령화 지수 기준으로 어떤 사회인가?",
+      "passage": null,
+      "answer": "초고령 사회",
+      "wrong": [
+        "고령 사회",
+        "고령화 사회",
+        "인구 감소 사회"
+      ],
+      "criteria": [],
+      "explanation": "고령화 지수 30%는 20% 이상이므로 초고령 사회다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 106
+    },
+    {
+      "id": "social-sung-final-214-042",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "총인구의 10%가 노년층인 지역은 고령화 지수 기준으로 어떤 사회인가?",
+      "passage": null,
+      "answer": "고령화 사회",
+      "wrong": [
+        "고령 사회",
+        "초고령 사회",
+        "인구 감소 사회"
+      ],
+      "criteria": [],
+      "explanation": "고령화 지수 10%는 7~14% 범위이므로 고령화 사회다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 107
+    },
+    {
+      "id": "social-sung-final-214-043",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 부양비 40, 노년 부양비 60인 지역의 총 부양비는?",
+      "passage": null,
+      "answer": "100",
+      "wrong": [
+        "20",
+        "150",
+        "24"
+      ],
+      "criteria": [],
+      "explanation": "총 부양비는 유소년 부양비와 노년 부양비의 합이므로 40 + 60 = 100이다. 150은 노령화 지수(60 ÷ 40 × 100)다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 108
+    },
+    {
+      "id": "social-sung-final-214-044",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "총 부양비가 100으로 같아도 노령화 지수가 25에서 150으로 커졌다면?",
+      "passage": null,
+      "answer": "노년층 부담이 커졌다",
+      "wrong": [
+        "유소년층이 늘었다",
+        "청장년층이 늘었다",
+        "고령화가 완화됐다"
+      ],
+      "criteria": [],
+      "explanation": "유소년 40%·노년 10%(노령화 지수 25)에서 유소년 20%·노년 30%(150)로 바뀌면 총 부양비는 100으로 같지만 부양 부담의 중심이 노년층으로 옮겨 간다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 109
+    },
+    {
+      "id": "social-sung-final-214-045",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2024) 자료에서 2023년 출생률이 가장 높은 지역은?",
+      "passage": null,
+      "answer": "아프리카",
+      "wrong": [
+        "오세아니아",
+        "라틴 아메리카",
+        "아시아"
+      ],
+      "criteria": [],
+      "explanation": "2023년 지역별 출생률은 아프리카가 약 31‰로 가장 높고, 오세아니아·라틴 아메리카·아시아·앵글로아메리카·유럽 순이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 110
+    },
+    {
+      "id": "social-sung-final-214-046",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2024) 자료에서 2023년 사망률이 출생률보다 높은 지역은?",
+      "passage": null,
+      "answer": "유럽",
+      "wrong": [
+        "아프리카",
+        "아시아",
+        "라틴 아메리카"
+      ],
+      "criteria": [],
+      "explanation": "2023년 유럽은 출생률 약 8.5‰, 사망률 약 11‰로 사망률이 더 높아 인구가 자연적으로 감소한다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 111
+    },
+    {
+      "id": "social-sung-final-214-047",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2024) 자료에서 2023년 출생률이 가장 낮은 지역은?",
+      "passage": null,
+      "answer": "유럽",
+      "wrong": [
+        "앵글로아메리카",
+        "아시아",
+        "오세아니아"
+      ],
+      "criteria": [],
+      "explanation": "2023년 유럽의 출생률은 약 8.5‰로 가장 낮다. 출생률은 아프리카가 가장 높다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 112
+    },
+    {
+      "id": "social-sung-final-214-048",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2023) 자료에서 2021년 노년층 인구 비율이 가장 높은 나라는?",
+      "passage": null,
+      "answer": "일본",
+      "wrong": [
+        "독일",
+        "한국",
+        "중국"
+      ],
+      "criteria": [],
+      "explanation": "2021년 노년층 비율은 일본 29.8%, 독일 22.2%, 한국 16.7%, 중국 13.1%다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 113
+    },
+    {
+      "id": "social-sung-final-214-049",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2023) 추정에서 2050년 노년층 인구 비율이 가장 높은 나라는?",
+      "passage": null,
+      "answer": "한국",
+      "wrong": [
+        "일본",
+        "독일",
+        "중국"
+      ],
+      "criteria": [],
+      "explanation": "2050년 추정 노년층 비율은 한국 39.4%, 일본 37.5%, 독일 30.5%, 중국 30.1%로 한국이 가장 높다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 114
+    },
+    {
+      "id": "social-sung-final-214-050",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2023) 자료에서 한국의 노년층 비율 2021년 → 2050년(추정)은?",
+      "passage": null,
+      "answer": "16.7% → 39.4%",
+      "wrong": [
+        "29.8% → 37.5%",
+        "13.1% → 30.1%",
+        "22.2% → 30.5%"
+      ],
+      "criteria": [],
+      "explanation": "한국은 16.7%에서 39.4%로 네 나라 중 가장 크게 늘 것으로 추정된다. 29.8% → 37.5%는 일본이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 2,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 115
+    },
+    {
+      "id": "social-sung-final-214-051",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2024) 자료에서 세계 인구는 1960년 약 30억 명 → 2050년(추정) 약 몇 명?",
+      "passage": null,
+      "answer": "약 97억 명",
+      "wrong": [
+        "약 78억 명",
+        "약 53억 명",
+        "약 120억 명"
+      ],
+      "criteria": [],
+      "explanation": "세계 인구는 1960년 약 30억, 1990년 약 53억, 2020년 약 78억, 2050년(추정) 약 97억 명이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 116
+    },
+    {
+      "id": "social-sung-final-214-052",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2023년 지역별 부양비에서 총 부양비와 유소년 부양비가 모두 가장 높은 지역은?",
+      "passage": null,
+      "answer": "아프리카",
+      "wrong": [
+        "유럽",
+        "아시아",
+        "라틴 아메리카"
+      ],
+      "criteria": [],
+      "explanation": "2023년 아프리카는 유소년 부양비 약 69, 노년 부양비 약 6으로 총 부양비(약 75)와 유소년 부양비가 가장 높다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 117
+    },
+    {
+      "id": "social-sung-final-214-053",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2023년 노년 부양비(약 31)가 유소년 부양비(약 24)보다 높은 지역은?",
+      "passage": null,
+      "answer": "유럽",
+      "wrong": [
+        "아프리카",
+        "아시아",
+        "라틴 아메리카"
+      ],
+      "criteria": [],
+      "explanation": "2023년 유럽은 유소년 부양비 약 24, 노년 부양비 약 31로 노년 부양비가 더 높다. 저출산·고령화가 진행된 선진국이 많기 때문이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 118
+    },
+    {
+      "id": "social-sung-final-214-054",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2023년 아프리카의 유소년 부양비와 노년 부양비는? 유소년–노년",
+      "passage": null,
+      "answer": "약 69–약 6",
+      "wrong": [
+        "약 24–약 31",
+        "약 38–약 16",
+        "약 6–약 69"
+      ],
+      "criteria": [],
+      "explanation": "2023년 아프리카는 유소년 부양비 약 69, 노년 부양비 약 6이다. 약 24–약 31은 유럽, 약 38–약 16은 세계 평균이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 119
+    },
+    {
+      "id": "social-sung-final-214-055",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "1950~2023년 지역별 총 부양비 변화에서 줄곧 가장 높은 지역은?",
+      "passage": null,
+      "answer": "아프리카",
+      "wrong": [
+        "유럽",
+        "앵글로아메리카",
+        "아시아"
+      ],
+      "criteria": [],
+      "explanation": "지역별 총 부양비 변화 그래프에서 아프리카는 출생률이 높아 유소년 부양비가 커서 줄곧 총 부양비가 가장 높다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 120
+    },
+    {
+      "id": "social-sung-final-214-056",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2010년 무렵 이후 총 부양비가 다시 높아지는 지역끼리 짝지은 것은?",
+      "passage": null,
+      "answer": "유럽·앵글로아메리카",
+      "wrong": [
+        "아프리카·아시아",
+        "아프리카·라틴 아메리카",
+        "아시아·라틴 아메리카"
+      ],
+      "criteria": [],
+      "explanation": "유럽과 앵글로아메리카는 고령화로 노년 부양비가 커지면서 2010년 무렵 이후 총 부양비가 다시 높아진다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 121
+    },
+    {
+      "id": "social-sung-final-214-057",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "1950~2023년 대부분 지역의 총 부양비가 가장 높았던 시기는?",
+      "passage": null,
+      "answer": "1970년 무렵",
+      "wrong": [
+        "1950년",
+        "2000년 무렵",
+        "2023년"
+      ],
+      "criteria": [],
+      "explanation": "지역별 총 부양비 변화 그래프에서 대부분 지역은 1970년 무렵 총 부양비가 가장 높았다가 출생률이 낮아지며 감소했다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 3,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 122
+    },
+    {
+      "id": "social-sung-final-214-058",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이주 범위로 나눌 때 농촌에서 도시로 가는 이촌향도가 속하는 이동은?",
+      "passage": null,
+      "answer": "국내 이동",
+      "wrong": [
+        "국제 이동",
+        "강제적 이주",
+        "일시적 이주"
+      ],
+      "criteria": [],
+      "explanation": "이주 범위에 따라 국내 이동(농촌 → 도시, 이촌향도)과 국제 이동(해외 이민)으로 나눈다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 123
+    },
+    {
+      "id": "social-sung-final-214-059",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이주 범위로 나눌 때 해외 이민이 속하는 이동은?",
+      "passage": null,
+      "answer": "국제 이동",
+      "wrong": [
+        "국내 이동",
+        "일시적 이주",
+        "강제적 이주"
+      ],
+      "criteria": [],
+      "explanation": "이주 범위에 따라 국내 이동(이촌향도)과 국제 이동(해외 이민)으로 나눈다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 124
+    },
+    {
+      "id": "social-sung-final-214-060",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "전쟁·정치적 억압·자연재해·종교 박해 등으로 원하지 않게 떠나는 이주는?",
+      "passage": null,
+      "answer": "강제적 이주",
+      "wrong": [
+        "자발적 이주",
+        "일시적 이주",
+        "영구적 이주"
+      ],
+      "criteria": [],
+      "explanation": "강제적 이주는 전쟁·정치적 억압, 자연재해, 종교 박해, 노예 무역 등으로 이루어진다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 125
+    },
+    {
+      "id": "social-sung-final-214-061",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "더 나은 환경을 찾아 취업·교육 등을 위해 스스로 떠나는 이주는?",
+      "passage": null,
+      "answer": "자발적 이주",
+      "wrong": [
+        "강제적 이주",
+        "일시적 이주",
+        "영구적 이주"
+      ],
+      "criteria": [],
+      "explanation": "자발적 이주는 더 나은 환경을 찾아 스스로 이주하는 것으로, 취업·교육 등이 예다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 126
+    },
+    {
+      "id": "social-sung-final-214-062",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "휴가철 휴가지로 떠나는 것처럼 짧게 머무는 이주는?",
+      "passage": null,
+      "answer": "일시적 이주",
+      "wrong": [
+        "영구적 이주",
+        "강제적 이주",
+        "국제 이주"
+      ],
+      "criteria": [],
+      "explanation": "이주 기간에 따라 일시적 이주(단기 거주, 휴가철 휴가지)와 영구적 이주(해외 이민)로 나눈다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 127
+    },
+    {
+      "id": "social-sung-final-214-063",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이주 기간으로 나눌 때 해외 이민이 속하는 유형은?",
+      "passage": null,
+      "answer": "영구적 이주",
+      "wrong": [
+        "일시적 이주",
+        "강제적 이주",
+        "자발적 이주"
+      ],
+      "criteria": [],
+      "explanation": "이주 기간에 따라 일시적 이주(단기 거주)와 영구적 이주(해외 이민)로 나눈다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 128
+    },
+    {
+      "id": "social-sung-final-214-064",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "멕시코인의 미국 이동, 화교의 동남아시아 이동은 어떤 원인의 이주인가?",
+      "passage": null,
+      "answer": "경제적 원인",
+      "wrong": [
+        "종교적 원인",
+        "환경적 원인",
+        "정치적 원인"
+      ],
+      "criteria": [],
+      "explanation": "경제적 원인의 이주는 주로 개발도상국에서 선진국으로 향하며, 멕시코인의 미국 이동, 화교의 동남아시아 이동이 예다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 129
+    },
+    {
+      "id": "social-sung-final-214-065",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "영국 청교도들의 미국 이주, 무슬림의 성지 순례는 어떤 원인의 이주인가?",
+      "passage": null,
+      "answer": "종교적 원인",
+      "wrong": [
+        "경제적 원인",
+        "정치적 원인",
+        "환경적 원인"
+      ],
+      "criteria": [],
+      "explanation": "종교적 원인의 이주는 종교적 자유나 성지 순례를 위한 것으로, 영국 청교도들의 미국 이주, 무슬림의 성지 순례가 예다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 130
+    },
+    {
+      "id": "social-sung-final-214-066",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "지구 온난화에 따른 해수면 상승으로 생긴 투발루 난민은 어떤 원인의 이주인가?",
+      "passage": null,
+      "answer": "환경적 원인",
+      "wrong": [
+        "종교적 원인",
+        "경제적 원인",
+        "정치적 원인"
+      ],
+      "criteria": [],
+      "explanation": "환경적 원인의 이주는 기후 변화·지진 등 자연재해로 인한 것으로, 해수면 상승으로 생긴 투발루 난민이 예다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 131
+    },
+    {
+      "id": "social-sung-final-214-067",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "내전으로 생긴 난민은 어떤 원인의 이주인가?",
+      "passage": null,
+      "answer": "정치적 원인",
+      "wrong": [
+        "환경적 원인",
+        "종교적 원인",
+        "경제적 원인"
+      ],
+      "criteria": [],
+      "explanation": "정치적 원인의 이주의 예로 내전으로 인한 난민이 있다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 132
+    },
+    {
+      "id": "social-sung-final-214-068",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2010년 대지진 뒤 아이티 사람들이 처음 대거 이주한 나라는?",
+      "passage": null,
+      "answer": "브라질",
+      "wrong": [
+        "미국",
+        "칠레",
+        "멕시코"
+      ],
+      "criteria": [],
+      "explanation": "아이티 사람들은 2010년 대지진 뒤 브라질로 대거 이주했고, 이후 브라질의 경제 침체와 제노포비아로 다시 미국·칠레 등으로 떠났다(연합뉴스 2016).",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 133
+    },
+    {
+      "id": "social-sung-final-214-069",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "브라질로 갔던 아이티 난민이 다시 미국·칠레 등으로 떠난 까닭으로 알맞은 것은?",
+      "passage": null,
+      "answer": "경제 침체·제노포비아",
+      "wrong": [
+        "대지진의 재발",
+        "종교 박해",
+        "해수면 상승"
+      ],
+      "criteria": [],
+      "explanation": "브라질의 경제 침체로 일자리를 구하기 어려워지고, 아이티인을 대상으로 한 제노포비아로 어려움을 겪어 다시 미국·칠레 등으로 이주했다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 134
+    },
+    {
+      "id": "social-sung-final-214-070",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이방인(xeno)과 혐오(phobia)를 합친 말로, 이민족 집단을 배척·혐오하는 것은?",
+      "passage": null,
+      "answer": "제노포비아",
+      "wrong": [
+        "디아스포라",
+        "젠트리피케이션",
+        "이촌향도"
+      ],
+      "criteria": [],
+      "explanation": "제노포비아는 제노(이방인)와 포비아(혐오)를 합친 말로, 이민족 집단을 배척하거나 혐오·증오하는 것이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 135
+    },
+    {
+      "id": "social-sung-final-214-071",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "대지진 뒤 브라질로, 다시 미국·칠레로 간 아이티 난민의 이주 원인은?",
+      "passage": null,
+      "answer": "환경적·정치적 원인",
+      "wrong": [
+        "종교적 원인",
+        "경제적 원인만",
+        "일시적 휴가"
+      ],
+      "criteria": [],
+      "explanation": "아이티 난민은 환경적·정치적 이주의 사례로, 2010년 대지진 뒤 브라질로 대거 이주했고 브라질의 경제 침체와 제노포비아로 다시 미국·칠레 등으로 떠났다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 136
+    },
+    {
+      "id": "social-sung-final-214-072",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "시리아 등에서 유럽으로 향한 난민 이주(유럽 연합 2017)의 원인은?",
+      "passage": null,
+      "answer": "정치적 원인",
+      "wrong": [
+        "환경적 원인",
+        "종교적 원인",
+        "경제적 원인"
+      ],
+      "criteria": [],
+      "explanation": "유럽 연합(2017)의 유럽으로의 난민 이주 자료는 시리아 등에서 유럽으로 향한 정치적 이주의 사례다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 4,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 137
+    },
+    {
+      "id": "social-sung-final-214-073",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "라틴 아메리카 노동자가 미국으로 들어오는 히스패닉 이동의 성격은?",
+      "passage": null,
+      "answer": "자발적·경제적 이동",
+      "wrong": [
+        "강제적·정치적 이동",
+        "종교적 이동",
+        "환경적 이동"
+      ],
+      "criteria": [],
+      "explanation": "히스패닉의 미국 유입은 라틴 아메리카 노동자의 자발적·경제적 이동이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 138
+    },
+    {
+      "id": "social-sung-final-214-074",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "문화적 차이로 거주지가 분리된 히스패닉이 주로 정착한 미국 지역은?",
+      "passage": null,
+      "answer": "남서부",
+      "wrong": [
+        "북동부",
+        "중서부",
+        "북서부"
+      ],
+      "criteria": [],
+      "explanation": "히스패닉은 문화적 차이로 거주지가 분리되어 미국 남서부에 주로 정착했다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 139
+    },
+    {
+      "id": "social-sung-final-214-075",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "히스패닉의 저임금 노동력 유입으로 미국에서 일부 해소된 문제는?",
+      "passage": null,
+      "answer": "노동력 부족",
+      "wrong": [
+        "주택 부족",
+        "고령화 심화",
+        "교통 혼잡"
+      ],
+      "criteria": [],
+      "explanation": "히스패닉의 저임금 노동력이 들어오면서 미국의 노동력 부족 문제가 일부 해소되었다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 140
+    },
+    {
+      "id": "social-sung-final-214-076",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2차 대전 이후 서구 유럽에 이주 노동자가 많이 들어온 까닭은?",
+      "passage": null,
+      "answer": "산업화·저출산으로 노동력 부족",
+      "wrong": [
+        "석유 개발로 건설 경기 활성화",
+        "종교적 자유를 찾는 이주",
+        "자연재해를 피한 이동"
+      ],
+      "criteria": [],
+      "explanation": "2차 대전 이후 유럽은 산업화와 저출산·고령화로 노동력이 부족해 이주 노동자를 받아들였다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 141
+    },
+    {
+      "id": "social-sung-final-214-077",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "서구 유럽의 이주 노동자가 많이 떠나온 지역은?",
+      "passage": null,
+      "answer": "중부·동부 아프리카",
+      "wrong": [
+        "라틴 아메리카",
+        "동남아시아",
+        "앵글로아메리카"
+      ],
+      "criteria": [],
+      "explanation": "유럽의 이주 노동자 유입은 중부·동부 아프리카에서 서구 유럽으로의 이동이 활발했다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 142
+    },
+    {
+      "id": "social-sung-final-214-078",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유럽에 온 이주민 A와 기존 주민 B 사이 갈등의 바탕이 된 종교는? A–B는?",
+      "passage": null,
+      "answer": "이슬람교–크리스트교",
+      "wrong": [
+        "크리스트교–이슬람교",
+        "불교–이슬람교",
+        "힌두교–크리스트교"
+      ],
+      "criteria": [],
+      "explanation": "유럽에서는 이주민(이슬람교)과 기존 주민(크리스트교) 사이의 문화 차이로 갈등이 나타난다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 143
+    },
+    {
+      "id": "social-sung-final-214-079",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "1970년대 초 서남아시아로 노동력이 몰린 까닭은?",
+      "passage": null,
+      "answer": "석유 자원 개발·건설 경기",
+      "wrong": [
+        "산업화와 저출산",
+        "종교적 성지 순례",
+        "내전으로 인한 난민"
+      ],
+      "criteria": [],
+      "explanation": "1970년대 초 서남아시아는 석유 자원 개발과 건설 경기 활성화로 노동력 수요가 늘었다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 144
+    },
+    {
+      "id": "social-sung-final-214-080",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "과거 서남아시아로 간 이주 노동자의 대부분을 차지한 출신은?",
+      "passage": null,
+      "answer": "한국·필리핀 등 아시아",
+      "wrong": [
+        "라틴 아메리카",
+        "중부·동부 아프리카",
+        "서부 유럽"
+      ],
+      "criteria": [],
+      "explanation": "과거 서남아시아의 이주 노동자는 한국·필리핀 등 아시아 출신이 대부분이었고, 현재는 이슬람 문화권 노동자의 비율이 늘고 있다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 145
+    },
+    {
+      "id": "social-sung-final-214-081",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "현재 서남아시아의 이주 노동자 중 비율이 늘고 있는 것은?",
+      "passage": null,
+      "answer": "이슬람 문화권 노동자",
+      "wrong": [
+        "한국 출신 노동자",
+        "라틴 아메리카 노동자",
+        "유럽 출신 노동자"
+      ],
+      "criteria": [],
+      "explanation": "서남아시아의 이주 노동자는 과거 한국·필리핀 등 아시아 출신이 대부분이었으나 현재는 이슬람 문화권 노동자의 비율이 늘고 있다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 146
+    },
+    {
+      "id": "social-sung-final-214-082",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "동남아시아 국가 중 화교 비중이 76%로 가장 높은 나라는?",
+      "passage": null,
+      "answer": "싱가포르",
+      "wrong": [
+        "말레이시아",
+        "타이",
+        "인도네시아"
+      ],
+      "criteria": [],
+      "explanation": "동남아시아 국가의 화교 비중은 싱가포르 76%, 말레이시아 26%, 타이 14%, 브루나이 11%, 인도네시아 3.4%, 베트남 1.5%, 캄보디아 1%다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 147
+    },
+    {
+      "id": "social-sung-final-214-083",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "동남아시아 국가 중 화교 비중이 26%인 나라는?",
+      "passage": null,
+      "answer": "말레이시아",
+      "wrong": [
+        "타이",
+        "브루나이",
+        "베트남"
+      ],
+      "criteria": [],
+      "explanation": "화교 비중은 싱가포르 76%, 말레이시아 26%, 타이 14%, 브루나이 11%다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 148
+    },
+    {
+      "id": "social-sung-final-214-084",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "동남아시아에서 화교와 원주민 사이에 갈등이 생기는 까닭은?",
+      "passage": null,
+      "answer": "화교의 높은 경제적 지위",
+      "wrong": [
+        "화교 인구의 급감",
+        "원주민의 높은 경제적 지위",
+        "화교의 정치적 망명"
+      ],
+      "criteria": [],
+      "explanation": "화교는 경제적 지위가 높아 원주민과의 경제적 차이로 갈등이 나타난다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 149
+    },
+    {
+      "id": "social-sung-final-214-085",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유럽 주요국의 무슬림 인구(2009)에서 비율이 가장 높은 나라는?",
+      "passage": null,
+      "answer": "프랑스",
+      "wrong": [
+        "독일",
+        "영국",
+        "네덜란드"
+      ],
+      "criteria": [],
+      "explanation": "미 국무부·중앙정보국(2009) 자료에서 무슬림 비율은 프랑스 6.9~10%, 네덜란드 5.5~6%, 독일 4.9%, 영국 2.7%다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 150
+    },
+    {
+      "id": "social-sung-final-214-086",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유럽 주요국의 무슬림 인구(2009)에서 441만 명(4.9%)인 나라는?",
+      "passage": null,
+      "answer": "독일",
+      "wrong": [
+        "프랑스",
+        "영국",
+        "네덜란드"
+      ],
+      "criteria": [],
+      "explanation": "독일 441만 명(4.9%), 프랑스 439만~637만 명(6.9~10%), 영국 164만 명(2.7%), 네덜란드 91만~99만 명(5.5~6%)이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 151
+    },
+    {
+      "id": "social-sung-final-214-087",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이주 노동자가 빠져나간 인구 유출 지역이 얻는 긍정적 효과는?",
+      "passage": null,
+      "answer": "송금 유입·실업률 하락",
+      "wrong": [
+        "문화적·종교적 갈등",
+        "노동력 부족 해소",
+        "인구 고령화 완화"
+      ],
+      "criteria": [],
+      "explanation": "인구 유출 지역은 해외 이주 노동자들의 송금이 들어와 지역 경제가 활성화되고 실업률이 낮아지는 등 긍정적 효과가 있다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 152
+    },
+    {
+      "id": "social-sung-final-214-088",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "크리스트교 전통이 강한 유럽에서 이슬람 지역 이주민이 늘며 고조된 것은?",
+      "passage": null,
+      "answer": "문화적·종교적 갈등",
+      "wrong": [
+        "실업률 하락",
+        "송금 유입",
+        "출생률 증가"
+      ],
+      "criteria": [],
+      "explanation": "인구 유입 지역인 유럽은 크리스트교 전통이 강해, 이슬람 지역 이주민이 증가하며 문화적·종교적 갈등이 고조되고 있다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 153
+    },
+    {
+      "id": "social-sung-final-214-089",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이슬람교를 믿는 로힝야족을 정부가 탄압해 대규모 난민이 생긴 나라는?",
+      "passage": null,
+      "answer": "미얀마",
+      "wrong": [
+        "남수단",
+        "아프가니스탄",
+        "우크라이나"
+      ],
+      "criteria": [],
+      "explanation": "국제 연합 난민 기구(2022) 자료에서 미얀마는 정부가 이슬람교를 믿는 로힝야족을 탄압해 대규모 난민이 생겼다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 154
+    },
+    {
+      "id": "social-sung-final-214-090",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "식량과 약품 부족, 폭력 등을 피해 대규모 난민이 생긴 남아메리카 나라는?",
+      "passage": null,
+      "answer": "베네수엘라",
+      "wrong": [
+        "미얀마",
+        "우크라이나",
+        "남수단"
+      ],
+      "criteria": [],
+      "explanation": "베네수엘라 볼리바르에서는 식량과 약품 부족, 폭력 등을 피해 대규모 난민이 생겼다(국제 연합 난민 기구 2022).",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 155
+    },
+    {
+      "id": "social-sung-final-214-091",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "수단에서의 분리 독립과 갈등, 장기간의 내전으로 난민이 생긴 나라는?",
+      "passage": null,
+      "answer": "남수단",
+      "wrong": [
+        "아프가니스탄",
+        "미얀마",
+        "베네수엘라"
+      ],
+      "criteria": [],
+      "explanation": "남수단은 수단에서의 분리 독립과 갈등, 장기간의 내전으로 난민이 생겼다(국제 연합 난민 기구 2022).",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 156
+    },
+    {
+      "id": "social-sung-final-214-092",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "난민 지도(2022)에서 단기간에 많은 난민이 이주한 나라는?",
+      "passage": null,
+      "answer": "우크라이나",
+      "wrong": [
+        "아프가니스탄",
+        "남수단",
+        "미얀마"
+      ],
+      "criteria": [],
+      "explanation": "국제 연합 난민 기구(2022) 자료에서 우크라이나는 단기간에 많은 난민이 이주했다. 아프가니스탄·남수단은 장기간의 내전이 원인이다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 157
+    },
+    {
+      "id": "social-sung-final-214-093",
+      "deck_id": "social-sung-final",
+      "kind": "choice",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "난민 지도(2022)에서 장기간의 내전으로 대규모 난민이 생긴 아시아 나라는?",
+      "passage": null,
+      "answer": "아프가니스탄",
+      "wrong": [
+        "우크라이나",
+        "베네수엘라",
+        "미얀마"
+      ],
+      "criteria": [],
+      "explanation": "아프가니스탄은 장기간의 내전으로 대규모 난민이 생겼다. 미얀마는 로힝야족 탄압, 우크라이나는 단기간의 대규모 이주다.",
+      "source_label": "성신제T · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": 5,
+      "source_slide": null,
+      "source_url": "https://drive.google.com/drive/folders/14_HyZI3O64rhl2c1iONQRri1R2lQXoLj",
+      "sort": 158
+    },
+    {
       "id": "social-sung-final-213-written-001",
       "deck_id": "social-sung-final",
       "kind": "written",
@@ -100290,6 +102336,75 @@
       "sort": 1002
     },
     {
+      "id": "social-sung-final-214-written-001",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형의 다섯 단계를 출생률·사망률의 변화와 그 까닭을 중심으로 서술하시오.",
+      "passage": null,
+      "answer": "1단계 고위 정체기는 출생률이 높지만 질병·자연재해·식량 부족 등으로 사망률도 높아 인구 증가율이 낮다. 2단계 초기 팽창기는 출생률이 높은 채로 의학 발달·생활 환경 개선 등으로 사망률이 빠르게 감소해 인구가 급성장한다. 3단계 후기 팽창기는 여성의 사회 활동 증가, 산아 제한 정책의 효과 등으로 출생률이 감소해 인구 증가율이 점차 둔화된다. 4단계 저위 정체기는 출산 가치관·인식의 변화로 출생률이 낮고 사망률도 낮아 인구 성장이 정체되고 고령화가 심화된다. 5단계 감소기는 저출산으로 사망률이 출생률보다 높아 인구가 자연적으로 감소하며, 일부 선진국에서 고령화와 맞물려 자연 증가율이 음(−)이 된다.",
+      "wrong": [],
+      "criteria": [
+        "1단계: 다산다사(질병·자연재해·식량 부족) → 증가율 낮음",
+        "2단계: 의학 발달·생활 환경 개선으로 사망률 급감 → 인구 급성장",
+        "3단계: 여성 사회 활동·산아 제한으로 출생률 감소 → 증가율 둔화",
+        "4단계: 출생률·사망률 모두 낮음, 고령화 심화 / 5단계: 사망률 > 출생률, 자연 감소"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1003
+    },
+    {
+      "id": "social-sung-final-214-written-002",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 부양비, 노년 부양비, 총 부양비, 노령화 지수, 고령화 지수를 구하는 식을 쓰고, 유소년 20%·청장년 50%·노년 30%인 지역의 각 값과 어떤 사회인지 서술하시오.",
+      "passage": null,
+      "answer": "유소년 부양비는 유소년층 ÷ 청장년층 × 100, 노년 부양비는 노년층 ÷ 청장년층 × 100, 총 부양비는 (유소년층 + 노년층) ÷ 청장년층 × 100이다. 노령화 지수는 노년층 ÷ 유소년층 × 100, 고령화 지수는 노년층 ÷ 총인구 × 100이다. 유소년 20%·청장년 50%·노년 30%인 지역은 유소년 부양비 40, 노년 부양비 60, 총 부양비 100, 노령화 지수 150, 고령화 지수 30이다. 고령화 지수가 20% 이상이므로 초고령 사회다(고령화 사회 7~14%, 고령 사회 14~20%).",
+      "wrong": [],
+      "criteria": [
+        "부양비 세 가지: 분모는 청장년층(15~64세)",
+        "노령화 지수 = 노년층 ÷ 유소년층 × 100, 고령화 지수 = 노년층 ÷ 총인구 × 100",
+        "계산: 유소년 부양비 40, 노년 부양비 60, 총 부양비 100, 노령화 지수 150, 고령화 지수 30",
+        "고령화 지수 20% 이상 → 초고령 사회"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1004
+    },
+    {
+      "id": "social-sung-final-214-written-003",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "경제적 요인에 의한 주요 국제 인구 이동 사례를 두 가지 이상 들고, 인구 유출 지역과 유입 지역에 나타나는 영향을 서술하시오.",
+      "passage": null,
+      "answer": "히스패닉의 미국 유입은 라틴 아메리카 노동자의 자발적·경제적 이동으로, 이들은 문화적 차이로 거주지가 분리되어 미국 남서부에 주로 정착했고 저임금 노동력 유입으로 미국의 노동력 부족이 일부 해소되었다. 유럽은 2차 대전 이후 산업화와 저출산·고령화로 노동력이 부족해 중부·동부 아프리카 등에서 이주 노동자가 들어왔고, 이주민(이슬람교)과 기존 주민(크리스트교)의 문화 차이로 갈등이 생겼다. 서남아시아는 1970년대 초 석유 자원 개발과 건설 경기 활성화로 노동력 수요가 늘어 과거에는 한국·필리핀 등 아시아 출신, 현재는 이슬람 문화권 노동자가 늘고 있다. 인구 유출 지역은 이주 노동자의 송금 유입으로 지역 경제가 활성화되고 실업률이 낮아지며, 인구 유입 지역은 노동력 부족이 해소되지만 문화적·종교적 갈등이 고조될 수 있다.",
+      "wrong": [],
+      "criteria": [
+        "사례 1: 히스패닉의 미국 유입(남서부 정착, 노동력 부족 일부 해소)",
+        "사례 2: 유럽의 이주 노동자(노동력 부족, 이슬람교–크리스트교 갈등) 또는 서남아시아(석유 개발·건설 경기)",
+        "유출 지역: 송금 유입 → 지역 경제 활성화·실업률 하락",
+        "유입 지역: 노동력 확보, 문화적·종교적 갈등 고조"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1005
+    },
+    {
       "id": "practice-short-social-sung-final-213-001",
       "deck_id": "social-sung-final",
       "kind": "written",
@@ -100307,7 +102422,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1003
+      "sort": 1006
     },
     {
       "id": "practice-short-social-sung-final-213-002",
@@ -100327,7 +102442,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1004
+      "sort": 1007
     },
     {
       "id": "practice-short-social-sung-final-213-003",
@@ -100347,7 +102462,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1005
+      "sort": 1008
     },
     {
       "id": "practice-short-social-sung-final-213-004",
@@ -100367,7 +102482,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1006
+      "sort": 1009
     },
     {
       "id": "practice-short-social-sung-final-213-005",
@@ -100387,7 +102502,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1007
+      "sort": 1010
     },
     {
       "id": "practice-short-social-sung-final-213-006",
@@ -100407,7 +102522,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1008
+      "sort": 1011
     },
     {
       "id": "practice-short-social-sung-final-213-007",
@@ -100427,7 +102542,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1009
+      "sort": 1012
     },
     {
       "id": "practice-short-social-sung-final-213-009",
@@ -100447,7 +102562,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1010
+      "sort": 1013
     },
     {
       "id": "practice-short-social-sung-final-213-012",
@@ -100467,7 +102582,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1011
+      "sort": 1014
     },
     {
       "id": "practice-short-social-sung-final-213-013",
@@ -100487,7 +102602,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1012
+      "sort": 1015
     },
     {
       "id": "practice-short-social-sung-final-213-015",
@@ -100507,7 +102622,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1013
+      "sort": 1016
     },
     {
       "id": "practice-short-social-sung-final-213-017",
@@ -100527,7 +102642,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1014
+      "sort": 1017
     },
     {
       "id": "practice-short-social-sung-final-213-019",
@@ -100547,7 +102662,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1015
+      "sort": 1018
     },
     {
       "id": "practice-short-social-sung-final-213-020",
@@ -100567,7 +102682,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1016
+      "sort": 1019
     },
     {
       "id": "practice-short-social-sung-final-213-021",
@@ -100587,7 +102702,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1017
+      "sort": 1020
     },
     {
       "id": "practice-short-social-sung-final-213-022",
@@ -100607,7 +102722,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1018
+      "sort": 1021
     },
     {
       "id": "practice-short-social-sung-final-213-024",
@@ -100627,7 +102742,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1019
+      "sort": 1022
     },
     {
       "id": "practice-short-social-sung-final-213-025",
@@ -100647,7 +102762,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1020
+      "sort": 1023
     },
     {
       "id": "practice-short-social-sung-final-213-026",
@@ -100667,7 +102782,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1021
+      "sort": 1024
     },
     {
       "id": "practice-short-social-sung-final-213-027",
@@ -100687,7 +102802,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1022
+      "sort": 1025
     },
     {
       "id": "practice-short-social-sung-final-213-028",
@@ -100707,7 +102822,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1023
+      "sort": 1026
     },
     {
       "id": "practice-short-social-sung-final-213-030",
@@ -100727,7 +102842,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1024
+      "sort": 1027
     },
     {
       "id": "practice-short-social-sung-final-213-033",
@@ -100747,7 +102862,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1025
+      "sort": 1028
     },
     {
       "id": "practice-short-social-sung-final-213-034",
@@ -100767,7 +102882,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1026
+      "sort": 1029
     },
     {
       "id": "practice-short-social-sung-final-213-036",
@@ -100787,7 +102902,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1027
+      "sort": 1030
     },
     {
       "id": "practice-short-social-sung-final-213-038",
@@ -100807,7 +102922,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1028
+      "sort": 1031
     },
     {
       "id": "practice-short-social-sung-final-213-039",
@@ -100827,7 +102942,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1029
+      "sort": 1032
     },
     {
       "id": "practice-short-social-sung-final-213-041",
@@ -100847,7 +102962,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1030
+      "sort": 1033
     },
     {
       "id": "practice-short-social-sung-final-213-042",
@@ -100867,7 +102982,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1031
+      "sort": 1034
     },
     {
       "id": "practice-short-social-sung-final-213-043",
@@ -100887,7 +103002,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1032
+      "sort": 1035
     },
     {
       "id": "practice-short-social-sung-final-213-044",
@@ -100907,7 +103022,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1033
+      "sort": 1036
     },
     {
       "id": "practice-short-social-sung-final-213-045",
@@ -100927,7 +103042,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1034
+      "sort": 1037
     },
     {
       "id": "practice-short-social-sung-final-213-046",
@@ -100947,7 +103062,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1035
+      "sort": 1038
     },
     {
       "id": "practice-short-social-sung-final-213-047",
@@ -100967,7 +103082,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1036
+      "sort": 1039
     },
     {
       "id": "practice-short-social-sung-final-213-048",
@@ -100987,7 +103102,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1037
+      "sort": 1040
     },
     {
       "id": "practice-short-social-sung-final-213-052",
@@ -101007,7 +103122,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1038
+      "sort": 1041
     },
     {
       "id": "practice-short-social-sung-final-213-055",
@@ -101027,7 +103142,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1039
+      "sort": 1042
     },
     {
       "id": "practice-short-social-sung-final-213-058",
@@ -101047,7 +103162,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1040
+      "sort": 1043
     },
     {
       "id": "practice-short-social-sung-final-213-059",
@@ -101067,7 +103182,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1041
+      "sort": 1044
     },
     {
       "id": "practice-short-social-sung-final-213-065",
@@ -101087,7 +103202,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1042
+      "sort": 1045
     },
     {
       "id": "practice-short-social-sung-final-213-066",
@@ -101107,7 +103222,1367 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1043
+      "sort": 1046
+    },
+    {
+      "id": "practice-short-social-sung-final-214-005",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "저출산으로 사망률이 출생률보다 높아져 인구가 자연적으로 줄어드는 단계는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "5단계 감소기",
+      "wrong": [],
+      "criteria": [
+        "정답: 5단계 감소기"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1047
+    },
+    {
+      "id": "practice-short-social-sung-final-214-010",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형에서 경제 발전 수준이 가장 높은 쪽의 중심 산업은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "3차 산업",
+      "wrong": [],
+      "criteria": [
+        "정답: 3차 산업"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1048
+    },
+    {
+      "id": "practice-short-social-sung-final-214-011",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2025년 기준 우리나라의 출산율은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "0.80명",
+      "wrong": [],
+      "criteria": [
+        "정답: 0.80명"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1049
+    },
+    {
+      "id": "practice-short-social-sung-final-214-013",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 자료에서 1970년 우리나라 0~14세 인구 비율은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "42.5%",
+      "wrong": [],
+      "criteria": [
+        "정답: 42.5%"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1050
+    },
+    {
+      "id": "practice-short-social-sung-final-214-014",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 자료의 연도 중 우리나라 65세 이상 비율이 처음 7% 이상이 된 해는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "2000년",
+      "wrong": [],
+      "criteria": [
+        "정답: 2000년"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1051
+    },
+    {
+      "id": "practice-short-social-sung-final-214-015",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 추정에서 2050년 우리나라 65세 이상 인구 비율은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "37.4%",
+      "wrong": [],
+      "criteria": [
+        "정답: 37.4%"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1052
+    },
+    {
+      "id": "practice-short-social-sung-final-214-016",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 자료에서 우리나라 15~64세 인구 비율이 가장 높은 해는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "2015년",
+      "wrong": [],
+      "criteria": [
+        "정답: 2015년"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1053
+    },
+    {
+      "id": "practice-short-social-sung-final-214-019",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "저출생·고령 사회 정책(2023)에서 저출생 분야의 핵심 과제는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "일·육아 병행",
+      "wrong": [],
+      "criteria": [
+        "정답: 일·육아 병행"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1054
+    },
+    {
+      "id": "practice-short-social-sung-final-214-021",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "청장년층 인구에 대한 유소년층 인구의 비율(×100)은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "유소년 부양비",
+      "wrong": [],
+      "criteria": [
+        "정답: 유소년 부양비"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1055
+    },
+    {
+      "id": "practice-short-social-sung-final-214-022",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "청장년층 인구에 대한 노년층 인구의 비율(×100)은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "노년 부양비",
+      "wrong": [],
+      "criteria": [
+        "정답: 노년 부양비"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1056
+    },
+    {
+      "id": "practice-short-social-sung-final-214-023",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "(유소년층 + 노년층) ÷ 청장년층 × 100으로 구하는 지표는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "총 부양비",
+      "wrong": [],
+      "criteria": [
+        "정답: 총 부양비"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1057
+    },
+    {
+      "id": "practice-short-social-sung-final-214-024",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년층 인구에 대한 노년층 인구의 비율(×100)로 노령화 정도를 보는 지표는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "노령화 지수",
+      "wrong": [],
+      "criteria": [
+        "정답: 노령화 지수"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1058
+    },
+    {
+      "id": "practice-short-social-sung-final-214-025",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "총인구에서 노년층 인구가 차지하는 비율(%)을 나타내는 지표는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "고령화 지수",
+      "wrong": [],
+      "criteria": [
+        "정답: 고령화 지수"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1059
+    },
+    {
+      "id": "practice-short-social-sung-final-214-026",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "고령화 지수 기준으로 고령 사회의 범위는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "14~20%",
+      "wrong": [],
+      "criteria": [
+        "정답: 14~20%"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1060
+    },
+    {
+      "id": "practice-short-social-sung-final-214-027",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "고령화 지수가 20% 이상인 사회는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "초고령 사회",
+      "wrong": [],
+      "criteria": [
+        "정답: 초고령 사회"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1061
+    },
+    {
+      "id": "practice-short-social-sung-final-214-028",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "고령화 지수가 7% 이상 14% 미만인 사회는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "고령화 사회",
+      "wrong": [],
+      "criteria": [
+        "정답: 고령화 사회"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1062
+    },
+    {
+      "id": "practice-short-social-sung-final-214-029",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "다른 조건이 같을 때 청장년층 비중이 높아질수록 총 부양비는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "낮아진다",
+      "wrong": [],
+      "criteria": [
+        "정답: 낮아진다"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1063
+    },
+    {
+      "id": "practice-short-social-sung-final-214-030",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "출생률·사망률·자연 증가율을 나타내는 단위는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "‰(퍼밀)",
+      "wrong": [],
+      "criteria": [
+        "정답: ‰(퍼밀)"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1064
+    },
+    {
+      "id": "practice-short-social-sung-final-214-031",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "(출생자 수 − 사망자 수) ÷ 전체 인구 × 1000으로 구하는 지표는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "자연 증가율",
+      "wrong": [],
+      "criteria": [
+        "정답: 자연 증가율"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1065
+    },
+    {
+      "id": "practice-short-social-sung-final-214-033",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 증가율이 낮아지고 있지만 아직 0 이상일 때 인구 수는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "계속 증가한다",
+      "wrong": [],
+      "criteria": [
+        "정답: 계속 증가한다"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1066
+    },
+    {
+      "id": "practice-short-social-sung-final-214-034",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "한 지역의 자원으로 얼마만큼의 인구를 수용할 수 있는지 나타내는 척도는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "인구 부양력",
+      "wrong": [],
+      "criteria": [
+        "정답: 인구 부양력"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1067
+    },
+    {
+      "id": "practice-short-social-sung-final-214-035",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "출산 가능한 여성(15~49세)이 평생 낳는 평균 자녀 수를 나타내는 지표는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "합계 출산율",
+      "wrong": [],
+      "criteria": [
+        "정답: 합계 출산율"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1068
+    },
+    {
+      "id": "practice-short-social-sung-final-214-036",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년층 30%, 청장년층 60%, 노년층 10%인 지역의 총 부양비는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "약 66.7",
+      "wrong": [],
+      "criteria": [
+        "정답: 약 66.7"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1069
+    },
+    {
+      "id": "practice-short-social-sung-final-214-037",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 20%, 생산연령 50%, 고령 30%인 지역의 노령화 지수는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "150",
+      "wrong": [],
+      "criteria": [
+        "정답: 150"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1070
+    },
+    {
+      "id": "practice-short-social-sung-final-214-038",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 40%, 생산연령 50%, 고령 10%인 지역의 유소년 부양비는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "80",
+      "wrong": [],
+      "criteria": [
+        "정답: 80"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1071
+    },
+    {
+      "id": "practice-short-social-sung-final-214-039",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 60%, 생산연령 35%, 고령 5%인 지역의 인구(총) 부양비는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "약 185.7",
+      "wrong": [],
+      "criteria": [
+        "정답: 약 185.7"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1072
+    },
+    {
+      "id": "practice-short-social-sung-final-214-040",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 60%, 생산연령 35%, 고령 5%인 지역의 노령화 지수는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "약 8.3",
+      "wrong": [],
+      "criteria": [
+        "정답: 약 8.3"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1073
+    },
+    {
+      "id": "practice-short-social-sung-final-214-041",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "총인구의 30%가 노년층인 지역은 고령화 지수 기준으로 어떤 사회인가? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "초고령 사회",
+      "wrong": [],
+      "criteria": [
+        "정답: 초고령 사회"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1074
+    },
+    {
+      "id": "practice-short-social-sung-final-214-042",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "총인구의 10%가 노년층인 지역은 고령화 지수 기준으로 어떤 사회인가? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "고령화 사회",
+      "wrong": [],
+      "criteria": [
+        "정답: 고령화 사회"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1075
+    },
+    {
+      "id": "practice-short-social-sung-final-214-043",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 부양비 40, 노년 부양비 60인 지역의 총 부양비는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "100",
+      "wrong": [],
+      "criteria": [
+        "정답: 100"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1076
+    },
+    {
+      "id": "practice-short-social-sung-final-214-045",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2024) 자료에서 2023년 출생률이 가장 높은 지역은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "아프리카",
+      "wrong": [],
+      "criteria": [
+        "정답: 아프리카"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1077
+    },
+    {
+      "id": "practice-short-social-sung-final-214-046",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2024) 자료에서 2023년 사망률이 출생률보다 높은 지역은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "유럽",
+      "wrong": [],
+      "criteria": [
+        "정답: 유럽"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1078
+    },
+    {
+      "id": "practice-short-social-sung-final-214-047",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2024) 자료에서 2023년 출생률이 가장 낮은 지역은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "유럽",
+      "wrong": [],
+      "criteria": [
+        "정답: 유럽"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1079
+    },
+    {
+      "id": "practice-short-social-sung-final-214-048",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2023) 자료에서 2021년 노년층 인구 비율이 가장 높은 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "일본",
+      "wrong": [],
+      "criteria": [
+        "정답: 일본"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1080
+    },
+    {
+      "id": "practice-short-social-sung-final-214-049",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2023) 추정에서 2050년 노년층 인구 비율이 가장 높은 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "한국",
+      "wrong": [],
+      "criteria": [
+        "정답: 한국"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1081
+    },
+    {
+      "id": "practice-short-social-sung-final-214-052",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2023년 지역별 부양비에서 총 부양비와 유소년 부양비가 모두 가장 높은 지역은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "아프리카",
+      "wrong": [],
+      "criteria": [
+        "정답: 아프리카"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1082
+    },
+    {
+      "id": "practice-short-social-sung-final-214-053",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2023년 노년 부양비(약 31)가 유소년 부양비(약 24)보다 높은 지역은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "유럽",
+      "wrong": [],
+      "criteria": [
+        "정답: 유럽"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1083
+    },
+    {
+      "id": "practice-short-social-sung-final-214-055",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "1950~2023년 지역별 총 부양비 변화에서 줄곧 가장 높은 지역은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "아프리카",
+      "wrong": [],
+      "criteria": [
+        "정답: 아프리카"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1084
+    },
+    {
+      "id": "practice-short-social-sung-final-214-056",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2010년 무렵 이후 총 부양비가 다시 높아지는 지역끼리 짝지은 것은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "유럽·앵글로아메리카",
+      "wrong": [],
+      "criteria": [
+        "정답: 유럽·앵글로아메리카"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1085
+    },
+    {
+      "id": "practice-short-social-sung-final-214-057",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "1950~2023년 대부분 지역의 총 부양비가 가장 높았던 시기는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "1970년 무렵",
+      "wrong": [],
+      "criteria": [
+        "정답: 1970년 무렵"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1086
+    },
+    {
+      "id": "practice-short-social-sung-final-214-058",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이주 범위로 나눌 때 농촌에서 도시로 가는 이촌향도가 속하는 이동은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "국내 이동",
+      "wrong": [],
+      "criteria": [
+        "정답: 국내 이동"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1087
+    },
+    {
+      "id": "practice-short-social-sung-final-214-059",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이주 범위로 나눌 때 해외 이민이 속하는 이동은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "국제 이동",
+      "wrong": [],
+      "criteria": [
+        "정답: 국제 이동"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1088
+    },
+    {
+      "id": "practice-short-social-sung-final-214-060",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "전쟁·정치적 억압·자연재해·종교 박해 등으로 원하지 않게 떠나는 이주는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "강제적 이주",
+      "wrong": [],
+      "criteria": [
+        "정답: 강제적 이주"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1089
+    },
+    {
+      "id": "practice-short-social-sung-final-214-061",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "더 나은 환경을 찾아 취업·교육 등을 위해 스스로 떠나는 이주는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "자발적 이주",
+      "wrong": [],
+      "criteria": [
+        "정답: 자발적 이주"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1090
+    },
+    {
+      "id": "practice-short-social-sung-final-214-062",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "휴가철 휴가지로 떠나는 것처럼 짧게 머무는 이주는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "일시적 이주",
+      "wrong": [],
+      "criteria": [
+        "정답: 일시적 이주"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1091
+    },
+    {
+      "id": "practice-short-social-sung-final-214-063",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이주 기간으로 나눌 때 해외 이민이 속하는 유형은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "영구적 이주",
+      "wrong": [],
+      "criteria": [
+        "정답: 영구적 이주"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1092
+    },
+    {
+      "id": "practice-short-social-sung-final-214-064",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "멕시코인의 미국 이동, 화교의 동남아시아 이동은 어떤 원인의 이주인가? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "경제적 원인",
+      "wrong": [],
+      "criteria": [
+        "정답: 경제적 원인"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1093
+    },
+    {
+      "id": "practice-short-social-sung-final-214-065",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "영국 청교도들의 미국 이주, 무슬림의 성지 순례는 어떤 원인의 이주인가? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "종교적 원인",
+      "wrong": [],
+      "criteria": [
+        "정답: 종교적 원인"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1094
+    },
+    {
+      "id": "practice-short-social-sung-final-214-066",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "지구 온난화에 따른 해수면 상승으로 생긴 투발루 난민은 어떤 원인의 이주인가? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "환경적 원인",
+      "wrong": [],
+      "criteria": [
+        "정답: 환경적 원인"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1095
+    },
+    {
+      "id": "practice-short-social-sung-final-214-067",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "내전으로 생긴 난민은 어떤 원인의 이주인가? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "정치적 원인",
+      "wrong": [],
+      "criteria": [
+        "정답: 정치적 원인"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1096
+    },
+    {
+      "id": "practice-short-social-sung-final-214-068",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2010년 대지진 뒤 아이티 사람들이 처음 대거 이주한 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "브라질",
+      "wrong": [],
+      "criteria": [
+        "정답: 브라질"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1097
+    },
+    {
+      "id": "practice-short-social-sung-final-214-070",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이방인(xeno)과 혐오(phobia)를 합친 말로, 이민족 집단을 배척·혐오하는 것은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "제노포비아",
+      "wrong": [],
+      "criteria": [
+        "정답: 제노포비아"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1098
+    },
+    {
+      "id": "practice-short-social-sung-final-214-071",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "대지진 뒤 브라질로, 다시 미국·칠레로 간 아이티 난민의 이주 원인은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "환경적·정치적 원인",
+      "wrong": [],
+      "criteria": [
+        "정답: 환경적·정치적 원인"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1099
+    },
+    {
+      "id": "practice-short-social-sung-final-214-072",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "시리아 등에서 유럽으로 향한 난민 이주(유럽 연합 2017)의 원인은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "정치적 원인",
+      "wrong": [],
+      "criteria": [
+        "정답: 정치적 원인"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1100
+    },
+    {
+      "id": "practice-short-social-sung-final-214-073",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "라틴 아메리카 노동자가 미국으로 들어오는 히스패닉 이동의 성격은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "자발적·경제적 이동",
+      "wrong": [],
+      "criteria": [
+        "정답: 자발적·경제적 이동"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1101
+    },
+    {
+      "id": "practice-short-social-sung-final-214-074",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "문화적 차이로 거주지가 분리된 히스패닉이 주로 정착한 미국 지역은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "남서부",
+      "wrong": [],
+      "criteria": [
+        "정답: 남서부"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1102
+    },
+    {
+      "id": "practice-short-social-sung-final-214-075",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "히스패닉의 저임금 노동력 유입으로 미국에서 일부 해소된 문제는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "노동력 부족",
+      "wrong": [],
+      "criteria": [
+        "정답: 노동력 부족"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1103
+    },
+    {
+      "id": "practice-short-social-sung-final-214-077",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "서구 유럽의 이주 노동자가 많이 떠나온 지역은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "중부·동부 아프리카",
+      "wrong": [],
+      "criteria": [
+        "정답: 중부·동부 아프리카"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1104
+    },
+    {
+      "id": "practice-short-social-sung-final-214-082",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "동남아시아 국가 중 화교 비중이 76%로 가장 높은 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "싱가포르",
+      "wrong": [],
+      "criteria": [
+        "정답: 싱가포르"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1105
+    },
+    {
+      "id": "practice-short-social-sung-final-214-083",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "동남아시아 국가 중 화교 비중이 26%인 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "말레이시아",
+      "wrong": [],
+      "criteria": [
+        "정답: 말레이시아"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1106
+    },
+    {
+      "id": "practice-short-social-sung-final-214-085",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유럽 주요국의 무슬림 인구(2009)에서 비율이 가장 높은 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "프랑스",
+      "wrong": [],
+      "criteria": [
+        "정답: 프랑스"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1107
+    },
+    {
+      "id": "practice-short-social-sung-final-214-086",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유럽 주요국의 무슬림 인구(2009)에서 441만 명(4.9%)인 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "독일",
+      "wrong": [],
+      "criteria": [
+        "정답: 독일"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1108
+    },
+    {
+      "id": "practice-short-social-sung-final-214-088",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "크리스트교 전통이 강한 유럽에서 이슬람 지역 이주민이 늘며 고조된 것은? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "문화적·종교적 갈등",
+      "wrong": [],
+      "criteria": [
+        "정답: 문화적·종교적 갈등"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1109
+    },
+    {
+      "id": "practice-short-social-sung-final-214-089",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이슬람교를 믿는 로힝야족을 정부가 탄압해 대규모 난민이 생긴 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "미얀마",
+      "wrong": [],
+      "criteria": [
+        "정답: 미얀마"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1110
+    },
+    {
+      "id": "practice-short-social-sung-final-214-090",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "식량과 약품 부족, 폭력 등을 피해 대규모 난민이 생긴 남아메리카 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "베네수엘라",
+      "wrong": [],
+      "criteria": [
+        "정답: 베네수엘라"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1111
+    },
+    {
+      "id": "practice-short-social-sung-final-214-091",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "수단에서의 분리 독립과 갈등, 장기간의 내전으로 난민이 생긴 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "남수단",
+      "wrong": [],
+      "criteria": [
+        "정답: 남수단"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1112
+    },
+    {
+      "id": "practice-short-social-sung-final-214-092",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "난민 지도(2022)에서 단기간에 많은 난민이 이주한 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "우크라이나",
+      "wrong": [],
+      "criteria": [
+        "정답: 우크라이나"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1113
+    },
+    {
+      "id": "practice-short-social-sung-final-214-093",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "난민 지도(2022)에서 장기간의 내전으로 대규모 난민이 생긴 아시아 나라는? (답을 하나만 쓰세요.)",
+      "passage": null,
+      "answer": "아프가니스탄",
+      "wrong": [],
+      "criteria": [
+        "정답: 아프가니스탄"
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1114
     },
     {
       "id": "practice-written-social-sung-final-213-001",
@@ -101128,7 +104603,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1044
+      "sort": 1115
     },
     {
       "id": "practice-written-social-sung-final-213-002",
@@ -101149,7 +104624,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1045
+      "sort": 1116
     },
     {
       "id": "practice-written-social-sung-final-213-003",
@@ -101170,7 +104645,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1046
+      "sort": 1117
     },
     {
       "id": "practice-written-social-sung-final-213-004",
@@ -101191,7 +104666,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1047
+      "sort": 1118
     },
     {
       "id": "practice-written-social-sung-final-213-005",
@@ -101212,7 +104687,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1048
+      "sort": 1119
     },
     {
       "id": "practice-written-social-sung-final-213-006",
@@ -101233,7 +104708,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1049
+      "sort": 1120
     },
     {
       "id": "practice-written-social-sung-final-213-007",
@@ -101254,7 +104729,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1050
+      "sort": 1121
     },
     {
       "id": "practice-written-social-sung-final-213-009",
@@ -101275,7 +104750,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1051
+      "sort": 1122
     },
     {
       "id": "practice-written-social-sung-final-213-012",
@@ -101296,7 +104771,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1052
+      "sort": 1123
     },
     {
       "id": "practice-written-social-sung-final-213-013",
@@ -101317,7 +104792,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1053
+      "sort": 1124
     },
     {
       "id": "practice-written-social-sung-final-213-014",
@@ -101338,7 +104813,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1054
+      "sort": 1125
     },
     {
       "id": "practice-written-social-sung-final-213-015",
@@ -101359,7 +104834,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1055
+      "sort": 1126
     },
     {
       "id": "practice-written-social-sung-final-213-017",
@@ -101380,7 +104855,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1056
+      "sort": 1127
     },
     {
       "id": "practice-written-social-sung-final-213-019",
@@ -101401,7 +104876,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1057
+      "sort": 1128
     },
     {
       "id": "practice-written-social-sung-final-213-020",
@@ -101422,7 +104897,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1058
+      "sort": 1129
     },
     {
       "id": "practice-written-social-sung-final-213-021",
@@ -101443,7 +104918,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1059
+      "sort": 1130
     },
     {
       "id": "practice-written-social-sung-final-213-022",
@@ -101464,7 +104939,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1060
+      "sort": 1131
     },
     {
       "id": "practice-written-social-sung-final-213-023",
@@ -101485,7 +104960,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1061
+      "sort": 1132
     },
     {
       "id": "practice-written-social-sung-final-213-024",
@@ -101506,7 +104981,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1062
+      "sort": 1133
     },
     {
       "id": "practice-written-social-sung-final-213-025",
@@ -101527,7 +105002,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1063
+      "sort": 1134
     },
     {
       "id": "practice-written-social-sung-final-213-026",
@@ -101548,7 +105023,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1064
+      "sort": 1135
     },
     {
       "id": "practice-written-social-sung-final-213-027",
@@ -101569,7 +105044,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1065
+      "sort": 1136
     },
     {
       "id": "practice-written-social-sung-final-213-028",
@@ -101590,7 +105065,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1066
+      "sort": 1137
     },
     {
       "id": "practice-written-social-sung-final-213-029",
@@ -101611,7 +105086,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1067
+      "sort": 1138
     },
     {
       "id": "practice-written-social-sung-final-213-030",
@@ -101632,7 +105107,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1068
+      "sort": 1139
     },
     {
       "id": "practice-written-social-sung-final-213-031",
@@ -101653,7 +105128,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1069
+      "sort": 1140
     },
     {
       "id": "practice-written-social-sung-final-213-032",
@@ -101674,7 +105149,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1070
+      "sort": 1141
     },
     {
       "id": "practice-written-social-sung-final-213-033",
@@ -101695,7 +105170,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1071
+      "sort": 1142
     },
     {
       "id": "practice-written-social-sung-final-213-034",
@@ -101716,7 +105191,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1072
+      "sort": 1143
     },
     {
       "id": "practice-written-social-sung-final-213-036",
@@ -101737,7 +105212,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1073
+      "sort": 1144
     },
     {
       "id": "practice-written-social-sung-final-213-038",
@@ -101758,7 +105233,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1074
+      "sort": 1145
     },
     {
       "id": "practice-written-social-sung-final-213-039",
@@ -101779,7 +105254,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1075
+      "sort": 1146
     },
     {
       "id": "practice-written-social-sung-final-213-041",
@@ -101800,7 +105275,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1076
+      "sort": 1147
     },
     {
       "id": "practice-written-social-sung-final-213-042",
@@ -101821,7 +105296,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1077
+      "sort": 1148
     },
     {
       "id": "practice-written-social-sung-final-213-043",
@@ -101842,7 +105317,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1078
+      "sort": 1149
     },
     {
       "id": "practice-written-social-sung-final-213-044",
@@ -101863,7 +105338,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1079
+      "sort": 1150
     },
     {
       "id": "practice-written-social-sung-final-213-045",
@@ -101884,7 +105359,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1080
+      "sort": 1151
     },
     {
       "id": "practice-written-social-sung-final-213-046",
@@ -101905,7 +105380,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1081
+      "sort": 1152
     },
     {
       "id": "practice-written-social-sung-final-213-047",
@@ -101926,7 +105401,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1082
+      "sort": 1153
     },
     {
       "id": "practice-written-social-sung-final-213-048",
@@ -101947,7 +105422,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1083
+      "sort": 1154
     },
     {
       "id": "practice-written-social-sung-final-213-051",
@@ -101968,7 +105443,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1084
+      "sort": 1155
     },
     {
       "id": "practice-written-social-sung-final-213-052",
@@ -101989,7 +105464,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1085
+      "sort": 1156
     },
     {
       "id": "practice-written-social-sung-final-213-055",
@@ -102010,7 +105485,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1086
+      "sort": 1157
     },
     {
       "id": "practice-written-social-sung-final-213-056",
@@ -102031,7 +105506,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1087
+      "sort": 1158
     },
     {
       "id": "practice-written-social-sung-final-213-058",
@@ -102052,7 +105527,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1088
+      "sort": 1159
     },
     {
       "id": "practice-written-social-sung-final-213-059",
@@ -102073,7 +105548,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1089
+      "sort": 1160
     },
     {
       "id": "practice-written-social-sung-final-213-063",
@@ -102094,7 +105569,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1090
+      "sort": 1161
     },
     {
       "id": "practice-written-social-sung-final-213-064",
@@ -102115,7 +105590,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1091
+      "sort": 1162
     },
     {
       "id": "practice-written-social-sung-final-213-065",
@@ -102136,7 +105611,7 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1092
+      "sort": 1163
     },
     {
       "id": "practice-written-social-sung-final-213-066",
@@ -102157,7 +105632,1813 @@
       "source_page": null,
       "source_slide": null,
       "source_url": null,
-      "sort": 1093
+      "sort": 1164
+    },
+    {
+      "id": "practice-written-social-sung-final-214-001",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형에서 출생률과 사망률이 모두 높아 인구 증가율이 낮은 단계는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "1단계 고위 정체기. 1단계 고위 정체기는 출생률이 높지만 질병·자연재해·식량 부족 등으로 사망률도 높아 인구 증가율이 낮다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 1단계 고위 정체기",
+        "근거: 1단계 고위 정체기는 출생률이 높지만 질병·자연재해·식량 부족 등으로 사망률도 높아 인구 증가율이 낮다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1165
+    },
+    {
+      "id": "practice-written-social-sung-final-214-002",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "의학 발달·생활 환경 개선으로 사망률이 빠르게 줄어 인구가 급성장하는 단계는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "2단계 초기 팽창기. 2단계 초기 팽창기는 출생률이 높은 채로 의학 발달·생활 환경 개선 등으로 사망률이 빠르게 감소해 인구가 급성장한다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 2단계 초기 팽창기",
+        "근거: 2단계 초기 팽창기는 출생률이 높은 채로 의학 발달·생활 환경 개선 등으로 사망률이 빠르게 감소해 인구가 급성장한다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1166
+    },
+    {
+      "id": "practice-written-social-sung-final-214-003",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "여성의 사회 활동 증가, 산아 제한 정책 효과 등으로 출생률이 줄어드는 단계는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "3단계 후기 팽창기. 3단계 후기 팽창기는 여성의 사회 활동 증가, 산아 제한 정책의 효과 등으로 출생률이 감소해 인구 증가율이 점차 둔화된다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 3단계 후기 팽창기",
+        "근거: 3단계 후기 팽창기는 여성의 사회 활동 증가, 산아 제한 정책의 효과 등으로 출생률이 감소해 인구 증가율이 점차 둔화된다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1167
+    },
+    {
+      "id": "practice-written-social-sung-final-214-004",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "출생률과 사망률이 모두 낮아 인구 성장이 정체되고 고령화가 심해지는 단계는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "4단계 저위 정체기. 4단계 저위 정체기는 출생률과 사망률이 모두 낮아 인구 증가율이 낮고(인구 성장의 정체), 인구 고령화 현상이 심화된다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 4단계 저위 정체기",
+        "근거: 4단계 저위 정체기는 출생률과 사망률이 모두 낮아 인구 증가율이 낮고(인구 성장의 정체), 인구 고령화 현상이 심화된다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1168
+    },
+    {
+      "id": "practice-written-social-sung-final-214-005",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "저출산으로 사망률이 출생률보다 높아져 인구가 자연적으로 줄어드는 단계는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "5단계 감소기. 5단계 감소기는 저출산으로 출생률보다 사망률이 높아 인구가 자연적으로 감소한다. 일부 선진국에서 고령화와 맞물려 자연 증가율이 음(−)이 된다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 5단계 감소기",
+        "근거: 5단계 감소기는 저출산으로 출생률보다 사망률이 높아 인구가 자연적으로 감소한다. 일부 선진국에서 고령화와 맞물려 자연 증가율이 음(−)이 된다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1169
+    },
+    {
+      "id": "practice-written-social-sung-final-214-006",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형 1단계에서 사망률이 높은 까닭은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "질병·자연재해·식량 부족. 1단계 고위 정체기에는 질병·자연재해·식량 부족 등으로 사망률이 높다. 의학 발달은 2단계에 사망률을 낮춘 요인이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 질병·자연재해·식량 부족",
+        "근거: 1단계 고위 정체기에는 질병·자연재해·식량 부족 등으로 사망률이 높다. 의학 발달은 2단계에 사망률을 낮춘 요인이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1170
+    },
+    {
+      "id": "practice-written-social-sung-final-214-007",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형 4단계에서 출생률이 낮게 유지되는 까닭은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "출산 가치관·인식 변화. 4단계 저위 정체기에는 출산에 대한 가치관·인식이 변하여 출생률이 낮다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 출산 가치관·인식 변화",
+        "근거: 4단계 저위 정체기에는 출산에 대한 가치관·인식이 변하여 출생률이 낮다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1171
+    },
+    {
+      "id": "practice-written-social-sung-final-214-008",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형에서 인구 증가율이 가장 높게 나타나는 시기는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "2단계 말~3단계 초. 사망률이 빠르게 떨어진 뒤 출생률이 아직 높은 2단계 말~3단계 초에 인구 증가율이 가장 높고, 이후 출생률이 낮아지며 둔화된다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 2단계 말~3단계 초",
+        "근거: 사망률이 빠르게 떨어진 뒤 출생률이 아직 높은 2단계 말~3단계 초에 인구 증가율이 가장 높고, 이후 출생률이 낮아지며 둔화된다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1172
+    },
+    {
+      "id": "practice-written-social-sung-final-214-009",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형의 가로축이 나타내는 것은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "경제 발전 수준. 인구 변천 모형의 가로축은 경제 발전 수준으로, 왼쪽이 낮음(1차 산업 중심), 오른쪽이 높음(3차 산업 중심)이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 경제 발전 수준",
+        "근거: 인구 변천 모형의 가로축은 경제 발전 수준으로, 왼쪽이 낮음(1차 산업 중심), 오른쪽이 높음(3차 산업 중심)이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1173
+    },
+    {
+      "id": "practice-written-social-sung-final-214-010",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 변천 모형에서 경제 발전 수준이 가장 높은 쪽의 중심 산업은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "3차 산업. 인구 변천 모형의 가로축은 경제 발전 수준이 낮은 1차 산업 중심에서 높은 3차 산업 중심으로 간다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 3차 산업",
+        "근거: 인구 변천 모형의 가로축은 경제 발전 수준이 낮은 1차 산업 중심에서 높은 3차 산업 중심으로 간다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1174
+    },
+    {
+      "id": "practice-written-social-sung-final-214-011",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2025년 기준 우리나라의 출산율은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "0.80명. 2025년 기준 우리나라의 출산율은 0.80명이다. 0.78명은 2022년, 1.66명은 1994년 합계 출산율이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 0.80명",
+        "근거: 2025년 기준 우리나라의 출산율은 0.80명이다. 0.78명은 2022년, 1.66명은 1994년 합계 출산율이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1175
+    },
+    {
+      "id": "practice-written-social-sung-final-214-013",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 자료에서 1970년 우리나라 0~14세 인구 비율은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "42.5%. 1970년 우리나라는 0~14세 42.5%, 15~64세 54.4%, 65세 이상 3.1%였다. 25.6%는 1990년 0~14세 비율이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 42.5%",
+        "근거: 1970년 우리나라는 0~14세 42.5%, 15~64세 54.4%, 65세 이상 3.1%였다. 25.6%는 1990년 0~14세 비율이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1176
+    },
+    {
+      "id": "practice-written-social-sung-final-214-014",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 자료의 연도 중 우리나라 65세 이상 비율이 처음 7% 이상이 된 해는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "2000년. 65세 이상 비율은 1990년 5.1%, 2000년 7.2%, 2015년 13.1%, 2020년 15.7%다. 2000년에 처음 7%를 넘었다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 2000년",
+        "근거: 65세 이상 비율은 1990년 5.1%, 2000년 7.2%, 2015년 13.1%, 2020년 15.7%다. 2000년에 처음 7%를 넘었다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1177
+    },
+    {
+      "id": "practice-written-social-sung-final-214-015",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 추정에서 2050년 우리나라 65세 이상 인구 비율은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "37.4%. 2050년 추정은 0~14세 9.9%, 15~64세 52.7%, 65세 이상 37.4%다. 24.3%는 2030년 65세 이상 비율이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 37.4%",
+        "근거: 2050년 추정은 0~14세 9.9%, 15~64세 52.7%, 65세 이상 37.4%다. 24.3%는 2030년 65세 이상 비율이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1178
+    },
+    {
+      "id": "practice-written-social-sung-final-214-016",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 자료에서 우리나라 15~64세 인구 비율이 가장 높은 해는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "2015년. 15~64세 비율은 1970년 54.4%, 2000년 71.7%, 2015년 73.0%로 가장 높고, 2050년에는 52.7%로 낮아질 것으로 추정된다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 2015년",
+        "근거: 15~64세 비율은 1970년 54.4%, 2000년 71.7%, 2015년 73.0%로 가장 높고, 2050년에는 52.7%로 낮아질 것으로 추정된다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1179
+    },
+    {
+      "id": "practice-written-social-sung-final-214-017",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "통계청(2016) 자료에서 우리나라 2015년 → 2020년에 일어난 인구 구조 변화는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "65세 이상이 0~14세 추월. 2015년 0~14세 13.9%·65세 이상 13.1%에서 2020년 0~14세 13.2%·65세 이상 15.7%로 노년층이 유소년층보다 많아졌다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 65세 이상이 0~14세 추월",
+        "근거: 2015년 0~14세 13.9%·65세 이상 13.1%에서 2020년 0~14세 13.2%·65세 이상 15.7%로 노년층이 유소년층보다 많아졌다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1180
+    },
+    {
+      "id": "practice-written-social-sung-final-214-019",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "저출생·고령 사회 정책(2023)에서 저출생 분야의 핵심 과제는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "일·육아 병행. 저출생 분야 핵심 과제는 돌봄과 교육, 일·육아 병행, 주거, 양육 비용, 건강이다. 의료–돌봄 연계, 고령 친화적 주거, 고용·일자리 지원은 고령 사회 분야다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 일·육아 병행",
+        "근거: 저출생 분야 핵심 과제는 돌봄과 교육, 일·육아 병행, 주거, 양육 비용, 건강이다. 의료–돌봄 연계, 고령 친화적 주거, 고용·일자리 지원은 고령 사회 분야다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1181
+    },
+    {
+      "id": "practice-written-social-sung-final-214-021",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "청장년층 인구에 대한 유소년층 인구의 비율(×100)은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "유소년 부양비. 유소년 부양비 = 유소년층 인구 ÷ 청장년층 인구 × 100이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 유소년 부양비",
+        "근거: 유소년 부양비 = 유소년층 인구 ÷ 청장년층 인구 × 100이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1182
+    },
+    {
+      "id": "practice-written-social-sung-final-214-022",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "청장년층 인구에 대한 노년층 인구의 비율(×100)은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "노년 부양비. 노년 부양비 = 노년층 인구 ÷ 청장년층 인구 × 100이다. 노령화 지수는 분모가 유소년층이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 노년 부양비",
+        "근거: 노년 부양비 = 노년층 인구 ÷ 청장년층 인구 × 100이다. 노령화 지수는 분모가 유소년층이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1183
+    },
+    {
+      "id": "practice-written-social-sung-final-214-023",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "(유소년층 + 노년층) ÷ 청장년층 × 100으로 구하는 지표는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "총 부양비. 인구(총) 부양비 = (유소년층 인구 + 노년층 인구) ÷ 청장년층 인구 × 100으로, 유소년 부양비와 노년 부양비의 합이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 총 부양비",
+        "근거: 인구(총) 부양비 = (유소년층 인구 + 노년층 인구) ÷ 청장년층 인구 × 100으로, 유소년 부양비와 노년 부양비의 합이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1184
+    },
+    {
+      "id": "practice-written-social-sung-final-214-024",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년층 인구에 대한 노년층 인구의 비율(×100)로 노령화 정도를 보는 지표는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "노령화 지수. 노령화 지수(%) = 노년층 인구수 ÷ 유소년층 인구수 × 100으로, 인구의 노령화 정도를 나타낸다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 노령화 지수",
+        "근거: 노령화 지수(%) = 노년층 인구수 ÷ 유소년층 인구수 × 100으로, 인구의 노령화 정도를 나타낸다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1185
+    },
+    {
+      "id": "practice-written-social-sung-final-214-025",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "총인구에서 노년층 인구가 차지하는 비율(%)을 나타내는 지표는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "고령화 지수. 고령화 지수(%) = 노년층 인구 ÷ 총인구 × 100이다. 이 값으로 고령화 사회·고령 사회·초고령 사회를 나눈다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 고령화 지수",
+        "근거: 고령화 지수(%) = 노년층 인구 ÷ 총인구 × 100이다. 이 값으로 고령화 사회·고령 사회·초고령 사회를 나눈다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1186
+    },
+    {
+      "id": "practice-written-social-sung-final-214-026",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "고령화 지수 기준으로 고령 사회의 범위는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "14~20%. 고령화 지수 기준으로 고령화 사회는 7~14%, 고령 사회는 14~20%, 초고령 사회는 20% 이상이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 14~20%",
+        "근거: 고령화 지수 기준으로 고령화 사회는 7~14%, 고령 사회는 14~20%, 초고령 사회는 20% 이상이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1187
+    },
+    {
+      "id": "practice-written-social-sung-final-214-027",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "고령화 지수가 20% 이상인 사회는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "초고령 사회. 총인구에서 노년층이 20% 이상이면 초고령 사회, 14~20%는 고령 사회, 7~14%는 고령화 사회다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 초고령 사회",
+        "근거: 총인구에서 노년층이 20% 이상이면 초고령 사회, 14~20%는 고령 사회, 7~14%는 고령화 사회다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1188
+    },
+    {
+      "id": "practice-written-social-sung-final-214-028",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "고령화 지수가 7% 이상 14% 미만인 사회는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "고령화 사회. 고령화 지수 7~14%는 고령화 사회, 14~20%는 고령 사회, 20% 이상은 초고령 사회다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 고령화 사회",
+        "근거: 고령화 지수 7~14%는 고령화 사회, 14~20%는 고령 사회, 20% 이상은 초고령 사회다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1189
+    },
+    {
+      "id": "practice-written-social-sung-final-214-029",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "다른 조건이 같을 때 청장년층 비중이 높아질수록 총 부양비는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "낮아진다. 총 부양비는 청장년층 인구가 분모이므로, 청장년층 비중이 높을수록 총 부양비는 낮아진다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 낮아진다",
+        "근거: 총 부양비는 청장년층 인구가 분모이므로, 청장년층 비중이 높을수록 총 부양비는 낮아진다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1190
+    },
+    {
+      "id": "practice-written-social-sung-final-214-030",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "출생률·사망률·자연 증가율을 나타내는 단위는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "‰(퍼밀). 출생률(‰) = 그해 출생자 수 ÷ 그해 전체 인구 × 1000처럼, 인구 1000명당 수인 ‰(퍼밀)로 나타낸다.",
+      "wrong": [],
+      "criteria": [
+        "결론: ‰(퍼밀)",
+        "근거: 출생률(‰) = 그해 출생자 수 ÷ 그해 전체 인구 × 1000처럼, 인구 1000명당 수인 ‰(퍼밀)로 나타낸다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1191
+    },
+    {
+      "id": "practice-written-social-sung-final-214-031",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "(출생자 수 − 사망자 수) ÷ 전체 인구 × 1000으로 구하는 지표는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "자연 증가율. 자연 증가율(‰) = (그해 출생자 수 − 그해 사망자 수) ÷ 그해 전체 인구 × 1000이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 자연 증가율",
+        "근거: 자연 증가율(‰) = (그해 출생자 수 − 그해 사망자 수) ÷ 그해 전체 인구 × 1000이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1192
+    },
+    {
+      "id": "practice-written-social-sung-final-214-032",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "전체 인구 증가율을 구하는 식은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "자연적+사회적 증가율. 전체 인구 증가율 = 자연적 증가율(출생·사망) + 사회적 증가율(전입·전출 등 인구 이동)이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 자연적+사회적 증가율",
+        "근거: 전체 인구 증가율 = 자연적 증가율(출생·사망) + 사회적 증가율(전입·전출 등 인구 이동)이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1193
+    },
+    {
+      "id": "practice-written-social-sung-final-214-033",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "인구 증가율이 낮아지고 있지만 아직 0 이상일 때 인구 수는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "계속 증가한다. 인구 증가율이 낮아지더라도 0 이상이면 인구 수는 증가한다. 증가 속도가 느려질 뿐이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 계속 증가한다",
+        "근거: 인구 증가율이 낮아지더라도 0 이상이면 인구 수는 증가한다. 증가 속도가 느려질 뿐이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1194
+    },
+    {
+      "id": "practice-written-social-sung-final-214-034",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "한 지역의 자원으로 얼마만큼의 인구를 수용할 수 있는지 나타내는 척도는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "인구 부양력. 인구 부양력은 한 나라의 인구가 그 나라의 사용 가능한 자원에 의하여 생활할 수 있는 능력으로, 지역이 얼마만큼의 인구를 수용할 수 있는가를 나타내는 척도다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 인구 부양력",
+        "근거: 인구 부양력은 한 나라의 인구가 그 나라의 사용 가능한 자원에 의하여 생활할 수 있는 능력으로, 지역이 얼마만큼의 인구를 수용할 수 있는가를 나타내는 척도다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1195
+    },
+    {
+      "id": "practice-written-social-sung-final-214-035",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "출산 가능한 여성(15~49세)이 평생 낳는 평균 자녀 수를 나타내는 지표는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "합계 출산율. 합계 출산율은 출산 가능한 여성(15~49세)이 평생 동안 낳는 평균 자녀 수다. 출생률은 전체 인구 1000명당 출생자 수다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 합계 출산율",
+        "근거: 합계 출산율은 출산 가능한 여성(15~49세)이 평생 동안 낳는 평균 자녀 수다. 출생률은 전체 인구 1000명당 출생자 수다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1196
+    },
+    {
+      "id": "practice-written-social-sung-final-214-036",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년층 30%, 청장년층 60%, 노년층 10%인 지역의 총 부양비는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "약 66.7. 총 부양비 = (30 + 10) ÷ 60 × 100 ≒ 66.7이다. 유소년 부양비 50과 노년 부양비 약 16.7의 합이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 약 66.7",
+        "근거: 총 부양비 = (30 + 10) ÷ 60 × 100 ≒ 66.7이다. 유소년 부양비 50과 노년 부양비 약 16.7의 합이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1197
+    },
+    {
+      "id": "practice-written-social-sung-final-214-037",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 20%, 생산연령 50%, 고령 30%인 지역의 노령화 지수는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "150. 노령화 지수 = 노년층 ÷ 유소년층 × 100 = 30 ÷ 20 × 100 = 150이다. 60은 노년 부양비, 40은 유소년 부양비, 30은 고령화 지수다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 150",
+        "근거: 노령화 지수 = 노년층 ÷ 유소년층 × 100 = 30 ÷ 20 × 100 = 150이다. 60은 노년 부양비, 40은 유소년 부양비, 30은 고령화 지수다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1198
+    },
+    {
+      "id": "practice-written-social-sung-final-214-038",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 40%, 생산연령 50%, 고령 10%인 지역의 유소년 부양비는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "80. 유소년 부양비 = 40 ÷ 50 × 100 = 80이다. 노년 부양비는 20, 총 부양비는 100, 노령화 지수는 25다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 80",
+        "근거: 유소년 부양비 = 40 ÷ 50 × 100 = 80이다. 노년 부양비는 20, 총 부양비는 100, 노령화 지수는 25다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1199
+    },
+    {
+      "id": "practice-written-social-sung-final-214-039",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 60%, 생산연령 35%, 고령 5%인 지역의 인구(총) 부양비는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "약 185.7. 총 부양비 = (60 + 5) ÷ 35 × 100 ≒ 185.7이다. 유소년 부양비 약 171.4, 노년 부양비 약 14.3의 합이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 약 185.7",
+        "근거: 총 부양비 = (60 + 5) ÷ 35 × 100 ≒ 185.7이다. 유소년 부양비 약 171.4, 노년 부양비 약 14.3의 합이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1200
+    },
+    {
+      "id": "practice-written-social-sung-final-214-040",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 60%, 생산연령 35%, 고령 5%인 지역의 노령화 지수는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "약 8.3. 노령화 지수 = 5 ÷ 60 × 100 ≒ 8.3이다. 고령화 지수는 5, 노년 부양비는 약 14.3이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 약 8.3",
+        "근거: 노령화 지수 = 5 ÷ 60 × 100 ≒ 8.3이다. 고령화 지수는 5, 노년 부양비는 약 14.3이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1201
+    },
+    {
+      "id": "practice-written-social-sung-final-214-041",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "총인구의 30%가 노년층인 지역은 고령화 지수 기준으로 어떤 사회인가? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "초고령 사회. 고령화 지수 30%는 20% 이상이므로 초고령 사회다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 초고령 사회",
+        "근거: 고령화 지수 30%는 20% 이상이므로 초고령 사회다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1202
+    },
+    {
+      "id": "practice-written-social-sung-final-214-042",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "총인구의 10%가 노년층인 지역은 고령화 지수 기준으로 어떤 사회인가? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "고령화 사회. 고령화 지수 10%는 7~14% 범위이므로 고령화 사회다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 고령화 사회",
+        "근거: 고령화 지수 10%는 7~14% 범위이므로 고령화 사회다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1203
+    },
+    {
+      "id": "practice-written-social-sung-final-214-043",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유소년 부양비 40, 노년 부양비 60인 지역의 총 부양비는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "100. 총 부양비는 유소년 부양비와 노년 부양비의 합이므로 40 + 60 = 100이다. 150은 노령화 지수(60 ÷ 40 × 100)다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 100",
+        "근거: 총 부양비는 유소년 부양비와 노년 부양비의 합이므로 40 + 60 = 100이다. 150은 노령화 지수(60 ÷ 40 × 100)다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1204
+    },
+    {
+      "id": "practice-written-social-sung-final-214-044",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "총 부양비가 100으로 같아도 노령화 지수가 25에서 150으로 커졌다면? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "노년층 부담이 커졌다. 유소년 40%·노년 10%(노령화 지수 25)에서 유소년 20%·노년 30%(150)로 바뀌면 총 부양비는 100으로 같지만 부양 부담의 중심이 노년층으로 옮겨 간다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 노년층 부담이 커졌다",
+        "근거: 유소년 40%·노년 10%(노령화 지수 25)에서 유소년 20%·노년 30%(150)로 바뀌면 총 부양비는 100으로 같지만 부양 부담의 중심이 노년층으로 옮겨 간다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1205
+    },
+    {
+      "id": "practice-written-social-sung-final-214-045",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2024) 자료에서 2023년 출생률이 가장 높은 지역은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "아프리카. 2023년 지역별 출생률은 아프리카가 약 31‰로 가장 높고, 오세아니아·라틴 아메리카·아시아·앵글로아메리카·유럽 순이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 아프리카",
+        "근거: 2023년 지역별 출생률은 아프리카가 약 31‰로 가장 높고, 오세아니아·라틴 아메리카·아시아·앵글로아메리카·유럽 순이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1206
+    },
+    {
+      "id": "practice-written-social-sung-final-214-046",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2024) 자료에서 2023년 사망률이 출생률보다 높은 지역은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "유럽. 2023년 유럽은 출생률 약 8.5‰, 사망률 약 11‰로 사망률이 더 높아 인구가 자연적으로 감소한다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 유럽",
+        "근거: 2023년 유럽은 출생률 약 8.5‰, 사망률 약 11‰로 사망률이 더 높아 인구가 자연적으로 감소한다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1207
+    },
+    {
+      "id": "practice-written-social-sung-final-214-047",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2024) 자료에서 2023년 출생률이 가장 낮은 지역은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "유럽. 2023년 유럽의 출생률은 약 8.5‰로 가장 낮다. 출생률은 아프리카가 가장 높다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 유럽",
+        "근거: 2023년 유럽의 출생률은 약 8.5‰로 가장 낮다. 출생률은 아프리카가 가장 높다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1208
+    },
+    {
+      "id": "practice-written-social-sung-final-214-048",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2023) 자료에서 2021년 노년층 인구 비율이 가장 높은 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "일본. 2021년 노년층 비율은 일본 29.8%, 독일 22.2%, 한국 16.7%, 중국 13.1%다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 일본",
+        "근거: 2021년 노년층 비율은 일본 29.8%, 독일 22.2%, 한국 16.7%, 중국 13.1%다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1209
+    },
+    {
+      "id": "practice-written-social-sung-final-214-049",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2023) 추정에서 2050년 노년층 인구 비율이 가장 높은 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "한국. 2050년 추정 노년층 비율은 한국 39.4%, 일본 37.5%, 독일 30.5%, 중국 30.1%로 한국이 가장 높다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 한국",
+        "근거: 2050년 추정 노년층 비율은 한국 39.4%, 일본 37.5%, 독일 30.5%, 중국 30.1%로 한국이 가장 높다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1210
+    },
+    {
+      "id": "practice-written-social-sung-final-214-051",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "국제 연합(2024) 자료에서 세계 인구는 1960년 약 30억 명 → 2050년(추정) 약 몇 명? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "약 97억 명. 세계 인구는 1960년 약 30억, 1990년 약 53억, 2020년 약 78억, 2050년(추정) 약 97억 명이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 약 97억 명",
+        "근거: 세계 인구는 1960년 약 30억, 1990년 약 53억, 2020년 약 78억, 2050년(추정) 약 97억 명이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1211
+    },
+    {
+      "id": "practice-written-social-sung-final-214-052",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2023년 지역별 부양비에서 총 부양비와 유소년 부양비가 모두 가장 높은 지역은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "아프리카. 2023년 아프리카는 유소년 부양비 약 69, 노년 부양비 약 6으로 총 부양비(약 75)와 유소년 부양비가 가장 높다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 아프리카",
+        "근거: 2023년 아프리카는 유소년 부양비 약 69, 노년 부양비 약 6으로 총 부양비(약 75)와 유소년 부양비가 가장 높다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1212
+    },
+    {
+      "id": "practice-written-social-sung-final-214-053",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2023년 노년 부양비(약 31)가 유소년 부양비(약 24)보다 높은 지역은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "유럽. 2023년 유럽은 유소년 부양비 약 24, 노년 부양비 약 31로 노년 부양비가 더 높다. 저출산·고령화가 진행된 선진국이 많기 때문이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 유럽",
+        "근거: 2023년 유럽은 유소년 부양비 약 24, 노년 부양비 약 31로 노년 부양비가 더 높다. 저출산·고령화가 진행된 선진국이 많기 때문이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1213
+    },
+    {
+      "id": "practice-written-social-sung-final-214-055",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "1950~2023년 지역별 총 부양비 변화에서 줄곧 가장 높은 지역은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "아프리카. 지역별 총 부양비 변화 그래프에서 아프리카는 출생률이 높아 유소년 부양비가 커서 줄곧 총 부양비가 가장 높다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 아프리카",
+        "근거: 지역별 총 부양비 변화 그래프에서 아프리카는 출생률이 높아 유소년 부양비가 커서 줄곧 총 부양비가 가장 높다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1214
+    },
+    {
+      "id": "practice-written-social-sung-final-214-056",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2010년 무렵 이후 총 부양비가 다시 높아지는 지역끼리 짝지은 것은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "유럽·앵글로아메리카. 유럽과 앵글로아메리카는 고령화로 노년 부양비가 커지면서 2010년 무렵 이후 총 부양비가 다시 높아진다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 유럽·앵글로아메리카",
+        "근거: 유럽과 앵글로아메리카는 고령화로 노년 부양비가 커지면서 2010년 무렵 이후 총 부양비가 다시 높아진다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1215
+    },
+    {
+      "id": "practice-written-social-sung-final-214-057",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "1950~2023년 대부분 지역의 총 부양비가 가장 높았던 시기는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "1970년 무렵. 지역별 총 부양비 변화 그래프에서 대부분 지역은 1970년 무렵 총 부양비가 가장 높았다가 출생률이 낮아지며 감소했다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 1970년 무렵",
+        "근거: 지역별 총 부양비 변화 그래프에서 대부분 지역은 1970년 무렵 총 부양비가 가장 높았다가 출생률이 낮아지며 감소했다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1216
+    },
+    {
+      "id": "practice-written-social-sung-final-214-058",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이주 범위로 나눌 때 농촌에서 도시로 가는 이촌향도가 속하는 이동은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "국내 이동. 이주 범위에 따라 국내 이동(농촌 → 도시, 이촌향도)과 국제 이동(해외 이민)으로 나눈다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 국내 이동",
+        "근거: 이주 범위에 따라 국내 이동(농촌 → 도시, 이촌향도)과 국제 이동(해외 이민)으로 나눈다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1217
+    },
+    {
+      "id": "practice-written-social-sung-final-214-059",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이주 범위로 나눌 때 해외 이민이 속하는 이동은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "국제 이동. 이주 범위에 따라 국내 이동(이촌향도)과 국제 이동(해외 이민)으로 나눈다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 국제 이동",
+        "근거: 이주 범위에 따라 국내 이동(이촌향도)과 국제 이동(해외 이민)으로 나눈다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1218
+    },
+    {
+      "id": "practice-written-social-sung-final-214-060",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "전쟁·정치적 억압·자연재해·종교 박해 등으로 원하지 않게 떠나는 이주는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "강제적 이주. 강제적 이주는 전쟁·정치적 억압, 자연재해, 종교 박해, 노예 무역 등으로 이루어진다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 강제적 이주",
+        "근거: 강제적 이주는 전쟁·정치적 억압, 자연재해, 종교 박해, 노예 무역 등으로 이루어진다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1219
+    },
+    {
+      "id": "practice-written-social-sung-final-214-061",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "더 나은 환경을 찾아 취업·교육 등을 위해 스스로 떠나는 이주는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "자발적 이주. 자발적 이주는 더 나은 환경을 찾아 스스로 이주하는 것으로, 취업·교육 등이 예다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 자발적 이주",
+        "근거: 자발적 이주는 더 나은 환경을 찾아 스스로 이주하는 것으로, 취업·교육 등이 예다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1220
+    },
+    {
+      "id": "practice-written-social-sung-final-214-062",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "휴가철 휴가지로 떠나는 것처럼 짧게 머무는 이주는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "일시적 이주. 이주 기간에 따라 일시적 이주(단기 거주, 휴가철 휴가지)와 영구적 이주(해외 이민)로 나눈다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 일시적 이주",
+        "근거: 이주 기간에 따라 일시적 이주(단기 거주, 휴가철 휴가지)와 영구적 이주(해외 이민)로 나눈다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1221
+    },
+    {
+      "id": "practice-written-social-sung-final-214-063",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이주 기간으로 나눌 때 해외 이민이 속하는 유형은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "영구적 이주. 이주 기간에 따라 일시적 이주(단기 거주)와 영구적 이주(해외 이민)로 나눈다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 영구적 이주",
+        "근거: 이주 기간에 따라 일시적 이주(단기 거주)와 영구적 이주(해외 이민)로 나눈다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1222
+    },
+    {
+      "id": "practice-written-social-sung-final-214-064",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "멕시코인의 미국 이동, 화교의 동남아시아 이동은 어떤 원인의 이주인가? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "경제적 원인. 경제적 원인의 이주는 주로 개발도상국에서 선진국으로 향하며, 멕시코인의 미국 이동, 화교의 동남아시아 이동이 예다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 경제적 원인",
+        "근거: 경제적 원인의 이주는 주로 개발도상국에서 선진국으로 향하며, 멕시코인의 미국 이동, 화교의 동남아시아 이동이 예다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1223
+    },
+    {
+      "id": "practice-written-social-sung-final-214-065",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "영국 청교도들의 미국 이주, 무슬림의 성지 순례는 어떤 원인의 이주인가? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "종교적 원인. 종교적 원인의 이주는 종교적 자유나 성지 순례를 위한 것으로, 영국 청교도들의 미국 이주, 무슬림의 성지 순례가 예다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 종교적 원인",
+        "근거: 종교적 원인의 이주는 종교적 자유나 성지 순례를 위한 것으로, 영국 청교도들의 미국 이주, 무슬림의 성지 순례가 예다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1224
+    },
+    {
+      "id": "practice-written-social-sung-final-214-066",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "지구 온난화에 따른 해수면 상승으로 생긴 투발루 난민은 어떤 원인의 이주인가? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "환경적 원인. 환경적 원인의 이주는 기후 변화·지진 등 자연재해로 인한 것으로, 해수면 상승으로 생긴 투발루 난민이 예다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 환경적 원인",
+        "근거: 환경적 원인의 이주는 기후 변화·지진 등 자연재해로 인한 것으로, 해수면 상승으로 생긴 투발루 난민이 예다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1225
+    },
+    {
+      "id": "practice-written-social-sung-final-214-067",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "내전으로 생긴 난민은 어떤 원인의 이주인가? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "정치적 원인. 정치적 원인의 이주의 예로 내전으로 인한 난민이 있다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 정치적 원인",
+        "근거: 정치적 원인의 이주의 예로 내전으로 인한 난민이 있다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1226
+    },
+    {
+      "id": "practice-written-social-sung-final-214-068",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2010년 대지진 뒤 아이티 사람들이 처음 대거 이주한 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "브라질. 아이티 사람들은 2010년 대지진 뒤 브라질로 대거 이주했고, 이후 브라질의 경제 침체와 제노포비아로 다시 미국·칠레 등으로 떠났다(연합뉴스 2016).",
+      "wrong": [],
+      "criteria": [
+        "결론: 브라질",
+        "근거: 아이티 사람들은 2010년 대지진 뒤 브라질로 대거 이주했고, 이후 브라질의 경제 침체와 제노포비아로 다시 미국·칠레 등으로 떠났다(연합뉴스 2016)."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1227
+    },
+    {
+      "id": "practice-written-social-sung-final-214-070",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이방인(xeno)과 혐오(phobia)를 합친 말로, 이민족 집단을 배척·혐오하는 것은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "제노포비아. 제노포비아는 제노(이방인)와 포비아(혐오)를 합친 말로, 이민족 집단을 배척하거나 혐오·증오하는 것이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 제노포비아",
+        "근거: 제노포비아는 제노(이방인)와 포비아(혐오)를 합친 말로, 이민족 집단을 배척하거나 혐오·증오하는 것이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1228
+    },
+    {
+      "id": "practice-written-social-sung-final-214-071",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "대지진 뒤 브라질로, 다시 미국·칠레로 간 아이티 난민의 이주 원인은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "환경적·정치적 원인. 아이티 난민은 환경적·정치적 이주의 사례로, 2010년 대지진 뒤 브라질로 대거 이주했고 브라질의 경제 침체와 제노포비아로 다시 미국·칠레 등으로 떠났다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 환경적·정치적 원인",
+        "근거: 아이티 난민은 환경적·정치적 이주의 사례로, 2010년 대지진 뒤 브라질로 대거 이주했고 브라질의 경제 침체와 제노포비아로 다시 미국·칠레 등으로 떠났다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1229
+    },
+    {
+      "id": "practice-written-social-sung-final-214-072",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "시리아 등에서 유럽으로 향한 난민 이주(유럽 연합 2017)의 원인은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "정치적 원인. 유럽 연합(2017)의 유럽으로의 난민 이주 자료는 시리아 등에서 유럽으로 향한 정치적 이주의 사례다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 정치적 원인",
+        "근거: 유럽 연합(2017)의 유럽으로의 난민 이주 자료는 시리아 등에서 유럽으로 향한 정치적 이주의 사례다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1230
+    },
+    {
+      "id": "practice-written-social-sung-final-214-073",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "라틴 아메리카 노동자가 미국으로 들어오는 히스패닉 이동의 성격은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "자발적·경제적 이동. 히스패닉의 미국 유입은 라틴 아메리카 노동자의 자발적·경제적 이동이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 자발적·경제적 이동",
+        "근거: 히스패닉의 미국 유입은 라틴 아메리카 노동자의 자발적·경제적 이동이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1231
+    },
+    {
+      "id": "practice-written-social-sung-final-214-074",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "문화적 차이로 거주지가 분리된 히스패닉이 주로 정착한 미국 지역은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "남서부. 히스패닉은 문화적 차이로 거주지가 분리되어 미국 남서부에 주로 정착했다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 남서부",
+        "근거: 히스패닉은 문화적 차이로 거주지가 분리되어 미국 남서부에 주로 정착했다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1232
+    },
+    {
+      "id": "practice-written-social-sung-final-214-075",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "히스패닉의 저임금 노동력 유입으로 미국에서 일부 해소된 문제는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "노동력 부족. 히스패닉의 저임금 노동력이 들어오면서 미국의 노동력 부족 문제가 일부 해소되었다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 노동력 부족",
+        "근거: 히스패닉의 저임금 노동력이 들어오면서 미국의 노동력 부족 문제가 일부 해소되었다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1233
+    },
+    {
+      "id": "practice-written-social-sung-final-214-076",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "2차 대전 이후 서구 유럽에 이주 노동자가 많이 들어온 까닭은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "산업화·저출산으로 노동력 부족. 2차 대전 이후 유럽은 산업화와 저출산·고령화로 노동력이 부족해 이주 노동자를 받아들였다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 산업화·저출산으로 노동력 부족",
+        "근거: 2차 대전 이후 유럽은 산업화와 저출산·고령화로 노동력이 부족해 이주 노동자를 받아들였다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1234
+    },
+    {
+      "id": "practice-written-social-sung-final-214-077",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "서구 유럽의 이주 노동자가 많이 떠나온 지역은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "중부·동부 아프리카. 유럽의 이주 노동자 유입은 중부·동부 아프리카에서 서구 유럽으로의 이동이 활발했다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 중부·동부 아프리카",
+        "근거: 유럽의 이주 노동자 유입은 중부·동부 아프리카에서 서구 유럽으로의 이동이 활발했다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1235
+    },
+    {
+      "id": "practice-written-social-sung-final-214-079",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "1970년대 초 서남아시아로 노동력이 몰린 까닭은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "석유 자원 개발·건설 경기. 1970년대 초 서남아시아는 석유 자원 개발과 건설 경기 활성화로 노동력 수요가 늘었다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 석유 자원 개발·건설 경기",
+        "근거: 1970년대 초 서남아시아는 석유 자원 개발과 건설 경기 활성화로 노동력 수요가 늘었다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1236
+    },
+    {
+      "id": "practice-written-social-sung-final-214-080",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "과거 서남아시아로 간 이주 노동자의 대부분을 차지한 출신은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "한국·필리핀 등 아시아. 과거 서남아시아의 이주 노동자는 한국·필리핀 등 아시아 출신이 대부분이었고, 현재는 이슬람 문화권 노동자의 비율이 늘고 있다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 한국·필리핀 등 아시아",
+        "근거: 과거 서남아시아의 이주 노동자는 한국·필리핀 등 아시아 출신이 대부분이었고, 현재는 이슬람 문화권 노동자의 비율이 늘고 있다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1237
+    },
+    {
+      "id": "practice-written-social-sung-final-214-081",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "현재 서남아시아의 이주 노동자 중 비율이 늘고 있는 것은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "이슬람 문화권 노동자. 서남아시아의 이주 노동자는 과거 한국·필리핀 등 아시아 출신이 대부분이었으나 현재는 이슬람 문화권 노동자의 비율이 늘고 있다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 이슬람 문화권 노동자",
+        "근거: 서남아시아의 이주 노동자는 과거 한국·필리핀 등 아시아 출신이 대부분이었으나 현재는 이슬람 문화권 노동자의 비율이 늘고 있다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1238
+    },
+    {
+      "id": "practice-written-social-sung-final-214-082",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "동남아시아 국가 중 화교 비중이 76%로 가장 높은 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "싱가포르. 동남아시아 국가의 화교 비중은 싱가포르 76%, 말레이시아 26%, 타이 14%, 브루나이 11%, 인도네시아 3.4%, 베트남 1.5%, 캄보디아 1%다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 싱가포르",
+        "근거: 동남아시아 국가의 화교 비중은 싱가포르 76%, 말레이시아 26%, 타이 14%, 브루나이 11%, 인도네시아 3.4%, 베트남 1.5%, 캄보디아 1%다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1239
+    },
+    {
+      "id": "practice-written-social-sung-final-214-083",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "동남아시아 국가 중 화교 비중이 26%인 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "말레이시아. 화교 비중은 싱가포르 76%, 말레이시아 26%, 타이 14%, 브루나이 11%다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 말레이시아",
+        "근거: 화교 비중은 싱가포르 76%, 말레이시아 26%, 타이 14%, 브루나이 11%다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1240
+    },
+    {
+      "id": "practice-written-social-sung-final-214-084",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "동남아시아에서 화교와 원주민 사이에 갈등이 생기는 까닭은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "화교의 높은 경제적 지위. 화교는 경제적 지위가 높아 원주민과의 경제적 차이로 갈등이 나타난다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 화교의 높은 경제적 지위",
+        "근거: 화교는 경제적 지위가 높아 원주민과의 경제적 차이로 갈등이 나타난다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1241
+    },
+    {
+      "id": "practice-written-social-sung-final-214-085",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유럽 주요국의 무슬림 인구(2009)에서 비율이 가장 높은 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "프랑스. 미 국무부·중앙정보국(2009) 자료에서 무슬림 비율은 프랑스 6.9~10%, 네덜란드 5.5~6%, 독일 4.9%, 영국 2.7%다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 프랑스",
+        "근거: 미 국무부·중앙정보국(2009) 자료에서 무슬림 비율은 프랑스 6.9~10%, 네덜란드 5.5~6%, 독일 4.9%, 영국 2.7%다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1242
+    },
+    {
+      "id": "practice-written-social-sung-final-214-086",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "유럽 주요국의 무슬림 인구(2009)에서 441만 명(4.9%)인 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "독일. 독일 441만 명(4.9%), 프랑스 439만~637만 명(6.9~10%), 영국 164만 명(2.7%), 네덜란드 91만~99만 명(5.5~6%)이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 독일",
+        "근거: 독일 441만 명(4.9%), 프랑스 439만~637만 명(6.9~10%), 영국 164만 명(2.7%), 네덜란드 91만~99만 명(5.5~6%)이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1243
+    },
+    {
+      "id": "practice-written-social-sung-final-214-087",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이주 노동자가 빠져나간 인구 유출 지역이 얻는 긍정적 효과는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "송금 유입·실업률 하락. 인구 유출 지역은 해외 이주 노동자들의 송금이 들어와 지역 경제가 활성화되고 실업률이 낮아지는 등 긍정적 효과가 있다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 송금 유입·실업률 하락",
+        "근거: 인구 유출 지역은 해외 이주 노동자들의 송금이 들어와 지역 경제가 활성화되고 실업률이 낮아지는 등 긍정적 효과가 있다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1244
+    },
+    {
+      "id": "practice-written-social-sung-final-214-088",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "크리스트교 전통이 강한 유럽에서 이슬람 지역 이주민이 늘며 고조된 것은? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "문화적·종교적 갈등. 인구 유입 지역인 유럽은 크리스트교 전통이 강해, 이슬람 지역 이주민이 증가하며 문화적·종교적 갈등이 고조되고 있다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 문화적·종교적 갈등",
+        "근거: 인구 유입 지역인 유럽은 크리스트교 전통이 강해, 이슬람 지역 이주민이 증가하며 문화적·종교적 갈등이 고조되고 있다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1245
+    },
+    {
+      "id": "practice-written-social-sung-final-214-089",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "이슬람교를 믿는 로힝야족을 정부가 탄압해 대규모 난민이 생긴 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "미얀마. 국제 연합 난민 기구(2022) 자료에서 미얀마는 정부가 이슬람교를 믿는 로힝야족을 탄압해 대규모 난민이 생겼다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 미얀마",
+        "근거: 국제 연합 난민 기구(2022) 자료에서 미얀마는 정부가 이슬람교를 믿는 로힝야족을 탄압해 대규모 난민이 생겼다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1246
+    },
+    {
+      "id": "practice-written-social-sung-final-214-090",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "식량과 약품 부족, 폭력 등을 피해 대규모 난민이 생긴 남아메리카 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "베네수엘라. 베네수엘라 볼리바르에서는 식량과 약품 부족, 폭력 등을 피해 대규모 난민이 생겼다(국제 연합 난민 기구 2022).",
+      "wrong": [],
+      "criteria": [
+        "결론: 베네수엘라",
+        "근거: 베네수엘라 볼리바르에서는 식량과 약품 부족, 폭력 등을 피해 대규모 난민이 생겼다(국제 연합 난민 기구 2022)."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1247
+    },
+    {
+      "id": "practice-written-social-sung-final-214-091",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "수단에서의 분리 독립과 갈등, 장기간의 내전으로 난민이 생긴 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "남수단. 남수단은 수단에서의 분리 독립과 갈등, 장기간의 내전으로 난민이 생겼다(국제 연합 난민 기구 2022).",
+      "wrong": [],
+      "criteria": [
+        "결론: 남수단",
+        "근거: 남수단은 수단에서의 분리 독립과 갈등, 장기간의 내전으로 난민이 생겼다(국제 연합 난민 기구 2022)."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1248
+    },
+    {
+      "id": "practice-written-social-sung-final-214-092",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "난민 지도(2022)에서 단기간에 많은 난민이 이주한 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "우크라이나. 국제 연합 난민 기구(2022) 자료에서 우크라이나는 단기간에 많은 난민이 이주했다. 아프가니스탄·남수단은 장기간의 내전이 원인이다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 우크라이나",
+        "근거: 국제 연합 난민 기구(2022) 자료에서 우크라이나는 단기간에 많은 난민이 이주했다. 아프가니스탄·남수단은 장기간의 내전이 원인이다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1249
+    },
+    {
+      "id": "practice-written-social-sung-final-214-093",
+      "deck_id": "social-sung-final",
+      "kind": "written",
+      "topic": "부양비 에디션",
+      "badge": null,
+      "question": "난민 지도(2022)에서 장기간의 내전으로 대규모 난민이 생긴 아시아 나라는? 답과 그 이유를 연결하여 서술하시오.",
+      "passage": null,
+      "answer": "아프가니스탄. 아프가니스탄은 장기간의 내전으로 대규모 난민이 생겼다. 미얀마는 로힝야족 탄압, 우크라이나는 단기간의 대규모 이주다.",
+      "wrong": [],
+      "criteria": [
+        "결론: 아프가니스탄",
+        "근거: 아프가니스탄은 장기간의 내전으로 대규모 난민이 생겼다. 미얀마는 로힝야족 탄압, 우크라이나는 단기간의 대규모 이주다."
+      ],
+      "explanation": "",
+      "source_label": "성신제T 학습지 214 · 인구 변천 · 인구 지표 · 인구 이동",
+      "source_page": null,
+      "source_slide": null,
+      "source_url": null,
+      "sort": 1250
     },
     {
       "id": "social-jo-final-001",
