@@ -2,15 +2,18 @@
 //   hamin  — 하민의 가호: village video, 조하민 card photo, gold, jump scares (the default and the app's identity)
 //   none   — 가호 없음: plain blue screen and plain cards, no scares
 //   custom — a blessing someone made: their background and card photo, their colour and coin text, no scares
+//   lotte  — 롯데의 가호 (4.7.0~): only on /lotte/, fixed there and never saved; night stadium, neon ring, no scares
 import { trackPromise } from './boot';
 import { getBlessing, type CardLayout } from './blessing-store';
 import type { ScareRuleSpec } from './custom-scares';
 import type { ScareId } from './jumpscare';
-import { HAMIN_PALETTE, PLAIN_PALETTE, paletteFrom, type Palette } from './palette';
+import { isLotte } from './exam';
+import { HAMIN_PALETTE, LOTTE_PALETTE, PLAIN_PALETTE, paletteFrom, type Palette } from './palette';
 
 export type ThemeChoice =
   | { kind: 'hamin' }
   | { kind: 'none' }
+  | { kind: 'lotte' }
   | { kind: 'custom'; id: string; name: string; coinFront: string; coinBack: string; color: string };
 
 export interface Theme {
@@ -32,6 +35,8 @@ const KEY = 'johamin-theme';
 const LEGACY_KEY = 'johamin-blessing'; // 1.x on/off switch
 
 function loadChoice(): ThemeChoice {
+  // 롯데 페이지는 롯데의 가호로 고정. 다른 페이지에서 고른 가호는 그대로 남는다(저장된 값을 건드리지 않음).
+  if (isLotte) return { kind: 'lotte' };
   try {
     const saved = JSON.parse(localStorage.getItem(KEY) ?? 'null') as ThemeChoice | null;
     if (saved?.kind === 'hamin' || saved?.kind === 'none') return { kind: saved.kind };
@@ -43,6 +48,7 @@ function loadChoice(): ThemeChoice {
 
 function describe(choice: ThemeChoice): Theme {
   if (choice.kind === 'hamin') return { choice, name: '하민의 가호', coinFront: 'JO', coinBack: 'HAMIN!', palette: HAMIN_PALETTE, scares: true, background: null, card: null, layout: null, customScares: [] };
+  if (choice.kind === 'lotte') return { choice, name: '롯데의 가호', coinFront: 'GIANTS', coinBack: '레츠고!', palette: LOTTE_PALETTE, scares: false, background: null, card: null, layout: null, customScares: [] };
   if (choice.kind === 'none') return { choice, name: '가호 없음', coinFront: 'JO', coinBack: 'HAMIN!', palette: PLAIN_PALETTE, scares: false, background: null, card: null, layout: null, customScares: [] };
   return { choice, name: choice.name, coinFront: choice.coinFront, coinBack: choice.coinBack, palette: paletteFrom(choice.color), scares: false, background: null, card: null, layout: null, customScares: [] };
 }
@@ -116,6 +122,8 @@ export function onThemeChange(listener: (theme: Theme) => void) {
 }
 
 export function setThemeChoice(choice: ThemeChoice) {
+  // 롯데의 가호는 롯데 페이지 전용이고 거기서는 바꿀 수 없다. 저장도 하지 않는다.
+  if (isLotte || choice.kind === 'lotte') return;
   try { localStorage.setItem(KEY, JSON.stringify(choice)); } catch { /* storage may be unavailable */ }
   loading++;
   if (choice.kind !== 'custom') releaseImages();

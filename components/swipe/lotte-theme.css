@@ -1,0 +1,204 @@
+/* 롯데의 가호 (4.7.0~, /lotte/ 전용 · lib/theme.ts의 kind 'lotte').
+   밤 야구장: 남색 하늘에서 빨강으로 물드는 응원석, 카드 뒤 파랑 → 분홍 → 빨강 네온 고리, 비스듬한 흰 글씨에 빨강 · 파랑 테.
+   :root[data-theme="lotte"]에만 걸려서 다른 페이지 · 다른 가호의 모습은 그대로다. */
+:root[data-theme="lotte"] {
+  --ink: #f2f5ff;
+  --ink-soft: rgba(214, 224, 255, .72);
+  --accent: #ff5c7c;
+  --brand: #ff3d64;
+  --navy: #ffffff;
+  --glass-bg: rgba(10, 22, 66, .52);
+  --glass-line: rgba(150, 185, 255, .3);
+  --glass-shadow: 0 18px 40px -18px rgba(2, 6, 24, .9), 0 2px 8px -2px rgba(2, 6, 24, .5);
+  --glass-shine: inset 0 1px 0 rgba(170, 200, 255, .32), inset 0 -1px 0 rgba(255, 60, 110, .22);
+  --lotte-blue: #5b8cff;
+  --lotte-sky: #8fb4ff;
+  --lotte-pink: #ff4fa3;
+  --lotte-red: #ff2d55;
+  --lotte-night: #06153f;
+  --lotte-neon: conic-gradient(from 0deg, #7fb0ff 0deg, #b48cff 70deg, #ff4fa3 130deg, #ff2d55 170deg, #ffd0dc 182deg, #ff2d55 194deg, #ff4fa3 235deg, #b48cff 290deg, #e8f0ff 340deg, #7fb0ff 360deg);
+  color-scheme: dark;
+}
+:root[data-theme="lotte"], :root[data-theme="lotte"] body { overflow-x: clip; }
+/* 폰 · 베타(가벼운 화면)에서 유리를 더 밝게 하는 규칙도 남색으로 */
+:root[data-theme="lotte"] .swipe-app, :root[data-theme="lotte"][data-beta="on"] { --glass-bg: rgba(10, 22, 66, .58); }
+/* 정답 · 오답 판, 다 푼 화면 */
+:root[data-theme="lotte"] .is-correct { background: rgba(40, 140, 110, .32); }
+:root[data-theme="lotte"] .is-wrong { background: rgba(227, 23, 62, .3); }
+:root[data-theme="lotte"] .swipe-explanation { color: rgba(236, 240, 255, .9); }
+:root[data-theme="lotte"] .swipe-complete { background: rgba(10, 22, 66, .6); }
+:root[data-theme="lotte"] body { background: var(--lotte-night); color: var(--ink); }
+:root[data-theme="lotte"] :focus-visible { outline-color: var(--lotte-sky); }
+:root[data-theme="lotte"] .scene { background: var(--lotte-night); }
+.scene-lotte { display: block; }
+:root[data-theme="lotte"] .scene-shade { background: radial-gradient(ellipse 70% 60% at 50% 46%, rgba(4, 10, 36, 0), rgba(4, 10, 36, .38)); }
+
+/* 유리: 남색 유리에 파랑 · 빨강 테 */
+:root[data-theme="lotte"] .glass::before, :root[data-theme="lotte"] .glass-button::before { background: linear-gradient(180deg, rgba(160, 190, 255, .16), rgba(160, 190, 255, 0) 80%); }
+:root[data-theme="lotte"] .glass-button { color: var(--ink); }
+:root[data-theme="lotte"] .glass-button:hover { background: rgba(32, 52, 128, .72); }
+:root[data-theme="lotte"] .glass-button.is-primary { color: #fff; background: linear-gradient(135deg, #ff4f74, #d6123b); }
+
+/* 원중이레츠고: 비스듬한 흰 글씨에 빨강 · 파랑 테, 위에는 작은 머리글 */
+:root[data-theme="lotte"] .swipe-heading h1 { padding: 4px 14px 2px; background: none; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+  font-size: 36px; font-style: italic; font-weight: 900; letter-spacing: -1px; color: #fff; transform: skewX(-8deg);
+  text-shadow: 2px 2px 0 #e3173e, -1.5px -1px 0 #3d7bff, 0 0 26px rgba(255, 45, 85, .5); }
+:root[data-theme="lotte"] .swipe-heading h1 > span { color: #ff3d64; text-shadow: 2px 2px 0 #fff, -1.5px -1px 0 #3d7bff, 0 0 26px rgba(255, 45, 85, .7); }
+:root[data-theme="lotte"] .swipe-heading h1::before { content: 'LOTTE GIANTS · BUSAN 1982'; position: static; display: block; inset: auto; z-index: auto; width: fit-content; margin: 0 auto 6px;
+  padding: 0 2px 3px; border-radius: 0; background: none; border-bottom: 1px solid rgba(214, 226, 255, .55);
+  font-size: 11px; font-style: normal; font-weight: 800; letter-spacing: .3em; line-height: 1.3; color: rgba(224, 232, 255, .9); text-shadow: none; transform: skewX(8deg); }
+:root[data-theme="lotte"] .swipe-study .swipe-heading h1 { font-size: 26px; }
+
+/* 네 방향 버튼 */
+:root[data-theme="lotte"] .swipe-option { color: var(--ink); font-style: italic; }
+:root[data-theme="lotte"] .swipe-option > span { transform: skewX(-6deg); }
+:root[data-theme="lotte"] .swipe-option kbd { font-style: normal; color: #fff; background: linear-gradient(135deg, var(--lotte-blue), var(--lotte-red)); box-shadow: 0 0 10px rgba(255, 45, 85, .5); }
+:root[data-theme="lotte"] .swipe-option.glass:hover, :root[data-theme="lotte"] .swipe-option.is-active { color: #fff; background: rgba(28, 46, 120, .78);
+  box-shadow: var(--glass-shadow), 0 0 0 1px rgba(255, 79, 163, .6), 0 0 22px rgba(255, 45, 85, .45); }
+:root[data-theme="lotte"] .swipe-empty-option kbd { background: transparent; color: var(--ink-soft); box-shadow: inset 0 0 0 1.5px currentColor; }
+:root[data-theme="lotte"] .swipe-option.is-back { background: rgba(10, 22, 66, .4); color: var(--ink-soft); }
+:root[data-theme="lotte"] .swipe-option.is-back kbd { background: rgba(255, 255, 255, .14); color: var(--ink); box-shadow: none; }
+
+/* 카드 뒤 네온 고리: ::before는 넓게 번지는 빛, ::after는 또렷한 선 */
+:root[data-theme="lotte"] .swipe-stack::before, :root[data-theme="lotte"] .swipe-stack::after { content: ''; position: absolute; left: 50%; top: 50%; right: auto; bottom: auto; z-index: -1;
+  width: 152%; aspect-ratio: 1; height: auto; border-radius: 50%; translate: -50% -50%; pointer-events: none; filter: none; background: var(--lotte-neon); }
+:root[data-theme="lotte"] .swipe-stack::before { opacity: .75;
+  -webkit-mask: radial-gradient(closest-side, transparent 86%, #000 95%, #000 97%, transparent 100%); mask: radial-gradient(closest-side, transparent 86%, #000 95%, #000 97%, transparent 100%);
+  animation: lotte-ring-breathe 4.5s ease-in-out infinite; }
+:root[data-theme="lotte"] .swipe-stack::after { -webkit-mask: radial-gradient(closest-side, transparent 95.4%, #000 96%, #000 97.4%, transparent 98%); mask: radial-gradient(closest-side, transparent 95.4%, #000 96%, #000 97.4%, transparent 98%); }
+@keyframes lotte-ring-breathe { 0%, 100% { opacity: .55; } 50% { opacity: .95; } }
+
+/* 카드: 남색 유리 판에 네온 테 */
+:root[data-theme="lotte"] .swipe-card { border-color: rgba(200, 216, 255, .7);
+  background: linear-gradient(155deg, rgba(130, 165, 255, .32), rgba(255, 60, 110, .18));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 0 0 1px rgba(255, 79, 163, .25), 0 28px 50px -24px rgba(0, 0, 0, .8), 0 0 36px -6px rgba(91, 140, 255, .45); }
+:root[data-theme="lotte"] .swipe-under { background: linear-gradient(155deg, rgba(91, 140, 255, .26), rgba(255, 45, 85, .14)); border-color: rgba(170, 195, 255, .45); box-shadow: 0 18px 36px -22px rgba(0, 0, 0, .8); }
+:root[data-theme="lotte"] .card-art { background: url('/lotte/player.webp') center 8% / auto 122% no-repeat, linear-gradient(165deg, #62b1e3 0%, #1b5b93 48%, #042445 100%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .2), inset 0 -110px 90px -50px rgba(6, 12, 44, .75); }
+:root[data-theme="lotte"] .card-caption { color: #fff; background: linear-gradient(180deg, rgba(8, 22, 70, .55), rgba(70, 8, 40, .82)); border-color: rgba(170, 195, 255, .35);
+  box-shadow: inset 0 1px 0 rgba(170, 200, 255, .3), 0 12px 24px -12px rgba(0, 0, 0, .6); }
+:root[data-theme="lotte"] .card-topic { color: var(--lotte-sky); font-style: italic; letter-spacing: .06em; }
+:root[data-theme="lotte"] .card-subject { color: #fff; }
+:root[data-theme="lotte"] .swipe-drag-label { color: #fff; background: rgba(10, 22, 66, .88); border-color: var(--lotte-pink); }
+:root[data-theme="lotte"] .swipe-drag-label.is-ready { color: #fff; background: linear-gradient(135deg, #3d6bff, #ff2d55); }
+
+/* 개념 · 문제 화면의 밝은 판도 밤 경기장 색으로(롯데 문제가 들어오면 그대로 쓰인다) */
+:root[data-theme="lotte"] :is(.study-scope, .concept-summary, .concept-table-wrap, .concept-examples) { color: var(--ink); background: rgba(255, 255, 255, .08); border-color: var(--lotte-pink); }
+:root[data-theme="lotte"] :is(.study-filter select, .concept-toolbar input) { color: var(--ink); background: rgba(6, 16, 52, .8); border-color: rgba(150, 185, 255, .4); }
+:root[data-theme="lotte"] :is(.keyword-chips li, .vocab-hint, .answer-view-icon) { color: var(--ink); background: rgba(255, 255, 255, .12); }
+:root[data-theme="lotte"] :is(.swipe-skip:hover, .menu-extras .glass-button, .swipe-option.is-back:hover, .swipe-option.is-back.is-active) { color: #fff; background: rgba(32, 52, 128, .72); }
+:root[data-theme="lotte"] .answers-hidden .swipe-option.is-revealed { color: #fff; background: linear-gradient(135deg, rgba(61, 107, 255, .85), rgba(227, 23, 62, .85)); }
+:root[data-theme="lotte"] .swipe-progress { background: rgba(255, 255, 255, .14); }
+:root[data-theme="lotte"] .swipe-progress i { background: linear-gradient(90deg, var(--lotte-blue), var(--lotte-red)); }
+:root[data-theme="lotte"] .order-slot.is-empty { border-color: rgba(150, 185, 255, .55); }
+
+/* 아래 · 위 작은 버튼들 */
+:root[data-theme="lotte"] .sound-toggle:hover { background: rgba(32, 52, 128, .72); }
+:root[data-theme="lotte"] .blessing-toggle.is-on { font-style: italic; color: #fff; background: linear-gradient(135deg, rgba(61, 107, 255, .85), rgba(227, 23, 62, .88));
+  border-color: rgba(220, 230, 255, .7); box-shadow: var(--glass-shadow), 0 0 20px rgba(255, 45, 85, .5); }
+:root[data-theme="lotte"] .blessing-best { color: rgba(255, 255, 255, .85); }
+:root[data-theme="lotte"] .card-size-panel button { color: var(--ink); background: rgba(255, 255, 255, .12); }
+:root[data-theme="lotte"] .card-size-panel .card-size-choice[aria-checked="true"] { color: #fff; background: linear-gradient(135deg, #3d6bff, #e3173e); }
+:root[data-theme="lotte"] .app-status button { color: var(--ink); background: rgba(255, 255, 255, .14); }
+:root[data-theme="lotte"] .app-status.is-updated button { color: #fff; background: #e3173e; }
+:root[data-theme="lotte"] .update-log { background: rgba(2, 8, 30, .6); }
+:root[data-theme="lotte"] .update-log-version { background: rgba(255, 255, 255, .07); }
+:root[data-theme="lotte"] .blessing-warning { background: rgba(2, 8, 30, .6); }
+:root[data-theme="lotte"] .blessing-warning-box { color: var(--ink); background: rgba(10, 22, 66, .82); }
+:root[data-theme="lotte"] .blessing-warning-box h2 { font-style: italic; color: #ff6b88; }
+:root[data-theme="lotte"] .blessing-keep { color: #fff; background: linear-gradient(135deg, #3d6bff, #e3173e); border-color: rgba(220, 230, 255, .7); }
+
+/* 시작 화면: 남색 → 빨강, 동전 자리에 롯데 로고와 네온 고리 */
+:root[data-theme="lotte"] .intro { color: #fff;
+  background: radial-gradient(ellipse 60% 50% at 50% 52%, rgba(255, 60, 110, .2), rgba(255, 60, 110, 0) 70%),
+    linear-gradient(180deg, rgba(6, 21, 63, .9), rgba(40, 18, 82, .74) 55%, rgba(122, 12, 48, .88)); }
+:root[data-theme="lotte"] .intro-title { font-style: italic; color: #fff; text-shadow: 2px 2px 0 #e3173e, 0 0 18px rgba(255, 45, 85, .6); }
+:root[data-theme="lotte"] .intro-loading p, :root[data-theme="lotte"] .intro-hint { color: rgba(224, 232, 255, .9); text-shadow: none; }
+:root[data-theme="lotte"] .intro-button { color: #e3173e; border: 0; background: radial-gradient(circle at 34% 28%, #fff, #eef2ff 60%, #c9d6f5);
+  box-shadow: 0 0 0 6px rgba(91, 140, 255, .28), 0 0 60px rgba(255, 45, 85, .6), 0 22px 40px -14px rgba(0, 0, 0, .8); }
+:root[data-theme="lotte"] .intro-button::before { content: ''; position: absolute; inset: -16px; border-radius: 50%; pointer-events: none; background: var(--lotte-neon);
+  -webkit-mask: radial-gradient(closest-side, transparent 90%, #000 93%, #000 96%, transparent 99%); mask: radial-gradient(closest-side, transparent 90%, #000 93%, #000 96%, transparent 99%);
+  animation: lotte-spin 6s linear infinite; }
+@keyframes lotte-spin { to { rotate: 360deg; } }
+.intro-logo { display: grid; place-items: center; width: 92%; }
+.intro-logo img { display: block; width: 100%; height: auto; pointer-events: none; }
+:root[data-theme="lotte"] .intro-hamin { font-style: italic; color: #e3173e; text-shadow: 1px 1px 0 #3d7bff; }
+:root[data-theme="lotte"] .intro-button::after { border-color: rgba(255, 79, 163, .8); }
+
+/* 플레이리스트 버튼: 오른쪽 위의 레코드(돌아가면 재생 중) */
+.lotte-radio { position: fixed; top: 10px; right: 10px; z-index: 13; display: flex; flex-direction: row-reverse; align-items: center; gap: 8px; pointer-events: none; }
+:root.intro-open .lotte-radio { visibility: hidden; }
+.lotte-radio-disc { position: relative; width: 46px; height: 46px; padding: 0; border-radius: 50%; pointer-events: auto;
+  background: radial-gradient(circle, #222 0 30%, #0a0a12 31% 100%); box-shadow: 0 0 0 2px rgba(200, 216, 255, .7), 0 0 18px rgba(255, 45, 85, .55), 0 8px 18px -8px rgba(0, 0, 0, .8); }
+.lotte-radio-disc::after { content: ''; position: absolute; inset: -5px; border-radius: 50%; pointer-events: none; background: var(--lotte-neon, conic-gradient(#7fb0ff, #ff2d55, #7fb0ff));
+  -webkit-mask: radial-gradient(closest-side, transparent 86%, #000 90%, #000 96%, transparent 100%); mask: radial-gradient(closest-side, transparent 86%, #000 90%, #000 96%, transparent 100%); opacity: .9; }
+.lotte-radio-disc img { position: absolute; inset: 9px; width: 28px; height: 28px; border-radius: 50%; pointer-events: none; }
+.lotte-radio.is-playing .lotte-radio-disc img { animation: lotte-spin 3.2s linear infinite; }
+.lotte-radio-disc:hover { transform: scale(1.06); }
+.lotte-radio-eq { position: absolute; right: -4px; bottom: -4px; display: flex; align-items: flex-end; gap: 2px; height: 14px; padding: 2px 4px; border-radius: 6px; background: #e3173e; opacity: 0; transition: opacity .2s; }
+.lotte-radio-eq i { width: 2px; height: 100%; border-radius: 1px; background: #fff; transform-origin: bottom; transform: scaleY(.4); }
+.lotte-radio.is-playing .lotte-radio-eq { opacity: 1; }
+.lotte-radio.is-playing .lotte-radio-eq i { animation: lotte-eq .9s ease-in-out infinite; }
+.lotte-radio-eq i:nth-child(2) { animation-delay: -.3s !important; }
+.lotte-radio-eq i:nth-child(3) { animation-delay: -.6s !important; }
+.lotte-radio-eq i:nth-child(4) { animation-delay: -.15s !important; }
+@keyframes lotte-eq { 0%, 100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
+.lotte-radio-now { display: none; max-width: 220px; padding: 5px 12px; border-radius: 12px; font-size: 13px; font-weight: 800; font-style: italic; color: #fff; line-height: 1.25;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: rgba(10, 22, 66, .62); border: 1px solid rgba(150, 185, 255, .3);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.lotte-radio-now b { display: block; font-size: 9px; font-style: normal; letter-spacing: .24em; color: var(--lotte-sky, #8fb4ff); }
+:root:has(.streak-flame) .lotte-radio { top: 62px; }
+/* 폰: 과목 · 문제 화면에서는 위쪽 막대를 가리지 않게 오른쪽 아래(크기 버튼 위)로 */
+@media (max-width: 900px) { :root:not(.at-home) .lotte-radio { top: auto; bottom: 74px; } }
+@media (min-width: 901px) {
+  .lotte-radio { top: 14px; right: 70px; }
+  .lotte-radio-now { display: block; }
+}
+
+/* 플레이리스트 창 */
+.lotte-radio-sheet { position: fixed; inset: 0; z-index: 900; display: grid; place-items: start center; overflow-y: auto; padding: max(18px, env(safe-area-inset-top)) 14px 40px; background: rgba(2, 8, 30, .62); }
+.lotte-radio-panel { position: relative; width: min(100%, 460px); margin-top: 6vh; padding: 18px 18px 16px; border-radius: 22px; color: #f2f5ff; overflow: hidden;
+  background: linear-gradient(170deg, rgba(14, 30, 86, .96), rgba(40, 16, 74, .95) 60%, rgba(110, 12, 46, .95));
+  border: 1px solid rgba(170, 195, 255, .35); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .8), 0 0 40px -10px rgba(255, 45, 85, .5); }
+.lotte-radio-panel::before { content: ''; position: absolute; right: -90px; top: -90px; width: 260px; aspect-ratio: 1; border-radius: 50%; pointer-events: none; opacity: .55; background: var(--lotte-neon, conic-gradient(#7fb0ff, #ff2d55, #7fb0ff));
+  -webkit-mask: radial-gradient(closest-side, transparent 93%, #000 95%, #000 97%, transparent 99%); mask: radial-gradient(closest-side, transparent 93%, #000 95%, #000 97%, transparent 99%); }
+.lotte-radio-panel > * { position: relative; }
+.lotte-radio-panel header { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2px 10px; margin-bottom: 14px; }
+.lotte-kicker { grid-column: 1; width: fit-content; padding-bottom: 2px; border-bottom: 1px solid rgba(214, 226, 255, .5); font-size: 10px; font-weight: 800; letter-spacing: .28em; color: rgba(224, 232, 255, .85); }
+.lotte-radio-panel h2 { grid-column: 1; font-size: 24px; font-weight: 900; font-style: italic; letter-spacing: -.5px; color: #fff; outline: none; transform: skewX(-6deg); transform-origin: left;
+  text-shadow: 2px 2px 0 #e3173e, -1px -1px 0 #3d7bff; }
+.lotte-radio-close { grid-column: 2; grid-row: 1 / 3; align-self: start; width: 36px; height: 36px; border-radius: 50%; font-size: 15px; color: #fff; background: rgba(255, 255, 255, .12); }
+.lotte-radio-player { display: flex; align-items: center; gap: 16px; padding: 12px; border-radius: 18px; background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .12); }
+.lotte-radio-record { flex: none; position: relative; width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center;
+  background: repeating-radial-gradient(circle, #111 0 2px, #1d1d26 2px 4px); box-shadow: 0 0 0 2px rgba(200, 216, 255, .5), 0 10px 20px -8px rgba(0, 0, 0, .8); }
+.lotte-radio-record img { width: 44px; height: 44px; border-radius: 50%; }
+.lotte-radio-record.is-spinning { animation: lotte-spin 3.2s linear infinite; }
+.lotte-radio-info { min-width: 0; display: grid; gap: 4px; }
+.lotte-radio-info small { font-size: 11px; font-weight: 800; letter-spacing: .12em; color: var(--lotte-sky, #8fb4ff); }
+.lotte-radio-info strong { font-size: 18px; font-weight: 900; font-style: italic; line-height: 1.3; overflow-wrap: anywhere; }
+.lotte-radio-controls { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.lotte-radio-controls button { min-width: 38px; height: 38px; padding: 0 10px; border-radius: 999px; font-size: 14px; font-weight: 800; color: #fff; background: rgba(255, 255, 255, .12); }
+.lotte-radio-controls button:disabled { opacity: .35; }
+.lotte-radio-controls button.is-main { min-width: 48px; height: 48px; font-size: 16px; background: linear-gradient(135deg, #3d6bff, #e3173e); box-shadow: 0 0 18px rgba(255, 45, 85, .55); }
+.lotte-radio-controls button.is-on { background: #e3173e; }
+.lotte-radio-list { display: grid; gap: 4px; max-height: 42vh; margin: 14px 0 0; padding: 0; overflow-y: auto; list-style: none; overscroll-behavior: contain; }
+.lotte-radio-list li { display: flex; align-items: center; gap: 6px; border-radius: 12px; }
+.lotte-radio-list li.is-current { background: linear-gradient(90deg, rgba(61, 107, 255, .35), rgba(227, 23, 62, .35)); }
+.lotte-radio-track { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 9px 10px; text-align: left; font-size: 15px; font-weight: 700; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lotte-radio-no { flex: none; width: 22px; font-size: 12px; font-weight: 900; font-style: italic; color: var(--lotte-sky, #8fb4ff); font-variant-numeric: tabular-nums; }
+.lotte-radio-del { flex: none; margin-right: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, .75); background: rgba(255, 255, 255, .08); }
+.lotte-radio-del.is-sure { color: #fff; background: #e3173e; }
+.lotte-radio-actions { margin-top: 14px; }
+.lotte-radio-add { width: 100%; padding: 12px; border-radius: 14px; font-size: 15px; font-weight: 900; font-style: italic; color: #fff;
+  background: linear-gradient(135deg, #3d6bff, #e3173e); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 10px 22px -12px rgba(255, 45, 85, .8); }
+.lotte-radio-note { margin: 10px 2px 0; font-size: 13px; line-height: 1.6; color: rgba(224, 232, 255, .82); word-break: keep-all; }
+.lotte-radio-note.is-small { font-size: 12px; color: rgba(224, 232, 255, .6); }
+
+@media (max-width: 900px) {
+  :root[data-theme="lotte"] .swipe-heading h1 { font-size: 30px; }
+  :root[data-theme="lotte"] .swipe-heading h1::before { font-size: 10px; letter-spacing: .24em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="lotte"] .swipe-stack::before, :root[data-theme="lotte"] .intro-button::before, .lotte-radio-disc img, .lotte-radio-record, .lotte-radio-eq i { animation: none !important; }
+}
