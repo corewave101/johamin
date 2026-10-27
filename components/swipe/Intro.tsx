@@ -21,6 +21,8 @@ export default function Intro() {
   const [pressed, setPressed] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [gone, setGone] = useState(false);
+  // 롯데의 가호: 동전 앞면은 롯데 로고, 뒷면은 "레츠고!".
+  const lotte = theme.choice.kind === 'lotte';
   const ready = minPassed && (load.pending === 0 || maxPassed);
 
   useEffect(() => {
@@ -59,7 +61,7 @@ export default function Intro() {
   if (gone) return null;
   const percent = ready ? 100 : load.total ? Math.min(99, Math.round(load.progress * 100)) : 0;
   return <div className={`intro${ready ? ' is-ready' : ''}${leaving ? ' is-leaving' : ''}`} role="dialog" aria-modal="true" aria-label={`${BRAND.first}${BRAND.rest} 시작 화면`}>
-    <SandCanvas rushing={leaving} color={theme.palette.light} />
+    <SandCanvas rushing={leaving} color={lotte ? '#cfe0ff' : theme.palette.light} />
     <div className="intro-haze" aria-hidden="true" />
     <p className="intro-title">{BRAND.first}{BRAND.rest}</p>
     <div className="intro-center">
@@ -72,7 +74,9 @@ export default function Intro() {
         onPointerDown={event => { if (event.pointerType !== 'mouse') setPressed(true); }}
         onPointerCancel={() => { if (!leaving) setPressed(false); }}
         onPointerLeave={event => { if (event.pointerType !== 'mouse' && !leaving) setPressed(false); }}>
-        <span className="intro-jo" aria-hidden="true" style={{ fontSize: `calc(var(--size) * ${coinTextScale(theme.coinFront, 'front')})` }}>{theme.coinFront}</span>
+        {lotte
+          ? <span className="intro-jo intro-logo" aria-hidden="true"><img src={`${import.meta.env.BASE_URL}lotte/logo.svg`} alt="" draggable={false} /></span>
+          : <span className="intro-jo" aria-hidden="true" style={{ fontSize: `calc(var(--size) * ${coinTextScale(theme.coinFront, 'front')})` }}>{theme.coinFront}</span>}
         <span className="intro-hamin" aria-hidden="true" style={{ fontSize: `calc(var(--size) * ${coinTextScale(theme.coinBack, 'back')})` }}>{theme.coinBack}</span>
       </button>
       <p className="intro-hint" aria-hidden="true">눌러서 출발</p>

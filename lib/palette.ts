@@ -7,6 +7,9 @@ export interface Palette { light: string; soft: string; base: string; deep: stri
 /** The original 하민 gold, kept exactly as it was designed. */
 export const HAMIN_PALETTE: Palette = { light: '#fff4c4', soft: '#f6d266', base: '#e8b931', deep: '#b67c14', ink: '#4a2b00', glow: '232 185 49' };
 
+/** 롯데의 가호(4.7.0~, /lotte/ 전용): 롯데 빨강 동전에 흰 글씨, 남색 · 빨강 응원석 빛. */
+export const LOTTE_PALETTE: Palette = { light: '#ffe2e9', soft: '#ff6f8c', base: '#e3173e', deep: '#8c0a27', ink: '#ffffff', glow: '255 52 102' };
+
 type Lch = { l: number; c: number; h: number };
 
 const toLinear = (v: number) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);

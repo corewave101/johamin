@@ -42,11 +42,7 @@
   color: #fff; text-shadow: 0 3px 0 #d01031, 0 6px 18px rgba(0, 0, 0, .5); opacity: 0; animation: lotte-shout .5s cubic-bezier(.3, 1.6, .5, 1) .8s forwards; }
 @keyframes lotte-shout { from { opacity: 0; transform: scale(.4) translateY(20px); } to { opacity: 1; transform: none; } }
 
-/* /lotte/ 페이지: 원중이레츠고 글자는 롯데 색, 하민의 가호 카드 사진 자리에는 원중이 */
-:root[data-page="lotte"] .swipe-heading h1 { color: #042445; }
-:root[data-page="lotte"] .swipe-heading h1 > span { color: #d01031; }
-:root[data-page="lotte"]:not([data-theme="custom"]):not([data-theme="none"]) .card-art {
-  background: url('/lotte/player.webp') center 8% / auto 122% no-repeat, linear-gradient(165deg, #62b1e3 0%, #1b5b93 48%, #042445 100%); }
+/* /lotte/ 페이지의 모습(롯데의 가호)은 lotte-theme.css에 있다. */
 @media (max-width: 700px) {
   .lotte-peek { width: 78px; right: -36px; bottom: 92px; }
   @keyframes lotte-peek { 0%, 86%, 100% { right: -36px; transform: rotate(-20deg); } 90% { right: -20px; transform: rotate(-10deg); } 94% { right: -28px; transform: rotate(-16deg); } }

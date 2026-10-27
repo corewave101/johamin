@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { preloadImage, trackLoad, trackPromise } from '../../lib/boot';
+import LotteStadium from './LotteStadium';
 import { useBeta } from './useBeta';
 import { useTheme } from './useTheme';
 
@@ -91,7 +92,8 @@ export default function Backdrop() {
   }, [still, light]);
 
   return <div className="scene" ref={scene} aria-hidden="true">
-    {kind === 'none' ? <div className="scene-media scene-plain" />
+    {kind === 'lotte' ? <LotteStadium />
+      : kind === 'none' ? <div className="scene-media scene-plain" />
       : kind === 'custom' ? <div className="scene-media scene-photo" style={theme.background ? { backgroundImage: `url("${theme.background.url}")`, backgroundPosition: `${theme.background.focusX}% ${theme.background.focusY}%` } : undefined} />
       : still ? <div className="scene-media scene-poster" style={{ backgroundImage: `url('${POSTER}')` }} />
       : <video ref={video} className="scene-media" src={source} poster={POSTER} autoPlay muted loop playsInline preload="auto" disablePictureInPicture />}

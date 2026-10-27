@@ -6,7 +6,7 @@ import { replayIntro, setThemeChoice, type ThemeChoice } from '../../lib/theme';
 import BlessingEditor from './BlessingEditor';
 import { coinTextScale, useTheme } from './useTheme';
 
-type Panel = null | 'warn' | 'choose' | { edit: BlessingRecord | null };
+type Panel = null | 'warn' | 'choose' | 'lotte' | { edit: BlessingRecord | null };
 
 const choiceOf = (r: BlessingRecord): ThemeChoice => ({ kind: 'custom', id: r.id, name: r.name, coinFront: r.coinFront, coinBack: r.coinBack, color: r.color });
 const coinStyle = (p: Palette) => ({ '--c-light': p.light, '--c-soft': p.soft, '--c-base': p.base, '--c-deep': p.deep, '--c-ink': p.ink, '--c-glow': p.glow } as CSSProperties);
@@ -33,7 +33,7 @@ export default function BlessingToggle() {
     if (!panel) return;
     const guard = (event: KeyboardEvent) => {
       event.stopPropagation();
-      if (event.key === 'Escape' && (panel === 'warn' || panel === 'choose')) setPanel(null);
+      if (event.key === 'Escape' && (panel === 'warn' || panel === 'choose' || panel === 'lotte')) setPanel(null);
     };
     window.addEventListener('keydown', guard, true);
     return () => window.removeEventListener('keydown', guard, true);
@@ -47,14 +47,30 @@ export default function BlessingToggle() {
 
   return <>
     <button type="button" className={`blessing-toggle glass ${blessed ? 'is-on' : 'is-off'}`} aria-pressed={blessed} aria-haspopup="dialog"
-      onClick={() => setPanel(blessed ? 'warn' : 'choose')}>
+      onClick={() => setPanel(theme.choice.kind === 'lotte' ? 'lotte' : blessed ? 'warn' : 'choose')}>
       <strong>{blessed ? `✦ ${theme.name}` : '가호 없음'}</strong>
       {best && <span className="blessing-best"><b>{best.count}</b> {best.subject}</span>}
     </button>
+    {panel === 'lotte' && <LotteNotice onClose={() => setPanel(null)} />}
     {panel === 'warn' && <Warning name={theme.name} onKeep={() => setPanel(null)} onTake={() => receive({ kind: 'none' })} />}
     {panel === 'choose' && <Chooser onClose={() => setPanel(null)} onReceive={receive} onEdit={record => setPanel({ edit: record })} />}
     {panel && typeof panel === 'object' && <BlessingEditor record={panel.edit} onCancel={() => setPanel('choose')} onSaved={record => receive(choiceOf(record))} />}
   </>;
+}
+
+/** 롯데 페이지에서는 롯데의 가호가 고정이다. 거두거나 바꿀 수 없다는 안내만. */
+function LotteNotice({ onClose }: { onClose: () => void }) {
+  const ok = useRef<HTMLButtonElement>(null);
+  useEffect(() => { ok.current?.focus(); }, []);
+  return <div className="blessing-warning" role="alertdialog" aria-modal="true" aria-labelledby="blessing-lotte-title" onClick={event => { if (event.target === event.currentTarget) onClose(); }}>
+    <div className="blessing-warning-box glass">
+      <h2 id="blessing-lotte-title">롯데의 가호</h2>
+      <p>사직의 기운이 함께해요. 롯데 페이지에서는 이 가호만 쓸 수 있어서 거둘 수 없어요. 다른 가호는 다른 페이지에서 받을 수 있어요.</p>
+      <div className="blessing-warning-actions">
+        <button type="button" ref={ok} className="blessing-keep" onClick={onClose}>롯데로 레츠고</button>
+      </div>
+    </div>
+  </div>;
 }
 
 function Warning({ name, onKeep, onTake }: { name: string; onKeep: () => void; onTake: () => void }) {
