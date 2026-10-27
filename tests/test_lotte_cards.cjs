@@ -55,14 +55,21 @@ assert.equal(answer('1992년 롯데의 정규시즌 순위'), '3위');
 
 console.log(`PASS: 롯데 자이언츠 ${cards.length}문제(찐팬 ${hard.length}) · ${topics.size}단원 · 정답 방향 ${JSON.stringify(byDir)} · 근거와 대표 사실 확인`);
 
-// 정답 네온(LotteNeon): 맞힐 때만, 연속 정답 · 찐팬은 따로, 가사 없이 짧게.
-const { neonFor, NEON_LINES } = require('../lib/lotte-neon.ts');
-assert.equal(neonFor({ correct: false, unknown: false, streakAfter: 0 }, 0), null);
-assert.equal(neonFor({ correct: true, unknown: true, streakAfter: 0 }, 0), null);
-assert.deepEqual(neonFor({ correct: true, unknown: false, streakAfter: 3 }, 0), ['3연속', '정답!']);
-assert.deepEqual(neonFor({ correct: true, unknown: false, streakAfter: 1, topic: '찐팬 · 시즌' }, 0), ['찐팬', '인정!']);
-assert.deepEqual(neonFor({ correct: true, unknown: false, streakAfter: 1, topic: '감독' }, 0), NEON_LINES[0]);
-assert.ok(NEON_LINES.every(([a, b]) => a.length <= 6 && b.length <= 7), 'short neon lines');
+// 정답 · 오답 네온(LotteNeon, 4.8.1 부산 사투리): 5연속 축하, 모름은 집중 안하나, 틀리면 30% 원중이 “뭐라노”.
+const neon = require('../lib/lotte-neon.ts');
+const sig = (o) => ({ correct: true, unknown: false, streakAfter: 1, ...o });
+assert.deepEqual(neon.neonFor(sig({ streakAfter: 5 }), 0), { kind: 'neon', tone: 'good', top: '축하할 일이 있어서', bottom: '축하드립니다' });
+assert.deepEqual(neon.neonFor(sig({ unknown: true, correct: false }), 0), { kind: 'neon', tone: 'bad', top: '마, 문제에', bottom: '집중 안하나?' });
+assert.deepEqual(neon.neonFor(sig({ correct: false }), 0, () => 0.29), { kind: 'wonjung', text: '뭐라노' });
+assert.equal(neon.neonFor(sig({ correct: false }), 0, () => 0.3).kind, 'neon');
+assert.equal(neon.WONJUNG_CHANCE, 0.3);
+assert.deepEqual(neon.neonFor(sig({}), 0), { kind: 'neon', tone: 'good', top: '마, 함', bottom: '해보입시더' });
+assert.equal(neon.neonFor(sig({ topic: '찐팬 · 시즌' }), 0).bottom, '인정합니더');
+// 원중이가 나오는 비율이 대략 30%인지(가짜 난수 1000개).
+let seed = 7; const rnd = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+const hits = Array.from({ length: 1000 }, () => neon.neonFor(sig({ correct: false }), 0, rnd).kind === 'wonjung').filter(Boolean).length;
+assert.ok(hits > 250 && hits < 350, `wonjung ${hits}/1000`);
+assert.ok([...neon.GOOD_LINES, ...neon.BAD_LINES].every(([a, b]) => a.length <= 10 && b.length <= 10), 'short neon lines');
 assert.ok(fs.readFileSync('components/swipe/SwipeGame.tsx', 'utf8').includes("new CustomEvent('johamin:answer'"));
 assert.ok(fs.readFileSync('app/main.tsx', 'utf8').includes('{isLotte && <><LotteRadio /><LotteNeon /></>}'));
-console.log('PASS: 정답 네온 문구');
+console.log('PASS: 네온 문구 · 원중이 30%');
