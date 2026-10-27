@@ -107,6 +107,8 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     recordResult(answered.card.id, direction === 'unknown' ? 'u' : answered.correct ? 'c' : 'w');
     const event = { correct: answered.correct, unknown: direction === 'unknown', seconds: answered.seconds,
       streakBefore: current.streak, streakAfter: next.streak, astronomy: Boolean(deck.current.deckId?.startsWith('astronomy')) };
+    // 다른 화면(롯데 네온 등)이 정답 · 오답에 반응할 수 있게 알린다.
+    window.dispatchEvent(new CustomEvent('johamin:answer', { detail: { ...event, topic: answered.card.topic, deckId: deck.current.deckId } }));
     const theme = getTheme();
     if (theme.scares) {
       const judged = scareForAnswer(scares.current, event);

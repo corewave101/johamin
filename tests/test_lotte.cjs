@@ -66,7 +66,7 @@ const walk = dir => { for (const e of fs.readdirSync(dir, { withFileTypes: true 
 walk('public');
 assert.deepEqual(audioFiles, [], 'no music files in public/');
 const main = fs.readFileSync('app/main.tsx', 'utf8');
-assert.ok(main.includes('{isLotte && <LotteRadio />}'), 'player only on the lotte page');
+assert.ok(main.includes('{isLotte && <><LotteRadio /><LotteNeon /></>}'), 'player (and answer neon) only on the lotte page');
 assert.ok(!/from '\.\.\/\.\.\/data\//.test(fs.readFileSync('components/swipe/LotteRadio.tsx', 'utf8')), 'player does not pull in card data');
 
 console.log('PASS: 롯데의 가호는 /lotte/ 전용 · 저장 안 함 · 디자인은 롯데의 가호에만 · 플레이리스트는 기기에만(음원 파일 없음)');
