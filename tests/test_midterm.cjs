@@ -51,8 +51,8 @@ assert.deepEqual(show('elice'), ['left:중간고사', 'right:롯데', 'up:기말
 assert.deepEqual(show('lotte'), ['left:중간고사', 'right:정보', 'up:기말고사']);
 // 두 카드 메뉴 모두 첫 화면 ↑는 비어 있다(이동 자리). 중간고사 첫 화면 ↓는 베타 실습 자리라 비운다.
 for (const m of [finalMenu, subjectMenu, lotteMenu]) assert.ok(m.children.every(n => n.direction !== 'up'), m.name);
-// 롯데 메뉴: 문제는 아직 비어 있다(준비 중). 덱 id는 'lotte-'로 시작한다.
-assert.ok(flatten(lotteMenu).every(d => d.id.startsWith('lotte-') && d.cards.length === 0 && !midtermIds.has(d.id)));
+// 롯데 메뉴: 덱 id는 'lotte-'로 시작하고 다른 메뉴와 겹치지 않는다(4.8.0~ 문제는 tests/test_lotte_cards.cjs가 검사).
+assert.ok(flatten(lotteMenu).every(d => d.id.startsWith('lotte-') && !midtermIds.has(d.id)));
 assert.ok(subjectMenu.children.every(n => n.direction !== 'down'));
 // 정보 페이지(4.3.0~)는 카드가 아니라 엘리스식 코딩 연습장이다(tests/test_elice.cjs). 문제 id는 'info-'로 시작해 덱 id와 겹치지 않는다.
 const { eliceProblems } = require('../data/elice-problems.ts');
