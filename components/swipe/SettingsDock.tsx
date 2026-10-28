@@ -10,8 +10,13 @@ import { dockSpot, isOn, onToggle, saveDockSpot, setOn, snapDock, type DockSpot,
 import { isLotte } from '../../lib/exam';
 
 const DRAG_START = 6;
-/** 기본 자리: 오른쪽 가장자리, 위쪽 막대(가호 · 진행 막대 · 연속 정답) 바로 아래. */
-const defaultSpot = (): DockSpot => ({ side: 'right', y: typeof window === 'undefined' ? 0.15 : Math.min(0.5, 104 / Math.max(window.innerHeight, 1)) });
+/** 기본 자리: 오른쪽 가장자리. 넓은 화면은 위쪽 막대(가호 · 진행 막대 · 연속 정답) 바로 아래,
+ *  세로 폰은 위쪽에 국어 · 영어 지문 칸이 오므로 아래쪽(처음으로 칸과 롯데 로고 위). */
+const defaultSpot = (): DockSpot => {
+  if (typeof window === 'undefined') return { side: 'right', y: 0.15 };
+  const h = Math.max(window.innerHeight, 1);
+  return window.innerWidth <= 600 && h > window.innerWidth ? { side: 'right', y: Math.max(0.5, (h - 160) / h) } : { side: 'right', y: Math.min(0.5, 104 / h) };
+};
 
 function Switch({ label, note, on, set }: { label: string; note?: string; on: boolean; set: (on: boolean) => void }) {
   return <button type="button" role="switch" aria-checked={on} className="settings-row settings-switch" onClick={() => set(!on)}>

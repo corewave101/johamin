@@ -2,6 +2,7 @@ import { hwangFigurePage, isHwangExam } from '../../data/hwang-exam';
 import { gradeHwangAnswer } from '../../lib/hwang-answer';
 import { isShortQuestion } from '../../data/study-practice';
 import { gradeShortAnswer } from '../../lib/practice-answer';
+import { PassageText, passageLabels } from './Passage';
 // 서술형: write an answer, open the model answer and tick the points you covered.
 // The drafts live in the parent so they survive going back to the menu.
 import type { Dispatch, SetStateAction } from 'react';
@@ -27,7 +28,7 @@ export default function WrittenPractice({ questions, state, setState }: { questi
     <div className="biology-progress"><span>{index + 1} / {questions.length} · {q.topic}</span><span>채점 완료 {reviewed} / {questions.length}</span></div>
     <h2>{q.question}</h2>
     {figure && <details key={q.id} className="hwang-reference"><summary>수업자료 그림·힌트 보기 · {figure}쪽</summary><p>그림에는 정답 단서가 포함되어 있어요. 먼저 기억으로 답을 써 보세요.</p><img loading="lazy" src={`images/hwang-exam/page-${figure}.jpg`} alt={`수업자료 ${figure}쪽의 부품과 정렬 그림`} /></details>}
-    {q.passage && <details key={q.id} open className="swipe-reading"><summary>READ & WRITE · 관련 영어 지문</summary><p lang="en">{q.passage}</p></details>}
+    {q.passage && <details key={q.id} open className={`swipe-reading ${passageLabels(q.passage, 'write').lang === 'ko' ? 'is-korean' : ''}`}><summary>{passageLabels(q.passage, 'write').summary}</summary><p lang={passageLabels(q.passage, 'write').lang}><PassageText text={q.passage} /></p></details>}
     <label htmlFor="written-answer">내 답안</label>
     <textarea id="written-answer" value={draft.answer} onChange={event => update({ answer: event.target.value })} placeholder={short ? '정답 하나를 입력하세요.' : '핵심 개념과 이유를 문장으로 써 보세요.'} rows={short ? 2 : 7} onKeyDown={event => { if (short && event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); if (draft.answer.trim()) { update({ reviewed: true, correct: grade() }); setState(s => ({ ...s, revealed: { ...s.revealed, [q.id]: true } })); } } }} />
     {short && <div className="biology-actions"><button type="button" className="glass-button is-primary" disabled={!draft.answer.trim()} onClick={() => { update({ reviewed: true, correct: grade() }); setState(s => ({ ...s, revealed: { ...s.revealed, [q.id]: true } })); }}>채점하기 · Enter</button></div>}

@@ -749,3 +749,7 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 @keyframes fly-fade-late { 65% { opacity: 1; } to { opacity: 0; } }
 .swipe-game .fly-up { animation-name: fly-up, fly-fade-late, fly-blur; }
 .swipe-game .fly-down { animation-name: fly-down, fly-fade-late, fly-blur; }
+
+/* 국어 지문(4.11.0~): 밑줄 친 부분. 원문은 줄을 그대로 살리고 조금 작게. */
+.swipe-reading.is-korean p { font-size: 15px; line-height: 1.8; white-space: pre-line; word-break: keep-all; }
+.passage-mark { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; text-decoration-color: var(--theme-base, #e8b931); font-weight: 700; }

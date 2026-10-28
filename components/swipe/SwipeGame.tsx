@@ -12,6 +12,7 @@ import { answerCard, getStats, newGame, type AnswerChoice, type Attempt } from '
 import LaminatedCard from './LaminatedCard';
 import StreakFlame from './StreakFlame';
 import { modalOpen } from './MenuCard';
+import { PassageText, passageLabels } from './Passage';
 
 type Offset = { x: number; y: number };
 type Flight = { card: SwipeCard; direction: Direction; id: number; from: Offset };
@@ -276,7 +277,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
           <span className="swipe-progress-row">{game.mastered.length} / {cards.length}</span>
         </div>
       </div>
-      {card?.passage && <details key={card.id} open className="swipe-reading glass" onKeyDown={e => { if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) e.stopPropagation(); }}><summary>READ & SOLVE · 문제 지문</summary><small>지문 안에서 스크롤해 끝까지 읽고 카드의 문장·표현을 확인하세요.</small><p lang="en" tabIndex={0} aria-label="영어 문제 지문">{card.passage}</p></details>}
+      {card?.passage && (() => { const l = passageLabels(card.passage, 'solve'); return <details key={card.id} open className={`swipe-reading glass ${l.lang === 'ko' ? 'is-korean' : ''}`} onKeyDown={e => { if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) e.stopPropagation(); }}><summary>{l.summary}</summary>{l.hint && <small>{l.hint}</small>}<p lang={l.lang} tabIndex={0} aria-label={l.label}><PassageText text={card.passage} /></p></details>; })()}
       {!figurePanel && card?.figure && !back && <p className="figure-missing glass" role="note">이 문제는 그림이 있어요. 화면을 가로로 돌리면 그림 카드가 보여요.</p>}
       {finished ? <section className="swipe-complete glass" aria-label="최종 결과">
         <h2>깔끔하게 털었다!</h2>
