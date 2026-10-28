@@ -1,0 +1,57 @@
+/* 설정(≡) 버튼과 패널 (components/swipe/SettingsDock.tsx, 4.11.0~). 색은 가호 색 변수를 쓴다. */
+.settings-fab, .settings-fab.glass { position: fixed; z-index: 14; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%;
+  color: var(--ink); cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+  transition: top .28s cubic-bezier(.2, .9, .3, 1), left .28s, right .28s, transform .15s, box-shadow .2s; }
+.settings-fab svg { position: relative; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.settings-fab:hover { background: rgba(255, 251, 243, .72); }
+.settings-fab:focus-visible { outline: 2px solid var(--theme-base, #e8b931); outline-offset: 3px; }
+.settings-fab.is-dragging { cursor: grabbing; transition: none; transform: scale(1.12); box-shadow: var(--glass-shadow), 0 0 0 2px var(--theme-base, #e8b931); }
+.settings-fab.is-open { background: var(--theme-soft, #f6d266); color: var(--theme-ink, #4a2b00); }
+:root.intro-open .settings-fab { visibility: hidden; }
+
+.settings-scrim { position: fixed; inset: 0; z-index: 38; }
+.settings-panel, .settings-panel.glass { position: fixed; z-index: 39; top: 64px; width: min(320px, calc(100vw - 24px)); max-height: calc(100dvh - 80px); overflow-y: auto;
+  padding: 12px; border-radius: 20px; color: var(--ink); animation: settings-in .2s cubic-bezier(.2, .9, .3, 1); }
+.settings-panel > * { position: relative; }
+.settings-panel.is-right { right: max(64px, calc(env(safe-area-inset-right, 0px) + 64px)); }
+.settings-panel.is-left { left: max(64px, calc(env(safe-area-inset-left, 0px) + 64px)); }
+.settings-panel.is-lower { top: auto; bottom: 40px; }
+@keyframes settings-in { from { opacity: 0; transform: translateY(-6px) scale(.98); } }
+.settings-head { display: flex; align-items: center; justify-content: space-between; padding: 2px 4px 10px; }
+.settings-head strong { font-size: 16px; font-weight: 800; }
+.settings-close { padding: 4px 10px; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--ink-soft); background: rgba(255, 255, 255, .5); }
+.settings-rows { display: grid; gap: 6px; }
+.settings-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; padding: 10px 12px; border-radius: 14px;
+  text-align: left; color: var(--ink); background: rgba(255, 255, 255, .5); }
+.settings-row > span { display: grid; gap: 1px; min-width: 0; }
+.settings-row strong { font-size: 15px; font-weight: 800; }
+.settings-row small { font-size: 12px; font-weight: 600; color: var(--ink-soft); word-break: keep-all; }
+.settings-switch { cursor: pointer; }
+.settings-switch:focus-visible, .settings-size button:focus-visible, .settings-close:focus-visible { outline: 2px solid var(--theme-base, #e8b931); outline-offset: 2px; }
+.settings-switch i { position: relative; flex-shrink: 0; width: 42px; height: 24px; border-radius: 999px; background: rgba(42, 31, 22, .22); transition: background .2s; }
+.settings-switch i::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .3); transition: transform .2s cubic-bezier(.2, .9, .3, 1); }
+.settings-switch[aria-checked="true"] i { background: var(--theme-base, #e8b931); }
+.settings-switch[aria-checked="true"] i::after { transform: translateX(18px); }
+.settings-size > div { display: flex; gap: 6px; flex-shrink: 0; }
+.settings-size button { min-width: 36px; height: 34px; padding: 0 8px; border-radius: 10px; font-size: 18px; font-weight: 800; color: var(--ink); background: rgba(255, 255, 255, .7); }
+.settings-size button:disabled { opacity: .35; }
+.settings-size .settings-reset { font-size: 13px; }
+.settings-update { margin-top: 8px; }
+/* The update pill (AppStatus) sits inside the panel instead of at the bottom of the screen. */
+.settings-update .app-status { position: static; width: 100%; max-width: none; box-sizing: border-box; justify-content: flex-start; flex-wrap: wrap;
+  box-shadow: none; background: rgba(255, 255, 255, .5); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.settings-update .app-status::before { display: none; }
+/* Kept apart from `transform` so the minifier doesn't fold it into transform and leave the -50% translate. */
+.settings-update footer.app-status { translate: none; }
+.settings-tip { margin: 10px 4px 0; font-size: 11.5px; color: var(--ink-soft); }
+
+/* Phones: the panel comes up from the bottom. */
+@media (max-width: 600px) {
+  .settings-panel, .settings-panel.is-right, .settings-panel.is-left, .settings-panel.is-lower { left: 10px; right: 10px; top: auto; bottom: max(10px, env(safe-area-inset-bottom, 0px)); width: auto;
+    animation-name: settings-sheet; }
+  .settings-fab { width: 40px; height: 40px; }
+  .settings-fab svg { width: 20px; height: 20px; }
+}
+@keyframes settings-sheet { from { opacity: 0; transform: translateY(24px); } }
+@media (prefers-reduced-motion: reduce) { .settings-panel, .settings-fab { animation: none; transition: none; } }

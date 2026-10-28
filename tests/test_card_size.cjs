@@ -22,5 +22,7 @@ stop();
 assert.ok(seen.length >= 3);
 const css = fs.readFileSync('app/swipe.css', 'utf8');
 assert.ok(css.includes('--card-zoom: min(var(--card-scale), 1.2)'), 'Phones stop at 120%');
-assert.ok(fs.readFileSync('components/swipe/SwipeGame.tsx', 'utf8').includes('/ var(--card-zoom, 1)'), 'Dragging follows the finger at any size');
+// 4.11.0~: the problem screen zooms by --board-zoom = min(card size, fit to the screen); drag offsets divide by the same zoom.
+assert.ok(fs.readFileSync('components/swipe/SwipeGame.tsx', 'utf8').includes('/ var(--board-zoom, 1)'), 'Dragging follows the finger at any size');
+assert.ok(css.includes('--board-zoom: min(var(--card-zoom), var(--fit, 1))') && css.includes('.swipe-board { zoom: var(--board-zoom); }'), 'Board zoom = card size capped by the fit');
 console.log('PASS: card size steps, limits, saved setting, phone cap and drag correction.');

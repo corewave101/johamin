@@ -154,6 +154,9 @@
   .lotte-radio { top: 14px; right: 70px; }
   .lotte-radio-now { display: block; }
 }
+/* 문제 화면(4.11.0~): 연속 정답 바로 왼쪽. 세로 폰은 위쪽 줄이 꽉 차서 ≡ 버튼 아래로. */
+:root[data-theme="lotte"].in-game:not(.at-home) .lotte-radio { top: 14px; bottom: auto; right: 124px; }
+@media (max-width: 600px) and (orientation: portrait) { :root[data-theme="lotte"].in-game:not(.at-home) .lotte-radio { top: calc(max(10px, env(safe-area-inset-top, 0px)) + 122px); right: 10px; } }
 
 /* 플레이리스트 창 */
 .lotte-radio-sheet { position: fixed; inset: 0; z-index: 900; display: grid; place-items: start center; overflow-y: auto; padding: max(18px, env(safe-area-inset-top)) 14px 40px; background: rgba(2, 8, 30, .62); }

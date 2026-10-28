@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
-import { BRAND } from '../../lib/exam';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 import { swipeCards, type Direction, type SwipeCard } from '../../data/swipe-cards';
-import { answerView, onAnswerViewChange, setAnswerView } from '../../lib/answer-view';
+import { answerView, onAnswerViewChange } from '../../lib/answer-view';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playResult, playSwipe } from '../../lib/sound';
 import { recordResult } from '../../lib/progress';
@@ -12,6 +11,7 @@ import { getTheme } from '../../lib/theme';
 import { answerCard, getStats, newGame, type AnswerChoice, type Attempt } from '../../lib/swipe-game';
 import LaminatedCard from './LaminatedCard';
 import StreakFlame from './StreakFlame';
+import { modalOpen } from './MenuCard';
 
 type Offset = { x: number; y: number };
 type Flight = { card: SwipeCard; direction: Direction; id: number; from: Offset };
@@ -36,6 +36,11 @@ function BackFace({ attempt }: { attempt: Attempt }) {
   </>;
 }
 
+type Zone = { left: number; top: number; right: number; bottom: number };
+const inside = (z: Zone | undefined, x: number, y: number) => Boolean(z && x >= z.left && x <= z.right && y >= z.top && y <= z.bottom);
+/** 문제 화면은 스크롤 없이 한 화면에 다 들어간다(4.11.0~): 보드가 남는 높이에 맞춰 작아진다(--fit, 카드 크기 설정보다 크지 않게). */
+const MIN_FIT = 0.55;
+
 export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱', deckId, onBack, backLabel = '← 과목', figurePanel }: { cards?: SwipeCard[]; deckName?: string; deckId?: string; onBack?: () => void; backLabel?: string; figurePanel?: boolean }) {
   const [game, setGame] = useState(() => newGame(cards));
   const gameRef = useRef(game);
@@ -50,6 +55,13 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const dragRef = useRef<Offset>({ x: 0, y: 0 });
   const pointer = useRef<{ id: number; x: number; y: number } | null>(null);
   const flightTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  // 처음으로 돌아가기(4.11.0~): 카드 반대편의 점선 칸으로 카드를 끌어다 놓거나 그 칸을 누르면 카드 패로 돌아간다.
+  const zoneRef = useRef<HTMLButtonElement>(null);
+  const [overZone, setOverZone] = useState(false);
+  const zoneRect = () => zoneRef.current?.getBoundingClientRect() ?? undefined;
+  const goHomeZone = useCallback(() => { deck.current.onBack?.(); }, []);
+  const mainRef = useRef<HTMLElement>(null);
+  const boardRef = useRef<HTMLElement>(null);
   const card = game.queue[0];
   const last = game.attempts.at(-1);
   const stats = getStats(game);
@@ -58,7 +70,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const activeDirection = distance > 18 ? directionOf(drag.x, drag.y) : null;
   // 답 보기 = 가리고 밀기: answers stay blurred until pulled toward (or picked once with a key or tap); a ring fills to confirm.
   const [view, setView] = useState(answerView);
-  useEffect(() => onAnswerViewChange(setView), []);
+  useEffect(() => onAnswerViewChange(next => { setView(next); setPeek(null); }), []);
   const hidden = view === 'hidden';
   // 해설 카드: after an answer, the card's back comes in from the opposite side and lies on top of the deck.
   // Throw it any way (swipe, arrow, Space/Enter, or any answer button) to reach the next card.
@@ -141,6 +153,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
 
   useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {
+      if (modalOpen()) return; // 설정 · 업데이트 기록 같은 창이 열려 있으면 카드는 그대로
       if (backRef.current && !isTyping(event)) {
         const dir = keyDirections[event.key] ?? (event.code === 'Space' || event.key === 'Enter' ? 'up' : null);
         if (!dir || (event.key === 'Enter' && event.target instanceof HTMLButtonElement)) return;
@@ -153,12 +166,11 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
         if (!event.repeat) choose(peekRef.current);
         return;
       }
-      const direction = event.code === 'Space' ? 'unknown' : keyDirections[event.key];
+      const direction = keyDirections[event.key];
       if (!direction || isTyping(event) || !gameRef.current.queue.length) return;
       event.preventDefault();
       if (event.repeat) return;
-      if (direction === 'unknown') choose('unknown');
-      else pick(direction);
+      pick(direction);
     };
     window.addEventListener('keydown', handleKey);
     return () => { window.removeEventListener('keydown', handleKey); clearTimeout(flightTimer.current); clearTimeout(thrownTimer.current); };
@@ -207,29 +219,58 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const move = (event: PointerEvent<HTMLElement>) => {
     if (!pointer.current || event.pointerId !== pointer.current.id) return;
     moveCard({ x: event.clientX - pointer.current.x, y: event.clientY - pointer.current.y });
+    setOverZone(inside(zoneRect(), event.clientX, event.clientY));
   };
   const release = (event: PointerEvent<HTMLElement>) => {
     if (!pointer.current || event.pointerId !== pointer.current.id) return;
     const x = event.clientX - pointer.current.x, y = event.clientY - pointer.current.y;
     pointer.current = null;
+    setOverZone(false);
+    if (inside(zoneRect(), event.clientX, event.clientY)) { moveCard({ x: 0, y: 0 }); goHomeZone(); return; }
     if (Math.hypot(x, y) >= SWIPE_DISTANCE) { dragRef.current = { x, y }; choose(directionOf(x, y)); }
     else moveCard({ x: 0, y: 0 });
   };
-  const cancel = () => { pointer.current = null; moveCard({ x: 0, y: 0 }); };
+  const cancel = () => { pointer.current = null; setOverZone(false); moveCard({ x: 0, y: 0 }); };
+
+  // 문제 화면 동안 <html>에 in-game을 붙여 페이지 스크롤을 잠그고(정보 · 실습 화면은 해당 없음), 위쪽 막대 자리를 바꾼다.
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.add('in-game');
+    return () => root.classList.remove('in-game');
+  }, []);
+  // 보드를 남는 높이에 맞춘다: (화면 아래 - 보드 위 - 아래 여백) ÷ 보드 본래 높이.
+  const fitBoard = useCallback(() => {
+    const main = mainRef.current, board = boardRef.current;
+    if (!main || !board) return;
+    const zoom = parseFloat(getComputedStyle(board).zoom || '1') || 1;
+    const natural = board.getBoundingClientRect().height / zoom;
+    // 보드는 남는 칸 가운데에 놓이므로(margin auto), 위 기준은 보드 자신이 아니라 바로 위 요소(진행 막대 · 지문)의 아래쪽이다.
+    const above = board.previousElementSibling?.getBoundingClientRect().bottom ?? main.getBoundingClientRect().top;
+    const zone = zoneRef.current;
+    const zoneInFlow = zone && getComputedStyle(zone).position !== 'fixed';
+    const below = (zoneInFlow ? zone.getBoundingClientRect().height + 10 : 0) + parseFloat(getComputedStyle(main).paddingBottom || '0') + 8;
+    const room = window.innerHeight - above - 8 - below;
+    if (natural > 0) main.style.setProperty('--fit', String(Math.max(MIN_FIT, room / natural).toFixed(3)));
+  }, []);
+  useLayoutEffect(() => {
+    fitBoard();
+    window.addEventListener('resize', fitBoard);
+    return () => window.removeEventListener('resize', fitBoard);
+  }, [fitBoard, card?.id, card?.passage, finished]);
 
   const verdict = !last ? '' : last.direction === 'unknown' ? '모름 · 다시 나와요' : last.correct ? '정답' : `오답 · 정답은 ${last.card.answers[last.card.correct]}`;
   const tone = !last ? 'is-idle' : last.direction === 'unknown' ? 'is-unknown' : last.correct ? 'is-correct' : 'is-wrong';
 
   // 그림 카드: while the explanation card is up, the figure of the card just answered stays in the panel.
   const figureCard = back && last ? last.card : card;
-  return <main className={`swipe-app ${onBack ? 'swipe-study' : ''} ${figurePanel ? 'has-figures' : ''}`}>
+  const zoneQuiet = game.attempts.length > 0;
+  return <main ref={mainRef} className={`swipe-app is-locked ${onBack ? 'swipe-study' : ''} ${figurePanel ? 'has-figures' : ''}`}>
     <StreakFlame streak={game.streak} />
     <div className={`swipe-game ${card?.passage ? 'has-passage' : ''} ${finished ? 'is-finished' : ''}`}>
       <div className="swipe-main">
-      <header className="swipe-heading"><h1 className="glass">{BRAND.first}<span>{BRAND.rest}</span></h1></header>
+      {/* 4.11.0~: 문제 화면에는 제목 · 과목 이름 · 돌아가기 버튼 없이 진행 막대만(과목 이름은 화면 읽기용으로만). */}
       <div className="swipe-deck-bar glass">
-        {onBack && <button type="button" className="glass-button" onClick={onBack}>{backLabel}</button>}
-        <strong>{deckName}</strong>
+        <strong className="visually-hidden">{deckName}</strong>
         <div className="deck-progress">
           <div className="swipe-progress"><i style={{ width: `${cards.length ? game.mastered.length / cards.length * 100 : 0}%` }} /></div>
           <span className="swipe-progress-row">{game.mastered.length} / {cards.length}</span>
@@ -247,13 +288,13 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
         </div>
         <button type="button" className="swipe-restart" onClick={restart}>한 판 더</button>
       </section>
-      : <section className={`swipe-board ${hidden ? 'answers-hidden' : ''} ${revealed ? 'is-pulling' : ''} ${back ? 'has-back' : ''}`} aria-label="방향을 선택해 답하기" style={{ '--pull': pull.toFixed(3) } as CSSProperties}>
+      : <section ref={boardRef} className={`swipe-board ${hidden ? 'answers-hidden' : ''} ${revealed ? 'is-pulling' : ''} ${back ? 'has-back' : ''}`} aria-label="방향을 선택해 답하기" style={{ '--pull': pull.toFixed(3) } as CSSProperties}>
         {directions.map(direction => <button type="button" key={direction} className={`swipe-option glass swipe-option-${direction} ${activeDirection === direction ? 'is-active' : ''} ${revealed === direction ? 'is-revealed' : ''}`} onClick={() => pick(direction)} aria-label={`${arrows[direction]} ${card.answers[direction]}`}><kbd>{arrows[direction]}</kbd><span>{card.answers[direction]}</span>{hidden && peek === direction && !activeDirection && <small className="peek-hint">한 번 더 · Enter</small>}</button>)}
         <div className="swipe-stack">
           {game.queue.length > 2 && <div className="swipe-under swipe-under-two" />}
           {game.queue.length > 1 && <div className="swipe-under swipe-under-one" />}
           <LaminatedCard key={`${card.id}-${game.attempts.length}`} className={`is-current ${pointer.current ? 'is-dragging' : ''}`}
-            style={{ '--tx': `calc(${drag.x}px / var(--card-zoom, 1))`, '--ty': `calc(${drag.y}px / var(--card-zoom, 1))`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
+            style={{ '--tx': `calc(${drag.x}px / var(--board-zoom, 1))`, '--ty': `calc(${drag.y}px / var(--board-zoom, 1))`, '--rot': `${drag.x / 22}deg` } as CSSProperties}
             topic={card.topic} subject={card.subject} question={card.question}
             onPointerDown={press} onPointerMove={move} onPointerUp={release} onPointerCancel={cancel}>
             {/* The sticker shows only while dragging; a key or tap preview shows its hint on the answer instead (so the card face stays clear). */}
@@ -262,31 +303,27 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
           {/* Each layer gets its own key prefix: the answer's flight and its back card share a timestamp, and a
               duplicate key made React leave finished cards (with their blur animations) in the DOM. */}
           {flight && <LaminatedCard key={`flight-${flight.id}`} aria-hidden="true" className={`swipe-flying fly-${flight.direction}`}
-            style={{ '--fx': `calc(${flight.from.x}px / var(--card-zoom, 1))`, '--fy': `calc(${flight.from.y}px / var(--card-zoom, 1))`, '--fr': `${flight.from.x / 22}deg` } as CSSProperties}
+            style={{ '--fx': `calc(${flight.from.x}px / var(--board-zoom, 1))`, '--fy': `calc(${flight.from.y}px / var(--board-zoom, 1))`, '--fr': `${flight.from.x / 22}deg` } as CSSProperties}
             topic={flight.card.topic} subject={flight.card.subject} question={flight.card.question} />}
           {back && last && <article key={`back-${back.id}`} className={`swipe-card swipe-back from-${back.from} back-${toneOf(last)} ${backPointer.current ? 'is-dragging' : ''}`} aria-label="해설 카드"
-            style={{ '--tx': `calc(${backDrag.x}px / var(--card-zoom, 1))`, '--ty': `calc(${backDrag.y}px / var(--card-zoom, 1))`, '--rot': `${backDrag.x / 22}deg` } as CSSProperties}
+            style={{ '--tx': `calc(${backDrag.x}px / var(--board-zoom, 1))`, '--ty': `calc(${backDrag.y}px / var(--board-zoom, 1))`, '--rot': `${backDrag.x / 22}deg` } as CSSProperties}
             onPointerDown={event => { if (!event.isPrimary || event.button !== 0) return; backPointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId); }}
-            onPointerMove={event => { const b = backPointer.current; if (!b || b.id !== event.pointerId) return; moveBack({ x: event.clientX - b.x, y: event.clientY - b.y }); }}
-            onPointerUp={event => { const b = backPointer.current; if (!b || b.id !== event.pointerId) return; const x = event.clientX - b.x, y = event.clientY - b.y; backPointer.current = null; if (Math.hypot(x, y) >= SWIPE_DISTANCE) { backDragRef.current = { x, y }; throwBack(directionOf(x, y)); } else moveBack({ x: 0, y: 0 }); }}
-            onPointerCancel={() => { backPointer.current = null; moveBack({ x: 0, y: 0 }); }}>
+            onPointerMove={event => { const b = backPointer.current; if (!b || b.id !== event.pointerId) return; moveBack({ x: event.clientX - b.x, y: event.clientY - b.y }); setOverZone(inside(zoneRect(), event.clientX, event.clientY)); }}
+            onPointerUp={event => { const b = backPointer.current; if (!b || b.id !== event.pointerId) return; const x = event.clientX - b.x, y = event.clientY - b.y; backPointer.current = null; setOverZone(false);
+              if (inside(zoneRect(), event.clientX, event.clientY)) { moveBack({ x: 0, y: 0 }); goHomeZone(); return; }
+              if (Math.hypot(x, y) >= SWIPE_DISTANCE) { backDragRef.current = { x, y }; throwBack(directionOf(x, y)); } else moveBack({ x: 0, y: 0 }); }}
+            onPointerCancel={() => { backPointer.current = null; setOverZone(false); moveBack({ x: 0, y: 0 }); }}>
             <BackFace attempt={last} />
           </article>}
           {thrown && <article key={`thrown-${thrown.id}`} aria-hidden="true" className={`swipe-card swipe-back back-${toneOf(thrown.attempt)} swipe-flying fly-${thrown.dir}`}
-            style={{ '--fx': `calc(${thrown.from.x}px / var(--card-zoom, 1))`, '--fy': `calc(${thrown.from.y}px / var(--card-zoom, 1))`, '--fr': `${thrown.from.x / 22}deg` } as CSSProperties}>
+            style={{ '--fx': `calc(${thrown.from.x}px / var(--board-zoom, 1))`, '--fy': `calc(${thrown.from.y}px / var(--board-zoom, 1))`, '--fr': `${thrown.from.x / 22}deg` } as CSSProperties}>
             <BackFace attempt={thrown.attempt} />
           </article>}
         </div>
       </section>}
-      {!finished && <div className="swipe-actions">
-        <button type="button" className="swipe-skip glass" onClick={() => choose('unknown')}>모름 <kbd>Space</kbd></button>
-        {/* 답 보기: all answers written out, or blurred until you pull toward one (a ring fills to confirm). */}
-        <button type="button" className={`answer-view-toggle glass ${hidden ? 'is-hidden' : ''}`} aria-pressed={hidden} onClick={() => { setPeek(null); setAnswerView(hidden ? 'open' : 'hidden'); }}
-          title={hidden ? '답이 가려져 있어요. 미는 쪽 답만 또렷해져요. 방향키·버튼은 한 번 = 미리 보기, 한 번 더나 Enter = 선택' : '답을 가리고, 밀 때만 보이게 바꿔요'}>
-          <span className="answer-view-icon" aria-hidden="true">{hidden ? '◐' : '◯'}</span>
-          <span>{hidden ? '답 가리기 켜짐' : '답 가리기'}<small>{hidden ? '밀면 보여요 · 눌러서 끄기' : '눌러서 켜기'}</small></span>
-        </button>
-      </div>}
+      {onBack && <button ref={zoneRef} type="button" className={`swipe-home-zone ${zoneQuiet ? 'is-quiet' : ''} ${overZone ? 'is-over' : ''}`} onClick={onBack} aria-label={`처음으로 돌아가기 (${backLabel.replace(/^←\s*/, '')})`}>
+        <span>{overZone ? '놓으면 처음으로 돌아가요' : zoneQuiet ? '처음으로' : '여기로 드래그하면 처음으로 돌아가요'}</span>
+      </button>}
       </div>
       <section className={`swipe-feedback glass ${tone}`} aria-label="결과창" aria-live="polite" aria-atomic="true">
         {last && <div className="swipe-feedback-face" key={game.attempts.length}>

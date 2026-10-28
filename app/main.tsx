@@ -1,6 +1,7 @@
 import '../components/swipe/observation.css';
 import '../components/swipe/optics.css';
 import '../components/swipe/polarization.css';
+import '../components/swipe/settings.css';
 import '../components/swipe/structure.css';
 import '../components/swipe/elice.css';
 import '../components/swipe/lotte.css';
@@ -11,13 +12,13 @@ import AppStatus from '../components/swipe/AppStatus';
 import AuthGate, { LoadFailed, LoadingCard } from '../components/swipe/AuthGate';
 import Backdrop from '../components/swipe/Backdrop';
 import BlessingToggle from '../components/swipe/BlessingToggle';
-import CardSizeControl from '../components/swipe/CardSizeControl';
 import Intro from '../components/swipe/Intro';
 import JumpscareLayer from '../components/swipe/JumpscareLayer';
 import LottePeek from '../components/swipe/LottePeek';
 import LotteNeon from '../components/swipe/LotteNeon';
 import LotteRadio from '../components/swipe/LotteRadio';
 import SoundToggle from '../components/swipe/SoundToggle';
+import SettingsDock from '../components/swipe/SettingsDock';
 import UpdateLog from '../components/swipe/UpdateLog';
 import { trackPromise } from '../lib/boot';
 import { isElice, isLotte } from '../lib/exam';
@@ -56,9 +57,9 @@ function IntroHost() {
 
 createRoot(document.getElementById('root')!).render(<>
   <Backdrop />
-  {!isElice && <><SoundToggle /><BlessingToggle /><CardSizeControl /></>}
+  {/* 4.11.0~: 소리 · 크기 · 답 가리기 · 갑툭튀 · 롯데 로고 · 업데이트 확인은 떠 있는 설정(≡) 버튼 안에 모았다. */}
+  {!isElice && <><BlessingToggle /><SettingsDock /></>}
   <AuthGate><Suspense fallback={<LoadingCard />}><Menu /></Suspense></AuthGate>
-  {!isElice && <AppStatus />}
   {/* 정보 코딩 연습장: 가호 · 업데이트 확인 · 소리 · 버전을 위쪽 막대 오른쪽에 작게 모은다(components/swipe/elice.css). */}
   {isElice && <div className="elice-dock"><BlessingToggle /><AppStatus /><SoundToggle /><UpdateLog version={__APP_VERSION__} changelog={__CHANGELOG__} /></div>}
   {!isLotte && <LottePeek />}
