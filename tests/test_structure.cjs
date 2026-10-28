@@ -75,6 +75,6 @@ const { finalMenu } = require('../data/final-subjects.ts');
 const chem = finalMenu.children.find(n => n.id === 'science').children.find(n => n.id === 'physics-chemistry').children.find(n => n.id === 'chemistry-final');
 assert.equal(chem.lab, 'structure');
 const study = fs.readFileSync('components/swipe/SubjectStudy.tsx', 'utf8');
-assert.ok(study.includes("const structure = deck.lab === 'structure';") && study.includes('<StructureLab'));
+assert.ok(study.includes("const structure = labs.includes('structure');") && study.includes('<StructureLab'));
 assert.ok(!/from '\.\.\/\.\.\/data\//.test(fs.readFileSync('components/swipe/StructureLab.tsx', 'utf8').replace("import type { Direction } from '../../data/swipe-cards';", '')), '실습 화면은 카드 묶음을 불러오지 않는다');
 console.log(`PASS: 구조식 실습 — PPT 화합물 ${S.PPT_EXAMPLES.length}개 이름 그대로, 명명 규칙 ${Object.keys(known).length}개, 같은 분자 · 시스/트랜스, 문제 ${made}개 · 고난도 ${hardMade}개 다시 확인`);

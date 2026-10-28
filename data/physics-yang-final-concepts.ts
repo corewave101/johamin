@@ -1,14 +1,14 @@
 import type { ConceptLesson } from './study-concepts';
-import { physicsYangFinalCards, PHYSICS_YANG_TOPICS, NOTE } from './physics-yang-final-cards';
+import { physicsYangFinalCards, PHYSICS_YANG_TOPICS, NOTE, NOTE21 } from './physics-yang-final-cards';
 
 // 기말고사 · 물리학Ⅱ(양동비T) 학습지 「물리 20번 · 광학 기기의 원리」를 네 단원으로 정리했다.
 // 각 단원의 예시는 같은 단원의 객관식 카드 전부다(카드를 고치면 예시도 같이 바뀐다).
-const [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10] = PHYSICS_YANG_TOPICS;
+const [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13] = PHYSICS_YANG_TOPICS;
 const examplesFor = (topics: string[]) => physicsYangFinalCards
   .filter(card => topics.includes(card.topic))
   .map(card => ({ id: card.id, context: card.question, explanation: card.explanation, sourceNote: card.sourceNote ?? NOTE(1) }));
-const lesson = (id: string, title: string, topicKeys: string[], page: number, summary: string, sections: ConceptLesson['sections']): ConceptLesson => ({
-  id, deckId: 'physics-yang-final', title, summary, sections, topicKeys, sourceNote: NOTE(page),
+const lesson = (id: string, title: string, topicKeys: string[], page: number, summary: string, sections: ConceptLesson['sections'], note = NOTE): ConceptLesson => ({
+  id, deckId: 'physics-yang-final', title, summary, sections, topicKeys, sourceNote: note(page),
   examplesLabel: '문제로 확인', examples: examplesFor(topicKeys),
 });
 
@@ -109,4 +109,30 @@ export const physicsYangFinalConcepts: ConceptLesson[] = [
         '상이 망막 앞에 맺히면(안구가 길거나 수정체가 두꺼움) 멀리 있는 물체가 잘 안 보인다 → 오목 렌즈로 교정',
       ] },
     ]),
+  lesson('physics-yang-final-concept-5', '편광 · 말뤼스 법칙 · 여러 편광판', [T11, T12, T13], 1,
+    '빛은 전기장과 자기장이 진동하는 횡파라서 편광된다. 편광판을 지난 빛은 투과축과 나란하게 진동하고, 자연광은 절반(I₀/2), 선형 편광은 I₀cos²θ(말뤼스 법칙)만큼 지난다. 수직인 두 판 사이에 α로 돌린 판을 넣으면 ⅛I₀ sin²2α가 지나 α = 45°에서 최대다.',
+    [
+      { heading: '횡파와 종파', table: { columns: ['구분', '진동 방향과 진행 방향', '편광 가능 여부'], rows: [['횡파', '서로 수직', 'O'], ['종파', '서로 나란', 'X']] }, points: [
+        '빛은 전기장과 자기장이 진동하는 횡파다. 빛의 편광은 전기장의 진동 방향을 기준으로 구분한다.',
+        '빛은 편광판을 통과하면 편광된다 → 빛은 횡파다.',
+      ] },
+      { heading: '자연광과 편광', points: [
+        '자연광: 전기장의 진동 방향이 시간에 따라 불규칙하게 변하는 빛',
+        '선형 편광: 전기장이 일정한 직선 방향으로 진동하는 빛',
+        '원형 편광: 한 지점에서 전기장의 크기는 일정하고, 방향이 시간에 따라 회전하는 빛',
+      ] },
+      { heading: '편광판과 빛의 세기 (이상적인 선형 편광판, 투과축 = 편광축)', points: [
+        '투과한 빛의 전기장은 투과축과 나란한 방향으로 진동한다.',
+        '자연광 → 편광판 1개: I₁ = ½I₀. 모든 방향의 진동이 고르게 섞여 있어 투과축을 돌려도 통과량이 같다.',
+        '선형 편광 → 편광판: 투과 진폭 E = E₀ cos θ (θ: 입사광의 진동 방향과 투과축 사이의 각)',
+        '빛의 세기는 진폭의 제곱에 비례 → I/I₀ = E₀²cos²θ / E₀² → 말뤼스 법칙 I = I₀cos²θ',
+        '자연광 평균: (1/π)∫₀^π I₀cos²θ dθ = (I₀/2π)[θ + ½ sin 2θ]₀^π = I₀/2',
+      ] },
+      { heading: '여러 편광판', table: { columns: ['배치', '세기'], rows: [
+        ['자연광 → P₁(0°) → P₂(θ)', 'I₁ = ½I₀, I₂ = ½I₀cos²θ · 최대 θ = 0°, 180° · 최소 θ = 90°'],
+        ['수직인 P₁, P₃만', '0'],
+        ['P₁(0°) → P₂(α) → P₃(90°)', 'I₂ = ½I₀cos²α, I₃ = I₂cos²(90° − α) = ½I₀cos²α sin²α = ⅛I₀ sin²2α'],
+        ['최대 조건', 'sin²2α = 1 → α = 45°, 최대 ⅛I₀'],
+      ] } },
+    ], NOTE21),
 ];

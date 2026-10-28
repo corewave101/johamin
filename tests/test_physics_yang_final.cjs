@@ -12,10 +12,10 @@ const physics = finalMenu.children.find(n => n.id === 'science').children.find(n
 const deck = physics.children.find(n => n.id === 'physics-yang-final');
 assert.equal(deck.cards, cards);
 assert.equal(deck.writtenQuestions, written);
-assert.equal(deck.lab, 'optics');
+assert.deepEqual(deck.lab, ['polarization', 'optics']); // 4.10.0~: 편광 가상실험실 + 빛과 렌즈 실습
 
 assert.ok(cards.length >= 150, `${cards.length} cards`);
-assert.equal(written.length, 4);
+assert.equal(written.length, 6); // 4.10.0~: +2 편광(말뤼스 법칙 유도 · 세 장)
 const all = [...cards, ...written];
 assert.equal(new Set(all.map(c => c.id)).size, all.length);
 assert.ok(cards.every(c => /^physics-yang-final-\d{3}$/.test(c.id)));
@@ -26,7 +26,7 @@ for (const c of cards) {
   assert.ok(Object.values(c.answers).every(a => typeof a === 'string' && [...a].length <= 40), `${c.id} answers`);
   assert.ok([...c.question].length <= 60, `${c.id} question`);
   assert.ok(c.explanation.length > 16 && c.explanation.endsWith('다.'), c.id);
-  assert.ok(/^양동비T 물리 20번 · [1-5]쪽$/.test(c.sourceNote), c.id);
+  assert.ok(/^양동비T 물리 20번 · [1-5]쪽$/.test(c.sourceNote) || /^양동비T 21차시 편광 · 1쪽$/.test(c.sourceNote), c.id); // 21차시는 1쪽(필기)만
   assert.ok(!/(위 그림|그림의|학습지에서|앞 문제|위 자료|표에서|\(가\)|\(나\))/.test(c.question), c.id);
 }
 
@@ -84,7 +84,29 @@ assert.equal(p1.answers[p1.correct], '50/3 cm');
 
 for (const q of written) assert.ok(q.modelAnswer.length > 100 && q.criteria.length >= 3, q.id);
 const lessons = conceptsFor('physics-yang-final');
-assert.equal(lessons.length, 4);
+assert.equal(lessons.length, 5);
 assert.deepEqual([...new Set(lessons.flatMap(l => l.topicKeys))].sort(), [...topics].sort());
 
-console.log(`PASS: 물리학Ⅱ 양동비T 광학 기기의 원리 ${cards.length}장 (렌즈 방정식 ${computed}장 · 스넬 법칙 ${snell}장 다시 계산) · 서술형 ${written.length} · 개념 ${lessons.length}`);
+// 4.10.0~ 21차시 편광: 말뤼스 법칙 · 두 장 · 세 장 계산 카드를 다시 계산한다.
+const frac = t => { if (t === '0') return 0; const m = t.match(/^(\d*)I₀(?:\/(\d+))?$/); assert.ok(m, t); return Number(m[1] || 1) / Number(m[2] || 1); };
+const c2 = d => Math.cos(d * Math.PI / 180) ** 2;
+let polar = 0;
+for (const c of cards) {
+  const right = c.answers[c.correct]; let m;
+  const check = (v, label) => { assert.ok(Math.abs(v.right - v.want) < 1e-6, `${c.id} ${label}: ${right}`); for (const w of Object.values(c.answers).filter(x => x !== right)) assert.ok(Math.abs(v.parse(w) - v.want) > 1e-6, `${c.id} wrong ${w}`); polar += 1; };
+  if ((m = c.question.match(/^세기 I₀인 선형 편광이 투과축과 (\d+)°를 이루는 편광판을 지난 세기는\?$/))) check({ right: frac(right), want: c2(+m[1]), parse: frac }, 'malus');
+  else if ((m = c.question.match(/^자연광 I₀이 두 편광판을 지난다\. 두 투과축 사이 각이 (\d+)°일 때 최종 세기는\?$/))) check({ right: frac(right), want: c2(+m[1]) / 2, parse: frac }, 'two');
+  else if ((m = c.question.match(/^수직인 두 판 사이에 첫 판과 (\d+)°를 이루는 판을 넣었다\. 자연광 I₀의 최종 세기는\?$/))) check({ right: frac(right), want: Math.sin(2 * m[1] * Math.PI / 180) ** 2 / 8, parse: frac }, 'three');
+  else if ((m = c.question.match(/^세기 (\d+) a\.u\.의 선형 편광이 투과축과 (\d+)°인 편광판을 지난 세기는\?$/))) check({ right: parseFloat(right), want: Math.round(m[1] * c2(+m[2]) * 100) / 100, parse: parseFloat }, 'malus a.u.');
+  else if ((m = c.question.match(/^세기 (\d+) a\.u\.의 자연광이 사이 각 (\d+)°인 두 편광판을 지난 세기는\?$/))) check({ right: parseFloat(right), want: Math.round(m[1] / 2 * c2(+m[2]) * 100) / 100, parse: parseFloat }, 'two a.u.');
+}
+assert.ok(polar >= 30, `polar ${polar}`);
+const pick = q => { const c = cards.find(c => c.question === q); assert.ok(c, q); return c.answers[c.correct]; };
+assert.equal(pick('편광이 일어날 수 있는 파동은?'), '횡파');
+assert.equal(pick('빛의 편광을 구분하는 기준은?'), '전기장의 진동 방향');
+assert.equal(pick('세기 I₀인 자연광이 이상적인 편광판 하나를 지난 세기는?'), 'I₀/2');
+assert.equal(pick('말뤼스 법칙을 바르게 나타낸 것은?'), 'I = I₀ cos²θ');
+assert.equal(pick('수직인 두 판 사이 판의 각 α(0°~90°) 중 최종 세기가 최대인 α는?'), '45°');
+assert.ok(cards.filter(c => c.sourceNote.startsWith('양동비T 21차시')).length >= 50);
+
+console.log(`PASS: 물리학Ⅱ 양동비T 광학 기기의 원리 + 편광 ${cards.length}장 (편광 계산 ${polar}장) (렌즈 방정식 ${computed}장 · 스넬 법칙 ${snell}장 다시 계산) · 서술형 ${written.length} · 개념 ${lessons.length}`);
