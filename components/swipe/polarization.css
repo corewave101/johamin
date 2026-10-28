@@ -1,0 +1,106 @@
+/* 양동비T 편광 가상실험실 (PolarizationLab). 실험대는 어느 가호에서도 같게 읽히도록 밤색 칠판(진한 남색)으로 고정한다. */
+.polar-app .optics-panel h2 { margin-bottom: 10px; }
+.polar-bench {
+  display: block; width: 100%; height: auto; border-radius: 18px; margin: 4px 0 12px;
+  background: radial-gradient(120% 90% at 50% 0%, #1b2d4d 0%, #0f1a30 70%); border: 1px solid #22355a;
+  font-family: Pretendard, "Noto Sans KR", system-ui, sans-serif;
+}
+.polar-bench text { text-anchor: middle; fill: #d9e4f5; }
+.polar-caption { font-size: 22px; fill: #9fb2d3 !important; }
+.polar-level { font-size: 24px; font-weight: 700; }
+.polar-name { font-size: 28px; font-weight: 800; fill: #ffffff !important; }
+.polar-sub { font-size: 21px; fill: #a8b9d6 !important; }
+.polar-none { font-size: 18px; fill: #7f93b6 !important; }
+.polar-percent { font-size: 34px; font-weight: 800; fill: #fff4cf !important; }
+.polar-beam { fill: #f5c84c; }
+.polar-tick { stroke: #4f6690; stroke-width: 2; stroke-dasharray: 6 6; }
+.polar-mini { fill: rgba(255, 255, 255, .03); stroke: #4f6690; stroke-width: 2; stroke-dasharray: 5 5; }
+.polar-source { fill: rgba(245, 200, 76, .08); stroke: #f5c84c; stroke-width: 4; }
+.polar-plate { fill: rgba(94, 225, 240, .08); stroke: #5ee1f0; stroke-width: 4; }
+.polar-detector { fill: #f5c84c; stroke: #c9d6ec; stroke-width: 3; }
+.polar-e { stroke-width: 5; stroke-linecap: round; }
+.polar-e.src { stroke: #f5c84c; stroke-width: 3.5; }
+.polar-e.axis { stroke: #5ee1f0; stroke-width: 8; }
+.polar-e.out { stroke: #5ee1f0; }
+.polar-head { fill: #cfe9f5; }
+
+.polar-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 0; }
+.polar-metrics > div { padding: 10px 12px; border-radius: 14px; background: rgba(255, 255, 255, .42); }
+.polar-metrics dt { font-size: 12px; opacity: .75; font-weight: 700; }
+.polar-metrics dd { margin: 2px 0 0; font-size: 18px; font-weight: 800; overflow-wrap: anywhere; }
+.polar-metrics .mono, .polar-app .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; }
+
+.polar-control { margin: 12px 0 16px; }
+.polar-control label { display: block; font-weight: 700; }
+.polar-control output { float: right; font-variant-numeric: tabular-nums; }
+.polar-control input { display: block; width: 100%; margin-top: 8px; accent-color: var(--theme-ink); }
+.polar-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 6px; }
+.polar-presets .glass-button { padding: 5px 0; }
+.polar-primary { font-weight: 800; }
+
+.polar-graph { display: block; width: 100%; max-width: 680px; height: auto; margin: 6px auto; border-radius: 14px; background: #fbfcff; border: 1px solid #d7deea; }
+.polar-graph .grid { stroke: #e2e8f1; stroke-width: 1; }
+.polar-graph .tick { font-size: 15px; fill: #4b5872; text-anchor: middle; font-family: Pretendard, "Noto Sans KR", system-ui, sans-serif; }
+.polar-graph .tick.end { text-anchor: end; }
+.polar-graph .tick.start { text-anchor: start; }
+.polar-graph .theory { fill: none; stroke: #2563eb; stroke-width: 2.5; stroke-dasharray: 8 6; }
+.polar-graph .dot { fill: #e11d48; stroke: #fff; stroke-width: 2; }
+
+.polar-table { width: 100%; max-width: 320px; border-collapse: collapse; margin: 10px 0; font-size: 14px; }
+.polar-table.wide { max-width: none; }
+.polar-table th, .polar-table td { padding: 6px 8px; border-bottom: 1px solid rgba(0, 0, 0, .12); text-align: left; }
+.polar-table th { font-size: 12px; opacity: .8; }
+.polar-app .optics-panel, .polar-app .optics-grid-panels > * { min-width: 0; }
+.polar-scroll { width: 100%; max-width: 100%; contain: inline-size; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.polar-photons td, .polar-photons th { text-align: center; white-space: nowrap; }
+.polar-photons tr.is-out { opacity: .5; }
+.polar-photons tr.is-key td { background: rgba(5, 150, 105, .1); }
+.polar-photons tr.is-check td { background: rgba(37, 99, 235, .1); }
+.polar-photons tr.is-bad td { background: rgba(225, 29, 72, .16); font-weight: 700; }
+.polar-chip { min-width: 34px; padding: 3px 8px; font-weight: 800; border-radius: 10px; }
+.polar-chip:disabled { opacity: 1 !important; box-shadow: none; }
+
+.polar-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.polar-row h2 { margin: 0; }
+.polar-stack { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 6px; }
+.polar-stack li { display: flex; justify-content: space-between; gap: 8px; padding: 10px 12px; border-radius: 12px; background: rgba(120, 160, 230, .16); font-size: 14px; }
+.polar-stack li.is-light { background: rgba(245, 200, 76, .25); }
+.polar-stack li.is-lc { background: rgba(94, 225, 240, .2); }
+.polar-stack li.is-bright { background: #fde68a; color: #4a3500; padding: 18px 12px; }
+.polar-stack li.is-dark { background: #1d2433; color: #c3cce0; padding: 18px 12px; }
+.polar-oled { display: grid; grid-template-columns: repeat(3, 56px); justify-content: center; gap: 12px; padding: 22px 12px; border-radius: 14px; background: #10192c; color: #dbe5f6; text-align: center; margin: 12px 0; }
+.polar-oled span { height: 64px; border-radius: 10px; display: grid; place-items: center; font-weight: 800; background: #2a3550; color: #6b7894; transition: background .2s, color .2s; }
+.polar-oled.is-on .c-R { background: #e5466b; color: #fff; }
+.polar-oled.is-on .c-G { background: #3cbf8a; color: #fff; }
+.polar-oled.is-on .c-B { background: #3b82f6; color: #fff; }
+.polar-oled p, .polar-oled small { grid-column: 1 / -1; margin: 4px 0 0; }
+.polar-oled small { opacity: .7; }
+.polar-swatches { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0 12px; }
+.polar-swatches figure { margin: 0; }
+.polar-swatches figure > div { height: 64px; border-radius: 12px; background: #fde047; border: 3px solid #1d2433; }
+.polar-swatches figcaption { display: grid; text-align: center; font-size: 13px; margin-top: 6px; }
+.polar-alert { padding: 10px 12px; border-radius: 12px; background: rgba(225, 29, 72, .14); font-weight: 700; }
+.polar-ok { padding: 10px 12px; border-radius: 12px; background: rgba(5, 150, 105, .14); font-weight: 700; }
+.polar-foot { font-size: 12px; opacity: .7; text-align: center; margin: 8px 0 24px; }
+.polar-bench.is-five .polar-percent { font-size: 26px; }
+.polar-bench.is-narrow .polar-caption { font-size: 24px; }
+.polar-bench.is-narrow .polar-name { font-size: 30px; }
+.polar-bench.is-narrow .polar-sub { font-size: 25px; }
+.polar-bench.is-narrow .polar-level { font-size: 27px; }
+.polar-bench.is-narrow .polar-percent { font-size: 25px; }
+.polar-bench.is-narrow.is-five .polar-percent { font-size: 20px; }
+@media (max-width: 560px) {
+  .polar-app .optics-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .polar-app .optics-tabs .glass-button { padding: 7px 8px; text-align: center; }
+  .polar-app .optics-tabs small { display: none; }
+}
+@media (max-width: 520px) {
+  .polar-graph .tick { font-size: 22px; }
+  .polar-photons th, .polar-photons td { padding: 5px 4px; font-size: 13px; }
+  .polar-swatches { grid-template-columns: 1fr; }
+  .polar-metrics dd { font-size: 16px; }
+}
+.polar-app .formula { font-size: 20px; font-weight: 800; margin: 4px 0 6px; padding: 10px 14px; border-radius: 12px; background: rgba(255, 255, 255, .5); border-left: 4px solid var(--theme-ink, #2563eb); }
+.polar-app .working { font-variant-numeric: tabular-nums; font-weight: 700; overflow-wrap: anywhere; }
+.polar-app .sign-note { font-size: 12px; opacity: .75; line-height: 1.6; }
+.polar-app .optics-panel p { line-height: 1.65; }

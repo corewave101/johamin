@@ -32,7 +32,7 @@
 | 폴더·파일 | 내용 |
 |---|---|
 | `app/` | 시작점 `main.tsx`, CSS(`swipe.css`가 대부분) |
-| `components/swipe/` | 화면. `EliceStudio`·`CodeEditor`(정보 코딩 연습장), `SwipeGame`(문제 카드), `SubjectPicker`(과목 고르기), `SubjectStudy`(개념·문제 메뉴), `ParkStudy`·`ParkVocabulary`(박상영T 전용), `MenuCard`(카드형 메뉴), `CardHand`(베타 · 카드 패 메뉴), `OrderDeck`(문장 배치), `BlessingToggle`·`BlessingEditor`(가호), `ObservationLab`·`ChemistryLab`·`OpticsLab`·`StructureLab`(실습. 덱에 `lab: 'optics'`(빛과 렌즈, 계산은 `lib/optics-lab.ts`)이나 `lab: 'structure'`(주민지T 구조식 ↔ 이름, 명명 · 같은 분자 판정은 `lib/structure.ts`, PPT 화합물 이름은 `PPT_EXAMPLES`, 고난도는 `hardSpec`. 명명기를 고치면 이름이 OPSIN으로 다시 구조가 되는지 확인하면 좋다)가 있으면 학습 메뉴 맨 앞에 나온다) |
+| `components/swipe/` | 화면. `EliceStudio`·`CodeEditor`(정보 코딩 연습장), `SwipeGame`(문제 카드), `SubjectPicker`(과목 고르기), `SubjectStudy`(개념·문제 메뉴), `ParkStudy`·`ParkVocabulary`(박상영T 전용), `MenuCard`(카드형 메뉴), `CardHand`(베타 · 카드 패 메뉴), `OrderDeck`(문장 배치), `BlessingToggle`·`BlessingEditor`(가호), `ObservationLab`·`ChemistryLab`·`OpticsLab`·`PolarizationLab`·`StructureLab`(실습. 덱에 `lab: 'optics'`(빛과 렌즈, 계산은 `lib/optics-lab.ts`), `lab: 'polarization'`(4.10.0~ 양동비T 편광 가상실험실을 옮긴 것: 편광판 세기 · LCD/OLED · 광자 정보 전송, 계산은 `lib/polarization-lab.ts`. 선생님 파일의 공동 접속 서버 · 다운로드는 넣지 않는다. 실습이 둘 이상이면 `lab: ['polarization', 'optics']`처럼 배열, 읽을 때는 `lib/labs.ts`의 `labsOf`)이나 `lab: 'structure'`(주민지T 구조식 ↔ 이름, 명명 · 같은 분자 판정은 `lib/structure.ts`, PPT 화합물 이름은 `PPT_EXAMPLES`, 고난도는 `hardSpec`. 명명기를 고치면 이름이 OPSIN으로 다시 구조가 되는지 확인하면 좋다)가 있으면 학습 메뉴 맨 앞에 나온다) |
 | `lib/` | 로직. `card-store.ts`(DB 읽기·캐시), `auth.ts`·`member.ts`(로그인), `swipe-game.ts`, `vocabulary.ts`, `theme.ts`, `jumpscare.ts` … |
 | `data/` | 코드에 들어 있는 카드(번들). `swipe-subjects.ts`가 과목·덱 목록 |
 | `db/` | DB 표 정의와 카드 사본(`cards.json`, `seed.sql`) |

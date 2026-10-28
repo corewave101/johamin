@@ -89,9 +89,9 @@ const pc = finalMenu.children.find(n => n.id === 'science').children.find(n => n
 const physics = pc.children.find(n => n.id === 'physics-final-group');
 assert.equal(physics.direction, 'left');
 const yang = physics.children.find(n => n.id === 'physics-yang-final');
-assert.ok(yang && yang.name === '양동비T' && yang.lab === 'optics');
+assert.ok(yang && yang.name === '양동비T' && yang.lab.includes('optics')); // 4.10.0~: 편광 가상실험실과 함께 배열
 const study = fs.readFileSync('components/swipe/SubjectStudy.tsx', 'utf8');
-assert.ok(/const optics = deck\.lab === 'optics';/.test(study) && !/useBeta/.test(study), '4.1.0: 실습은 정식 기능(베타 스위치 없음)');
+assert.ok(/const optics = labs\.includes\('optics'\)/.test(study) && !/useBeta/.test(study), '4.1.0: 실습은 정식 기능(베타 스위치 없음)');
 const component = fs.readFileSync('components/swipe/OpticsLab.tsx', 'utf8');
 assert.ok(!/베타|beta/i.test(component), '실습 화면에 베타 딱지 없음');
 assert.ok(!/cdn-cgi|challenge-platform|modelContext|registerTool|clipboard/.test(component + fs.readFileSync('lib/optics-lab.ts', 'utf8')), '원본의 추적 스크립트 · WebMCP · 복사 기능은 뗐다');

@@ -3,9 +3,11 @@ import { isShortQuestion } from '../../data/study-practice';
 import ChemistryLab from './ChemistryLab';
 import ObservationLab from './ObservationLab';
 import OpticsLab from './OpticsLab';
+import PolarizationLab from './PolarizationLab';
 import StructureLab from './StructureLab';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { SubjectDeck } from '../../data/swipe-subjects';
+import { labsOf, type LabKind } from '../../lib/labs';
 import type { SwipeCard } from '../../data/swipe-cards';
 import { missedCards, seenCount } from '../../lib/progress';
 import SwipeGame from './SwipeGame';
@@ -45,9 +47,12 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   const [writtenTopic, setWrittenTopic] = useState('');
   const lessons = conceptsFor(deck.id);
   // 양동비T 빛과 렌즈 실습(4.1.0부터 정식 기능): 덱에 lab: 'optics'가 있으면 학습 메뉴 맨 앞에 나온다.
-  const optics = deck.lab === 'optics';
+  // 4.10.0~: 같은 덱에 편광 가상실험실(lab: 'polarization')도 있어서 lab은 배열일 수 있다.
+  const labs = labsOf(deck);
+  const optics = labs.includes('optics'), polarization = labs.includes('polarization');
   // 주민지T 구조식 실습(4.4.0~): lab: 'structure'.
-  const structure = deck.lab === 'structure';
+  const structure = labs.includes('structure');
+  const [practice, setPractice] = useState<LabKind | null>(null);
   // 영어 단어 문제(뜻+품사)는 본문 문제와 따로 '단어 문제' 카드 패에서 푼다.
   const generalCards = deck.cards.filter(card => !isEnglishWordCard(card));
   const wordCards = deck.cards.filter(isEnglishWordCard);
@@ -65,7 +70,7 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   const activeWritten = mode === 'short' ? allShort : allWritten;
   const scopedQuestions = writtenTopic ? activeWritten.filter(q => q.topic === writtenTopic) : activeWritten;
   const questions = wrongOnly && mode === 'short' ? scopedQuestions.filter(q => written.drafts[q.id]?.correct === false) : scopedQuestions;
-  const pending = !deck.cards.length && !questions.length && !lessons.length && !optics && !structure; // a part whose class material has not arrived yet
+  const pending = !deck.cards.length && !questions.length && !lessons.length && !labs.length; // a part whose class material has not arrived yet
   const title = useRef<HTMLHeadingElement>(null);
   useEffect(() => { title.current?.focus(); }, [mode, written.index]);
   // The parent handles Esc; mode navigation uses explicit buttons.
@@ -75,14 +80,15 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   if (mode === 'missed') return <SwipeGame cards={retryCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
   if (mode === 'choice') return <SwipeGame cards={choiceCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
   if (mode === 'word-game') return <SwipeGame cards={wordList.cards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · ${wordList.name}`} onBack={() => setMode('words')} backLabel={gameBackLabel} />;
-  if (mode === 'practice') return optics ? <OpticsLab onBack={() => setMode('menu')} /> : structure ? <StructureLab onBack={() => setMode('menu')} /> : deck.id === 'chemistry' ? <ChemistryLab onBack={() => setMode('menu')} /> : <ObservationLab onBack={() => setMode('menu')} />;
+  if (mode === 'practice') return practice === 'polarization' ? <PolarizationLab onBack={() => setMode('menu')} /> : practice === 'optics' ? <OpticsLab onBack={() => setMode('menu')} /> : structure ? <StructureLab onBack={() => setMode('menu')} /> : deck.id === 'chemistry' ? <ChemistryLab onBack={() => setMode('menu')} /> : <ObservationLab onBack={() => setMode('menu')} />;
   const name = deck.fullName ?? deck.name;
   // 카드 패: the subject menu and the unit menu are hands of cards.
   if (mode === 'menu' && !pending) {
     const missedAll = missedCards(generalCards);
     const topicCount = new Set(generalCards.map(card => card.topic)).size;
     const hand: HandCard[] = [
-      ...(optics ? [{ id: 'practice', kicker: '빛과 렌즈 실습', title: '광선 작도하기', note: '렌즈 · 거울 · 스크린 상맺힘', onPlay: () => setMode('practice') }] : []),
+      ...(polarization ? [{ id: 'practice-polarization', kicker: '편광 가상실험실', title: '편광판 돌려 보기', note: '말뤼스 법칙 · LCD · 광자 정보', onPlay: () => { setPractice('polarization'); setMode('practice'); } }] : []),
+      ...(optics ? [{ id: 'practice', kicker: '빛과 렌즈 실습', title: '광선 작도하기', note: '렌즈 · 거울 · 스크린 상맺힘', onPlay: () => { setPractice('optics'); setMode('practice'); } }] : []),
       ...(structure ? [{ id: 'practice', kicker: '구조식 실습', title: '구조식 ↔ 이름', note: '이름 맞히기 · 점 이어 그리기', onPlay: () => setMode('practice') }] : []),
       ...(deck.id === 'chemistry' ? [{ id: 'practice', kicker: '화학 실험', title: '직접 연습하기', note: '적정 곡선 · 완충 · 5% 규칙', onPlay: () => setMode('practice') }] : []),
       ...(deck.id === 'astronomy-hwang' ? [{ id: 'practice', kicker: '관측 실습', title: '직접 연습하기', note: '정렬 · 천구 좌표 · 기록', onPlay: () => setMode('practice') }] : []),
