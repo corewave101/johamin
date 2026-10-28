@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { LOTTE_URL } from '../../lib/exam';
 import { playResult } from '../../lib/sound';
+import { isOn, onToggle } from '../../lib/settings';
 
 const LOGO = `${import.meta.env.BASE_URL}lotte/logo.svg`;
 const FLIGHT_MS = 2100;
@@ -52,6 +53,9 @@ function Fireworks() {
 export default function LottePeek() {
   const peek = useRef<HTMLButtonElement>(null);
   const [launch, setLaunch] = useState<{ x: number; y: number } | null>(null);
+  // 설정(≡)에서 롯데 로고를 끌 수 있다(4.11.0~).
+  const [shown, setShown] = useState(() => isOn('lottePeek'));
+  useEffect(() => onToggle((key, on) => { if (key === 'lottePeek') setShown(on); }), []);
   const go = () => {
     if (launch) return;
     const reduce = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -62,6 +66,7 @@ export default function LottePeek() {
     playResult(true);
     window.setTimeout(() => window.location.assign(LOTTE_URL), FLIGHT_MS);
   };
+  if (!shown && !launch) return null;
   return <>
     <button ref={peek} type="button" className={`lotte-peek${launch ? ' is-gone' : ''}`} onClick={go} aria-label="롯데로 레츠고" title="롯데로 레츠고!">
       <img src={LOGO} alt="" draggable={false} />

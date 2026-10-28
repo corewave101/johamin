@@ -344,8 +344,9 @@
 
 /* 카드 크기 (every blessing). --card-scale comes from lib/card-size.ts; phones stop at 120% so the arrows still fit.
    The board is zoomed as a whole; drag offsets are divided by the same zoom so the card follows the finger. */
-:root { --card-scale: 1; --card-zoom: var(--card-scale); }
-.swipe-board { zoom: var(--card-zoom); }
+:root { --card-scale: 1; --card-zoom: var(--card-scale); --board-zoom: var(--card-zoom); }
+/* 4.11.0~: 문제 화면은 --board-zoom = min(카드 크기, 남는 높이에 맞춘 --fit). 메뉴 카드는 카드 크기 그대로. */
+.swipe-board { zoom: var(--board-zoom); }
 @media (max-width: 900px) {
   :root { --card-zoom: min(var(--card-scale), 1.2); }
   /* Side arrows take a share of the width, so a bigger card also grows wider instead of being squeezed. */
@@ -683,3 +684,68 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 :root[data-beta="on"] .card-caption { -webkit-backdrop-filter: none; backdrop-filter: none; background: linear-gradient(180deg, rgba(22, 38, 54, .74), rgba(14, 27, 41, .9)); }
 :root[data-beta="on"] .swipe-under { -webkit-backdrop-filter: none; backdrop-filter: none; background: linear-gradient(155deg, rgba(255, 255, 255, .74), rgba(255, 244, 228, .5)); }
 :root[data-beta="on"] .figure-slot { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+
+
+/* ===== 4.11.0 · 문제 화면: 스크롤 없이 한 화면에 (components/swipe/SwipeGame.tsx) =====
+   제목 · 과목 이름 · 돌아가기 버튼 · 모름 · 답 가리기는 빠지고, 위쪽은 진행 막대만. 돌아가기는 카드 반대편의 점선 칸.
+   보드는 SwipeGame이 잰 --fit만큼 작아진다(카드 크기 설정보다 크지 않게). 정보 · 실습 화면은 이 규칙과 상관없다. */
+:root.in-game, :root.in-game body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+.swipe-app.is-locked { --board-zoom: min(var(--card-zoom), var(--fit, 1)); height: 100dvh; min-height: 0; overflow: hidden; align-content: stretch;
+  padding-top: max(14px, env(safe-area-inset-top, 0px)); padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)); }
+.swipe-app.is-locked > .swipe-game { display: flex; flex-direction: column; min-height: 0; height: 100%; }
+.swipe-app.is-locked .swipe-board { flex: none; margin-block: auto; }
+.swipe-app.is-locked .swipe-complete { margin-block: auto; }
+.swipe-app.is-locked .swipe-reading { flex: none; max-height: 34dvh; overflow-y: auto; margin-top: 10px; }
+.swipe-app.is-locked .figure-missing { flex: none; }
+.swipe-app.is-locked .swipe-deck-bar { flex: none; width: min(100%, 420px); margin: 0 auto; padding: 8px 16px; }
+.swipe-app.is-locked .deck-progress { flex: 1; min-width: 0; }
+.swipe-app.is-locked .swipe-progress { flex: 1; width: auto; min-width: 40px; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* 처음으로 돌아가기 칸: 처음엔 안내 문구, 한 문제 풀고 나면 흐리게 '처음으로'. 카드를 끌어 놓거나 눌러도 된다. */
+.swipe-home-zone { flex: none; display: grid; place-items: center; width: min(100%, 440px); min-height: 50px; margin: 10px auto 0; padding: 8px 14px; box-sizing: border-box;
+  border-radius: 16px; border: 2px dashed rgba(255, 255, 255, .8); background: rgba(255, 255, 255, .14); color: #fff; cursor: pointer;
+  font-size: 14px; font-weight: 800; line-height: 1.4; text-align: center; word-break: keep-all; text-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+  transition: opacity .25s, background .2s, border-color .2s, transform .2s cubic-bezier(.2, 1.3, .4, 1), min-height .25s; }
+.swipe-home-zone.is-quiet { opacity: .5; min-height: 40px; font-size: 13px; }
+.swipe-home-zone:hover, .swipe-home-zone:focus-visible { opacity: 1; background: rgba(255, 255, 255, .24); outline: none; }
+.swipe-home-zone.is-over { opacity: 1; background: rgba(255, 255, 255, .36); border-color: #fff; border-style: solid; transform: scale(1.04); }
+/* 넓은 화면(카드가 왼쪽)과 가로 폰: 화면 오른쪽 끝, 카드 반대편에 세로로. 그림 칸이 있는 덱은 아래에 둔다. */
+@media (min-width: 901px), (orientation: landscape) and (max-height: 540px) {
+  .swipe-app.is-locked:not(.has-figures) .swipe-home-zone { position: fixed; z-index: 3; right: max(24px, calc(env(safe-area-inset-right, 0px) + 12px)); top: 50%; translate: 0 -50%;
+    width: 132px; height: min(52vh, 400px); margin: 0; padding: 14px 12px; }
+  .swipe-app.is-locked:not(.has-figures) .swipe-home-zone.is-quiet { height: min(40vh, 300px); }
+}
+/* 가로 폰: 위쪽 연속 정답 · ≡ 버튼 아래로 조금 내린다. */
+@media (orientation: landscape) and (max-height: 540px) {
+  .swipe-app.is-locked:not(.has-figures) { padding-right: max(156px, calc(env(safe-area-inset-right, 0px) + 144px)); }
+  .swipe-app.is-locked:not(.has-figures) .swipe-home-zone { top: calc(50% + 30px); height: min(44vh, 300px); width: 120px; right: max(14px, calc(env(safe-area-inset-right, 0px) + 8px)); }
+  .swipe-app.is-locked:not(.has-figures) .swipe-home-zone.is-quiet { height: min(36vh, 240px); }
+}
+
+/* 위쪽 줄: 넓은 화면은 가호(왼쪽 위) · 연속 정답(오른쪽 위)이 그대로, 소리 버튼이 빠진 자리로 연속 정답이 붙는다. */
+@media (min-width: 901px) { .streak-flame { right: 16px; } }
+/* 세로 폰: 한 줄에 [가호] [진행 막대] [연속 정답] — 연속 정답은 작은 알약. */
+@media (max-width: 600px) and (orientation: portrait) {
+  :root.in-game .blessing-toggle { top: max(10px, env(safe-area-inset-top, 0px)); bottom: auto; left: 10px; display: flex; align-items: center; height: 36px; padding: 0 12px; box-sizing: border-box; }
+  :root.in-game .blessing-toggle strong { max-width: 104px; font-size: 13px; }
+  :root.in-game .blessing-toggle .blessing-best { display: none; }
+  :root.in-game .streak-flame, :root[data-blessing="on"].in-game .streak-flame { top: max(10px, env(safe-area-inset-top, 0px)); right: 10px; height: 36px; padding: 2px 10px 2px 6px; transform: none; }
+  :root.in-game .streak-flame svg { width: 18px; height: 23px; }
+  :root.in-game .streak-flame strong { min-width: 12px; font-size: 15px; }
+  .swipe-app.is-locked { padding-top: max(10px, env(safe-area-inset-top, 0px)); padding-inline: 10px; }
+  .swipe-app.is-locked .swipe-deck-bar { width: auto; min-width: 0; margin: 0 72px 0 136px; height: 36px; padding: 0 12px; box-sizing: border-box; }
+  .swipe-app.is-locked .swipe-home-zone { margin-top: 8px; }
+}
+
+/* 해설 카드 · 넘긴 카드: 위아래로도 자연스럽게. 위아래는 화면 높이만큼 빠져나가고, 늦게 흐려진다.
+   해설 카드는 위아래에서 들어올 때 짧게(카드 반 높이) 미끄러져 위쪽 막대를 덮지 않는다. */
+.swipe-back.from-up { --by: -55%; }
+.swipe-back.from-down { --by: 55%; }
+@keyframes back-in { from { opacity: 0; transform: translate(var(--bx, 0%), var(--by, 0%)) rotate(var(--br, 0deg)) scale(.94); } 60% { opacity: 1; } }
+.swipe-back.swipe-flying { animation-delay: 0s; animation-duration: .38s; animation-timing-function: cubic-bezier(.3, .6, .35, 1); animation-fill-mode: forwards; }
+@keyframes fly-up { from { transform: translate(var(--fx), var(--fy)) rotate(var(--fr)); } to { transform: translate(var(--fx), calc(var(--fy) - 75vh)) rotate(6deg); } }
+@keyframes fly-down { from { transform: translate(var(--fx), var(--fy)) rotate(var(--fr)); } to { transform: translate(var(--fx), calc(var(--fy) + 75vh)) rotate(-6deg); } }
+@keyframes fly-fade-late { 65% { opacity: 1; } to { opacity: 0; } }
+.swipe-game .fly-up { animation-name: fly-up, fly-fade-late, fly-blur; }
+.swipe-game .fly-down { animation-name: fly-down, fly-fade-late, fly-blur; }

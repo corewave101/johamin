@@ -1,5 +1,6 @@
 import { isBlessed } from './blessing';
 import type { LoadedScare, SoundRef } from './theme';
+import { isOn } from './settings';
 
 /**
  * 갑툭튀 rules. Numbers match the user's list:
@@ -90,11 +91,12 @@ export function onScare(listener: (event: ScareEvent) => void) {
 }
 /** 하민의 가호 scares (no-op under any other blessing). */
 export function triggerScare(id: ScareId, persistent = false) {
-  if (!isBlessed()) return false;
+  if (!isBlessed() || !isOn('scares')) return false;
   return show({ id, persistent, image: haminImage(id), sound: id === 'idle' ? { kind: 'none' } : { kind: 'builtin', id } });
 }
 /** A custom blessing's own scare. */
 export function triggerCustomScare(rule: LoadedScare, persistent = false) {
+  if (!isOn('scares')) return false; // 설정(≡)에서 갑툭튀를 끄면 직접 만든 가호의 갑툭튀도 안 나온다.
   return show({ id: rule.id, persistent, image: rule.image, sound: rule.sound });
 }
 
