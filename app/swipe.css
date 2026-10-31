@@ -753,3 +753,7 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 /* 국어 지문(4.11.0~): 밑줄 친 부분. 원문은 줄을 그대로 살리고 조금 작게. */
 .swipe-reading.is-korean p { font-size: 15px; line-height: 1.8; white-space: pre-line; word-break: keep-all; }
 .passage-mark { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; text-decoration-color: var(--theme-base, #e8b931); font-weight: 700; }
+
+/* 틀린 것 고르기(4.11.0~): 질문의 "않은 · 아닌 · 볼 수 없는"을 빨간색으로. 어두운 카드 위에서도 읽히는 밝은 빨강. */
+.q-negation { font-style: normal; font-weight: 900; color: #ff5a5f; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.swipe-back .q-negation, .back-question .q-negation { color: #d6262c; }

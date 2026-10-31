@@ -13,6 +13,7 @@ import LaminatedCard from './LaminatedCard';
 import StreakFlame from './StreakFlame';
 import { modalOpen } from './MenuCard';
 import { PassageText, passageLabels } from './Passage';
+import QuestionText from './QuestionText';
 
 type Offset = { x: number; y: number };
 type Flight = { card: SwipeCard; direction: Direction; id: number; from: Offset };
@@ -27,7 +28,7 @@ function BackFace({ attempt }: { attempt: Attempt }) {
   return <>
     <div className="back-top"><span className="swipe-result-icon" aria-hidden="true">{attempt.direction === 'unknown' ? '?' : attempt.correct ? '✓' : '✕'}</span><strong>{verdictOf(attempt)}</strong></div>
     <div className="back-body">
-      <p className="back-question">{c.subject ? `${c.subject} · ` : ''}{c.question}</p>
+      <p className="back-question">{c.subject ? `${c.subject} · ` : ''}<QuestionText text={c.question} /></p>
       <p className="back-explanation">{c.explanation}</p>
       {c.sourceNote && <p className="back-source">{c.sourceNote}</p>}
       {c.sourceSlide && <p className="back-source">황윤환T · 슬라이드 {c.sourceSlide}</p>}
@@ -257,17 +258,19 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     fitBoard();
     window.addEventListener('resize', fitBoard);
     return () => window.removeEventListener('resize', fitBoard);
-  }, [fitBoard, card?.id, card?.passage, finished]);
+  }, [fitBoard, card?.id, card?.passage, back === null, finished]);
 
   const verdict = !last ? '' : last.direction === 'unknown' ? '모름 · 다시 나와요' : last.correct ? '정답' : `오답 · 정답은 ${last.card.answers[last.card.correct]}`;
   const tone = !last ? 'is-idle' : last.direction === 'unknown' ? 'is-unknown' : last.correct ? 'is-correct' : 'is-wrong';
 
   // 그림 카드: while the explanation card is up, the figure of the card just answered stays in the panel.
   const figureCard = back && last ? last.card : card;
+  // 해설 카드가 떠 있는 동안 지문 칸은 방금 푼 카드의 지문을 그대로 보여 준다(다음 카드 지문이 미리 바뀌지 않게).
+  const readingCard = back && last ? last.card : card;
   const zoneQuiet = game.attempts.length > 0;
   return <main ref={mainRef} className={`swipe-app is-locked ${onBack ? 'swipe-study' : ''} ${figurePanel ? 'has-figures' : ''}`}>
     <StreakFlame streak={game.streak} />
-    <div className={`swipe-game ${card?.passage ? 'has-passage' : ''} ${finished ? 'is-finished' : ''}`}>
+    <div className={`swipe-game ${readingCard?.passage ? 'has-passage' : ''} ${finished ? 'is-finished' : ''}`}>
       <div className="swipe-main">
       {/* 4.11.0~: 문제 화면에는 제목 · 과목 이름 · 돌아가기 버튼 없이 진행 막대만(과목 이름은 화면 읽기용으로만). */}
       <div className="swipe-deck-bar glass">
@@ -277,7 +280,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
           <span className="swipe-progress-row">{game.mastered.length} / {cards.length}</span>
         </div>
       </div>
-      {card?.passage && (() => { const l = passageLabels(card.passage, 'solve'); return <details key={card.id} open className={`swipe-reading glass ${l.lang === 'ko' ? 'is-korean' : ''}`} onKeyDown={e => { if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) e.stopPropagation(); }}><summary>{l.summary}</summary>{l.hint && <small>{l.hint}</small>}<p lang={l.lang} tabIndex={0} aria-label={l.label}><PassageText text={card.passage} /></p></details>; })()}
+      {readingCard?.passage && (() => { const l = passageLabels(readingCard.passage, 'solve'); return <details key={readingCard.id} open className={`swipe-reading glass ${l.lang === 'ko' ? 'is-korean' : ''}`} onKeyDown={e => { if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) e.stopPropagation(); }}><summary>{l.summary}</summary>{l.hint && <small>{l.hint}</small>}<p lang={l.lang} tabIndex={0} aria-label={l.label}><PassageText text={readingCard.passage} /></p></details>; })()}
       {!figurePanel && card?.figure && !back && <p className="figure-missing glass" role="note">이 문제는 그림이 있어요. 화면을 가로로 돌리면 그림 카드가 보여요.</p>}
       {finished ? <section className="swipe-complete glass" aria-label="최종 결과">
         <h2>깔끔하게 털었다!</h2>
