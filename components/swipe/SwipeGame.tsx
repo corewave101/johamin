@@ -267,10 +267,15 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const figureCard = back && last ? last.card : card;
   // 해설 카드가 떠 있는 동안 지문 칸은 방금 푼 카드의 지문을 그대로 보여 준다(다음 카드 지문이 미리 바뀌지 않게).
   const readingCard = back && last ? last.card : card;
+  // 지문 세트(4.11.0~): 가로 화면에서는 지문을 오른쪽 칸에 띄운다. 같은 지문이면 카드를 넘겨도 지문 칸은 그대로 있다.
+  const sidePassage = figurePanel && readingCard?.passage && !readingCard.figure ? readingCard.passage : '';
+  const setCards = sidePassage ? cards.filter(c => c.passage === sidePassage) : [];
+  const setIndex = setCards.findIndex(c => c.id === readingCard?.id) + 1;
+  const panelKind = cards.some(c => c.figure) ? '그림' : '지문';
   const zoneQuiet = game.attempts.length > 0;
   return <main ref={mainRef} className={`swipe-app is-locked ${onBack ? 'swipe-study' : ''} ${figurePanel ? 'has-figures' : ''}`}>
     <StreakFlame streak={game.streak} />
-    <div className={`swipe-game ${readingCard?.passage ? 'has-passage' : ''} ${finished ? 'is-finished' : ''}`}>
+    <div className={`swipe-game ${readingCard?.passage && !sidePassage ? 'has-passage' : ''} ${finished ? 'is-finished' : ''}`}>
       <div className="swipe-main">
       {/* 4.11.0~: 문제 화면에는 제목 · 과목 이름 · 돌아가기 버튼 없이 진행 막대만(과목 이름은 화면 읽기용으로만). */}
       <div className="swipe-deck-bar glass">
@@ -280,7 +285,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
           <span className="swipe-progress-row">{game.mastered.length} / {cards.length}</span>
         </div>
       </div>
-      {readingCard?.passage && (() => { const l = passageLabels(readingCard.passage, 'solve'); return <details key={readingCard.id} open className={`swipe-reading glass ${l.lang === 'ko' ? 'is-korean' : ''}`} onKeyDown={e => { if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) e.stopPropagation(); }}><summary>{l.summary}</summary>{l.hint && <small>{l.hint}</small>}<p lang={l.lang} tabIndex={0} aria-label={l.label}><PassageText text={readingCard.passage} /></p></details>; })()}
+      {readingCard?.passage && !sidePassage && (() => { const l = passageLabels(readingCard.passage, 'solve'); return <details key={readingCard.id} open className={`swipe-reading glass ${l.lang === 'ko' ? 'is-korean' : ''}`} onKeyDown={e => { if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) e.stopPropagation(); }}><summary>{l.summary}</summary>{l.hint && <small>{l.hint}</small>}<p lang={l.lang} tabIndex={0} aria-label={l.label}><PassageText text={readingCard.passage} /></p></details>; })()}
       {!figurePanel && card?.figure && !back && <p className="figure-missing glass" role="note">이 문제는 그림이 있어요. 화면을 가로로 돌리면 그림 카드가 보여요.</p>}
       {finished ? <section className="swipe-complete glass" aria-label="최종 결과">
         <h2>깔끔하게 털었다!</h2>
@@ -340,13 +345,18 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
         </div>}
       </section>
     </div>
-    {figurePanel && !finished && <aside className="figure-panel" aria-label="그림">
-      <div className="figure-slot" aria-hidden={Boolean(figureCard?.figure)}><span>그림 문제가 나오면<br />여기로 그림 카드가 올라와요</span></div>
+    {figurePanel && !finished && <aside className="figure-panel" aria-label={panelKind}>
+      <div className="figure-slot" aria-hidden={Boolean(figureCard?.figure || sidePassage)}><span>{panelKind} 문제가 나오면<br />여기로 {panelKind === '그림' ? '그림 카드가' : '지문이'} 올라와요</span></div>
       {figureCard?.figure && <figure key={figureCard.id} className="figure-card">
         {/* Relative to the page, like the 황윤환T exam figures, so it works under the site's base path and offline. */}
         <img src={figureCard.figure.src} alt={figureCard.figure.alt} draggable={false} />
         <figcaption>그림 · {figureCard.source?.teacher ? `${figureCard.source.teacher} ` : ''}{figureCard.source ? `${figureCard.source.page}쪽` : ''}</figcaption>
       </figure>}
+      {sidePassage && <article key={sidePassage} className="passage-card glass" lang="ko" aria-label="문제 지문">
+        <header><b>지문</b></header>
+        <p><PassageText text={sidePassage} /></p>
+        <footer>{setCards.length > 1 && <b>이 지문 문제 {Math.max(setIndex, 1)} / {setCards.length}</b>}<span>{readingCard?.sourceNote}</span></footer>
+      </article>}
     </aside>}
   </main>;
 }

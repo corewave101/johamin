@@ -628,6 +628,19 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 .figure-card img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; border-radius: 12px; user-select: none; -webkit-user-drag: none; }
 .figure-card figcaption { font-size: 12px; font-weight: 700; color: var(--ink-soft); text-align: right; }
 @keyframes figure-rise { from { opacity: 0; transform: translateY(70px) rotate(1.5deg) scale(.96); } to { opacity: 1; transform: none; } }
+/* 지문 세트(4.11.0~, 국어): the passage rises into the same slot as a paper sheet and stays while its questions go by. */
+.passage-card { box-sizing: border-box; align-self: stretch; width: min(100%, 680px); max-height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px;
+  padding: 16px 8px 12px 22px; border-radius: 22px; background: #fffdf8; color: #2b2622;
+  box-shadow: 0 30px 60px -24px rgba(20, 12, 4, .65), 0 0 0 8px rgba(255, 255, 255, .38), 0 0 0 9px rgb(var(--theme-glow) / .35);
+  animation: figure-rise .5s cubic-bezier(.2, .9, .25, 1.15) both; }
+.passage-card header b { font-size: 15px; font-weight: 900; color: var(--theme-ink, #2b2622); }
+.passage-card p { margin: 0; padding-right: 14px; overflow-y: auto; overscroll-behavior: contain; white-space: pre-line; word-break: keep-all; overflow-wrap: anywhere;
+  font-size: 15.5px; line-height: 1.85; }
+.passage-card .passage-mark { text-decoration-color: var(--theme-base, #e8b931); }
+.passage-card footer { display: flex; justify-content: space-between; gap: 12px; padding-right: 14px; font-size: 12px; font-weight: 700; color: #7a6f66; }
+.passage-card footer b { color: var(--theme-ink, #2b2622); white-space: nowrap; }
+/* Clear of the streak badge and the settings button in the top-right corner. */
+.figure-panel:has(> .passage-card) { grid-template-rows: minmax(0, 1fr); padding-top: 84px; padding-right: 48px; }
 .figure-missing { margin: 12px auto 0; padding: 8px 14px; border-radius: 14px; font-size: 13px; font-weight: 700; text-align: center; }
 @media (orientation: portrait) and (max-width: 900px) {
   .swipe-app.has-figures { grid-template-columns: minmax(0, 1fr); }
@@ -642,8 +655,11 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
   .swipe-app.has-figures .swipe-actions { margin-top: 6px; }
   .figure-panel { padding-block: 56px 4px; }
   .figure-slot { aspect-ratio: auto; height: 100%; }
+  .passage-card { padding: 10px 6px 8px 16px; gap: 6px; }
+  .passage-card p { font-size: 14px; line-height: 1.7; }
+  .passage-card footer span { display: none; } /* the source is on the explanation card too */
 }
-@media (prefers-reduced-motion: reduce) { .swipe-app.has-figures > .swipe-game, .figure-panel, .figure-card { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .swipe-app.has-figures > .swipe-game, .figure-panel, .figure-card, .passage-card { animation: none; } }
 
 /* 가로 화면 안내: fills the screen like 갑툭튀, but calm — black, with only the guidance. */
 .rotate-notice { position: fixed; inset: 0; z-index: 1000; display: grid; place-content: center; justify-items: center; gap: 14px;

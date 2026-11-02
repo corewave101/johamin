@@ -29,14 +29,23 @@ for (const c of cards) {
   assert.match(c.sourceNote, /^백은미T · (공통국어2 교과서 1(2[89]|3[0-5])쪽|춘향전·봉산 탈춤 학습지 ([1-9]|1[01])쪽|수업 필기)$/, c.id);
   assert.ok(!/(위 그림|다음 그림|학습지에서|앞 문제|위 자료|윗글|위 지문|〈보기〉)/.test(c.question), `${c.id} self-contained`);
   // 「뉴욕제과점」식: 카드 위 큰 줄에 구절 한 줄, 질문은 그 구절의 개념을 묻는다.
-  assert.ok(c.subject && len(c.subject) <= 90, `${c.id} needs a short quote line`);
+  if (c.passage) {
+    // 지문 세트: 질문이 가리키는 ㉠~㉤은 지문에 있어야 한다.
+    for (const mark of c.question.match(/[㉠-㉦]/g) ?? []) assert.ok(c.passage.includes(mark), `${c.id} ${mark} not in passage`);
+  } else assert.ok(c.subject && len(c.subject) <= 90, `${c.id} needs a short quote line`);
 }
 const lessons = conceptsFor('korean-final');
 assert.ok(lessons.length >= 1);
 for (const l of lessons) assert.ok(!/sc-\d/.test(l.sourceNote + JSON.stringify(l.sections)), `${l.id} cites a scratch file name`);
 
 // 학습지 정답 표시 · 필기와 같은지 (뜻으로 확인)
-const by = (subject, q) => { const c = cards.find(c => c.subject.includes(subject) && c.question.includes(q)); assert.ok(c, subject); return c.answers[c.correct]; };
+// 지문 세트는 3장 이상이고 번호가 이어진다(게임에서 이 순서대로 나온다).
+const sets = new Map();
+cards.forEach((c, i) => { if (c.passage) sets.set(c.passage, [...(sets.get(c.passage) ?? []), i]); });
+assert.ok(sets.size >= 1);
+for (const idx of sets.values()) assert.ok(idx.length >= 3 && idx.every((v, k) => k === 0 || v === idx[k - 1] + 1), 'passage set');
+assert.ok(written.every(q => !q.passage), 'passage sets stay out of the practice cards');
+const by = (subject, q) => { const c = cards.find(c => c.subject?.includes(subject) && c.question.includes(q)); assert.ok(c, subject); return c.answers[c.correct]; };
 assert.equal(by('어찌 다 설화', '말하는 이'), '서술자 · 이야기를 줄여 넘김');
 assert.equal(by('대감이 좌정하시던', '대감'), '이몽룡의 아버지');
 assert.equal(by('흰 창옷에 관', '차림'), '차림은 위엄, 언청이는 희화화');            // 학습지 5쪽 6번 ② 오답 처리

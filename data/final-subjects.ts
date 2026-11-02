@@ -16,7 +16,7 @@ export const finalMenu: SubjectGroup = {
   id: 'root', kind: 'group', name: '과목 선택', direction: 'up', symbol: '✳', description: '분야를 고르고, 그 안에서 공부할 과목을 골라요.',
   children: [
     { id: 'humanities', kind: 'group', name: '인문', direction: 'left', symbol: '가', description: '국어 · 사회 · 영어를 방향으로 골라요.', children: [
-      { id: 'korean-final', kind: 'deck', name: '국어', fullName: '국어(백은미T · 기말)', direction: 'up', symbol: '가', description: '우리 문학의 어제와 오늘: 「춘향전」(판소리계 소설 · 어사또의 한시 · 사회상)과 「봉산 탈춤」(말뚝이의 재담 · 양반 풍자).', cards: koreanFinalCards, writtenQuestions: koreanFinalWritten },
+      { id: 'korean-final', kind: 'deck', name: '국어', fullName: '국어(백은미T · 기말)', direction: 'up', symbol: '가', description: '우리 문학의 어제와 오늘: 「춘향전」(판소리계 소설 · 어사또의 한시 · 사회상)과 「봉산 탈춤」(말뚝이의 재담 · 양반 풍자).', cards: koreanFinalCards, writtenQuestions: koreanFinalWritten, passages: true },
       { id: 'social-final-group', kind: 'group', name: '사회', direction: 'left', symbol: '◎', description: '왼쪽은 성신제T, 오른쪽은 조안나T. 공부할 파트를 골라요.', children: [
         { id: 'social-sung-final', kind: 'deck', name: '성신제T', fullName: '사회(성신제T · 기말)', direction: 'left', symbol: '◎', description: '학습지 하나 = 에디션 하나. 213 피라미드 에디션(인구 분포 · 인구 구조 · 인구 정책), 214 부양비 에디션(인구 변천 · 인구 지표 · 인구 이동).', cards: socialSungFinalCards, writtenQuestions: socialSungFinalWritten },
         { id: 'social-jo-final', kind: 'deck', name: '조안나T', fullName: '사회(조안나T · 기말)', direction: 'right', symbol: '◎', description: '자본주의의 발달과 시장경제: 상업·산업·수정 자본주의·신자유주의 · 경제 체제.', cards: socialJoFinalCards, writtenQuestions: socialJoFinalWritten },

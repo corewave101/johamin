@@ -23,18 +23,18 @@ import { isEnglishWordCard } from '../../data/english-words';
 export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
   // 박상영T has its own card-style menus (see ParkStudy).
   if (deck.id === 'biology-park') return <ParkStudy deck={deck} onBack={onBack} />;
-  if (deck.figures) return <FigureStudy deck={deck} onBack={onBack} />;
+  if (deck.figures || deck.passages) return <FigureStudy deck={deck} onBack={onBack} />;
   return <GeneralStudy deck={deck} onBack={onBack} />;
 }
 
-/** A deck with 그림 카드: asks to rotate on an upright phone; upright, the figure cards are left out. */
+/** A deck with 그림 카드 or 지문 세트: asks to rotate on an upright phone; upright, those cards are left out. */
 function FigureStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
   const portrait = usePortrait();
   const [upright, setUpright] = useState(false);
-  const shown = useMemo(() => portrait ? { ...deck, cards: deck.cards.filter(card => !card.figure) } : deck, [deck, portrait]);
+  const shown = useMemo(() => portrait ? { ...deck, cards: deck.cards.filter(card => !card.figure && !(deck.passages && card.passage)) } : deck, [deck, portrait]);
   return <>
     <GeneralStudy deck={shown} onBack={onBack} figurePanel={!portrait} />
-    {portrait && !upright && <RotateNotice onContinue={() => setUpright(true)} />}
+    {portrait && !upright && <RotateNotice deckName={deck.name} kind={deck.figures ? '그림' : '지문'} onContinue={() => setUpright(true)} />}
   </>;
 }
 

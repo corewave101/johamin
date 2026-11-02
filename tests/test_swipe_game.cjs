@@ -56,6 +56,26 @@ one = answerCard(one, 'unknown', 1);
 assert.equal(one.queue.length, 1);
 one = answerCard(one, one.queue[0].correct, 1);
 assert.equal(one.queue.length, 0);
+// 지문 세트(4.11.0~): 같은 지문 카드는 덱 순서대로 붙어 나오고, 다시 나오는 카드는 세트 사이에만 끼어든다.
+const loose = astronomyCards.slice(0, 20);
+const setA = [0, 1, 2, 3].map(i => ({ ...swipeCards[i], id: `set-a-${i}`, passage: '지문 A' }));
+const setB = [4, 5, 6].map(i => ({ ...swipeCards[i], id: `set-b-${i}`, passage: '지문 B' }));
+for (let seed = 1; seed < 30; seed++) {
+  let g = newGame([...loose.slice(0, 10), ...setA, ...loose.slice(10), ...setB], rng(seed));
+  for (const set of [setA, setB]) {
+    const at = g.queue.findIndex(c => c.id === set[0].id);
+    assert.deepEqual(g.queue.slice(at, at + set.length).map(c => c.id), set.map(c => c.id), `seed ${seed}: set stays together in order`);
+  }
+  for (let turn = 0; turn < 40 && g.queue.length; turn++) {
+    const card = g.queue[0], miss = turn % 3 === 0;
+    g = answerCard(g, miss ? 'unknown' : card.correct, 1, rng(seed + turn));
+    if (!miss) continue;
+    // The retried card never cuts into a run of cards that share a passage.
+    const p = g.queue.lastIndexOf(g.queue.find(c => c.id === card.id));
+    const [before, after] = [g.queue[p - 1], g.queue[p + 1]];
+    assert.ok(!(before?.passage && before.passage === after?.passage && card.passage !== before.passage), `seed ${seed}: retry cuts into a set`);
+  }
+}
 assert.equal(JSON.stringify(astronomyCards), sourceSnapshot, 'Authored data is never mutated');
 console.log('PASS: 75 sourced prompts, immutable shuffle with preserved meaning, new order per seed, guaranteed changed retry arrow, 12-card delay, unknown, streak reset, completion and one-card fallback.');
 
