@@ -1,7 +1,7 @@
 // 박상영T 수행평가 대비(5.0.0~): 실험 전체를 실험대 장면으로 따라가는 애니메이션.
-// 단계마다 장면(frame) 몇 개가 자동으로 이어지며 손 · 피펫 · 튜브가 움직인다. ← → 로 단계 이동, '다시 보기'로 그 단계를 처음부터.
+// 5.0.1~: 세 파트(체크포인트)에서 골라 영화관 모드(전체 화면)로 끝까지 이어 재생한다. 아래 Cinema 참고.
 // 근거: 수행평가 설명서 「2. 단계별 실험 방법」(추출 1~9 · NanoDrop 10~15).
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 type Model = 'P20' | 'P200' | 'P1000';
 type Pip = { m: Model; x: number; y: number; tip?: 'y' | 'b'; liq?: number; press?: 0 | 1 | 2 };
@@ -107,46 +107,136 @@ const STEPS: Step[] = [
 ];
 export const PROTOCOL_STEPS = STEPS;
 
+/* ───────────── 영화관 재생기(5.0.1~) ─────────────
+   타임라인 = 모든 단계의 장면을 이은 것. 처음 화면에서 세 파트(체크포인트) 중 하나를 고르면 거기서부터 끝까지 이어진다.
+   장면이 바뀔 때는 한꺼번에 움직이지 않고 '들어 올리기 → 옮기기 → 내리기 → 동작' 순서로 나눠 보여 준다.
+   스페이스 · → · 화면 클릭 = 다음 장면(움직이는 중이면 먼저 그 장면을 끝까지), ← = 이전 장면, Esc = 나가기. */
+type Shown = Omit<Frame, 'say'>;
+type Phase = { f: Shown; ms: number };
+const CHAPTERS = [
+  { title: '세포 용해', note: '채취 · 용해 완충액 · ProK · 결합 조건', from: 0 },
+  { title: '컬럼 정제', note: '결합 · 세척 · 건조 · 용출', from: 6 },
+  { title: 'NanoDrop 측정', note: '블랭크 · 시료 · 기록', from: 10 },
+];
+const TIMELINE = STEPS.flatMap((s, step) => s.frames.map((f, i) => ({ ...f, step, i })));
+const startOf = (step: number) => TIMELINE.findIndex(t => t.step === step);
+const chapterOf = (step: number) => CHAPTERS.reduce((c, ch, i) => step >= ch.from ? i : c, 0);
+const HOME = { x: STAND.x + 40, y: STAND.y };
+
+/** 이전 장면 → 다음 장면 사이를 단계별 움직임으로 쪼갠다(마지막 단계가 다음 장면 그대로). */
+function phasesBetween(prev: Shown | null, next: Shown): Phase[] {
+  if (!prev) return [{ f: next, ms: 700 }];
+  const out: Phase[] = [];
+  const keep = { ...prev, fx: undefined, hi: next.hi };
+  let pip = prev.pip;
+  const travel = (to: { x: number; y: number }, carry: Pip) => {
+    if (Math.abs(carry.x - to.x) < 1 && Math.abs(carry.y - to.y) < 1) return carry;
+    const lift = Math.min(300, carry.y - 24, to.y - 24);
+    const far = Math.abs(carry.x - to.x) > 2;
+    if (far) {
+      out.push({ f: { ...keep, pip: { ...carry, y: lift } }, ms: 420 });
+      out.push({ f: { ...keep, pip: { ...carry, x: to.x, y: lift } }, ms: 620 });
+    }
+    const landed = { ...carry, x: to.x, y: to.y };
+    out.push({ f: { ...keep, pip: landed }, ms: 420 });
+    return landed;
+  };
+  // 피펫: 다른 피펫으로 바꾸면 거치대에 걸고 새 피펫을 든다. 들고 있는 상태(팁 · 액체 · 누름)는 도착한 뒤에 바뀐다.
+  if (pip && (!next.pip || next.pip.m !== pip.m)) { travel(HOME, pip); pip = undefined; out.push({ f: { ...keep, pip: undefined }, ms: 300 }); }
+  if (next.pip) {
+    const carry = pip ?? { ...next.pip, x: HOME.x, y: HOME.y, tip: undefined, liq: 0, press: 0 };
+    if (!pip) out.push({ f: { ...keep, pip: carry }, ms: 380 });
+    travel(next.pip, carry);
+  }
+  // 튜브: 자리가 바뀌면 들어서 옮긴 뒤 내려놓는다(양은 도착한 뒤에 바뀐다).
+  const moved = next.tubes.some((t, i) => prev.tubes[i] && (prev.tubes[i].x !== t.x || prev.tubes[i].y !== t.y));
+  if (moved) {
+    const base = out.length ? out[out.length - 1].f : keep;
+    out.push({ f: { ...base, tubes: prev.tubes.map(t => ({ ...t, y: t.y - 46 })) }, ms: 380 });
+    out.push({ f: { ...base, tubes: next.tubes.map((t, i) => ({ ...(prev.tubes[i] ?? t), x: t.x, y: t.y - 46 })) }, ms: 560 });
+    out.push({ f: { ...base, tubes: next.tubes.map((t, i) => ({ ...(prev.tubes[i] ?? t), x: t.x, y: t.y })) }, ms: 380 });
+  }
+  out.push({ f: next, ms: 900 });
+  return out;
+}
+
 export default function DnaProtocol() {
-  const [at, setAt] = useState(0);
-  const [frame, setFrame] = useState(0);
-  const [run, setRun] = useState(0);
-  const step = STEPS[at];
-  const go = (d: number) => { setAt(i => Math.min(STEPS.length - 1, Math.max(0, i + d))); };
-  useEffect(() => { setFrame(0); }, [at, run]);
+  const [cinema, setCinema] = useState<number | null>(null);
+  return <section className="dna-chapters">
+    <p className="dna-sub">실험 전체를 영화처럼 따라가요. 파트를 고르면 거기서부터 끝까지 이어서 재생돼요(체크포인트). 스페이스나 화면을 누르면 다음 장면으로 넘어가요.</p>
+    <div className="dna-chapter-list">
+      {CHAPTERS.map((c, i) => <button type="button" key={c.title} className="dna-chapter glass" onClick={() => setCinema(startOf(c.from))}>
+        <span className="dna-chapter-no">파트 {i + 1}</span><strong>{c.title}</strong><small>{c.note}</small>
+        <span className="dna-chapter-steps">{STEPS.slice(c.from, CHAPTERS[i + 1]?.from ?? STEPS.length).map(s => s.title).join(' → ')}</span>
+      </button>)}
+    </div>
+    {cinema !== null && <Cinema start={cinema} onClose={() => setCinema(null)} />}
+  </section>;
+}
+
+function Cinema({ start, onClose }: { start: number; onClose: () => void }) {
+  const root = useRef<HTMLDivElement>(null);
+  const [at, setAt] = useState(start);
+  const [phase, setPhase] = useState(0);
+  const [auto, setAuto] = useState(false);
+  const prevShown = useRef<Shown | null>(null);
+  const cur = TIMELINE[at];
+  const phases = useMemo(() => phasesBetween(prevShown.current, cur), [at]); // eslint-disable-line react-hooks/exhaustive-deps
+  const shown = phases[Math.min(phase, phases.length - 1)].f;
+  const playing = phase < phases.length - 1;
+  useEffect(() => { setPhase(0); }, [at]);
   useEffect(() => {
-    if (frame >= step.frames.length - 1) return;
-    const id = window.setTimeout(() => setFrame(f => f + 1), 1500);
-    return () => window.clearTimeout(id);
-  }, [frame, step.frames.length]);
+    if (playing) { const id = window.setTimeout(() => setPhase(p => p + 1), phases[phase].ms); return () => window.clearTimeout(id); }
+    prevShown.current = cur;
+    if (auto && at < TIMELINE.length - 1) { const id = window.setTimeout(() => setAt(a => a + 1), 1600); return () => window.clearTimeout(id); }
+  }, [phase, playing, auto, at, phases, cur]);
+  const next = useCallback(() => {
+    if (playing) { setPhase(phases.length - 1); return; }
+    setAt(a => Math.min(TIMELINE.length - 1, a + 1));
+  }, [playing, phases.length]);
+  const jump = useCallback((i: number) => { prevShown.current = null; setAt(Math.max(0, Math.min(TIMELINE.length - 1, i))); setPhase(0); }, []);
+  const prev = useCallback(() => jump(at - 1), [jump, at]);
+  const close = useCallback(() => { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); onClose(); }, [onClose]);
+  useEffect(() => {
+    root.current?.requestFullscreen?.().catch(() => { /* 전체 화면을 못 쓰면 화면을 덮는 모드로 */ });
+    const left = () => { if (!document.fullscreenElement) onClose(); };
+    document.addEventListener('fullscreenchange', left);
+    return () => document.removeEventListener('fullscreenchange', left);
+  }, [onClose]);
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
-      if (e.key === ' ' || e.key === 'ArrowUp') { e.preventDefault(); setRun(r => r + 1); }
+      if (e.key === ' ' || e.key === 'ArrowRight' || e.key === 'Enter') { e.preventDefault(); e.stopImmediatePropagation(); next(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); e.stopImmediatePropagation(); prev(); }
+      else if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); close(); }
+      else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); e.stopImmediatePropagation(); }
     };
-    window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
-  }, []);
-  const [startX, setStartX] = useState<number | null>(null);
-  const f = step.frames[Math.min(frame, step.frames.length - 1)];
-  return <section className="dna-scene">
-    <div className="dna-stage is-bench" aria-label="실험대 장면" onPointerDown={e => setStartX(e.clientX)} onPointerUp={e => { if (startX !== null && Math.abs(e.clientX - startX) > 40) go(e.clientX < startX ? 1 : -1); setStartX(null); }}>
-      <Bench f={f} />
-      <div className="dna-say" aria-live="polite"><b>{frame + 1}/{step.frames.length}</b> {f.say}</div>
+    window.addEventListener('keydown', key, true); return () => window.removeEventListener('keydown', key, true);
+  }, [next, prev, close]);
+  const step = STEPS[cur.step];
+  const ch = chapterOf(cur.step);
+  return <div ref={root} className="dna-cinema" role="dialog" aria-modal="true" aria-label="실험 영상">
+    <div className="dna-screen-area" onClick={next}>
+      <Bench f={{ ...shown, say: cur.say }} focus={focusOf(cur)} zoom />
+      <div className="dna-subtitle" aria-live="polite">{cur.say}</div>
+      {!playing && !auto && <div className="dna-next-hint">스페이스 · 클릭 → 다음</div>}
     </div>
-    <div className="dna-step glass">
-      <div className="dna-step-kicker">{at + 1} / {STEPS.length}단계</div>
+    <aside className="dna-aside">
+      <div className="dna-aside-top"><span>파트 {ch + 1} · {CHAPTERS[ch].title}</span><button type="button" className="glass-button" onClick={close}>✕ 나가기</button></div>
+      <div className="dna-step-kicker">{cur.step + 1} / {STEPS.length}단계</div>
       <h2>{step.title}</h2>
       <p>{step.text}</p>
-      {step.why && <ul>{step.why.map(w => <li key={w}>{w}</li>)}</ul>}
-    </div>
-    <div className="dna-controls">
-      <button type="button" className="glass-button" onClick={() => go(-1)} disabled={at === 0}>← 이전</button>
-      <button type="button" className="glass-button" onClick={() => setRun(r => r + 1)}>↺ 다시 보기</button>
-      <button type="button" className="glass-button" onClick={() => go(1)} disabled={at === STEPS.length - 1}>다음 →</button>
-    </div>
-    <div className="dna-dots is-wide" role="tablist" aria-label="단계">{STEPS.map((s, i) => <button type="button" key={s.title} role="tab" aria-selected={i === at} aria-label={`${i + 1}단계 ${s.title}`} onClick={() => setAt(i)} />)}</div>
-  </section>;
+      {step.why && <ul className="dna-why">{step.why.map(w => <li key={w}>{w}</li>)}</ul>}
+      <ol className="dna-checklist">{step.frames.map((f, i) => <li key={i} className={i < cur.i ? 'is-done' : i === cur.i ? 'is-now' : ''}><button type="button" onClick={() => jump(startOf(cur.step) + i)}>{f.say}</button></li>)}</ol>
+      <div className="dna-aside-controls">
+        <button type="button" className="glass-button" onClick={prev} disabled={at === 0}>← 이전</button>
+        <button type="button" className="glass-button" aria-pressed={auto} onClick={() => setAuto(a => !a)}>{auto ? '❚❚ 자동 멈춤' : '▶ 자동 재생'}</button>
+        <button type="button" className="glass-button" onClick={next} disabled={at === TIMELINE.length - 1 && !playing}>다음 →</button>
+      </div>
+      <div className="dna-timeline" aria-label="진행">
+        {STEPS.map((s, i) => <button type="button" key={s.title} title={s.title} aria-label={`${i + 1}단계 ${s.title}`} className={`${i < cur.step ? 'is-done' : i === cur.step ? 'is-now' : ''} ${CHAPTERS.some(c => c.from === i) ? 'is-checkpoint' : ''}`} onClick={() => jump(startOf(i))} />)}
+      </div>
+    </aside>
+  </div>;
 }
 
 function MicroTube({ t }: { t: Tube }) {
@@ -191,12 +281,15 @@ function useNarrow() {
 }
 const focusOf = (f: Frame) => f.fx === 'spin' ? CENTRI.x : f.swab ? Math.min(f.swab.x, 400) : f.pip?.x ?? f.hi?.[0] ?? f.tubes[0]?.x ?? 450;
 
-function Bench({ f }: { f: Frame }) {
+/** focus: 카메라가 비출 곳(x). zoom: 영화관 모드처럼 넓은 화면에서도 확대해 따라간다. 카메라는 부드럽게 옮겨 간다. */
+function Bench({ f, focus, zoom }: { f: Frame; focus?: number; zoom?: boolean }) {
   const hi = new Set(f.hi ?? []);
   const narrow = useNarrow();
-  const w = narrow ? 420 : 900, x0 = narrow ? Math.max(0, Math.min(900 - w, focusOf(f) - w / 2)) : 0;
-  const y0 = narrow ? 150 : 130, h = narrow ? 280 : 300;
-  return <svg viewBox={`${x0} ${y0} ${w} ${h}`} className="dna-svg is-bench" role="img" aria-label={f.say}>
+  const close = narrow || zoom;
+  const w = narrow ? 420 : zoom ? 600 : 900;
+  const x0 = close ? Math.max(0, Math.min(900 - w, (focus ?? focusOf(f)) - w / 2)) : 0;
+  const y0 = close ? 140 : 130, h = close ? 290 : 300;
+  return <svg viewBox={`0 ${y0} ${w} ${h}`} className="dna-svg is-bench" role="img" aria-label={f.say}><g className="dna-camera" style={{ transform: `translateX(${-x0}px)` }}>
     {/* 선반과 실험대 */}
     <rect x="0" y="400" width="900" height="30" className="dna-table" />
     <rect x="420" y="258" width="480" height="8" className="dna-shelf" />
@@ -250,5 +343,5 @@ function Bench({ f }: { f: Frame }) {
     {/* 튜브들 */}
     {f.tubes.map((t, i) => <g key={i} className={f.fx === 'vortex' && t.x === VORTEX ? 'dna-shake' : ''}><MicroTube t={t} /></g>)}
     {f.pip && <Pipette p={f.pip} />}
-  </svg>;
+  </g></svg>;
 }

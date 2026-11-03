@@ -16,7 +16,7 @@ export default function DnaLab({ onBack }: { onBack: () => void }) {
   const back = useCallback(() => { if (page === 'menu') onBack(); else setPage('menu'); }, [page, onBack]);
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return;
+      if (e.key !== 'Escape' || document.querySelector('.dna-cinema')) return; // 영화관 모드는 스스로 Esc를 처리한다
       e.preventDefault(); e.stopImmediatePropagation(); if (!e.repeat) back();
     };
     window.addEventListener('keydown', key, true); return () => window.removeEventListener('keydown', key, true);
