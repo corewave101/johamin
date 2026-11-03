@@ -1,6 +1,7 @@
 import '../components/swipe/observation.css';
 import '../components/swipe/optics.css';
 import '../components/swipe/polarization.css';
+import '../components/swipe/dna-lab.css';
 import '../components/swipe/structure.css';
 import '../components/swipe/elice.css';
 import '../components/swipe/lotte.css';

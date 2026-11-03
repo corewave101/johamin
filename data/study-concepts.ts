@@ -13,6 +13,7 @@ import { englishFinalConcepts } from './english-final-concepts';
 import { mathTrigFinalConcepts } from './math-trig-final-concepts';
 import { astronomyJeonFinalConcepts } from './astronomy-jeon-final-concepts';
 import { physicsYangFinalConcepts } from './physics-yang-final-concepts';
+import { biologyParkFinalConcepts } from './biology-park-final-concepts';
 export interface ConceptSection {
   heading: string;
   paragraphs?: string[];
@@ -7460,7 +7461,8 @@ export const studyConcepts: ConceptLesson[] = [
         "sourceNote": "박상영T · 유전학용어정리(교사용) · 4쪽"
       }
     ]
-  }
+  },
+  ...biologyParkFinalConcepts,
 ];
 for (const [deckId, cards] of Object.entries(sciencePractice)) {
   for (const card of cards) {

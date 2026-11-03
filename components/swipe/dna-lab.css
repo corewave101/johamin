@@ -1,0 +1,177 @@
+/* 박상영T 수행평가 대비 실습(DnaLab · DnaProtocol). 실험대 그림은 어느 가호에서도 같게 읽히도록 어두운 칠판색으로 고정한다. */
+.dna-app { --dna-ink: #e8eef8; --dna-sub: #a9b8cf; --dna-line: #5b7398; --dna-dna: #ff9f43; --dna-protein: #5ab0ff; --dna-lipid: #c7cfd9; --dna-salt: #ffd84d; --dna-eth: #b8f2e6; --dna-liquid: #7fd3ff; }
+.dna-scene { display: grid; gap: 12px; }
+.dna-stage { position: relative; border-radius: 18px; overflow: hidden; touch-action: pan-y; user-select: none;
+  background: radial-gradient(120% 90% at 50% 0%, #1b2d4d 0%, #0f1a30 70%); border: 1px solid #22355a; }
+.dna-svg { display: block; width: 100%; height: auto; max-height: 56vh; font-family: Pretendard, "Noto Sans KR", system-ui, sans-serif; }
+.dna-svg text { fill: var(--dna-ink); font-size: 13px; text-anchor: middle; font-weight: 700; }
+.dna-svg .dna-small { fill: var(--dna-sub); font-size: 11px; font-weight: 700; }
+.dna-move, .dna-dot, .dna-fade, .dna-tip, .dna-pip { transition: transform .9s cubic-bezier(.3, .8, .25, 1), opacity .6s ease, y .9s ease, height .9s ease; }
+
+/* 피펫(단면) */
+.dna-body { fill: #e9eef5; stroke: #8fa3c0; stroke-width: 2; }
+.dna-plunger { fill: var(--theme-base, #e8b931); stroke: #fff6; }
+.dna-rod { fill: #b9c5d6; }
+.dna-piston { fill: #7a8aa3; }
+.dna-ejector { fill: #9aa9bf; }
+.dna-window { fill: #0e1625; stroke: #8fa3c0; }
+.dna-svg .dna-digit { fill: #ff6b6b; font-size: 10px; font-family: ui-monospace, monospace; }
+.dna-nozzle { fill: #c6d0de; }
+.dna-air { fill: rgba(184, 242, 230, .18); }
+.dna-svg .dna-air-note { font-size: 12px; fill: var(--dna-eth); }
+.dna-tip-shell { fill: rgba(255, 230, 120, .28); stroke: #ffe27a; stroke-width: 2; }
+.dna-tip.is-off { transform: translate(40px, 90px) rotate(30deg); opacity: 0; }
+.dna-liquid { fill: var(--dna-liquid); opacity: .9; }
+.dna-liquid.is-dna { fill: #ffc078; }
+.dna-extra { fill: #ffb3c7; opacity: .9; }
+.dna-bubble { fill: #fff; opacity: .85; }
+.dna-splash { fill: #ff6b6b; }
+.dna-outside { fill: none; stroke: var(--dna-liquid); stroke-width: 4; stroke-linecap: round; }
+.dna-tube path { fill: rgba(255, 255, 255, .06); stroke: #8fa3c0; stroke-width: 2; }
+.dna-reagent { fill: rgba(127, 211, 255, .55); }
+.dna-reagent.is-filled { fill: rgba(127, 211, 255, .9); }
+.dna-labels text { font-size: 12px; fill: #fff4cf; }
+.dna-labels line { stroke: #fff4cf88; stroke-width: 1.5; }
+.dna-press text { font-size: 12px; fill: var(--dna-sub); }
+.dna-press text.is-on { fill: var(--theme-base, #e8b931); font-size: 15px; }
+
+/* 스핀 컬럼 · 입자 */
+.dna-glass { fill: rgba(255, 255, 255, .05); stroke: #8fa3c0; stroke-width: 2.5; }
+.dna-glass.is-new { stroke: #ffc078; }
+.dna-buffer { fill: rgba(127, 211, 255, .14); }
+.dna-cell { fill: rgba(255, 200, 200, .12); stroke: #ffb3b3; stroke-width: 2.5; stroke-dasharray: 5 4; transition: opacity .7s ease; }
+.dna-nucleus { fill: rgba(255, 159, 67, .12); stroke: #ffb36b; stroke-width: 2; transition: opacity .7s ease; }
+.dna-column { fill: rgba(255, 140, 190, .12); stroke: #ff8cbe; stroke-width: 3; }
+.dna-membrane { fill: #f5f7fb; }
+.dna-pink { fill: #ff8cbe; }
+.dna-spin { animation: dna-wobble .5s ease-in-out 2; transform-origin: 200px 90px; }
+@keyframes dna-wobble { 50% { transform: rotate(2deg); } }
+.dna-drop { fill: var(--dna-liquid); animation: dna-drip 1.2s ease-in infinite; }
+@keyframes dna-drip { from { transform: translateY(-20px); opacity: 0; } 30% { opacity: 1; } to { transform: translateY(18px); opacity: 0; } }
+.dna-dot.dna { fill: none; stroke: var(--dna-dna); stroke-width: 3; stroke-linecap: round; }
+.dna-dot.protein { fill: var(--dna-protein); }
+.dna-dot.lipid { fill: var(--dna-lipid); }
+.dna-svg .dna-dot.salt { fill: var(--dna-salt); font-size: 14px; }
+.dna-dot.ethanol { fill: var(--dna-eth); }
+.dna-temp rect { fill: #ff6b3d; }
+.dna-svg .dna-temp text { fill: #fff; }
+.dna-svg .dna-legend text { font-size: 11px; text-anchor: start; fill: var(--dna-sub); }
+
+/* NanoDrop(원리 장면) */
+.dna-device { fill: #d9e0ea; stroke: #8fa3c0; stroke-width: 2; }
+.dna-pedestal { fill: #8a96a8; }
+.dna-column-drop.blank { fill: rgba(127, 211, 255, .7); }
+.dna-column-drop.sample { fill: #ffc078; }
+.dna-beam line { stroke: #b78cff; stroke-width: 5; stroke-dasharray: 6 5; animation: dna-flow .6s linear infinite; }
+.dna-svg .dna-beam text { fill: #d5c0ff; font-size: 12px; }
+@keyframes dna-flow { to { stroke-dashoffset: -11; } }
+.dna-cloth { fill: #fff; opacity: .9; animation: dna-wipe .7s ease-in-out infinite alternate; }
+@keyframes dna-wipe { from { transform: translateX(-10px); } to { transform: translateX(10px); } }
+.dna-screen { fill: #0b1322; stroke: #5b7398; stroke-width: 2; }
+.dna-svg .dna-screen-title { font-size: 11px; fill: #9fe7ff; }
+.dna-graph path, .dna-peak { fill: none; stroke: #9fe7ff; stroke-width: 2.5; }
+.dna-graph line { stroke: #ff6b6b88; stroke-dasharray: 3 3; }
+.dna-svg .dna-graph text { font-size: 10px; }
+
+/* 실험대(따라하기) */
+.dna-svg.is-bench { max-height: 60vh; }
+.dna-stage.is-bench { display: flex; flex-direction: column-reverse; }
+.dna-table { fill: #3a2e24; }
+.dna-shelf { fill: #4b5b75; }
+.dna-face circle:first-child { fill: #f2c7a5; }
+.dna-eye { fill: #2b2622; }
+.dna-mouth { fill: none; stroke: #b5524b; stroke-width: 3; stroke-linecap: round; }
+.dna-swab { stroke: #f4f1ea; stroke-width: 3; }
+.dna-swab-head { fill: #fffdf5; }
+.dna-stand rect { fill: #6c7f9e; }
+.dna-stand rect.is-out { opacity: .15; }
+.dna-svg .dna-tube-label { fill: #ffe2b8; }
+.dna-app .biology-study { padding-bottom: 72px; }
+.dna-tipbox { stroke: #8fa3c0; stroke-width: 2; }
+.dna-tipbox.y { fill: rgba(255, 216, 77, .55); }
+.dna-tipbox.b { fill: rgba(90, 176, 255, .55); }
+.dna-bottle { fill: rgba(255, 255, 255, .08); stroke: #8fa3c0; stroke-width: 2; }
+.dna-reagent.r-PBS, .dna-reagent.r-EA { fill: rgba(127, 211, 255, .5); }
+.dna-reagent.r-TL, .dna-reagent.r-GB { fill: rgba(200, 160, 255, .45); }
+.dna-reagent.r-ProK { fill: rgba(255, 180, 120, .6); }
+.dna-reagent.r-EtOH, .dna-reagent.r-GW1, .dna-reagent.r-GW2 { fill: rgba(184, 242, 230, .45); }
+.dna-ice { fill: rgba(170, 220, 255, .25); stroke: #aee0ff; stroke-dasharray: 4 3; }
+.dna-rack { fill: #6c7f9e; }
+.dna-machine { fill: #2d3b55; stroke: #8fa3c0; stroke-width: 2; }
+.dna-heatblock { fill: #5a3a2e; stroke: #ff8a5c; stroke-width: 2; }
+.is-heat .dna-heatblock { fill: #8a3b22; filter: drop-shadow(0 0 10px #ff6b3d); }
+.dna-svg .dna-temp-label { fill: #ffd2bf; font-size: 11px; }
+.dna-waste { fill: rgba(255, 255, 255, .05); stroke: #8fa3c0; stroke-width: 2; }
+.dna-rotor-plate { fill: #42526f; stroke: #9fb2d3; stroke-width: 2; }
+.dna-rotor.is-spin { animation: dna-rotate .35s linear infinite; }
+@keyframes dna-rotate { to { transform: rotate(360deg); } }
+.dna-balance { fill: #9fb2d3; }
+.dna-microtube { fill: rgba(255, 255, 255, .1); stroke: #c8d4e6; stroke-width: 2; }
+.dna-microtube.is-new { stroke: #ffc078; }
+.dna-tip-mini.y { fill: rgba(255, 216, 77, .7); stroke: #ffe27a; }
+.dna-tip-mini.b { fill: rgba(90, 176, 255, .7); stroke: #9fd0ff; }
+.dna-svg .dna-model { font-size: 9px; fill: #33405a; }
+.dna-sleeve { fill: none; stroke: #f0f3f8; stroke-width: 16; stroke-linecap: round; opacity: .9; }
+.dna-glove { fill: #8f7cf0; }
+.dna-uv { stroke: #b78cff; stroke-width: 4; stroke-dasharray: 3 3; animation: dna-flow .5s linear infinite; }
+.dna-shake { animation: dna-shake .12s linear infinite; }
+@keyframes dna-shake { 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
+.dna-timer circle { fill: #0b1322; stroke: var(--theme-base, #e8b931); stroke-width: 3; }
+.dna-svg .dna-timer text { font-size: 11px; }
+.is-hi > rect:first-child, .is-hi > path:first-child { stroke: var(--theme-base, #e8b931); stroke-width: 3; filter: drop-shadow(0 0 6px rgba(232, 185, 49, .7)); }
+.dna-say { padding: 10px 14px; background: rgba(8, 14, 26, .82); color: #fff; font-size: 16px; font-weight: 700; line-height: 1.4; }
+.dna-say b { margin-right: 6px; color: var(--theme-base, #e8b931); font-size: 12px; }
+
+/* 설명 · 조작 */
+.dna-step { padding: 14px 18px; border-radius: 18px; }
+.dna-step-kicker { font-size: 12px; font-weight: 800; opacity: .7; }
+.dna-step h2 { margin: 2px 0 6px; font-size: clamp(18px, 2.6vw, 22px); }
+.dna-step p { margin: 0; line-height: 1.65; }
+.dna-step ul { margin: 8px 0 0; padding-left: 20px; line-height: 1.6; }
+.dna-controls { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.dna-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.dna-dots button { width: 12px; height: 12px; padding: 0; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .45); cursor: pointer; }
+.dna-dots button[aria-selected="true"] { background: var(--theme-base, #e8b931); transform: scale(1.3); }
+.dna-dots.is-wide { margin-top: -4px; }
+.dna-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 10px; }
+.dna-tabs .glass-button { display: inline-flex; flex-direction: column; align-items: center; }
+.dna-tabs .glass-button[aria-pressed="true"] { outline: 3px solid var(--theme-base, #e8b931); }
+.dna-tabs small { font-size: 11px; opacity: .75; }
+.dna-reader { margin-top: 14px; padding: 16px 18px; border-radius: 18px; }
+.dna-reader h2 { margin: 6px 0 4px; font-size: 19px; }
+.dna-sub { margin: 0 0 6px; line-height: 1.6; }
+.dna-display { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+.dna-wheel { display: flex; gap: 6px; padding: 8px; border-radius: 14px; background: #0e1625; }
+.dna-wheel > div { display: grid; justify-items: center; }
+.dna-wheel button { border: 0; background: none; color: #9fb2d3; font-size: 14px; padding: 4px 10px; cursor: pointer; }
+.dna-wheel b { font: 800 28px ui-monospace, monospace; color: #f2f5fa; }
+.dna-wheel b.is-red { color: #ff6b6b; }
+.dna-read { display: grid; gap: 2px; }
+.dna-read strong { font-size: 26px; }
+.dna-read em { color: #d6262c; font-style: normal; font-weight: 800; }
+.dna-pick { font-size: 16px; margin: 6px 0; }
+.dna-status { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 12px 0 0; }
+.dna-status > div { padding: 10px 12px; border-radius: 14px; background: rgba(255, 255, 255, .42); }
+.dna-status dt { font-size: 12px; opacity: .75; font-weight: 700; }
+.dna-status dd { margin: 2px 0 0; font-size: 17px; font-weight: 800; overflow-wrap: anywhere; }
+.dna-status dd.is-high { color: #b3541e; }
+.dna-status dd.is-low { color: #1e6fb3; }
+.dna-status dd.is-keep { color: #1f8a4c; }
+.dna-status dd.is-toss { color: #c0392b; }
+.dna-bars { display: flex; align-items: flex-end; gap: 18px; height: 120px; padding: 8px 14px 0; margin: 8px 0; border-radius: 14px; background: #0e1625; }
+.dna-bars > div { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; }
+.dna-bars i { display: block; width: 60%; border-radius: 6px 6px 0 0; transition: height .6s ease; }
+.dna-bars i.a260 { background: #ffc078; }
+.dna-bars i.a280 { background: var(--dna-protein); }
+.dna-bars i.a230 { background: var(--dna-salt); }
+.dna-bars span { color: #c9d6ec; font-size: 12px; font-weight: 700; padding-bottom: 4px; }
+.dna-foot { margin: 10px 4px 24px; font-size: 12px; opacity: .75; }
+@media (max-width: 600px) {
+  .dna-say { font-size: 14px; }
+  .dna-step { padding: 12px 14px; }
+  .dna-controls .glass-button { padding-inline: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dna-move, .dna-dot, .dna-fade, .dna-tip, .dna-pip { transition: none; }
+  .dna-rotor.is-spin, .dna-shake, .dna-cloth, .dna-beam line, .dna-uv, .dna-drop, .dna-spin { animation: none; }
+}
