@@ -18,23 +18,24 @@ import ConceptReader from './ConceptReader';
 import { conceptsFor } from '../../data/study-concepts';
 import { usePortrait } from '../../lib/figure-mode';
 import RotateNotice from './RotateNotice';
+import DnaLab from './DnaLab';
 import { isEnglishWordCard } from '../../data/english-words';
 
 export default function SubjectStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
   // 박상영T has its own card-style menus (see ParkStudy).
   if (deck.id === 'biology-park') return <ParkStudy deck={deck} onBack={onBack} />;
-  if (deck.figures) return <FigureStudy deck={deck} onBack={onBack} />;
+  if (deck.figures || deck.passages) return <FigureStudy deck={deck} onBack={onBack} />;
   return <GeneralStudy deck={deck} onBack={onBack} />;
 }
 
-/** A deck with 그림 카드: asks to rotate on an upright phone; upright, the figure cards are left out. */
+/** A deck with 그림 카드 or 지문 세트: asks to rotate on an upright phone; upright, those cards are left out. */
 function FigureStudy({ deck, onBack }: { deck: SubjectDeck; onBack: () => void }) {
   const portrait = usePortrait();
   const [upright, setUpright] = useState(false);
-  const shown = useMemo(() => portrait ? { ...deck, cards: deck.cards.filter(card => !card.figure) } : deck, [deck, portrait]);
+  const shown = useMemo(() => portrait ? { ...deck, cards: deck.cards.filter(card => !card.figure && !(deck.passages && card.passage)) } : deck, [deck, portrait]);
   return <>
     <GeneralStudy deck={shown} onBack={onBack} figurePanel={!portrait} />
-    {portrait && !upright && <RotateNotice onContinue={() => setUpright(true)} />}
+    {portrait && !upright && <RotateNotice deckName={deck.name} kind={deck.figures ? '그림' : '지문'} onContinue={() => setUpright(true)} />}
   </>;
 }
 
@@ -52,6 +53,8 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   const optics = labs.includes('optics'), polarization = labs.includes('polarization');
   // 주민지T 구조식 실습(4.4.0~): lab: 'structure'.
   const structure = labs.includes('structure');
+  // 박상영T 수행평가 대비(5.0.0~): lab: 'dna' — 구강상피세포 DNA 추출 · NanoDrop 실험 장면.
+  const dna = labs.includes('dna');
   const [practice, setPractice] = useState<LabKind | null>(null);
   // 영어 단어 문제(뜻+품사)는 본문 문제와 따로 '단어 문제' 카드 패에서 푼다.
   const generalCards = deck.cards.filter(card => !isEnglishWordCard(card));
@@ -80,13 +83,14 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   if (mode === 'missed') return <SwipeGame cards={retryCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
   if (mode === 'choice') return <SwipeGame cards={choiceCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
   if (mode === 'word-game') return <SwipeGame cards={wordList.cards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · ${wordList.name}`} onBack={() => setMode('words')} backLabel={gameBackLabel} />;
-  if (mode === 'practice') return practice === 'polarization' ? <PolarizationLab onBack={() => setMode('menu')} /> : practice === 'optics' ? <OpticsLab onBack={() => setMode('menu')} /> : structure ? <StructureLab onBack={() => setMode('menu')} /> : deck.id === 'chemistry' ? <ChemistryLab onBack={() => setMode('menu')} /> : <ObservationLab onBack={() => setMode('menu')} />;
+  if (mode === 'practice') return practice === 'dna' ? <DnaLab onBack={() => setMode('menu')} /> : practice === 'polarization' ? <PolarizationLab onBack={() => setMode('menu')} /> : practice === 'optics' ? <OpticsLab onBack={() => setMode('menu')} /> : structure ? <StructureLab onBack={() => setMode('menu')} /> : deck.id === 'chemistry' ? <ChemistryLab onBack={() => setMode('menu')} /> : <ObservationLab onBack={() => setMode('menu')} />;
   const name = deck.fullName ?? deck.name;
   // 카드 패: the subject menu and the unit menu are hands of cards.
   if (mode === 'menu' && !pending) {
     const missedAll = missedCards(generalCards);
     const topicCount = new Set(generalCards.map(card => card.topic)).size;
     const hand: HandCard[] = [
+      ...(dna ? [{ id: 'practice-dna', kicker: '수행평가 대비', title: 'DNA 추출 실험 장면', note: '피펫 · 스핀 컬럼 · NanoDrop', onPlay: () => { setPractice('dna'); setMode('practice'); } }] : []),
       ...(polarization ? [{ id: 'practice-polarization', kicker: '편광 가상실험실', title: '편광판 돌려 보기', note: '말뤼스 법칙 · LCD · 광자 정보', onPlay: () => { setPractice('polarization'); setMode('practice'); } }] : []),
       ...(optics ? [{ id: 'practice', kicker: '빛과 렌즈 실습', title: '광선 작도하기', note: '렌즈 · 거울 · 스크린 상맺힘', onPlay: () => { setPractice('optics'); setMode('practice'); } }] : []),
       ...(structure ? [{ id: 'practice', kicker: '구조식 실습', title: '구조식 ↔ 이름', note: '이름 맞히기 · 점 이어 그리기', onPlay: () => setMode('practice') }] : []),

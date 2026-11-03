@@ -1,4 +1,5 @@
 import type { HTMLAttributes, PointerEvent, ReactNode } from 'react';
+import QuestionText from './QuestionText';
 
 type Props = HTMLAttributes<HTMLElement> & { topic: string; subject?: string; question: string; children?: ReactNode };
 
@@ -34,7 +35,7 @@ export default function LaminatedCard({ topic, subject, question, className = ''
       <span className="card-topic">{topic}</span>
       <div className="swipe-question">
         {subject && <p className="card-subject" data-length={subjectLength(subject)}>{subject}</p>}
-        <h2 data-length={lengthClass(question)}>{question}</h2>
+        <h2 data-length={lengthClass(question)}><QuestionText text={question} /></h2>
       </div>
     </div>
     <div className="card-gloss" aria-hidden="true" />

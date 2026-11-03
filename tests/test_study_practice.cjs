@@ -38,10 +38,11 @@ const { socialBulkPractice } = require('../data/social-bulk-cards.ts'); // 뭉�
 const { biologyJoBulkPractice } = require('../data/biology-jo-bulk-cards.ts'); // 조용민T 뭉탱이도 같은 방식
 const { koreanClassicPractice } = require('../data/korean-classic-cards.ts'); // 고전 시가도 같은 방식
 const { socialSungFinalPractice } = require('../data/social-sung-final-cards.ts'); // 기말 성신제T 에디션도 같은 방식
-const bulkPractice = socialBulkPractice.short.length + socialBulkPractice.written.length + biologyJoBulkPractice.short.length + biologyJoBulkPractice.written.length + koreanClassicPractice.short.length + koreanClassicPractice.written.length + socialSungFinalPractice.short.length + socialSungFinalPractice.written.length;
+const { koreanFinalPractice } = require('../data/korean-final-cards.ts'); // 기말 국어 백은미T도 같은 방식
+const bulkPractice = socialBulkPractice.short.length + socialBulkPractice.written.length + biologyJoBulkPractice.short.length + biologyJoBulkPractice.written.length + koreanClassicPractice.short.length + koreanClassicPractice.written.length + socialSungFinalPractice.short.length + socialSungFinalPractice.written.length + koreanFinalPractice.short.length + koreanFinalPractice.written.length;
 assert.equal(exported.length, 334 + bulkPractice);
 const live = groupRows(allRows);
-assert.equal(Object.values(live).flatMap(d => d.written).filter(isShortQuestion).length, 152 + socialBulkPractice.short.length + biologyJoBulkPractice.short.length + koreanClassicPractice.short.length + socialSungFinalPractice.short.length + require('../data/hwang-exam.ts').hwangExam.filter(isShortQuestion).length);
+assert.equal(Object.values(live).flatMap(d => d.written).filter(isShortQuestion).length, 152 + socialBulkPractice.short.length + biologyJoBulkPractice.short.length + koreanClassicPractice.short.length + socialSungFinalPractice.short.length + koreanFinalPractice.short.length + require('../data/hwang-exam.ts').hwangExam.filter(isShortQuestion).length);
 const liveMenu = withLiveCards(subjectMenu, live);
 assert.ok(JSON.stringify(liveMenu).includes('practice-short-'));
 const dna = sciencePractice['biology-park'];

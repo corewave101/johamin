@@ -21,16 +21,35 @@ export function shuffleAnswers(card: SwipeCard, random = Math.random, changeCorr
   const answers = Object.fromEntries(directions.map(d => [d, d === correct ? card.answers[card.correct] : distractors[index++]])) as Record<Direction, string>;
   return { ...card, answers, correct };
 }
+/** 지문 세트(5.0.0~): 같은 지문을 쓰는 카드는 한 묶음으로 섞이고, 묶음 안에서는 덱 순서대로 나온다. */
+function passageUnits(cards: SwipeCard[]): SwipeCard[][] {
+  const sets = new Map<string, SwipeCard[]>();
+  const units: SwipeCard[][] = [];
+  for (const card of cards) {
+    const unit = card.passage ? sets.get(card.passage) : undefined;
+    if (unit) { unit.push(card); continue; }
+    const fresh = [card];
+    if (card.passage) sets.set(card.passage, fresh);
+    units.push(fresh);
+  }
+  return units;
+}
 export function newGame(cards = swipeCards, random = Math.random): GameState {
-  return { queue: shuffled(cards, random).map(card => shuffleAnswers(card, random)), attempts: [], streak: 0, bestStreak: 0, mastered: [] };
+  return { queue: shuffled(passageUnits(cards), random).flat().map(card => shuffleAnswers(card, random)), attempts: [], streak: 0, bestStreak: 0, mastered: [] };
+}
+/** Where a retried card goes back in: after RETRY_GAP cards, but never inside another passage set. */
+function retrySpot(queue: SwipeCard[]) {
+  let at = Math.min(RETRY_GAP, queue.length);
+  while (at > 0 && at < queue.length && queue[at].passage && queue[at].passage === queue[at - 1].passage) at++;
+  return at;
 }
 export function answerCard(state: GameState, direction: AnswerChoice, seconds: number, random = Math.random): GameState {
   const card = state.queue[0];
   if (!card) return state;
   const correct = direction === card.correct;
   const queue = state.queue.slice(1);
-  // Incorrect and unknown answers return after twelve other cards (or the remaining deck).
-  if (!correct) queue.splice(Math.min(RETRY_GAP, queue.length), 0, shuffleAnswers(card, random, true));
+  // Incorrect and unknown answers return after twelve other cards (or the remaining deck), outside any passage set.
+  if (!correct) queue.splice(retrySpot(queue), 0, shuffleAnswers(card, random, true));
   const streak = correct ? state.streak + 1 : 0;
   return { queue, attempts: [...state.attempts, { card, direction, correct, seconds }], streak,
     bestStreak: Math.max(state.bestStreak, streak), mastered: correct ? [...state.mastered, card.id] : state.mastered };

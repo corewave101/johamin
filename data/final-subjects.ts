@@ -6,6 +6,7 @@ import { englishFinalCards, englishFinalWritten } from './english-final-cards';
 import { mathTrigFinalCards, mathTrigFinalWritten } from './math-trig-final-cards';
 import { astronomyJeonFinalCards, astronomyJeonFinalWritten } from './astronomy-jeon-final-cards';
 import { physicsYangFinalCards, physicsYangFinalWritten } from './physics-yang-final-cards';
+import { koreanFinalCards, koreanFinalWritten } from './korean-final-cards';
 
 // 기말고사 메뉴. 중간고사 카드(data/swipe-subjects.ts의 subjectMenu)는 /midterm/ 보관함으로 옮겼다.
 // 처음 화면에서 ↓는 뒤로 갈 곳이 없어서 수학 자리로 쓴다(↑는 중간고사 바로가기).
@@ -15,7 +16,7 @@ export const finalMenu: SubjectGroup = {
   id: 'root', kind: 'group', name: '과목 선택', direction: 'up', symbol: '✳', description: '분야를 고르고, 그 안에서 공부할 과목을 골라요.',
   children: [
     { id: 'humanities', kind: 'group', name: '인문', direction: 'left', symbol: '가', description: '국어 · 사회 · 영어를 방향으로 골라요.', children: [
-      { id: 'korean-final', kind: 'deck', name: '국어', fullName: '국어(기말)', direction: 'up', symbol: '가', description: '기말고사 국어 카드를 준비하고 있어요.', cards: [] },
+      { id: 'korean-final', kind: 'deck', name: '국어', fullName: '국어(백은미T · 기말)', direction: 'up', symbol: '가', description: '우리 문학의 어제와 오늘: 「춘향전」(판소리계 소설 · 어사또의 한시 · 사회상)과 「봉산 탈춤」(말뚝이의 재담 · 양반 풍자).', cards: koreanFinalCards, writtenQuestions: koreanFinalWritten, passages: true },
       { id: 'social-final-group', kind: 'group', name: '사회', direction: 'left', symbol: '◎', description: '왼쪽은 성신제T, 오른쪽은 조안나T. 공부할 파트를 골라요.', children: [
         { id: 'social-sung-final', kind: 'deck', name: '성신제T', fullName: '사회(성신제T · 기말)', direction: 'left', symbol: '◎', description: '학습지 하나 = 에디션 하나. 213 피라미드 에디션(인구 분포 · 인구 구조 · 인구 정책), 214 부양비 에디션(인구 변천 · 인구 지표 · 인구 이동).', cards: socialSungFinalCards, writtenQuestions: socialSungFinalWritten },
         { id: 'social-jo-final', kind: 'deck', name: '조안나T', fullName: '사회(조안나T · 기말)', direction: 'right', symbol: '◎', description: '자본주의의 발달과 시장경제: 상업·산업·수정 자본주의·신자유주의 · 경제 체제.', cards: socialJoFinalCards, writtenQuestions: socialJoFinalWritten },
@@ -23,7 +24,10 @@ export const finalMenu: SubjectGroup = {
       { id: 'english-final', kind: 'deck', name: '영어', fullName: '영어(진달래T · 기말)', direction: 'right', symbol: 'A', description: '연결사와 접속사: 역접 · 인과 · 전치사와의 차이 · 자주 쓰는 표현.', cards: englishFinalCards, writtenQuestions: englishFinalWritten },
     ] },
     { id: 'science', kind: 'group', name: '과학', direction: 'right', symbol: '✳', description: '생물 · 지구과학 · 물리학Ⅱ · 화학을 골라요.', children: [
-      { id: 'biology-final', kind: 'deck', name: '생물', fullName: '생물(기말)', direction: 'up', symbol: '✳', description: '기말고사 생물 카드를 준비하고 있어요.', cards: [] },
+      { id: 'biology-final-group', kind: 'group', name: '생물', direction: 'up', symbol: '✳', description: '공부할 선생님 파트를 골라요.', children: [
+        // 5.0.0~: 박상영T 수행평가(구강상피세포 DNA 추출 · NanoDrop) 대비. 카드 없이 실험 장면 + 개념 정리.
+        { id: 'biology-park-final', kind: 'deck', name: '박상영T', fullName: '생물(박상영T · 수행평가 대비)', direction: 'left', symbol: '✳', description: '수행평가 대비: 마이크로피펫 · 구강상피세포 DNA 추출 · NanoDrop 정량 · 보고서 계산.', cards: [], lab: 'dna' },
+      ] },
       { id: 'astronomy-final-group', kind: 'group', name: '지구과학', direction: 'left', symbol: '✦', description: '왼쪽은 황윤환T, 오른쪽은 전효진T. 공부할 파트를 골라요.', children: [
         { id: 'astronomy-hwang-final', kind: 'deck', name: '황윤환T', fullName: '행성우주과학(황윤환T · 기말)', direction: 'left', symbol: '✦', description: '기말고사 황윤환T 카드를 준비하고 있어요.', cards: [] },
         { id: 'astronomy-jeon-final', kind: 'deck', name: '전효진T', fullName: '행성우주과학(전효진T · 기말)', direction: 'right', symbol: '✧', description: '외계 행성 탐사: 도플러 효과 · 적색·청색 편이 · 시선 속도 · 중심별의 시선 속도 변화.', cards: astronomyJeonFinalCards, writtenQuestions: astronomyJeonFinalWritten },
