@@ -51,8 +51,12 @@ for (const l of lessons) assert.ok(l.summary.length > 35 && l.sections.length >=
 
 // 실험 따라하기: 단계 순서(채취 → 용해 → … → 용출 → NanoDrop)와 장면 문구.
 const src = fs.readFileSync('components/swipe/DnaProtocol.tsx', 'utf8');
-const titles = [...src.matchAll(/\{ title: '([^']+)'/g)].map(m => m[1]);
+const stepsBlock = src.slice(src.indexOf('const STEPS: Step[]'), src.indexOf('export const PROTOCOL_STEPS'));
+const titles = [...stepsBlock.matchAll(/\{ title: '([^']+)'/g)].map(m => m[1]);
 const order = ['구강상피세포 채취', '용해 완충액 200 µL', '프로테이네이스 K 20 µL', '볼텍싱 → 56°C 배양', '결합 완충액 200 µL', '무수 에탄올 200 µL', '컬럼에 올리기 → 원심분리', '세척 1 · 2', '건조 원심분리(Dry spin)', '용출 100 µL → DNA 얻기', 'NanoDrop: 닦고 블랭크', 'NanoDrop: 시료 측정'];
 assert.deepEqual(titles, order);
 assert.ok(src.includes("transfer('P20', 'ProK'") && src.includes("transfer('P1000', 'GW1'") && src.includes("transfer('P200', 'EA'"), '시약마다 맞는 피펫');
+// 영화관 모드(5.0.1~): 세 파트 체크포인트, 다음 장면은 스페이스 · 클릭.
+assert.ok(/const CHAPTERS = \[[\s\S]*?from: 0[\s\S]*?from: 6[\s\S]*?from: 10/.test(src));
+assert.ok(src.includes("e.key === ' '") && src.includes('onClick={next}') && src.includes('requestFullscreen'));
 console.log('PASS: 표시창 읽기 · 피펫 고르기 · 오차 · 농도 · 수득량 · 순도 해석 · 메뉴 · 실험 순서');
