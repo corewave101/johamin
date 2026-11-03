@@ -53,7 +53,7 @@ function Fireworks() {
 export default function LottePeek() {
   const peek = useRef<HTMLButtonElement>(null);
   const [launch, setLaunch] = useState<{ x: number; y: number } | null>(null);
-  // 설정(≡)에서 롯데 로고를 끌 수 있다(4.11.0~).
+  // 설정(≡)에서 롯데 로고를 끌 수 있다(5.0.0~).
   const [shown, setShown] = useState(() => isOn('lottePeek'));
   useEffect(() => onToggle((key, on) => { if (key === 'lottePeek') setShown(on); }), []);
   const go = () => {

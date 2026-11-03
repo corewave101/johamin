@@ -345,7 +345,7 @@
 /* 카드 크기 (every blessing). --card-scale comes from lib/card-size.ts; phones stop at 120% so the arrows still fit.
    The board is zoomed as a whole; drag offsets are divided by the same zoom so the card follows the finger. */
 :root { --card-scale: 1; --card-zoom: var(--card-scale); --board-zoom: var(--card-zoom); }
-/* 4.11.0~: 문제 화면은 --board-zoom = min(카드 크기, 남는 높이에 맞춘 --fit). 메뉴 카드는 카드 크기 그대로. */
+/* 5.0.0~: 문제 화면은 --board-zoom = min(카드 크기, 남는 높이에 맞춘 --fit). 메뉴 카드는 카드 크기 그대로. */
 .swipe-board { zoom: var(--board-zoom); }
 @media (max-width: 900px) {
   :root { --card-zoom: min(var(--card-scale), 1.2); }
@@ -628,7 +628,7 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 .figure-card img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; border-radius: 12px; user-select: none; -webkit-user-drag: none; }
 .figure-card figcaption { font-size: 12px; font-weight: 700; color: var(--ink-soft); text-align: right; }
 @keyframes figure-rise { from { opacity: 0; transform: translateY(70px) rotate(1.5deg) scale(.96); } to { opacity: 1; transform: none; } }
-/* 지문 세트(4.11.0~, 국어): the passage rises into the same slot as a paper sheet and stays while its questions go by. */
+/* 지문 세트(5.0.0~, 국어): the passage rises into the same slot as a paper sheet and stays while its questions go by. */
 .passage-card { box-sizing: border-box; align-self: stretch; width: min(100%, 680px); max-height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px;
   padding: 16px 8px 12px 22px; border-radius: 22px; background: #fffdf8; color: #2b2622;
   box-shadow: 0 30px 60px -24px rgba(20, 12, 4, .65), 0 0 0 8px rgba(255, 255, 255, .38), 0 0 0 9px rgb(var(--theme-glow) / .35);
@@ -702,7 +702,7 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 :root[data-beta="on"] .figure-slot { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 
 
-/* ===== 4.11.0 · 문제 화면: 스크롤 없이 한 화면에 (components/swipe/SwipeGame.tsx) =====
+/* ===== 5.0.0 · 문제 화면: 스크롤 없이 한 화면에 (components/swipe/SwipeGame.tsx) =====
    제목 · 과목 이름 · 돌아가기 버튼 · 모름 · 답 가리기는 빠지고, 위쪽은 진행 막대만. 돌아가기는 카드 반대편의 점선 칸.
    보드는 SwipeGame이 잰 --fit만큼 작아진다(카드 크기 설정보다 크지 않게). 정보 · 실습 화면은 이 규칙과 상관없다. */
 :root.in-game, :root.in-game body { height: 100%; overflow: hidden; overscroll-behavior: none; }
@@ -766,10 +766,10 @@ html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 .swipe-game .fly-up { animation-name: fly-up, fly-fade-late, fly-blur; }
 .swipe-game .fly-down { animation-name: fly-down, fly-fade-late, fly-blur; }
 
-/* 국어 지문(4.11.0~): 밑줄 친 부분. 원문은 줄을 그대로 살리고 조금 작게. */
+/* 국어 지문(5.0.0~): 밑줄 친 부분. 원문은 줄을 그대로 살리고 조금 작게. */
 .swipe-reading.is-korean p { font-size: 15px; line-height: 1.8; white-space: pre-line; word-break: keep-all; }
 .passage-mark { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; text-decoration-color: var(--theme-base, #e8b931); font-weight: 700; }
 
-/* 틀린 것 고르기(4.11.0~): 질문의 "않은 · 아닌 · 볼 수 없는"을 빨간색으로. 어두운 카드 위에서도 읽히는 밝은 빨강. */
+/* 틀린 것 고르기(5.0.0~): 질문의 "않은 · 아닌 · 볼 수 없는"을 빨간색으로. 어두운 카드 위에서도 읽히는 밝은 빨강. */
 .q-negation { font-style: normal; font-weight: 900; color: #ff5a5f; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .swipe-back .q-negation, .back-question .q-negation { color: #d6262c; }

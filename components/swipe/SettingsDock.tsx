@@ -1,4 +1,4 @@
-// 설정(≡) 버튼(4.11.0~): 소리 · 답 가리기 · 카드 크기 · 갑툭튀 · 롯데 로고 · 업데이트 확인을 한곳에 모았다.
+// 설정(≡) 버튼(5.0.0~): 소리 · 답 가리기 · 카드 크기 · 갑툭튀 · 롯데 로고 · 업데이트 확인을 한곳에 모았다.
 // 버튼은 화면 위에 떠 있고, 끌어서 옮기면 왼쪽 · 오른쪽 가장자리에 붙는다(위치는 이 기기에 기억, lib/settings.ts).
 // 정보 코딩 연습장(/elice/)은 위쪽 막대의 elice-dock을 그대로 쓴다.
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';

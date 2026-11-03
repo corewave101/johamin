@@ -56,7 +56,7 @@ one = answerCard(one, 'unknown', 1);
 assert.equal(one.queue.length, 1);
 one = answerCard(one, one.queue[0].correct, 1);
 assert.equal(one.queue.length, 0);
-// 지문 세트(4.11.0~): 같은 지문 카드는 덱 순서대로 붙어 나오고, 다시 나오는 카드는 세트 사이에만 끼어든다.
+// 지문 세트(5.0.0~): 같은 지문 카드는 덱 순서대로 붙어 나오고, 다시 나오는 카드는 세트 사이에만 끼어든다.
 const loose = astronomyCards.slice(0, 20);
 const setA = [0, 1, 2, 3].map(i => ({ ...swipeCards[i], id: `set-a-${i}`, passage: '지문 A' }));
 const setB = [4, 5, 6].map(i => ({ ...swipeCards[i], id: `set-b-${i}`, passage: '지문 B' }));

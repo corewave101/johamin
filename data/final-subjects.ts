@@ -24,7 +24,10 @@ export const finalMenu: SubjectGroup = {
       { id: 'english-final', kind: 'deck', name: '영어', fullName: '영어(진달래T · 기말)', direction: 'right', symbol: 'A', description: '연결사와 접속사: 역접 · 인과 · 전치사와의 차이 · 자주 쓰는 표현.', cards: englishFinalCards, writtenQuestions: englishFinalWritten },
     ] },
     { id: 'science', kind: 'group', name: '과학', direction: 'right', symbol: '✳', description: '생물 · 지구과학 · 물리학Ⅱ · 화학을 골라요.', children: [
-      { id: 'biology-final', kind: 'deck', name: '생물', fullName: '생물(기말)', direction: 'up', symbol: '✳', description: '기말고사 생물 카드를 준비하고 있어요.', cards: [] },
+      { id: 'biology-final-group', kind: 'group', name: '생물', direction: 'up', symbol: '✳', description: '공부할 선생님 파트를 골라요.', children: [
+        // 5.0.0~: 박상영T 수행평가(구강상피세포 DNA 추출 · NanoDrop) 대비. 카드 없이 실험 장면 + 개념 정리.
+        { id: 'biology-park-final', kind: 'deck', name: '박상영T', fullName: '생물(박상영T · 수행평가 대비)', direction: 'left', symbol: '✳', description: '수행평가 대비: 마이크로피펫 · 구강상피세포 DNA 추출 · NanoDrop 정량 · 보고서 계산.', cards: [], lab: 'dna' },
+      ] },
       { id: 'astronomy-final-group', kind: 'group', name: '지구과학', direction: 'left', symbol: '✦', description: '왼쪽은 황윤환T, 오른쪽은 전효진T. 공부할 파트를 골라요.', children: [
         { id: 'astronomy-hwang-final', kind: 'deck', name: '황윤환T', fullName: '행성우주과학(황윤환T · 기말)', direction: 'left', symbol: '✦', description: '기말고사 황윤환T 카드를 준비하고 있어요.', cards: [] },
         { id: 'astronomy-jeon-final', kind: 'deck', name: '전효진T', fullName: '행성우주과학(전효진T · 기말)', direction: 'right', symbol: '✧', description: '외계 행성 탐사: 도플러 효과 · 적색·청색 편이 · 시선 속도 · 중심별의 시선 속도 변화.', cards: astronomyJeonFinalCards, writtenQuestions: astronomyJeonFinalWritten },

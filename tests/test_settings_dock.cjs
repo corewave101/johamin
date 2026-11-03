@@ -1,4 +1,4 @@
-// 4.11.0 문제 화면 정리: 설정(≡) 버튼 · 갑툭튀/롯데 로고 끄기 · 모름 삭제 · 처음으로 돌아가기 칸 · 한 화면 고정.
+// 5.0.0 문제 화면 정리: 설정(≡) 버튼 · 갑툭튀/롯데 로고 끄기 · 모름 삭제 · 처음으로 돌아가기 칸 · 한 화면 고정.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const ts = require('typescript');

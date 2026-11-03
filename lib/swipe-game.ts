@@ -21,7 +21,7 @@ export function shuffleAnswers(card: SwipeCard, random = Math.random, changeCorr
   const answers = Object.fromEntries(directions.map(d => [d, d === correct ? card.answers[card.correct] : distractors[index++]])) as Record<Direction, string>;
   return { ...card, answers, correct };
 }
-/** 지문 세트(4.11.0~): 같은 지문을 쓰는 카드는 한 묶음으로 섞이고, 묶음 안에서는 덱 순서대로 나온다. */
+/** 지문 세트(5.0.0~): 같은 지문을 쓰는 카드는 한 묶음으로 섞이고, 묶음 안에서는 덱 순서대로 나온다. */
 function passageUnits(cards: SwipeCard[]): SwipeCard[][] {
   const sets = new Map<string, SwipeCard[]>();
   const units: SwipeCard[][] = [];

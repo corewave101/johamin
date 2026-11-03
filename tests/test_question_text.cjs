@@ -1,4 +1,4 @@
-// 틀린 것 고르기 강조(4.11.0~): 질문의 "않은 · 아닌 · 볼 수 없는"만 빨간색으로 잡고, 다른 말은 건드리지 않는다.
+// 틀린 것 고르기 강조(5.0.0~): 질문의 "않은 · 아닌 · 볼 수 없는"만 빨간색으로 잡고, 다른 말은 건드리지 않는다.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const src = fs.readFileSync('components/swipe/QuestionText.tsx', 'utf8');

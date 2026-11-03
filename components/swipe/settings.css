@@ -1,4 +1,4 @@
-/* 설정(≡) 버튼과 패널 (components/swipe/SettingsDock.tsx, 4.11.0~). 색은 가호 색 변수를 쓴다. */
+/* 설정(≡) 버튼과 패널 (components/swipe/SettingsDock.tsx, 5.0.0~). 색은 가호 색 변수를 쓴다. */
 .settings-fab, .settings-fab.glass { position: fixed; z-index: 14; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%;
   color: var(--ink); cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
   transition: top .28s cubic-bezier(.2, .9, .3, 1), left .28s, right .28s, transform .15s, box-shadow .2s; }

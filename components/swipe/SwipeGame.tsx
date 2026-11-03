@@ -40,7 +40,7 @@ function BackFace({ attempt }: { attempt: Attempt }) {
 
 type Zone = { left: number; top: number; right: number; bottom: number };
 const inside = (z: Zone | undefined, x: number, y: number) => Boolean(z && x >= z.left && x <= z.right && y >= z.top && y <= z.bottom);
-/** 문제 화면은 스크롤 없이 한 화면에 다 들어간다(4.11.0~): 보드가 남는 높이에 맞춰 작아진다(--fit, 카드 크기 설정보다 크지 않게). */
+/** 문제 화면은 스크롤 없이 한 화면에 다 들어간다(5.0.0~): 보드가 남는 높이에 맞춰 작아진다(--fit, 카드 크기 설정보다 크지 않게). */
 const MIN_FIT = 0.55;
 
 export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱', deckId, onBack, backLabel = '← 과목', figurePanel }: { cards?: SwipeCard[]; deckName?: string; deckId?: string; onBack?: () => void; backLabel?: string; figurePanel?: boolean }) {
@@ -57,7 +57,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const dragRef = useRef<Offset>({ x: 0, y: 0 });
   const pointer = useRef<{ id: number; x: number; y: number } | null>(null);
   const flightTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  // 처음으로 돌아가기(4.11.0~): 카드 반대편의 점선 칸으로 카드를 끌어다 놓거나 그 칸을 누르면 카드 패로 돌아간다.
+  // 처음으로 돌아가기(5.0.0~): 카드 반대편의 점선 칸으로 카드를 끌어다 놓거나 그 칸을 누르면 카드 패로 돌아간다.
   const zoneRef = useRef<HTMLButtonElement>(null);
   const [overZone, setOverZone] = useState(false);
   const zoneRect = () => zoneRef.current?.getBoundingClientRect() ?? undefined;
@@ -267,7 +267,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
   const figureCard = back && last ? last.card : card;
   // 해설 카드가 떠 있는 동안 지문 칸은 방금 푼 카드의 지문을 그대로 보여 준다(다음 카드 지문이 미리 바뀌지 않게).
   const readingCard = back && last ? last.card : card;
-  // 지문 세트(4.11.0~): 가로 화면에서는 지문을 오른쪽 칸에 띄운다. 같은 지문이면 카드를 넘겨도 지문 칸은 그대로 있다.
+  // 지문 세트(5.0.0~): 가로 화면에서는 지문을 오른쪽 칸에 띄운다. 같은 지문이면 카드를 넘겨도 지문 칸은 그대로 있다.
   const sidePassage = figurePanel && readingCard?.passage && !readingCard.figure ? readingCard.passage : '';
   const setCards = sidePassage ? cards.filter(c => c.passage === sidePassage) : [];
   const setIndex = setCards.findIndex(c => c.id === readingCard?.id) + 1;
@@ -277,7 +277,7 @@ export default function SwipeGame({ cards = swipeCards, deckName = '샘플 덱',
     <StreakFlame streak={game.streak} />
     <div className={`swipe-game ${readingCard?.passage && !sidePassage ? 'has-passage' : ''} ${finished ? 'is-finished' : ''}`}>
       <div className="swipe-main">
-      {/* 4.11.0~: 문제 화면에는 제목 · 과목 이름 · 돌아가기 버튼 없이 진행 막대만(과목 이름은 화면 읽기용으로만). */}
+      {/* 5.0.0~: 문제 화면에는 제목 · 과목 이름 · 돌아가기 버튼 없이 진행 막대만(과목 이름은 화면 읽기용으로만). */}
       <div className="swipe-deck-bar glass">
         <strong className="visually-hidden">{deckName}</strong>
         <div className="deck-progress">

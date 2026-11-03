@@ -1,7 +1,7 @@
 import type { ConceptLesson } from './study-concepts';
 import { koreanFinalCards, KOREAN_FINAL_TOPICS } from './korean-final-cards';
 
-// 기말고사 · 국어(백은미T): 「춘향전」 · 「봉산 탈춤」 개념 정리(2차, 4.11.0~). 예시는 같은 단원의 객관식 카드 전부다.
+// 기말고사 · 국어(백은미T): 「춘향전」 · 「봉산 탈춤」 개념 정리(2차, 5.0.0~). 예시는 같은 단원의 객관식 카드 전부다.
 const [T1, T2, T3, T4, T5, T6, T7, T8] = KOREAN_FINAL_TOPICS;
 const examplesFor = (topics: string[]) => koreanFinalCards
   .filter(card => topics.includes(card.topic))

@@ -2,6 +2,7 @@ import '../components/swipe/observation.css';
 import '../components/swipe/optics.css';
 import '../components/swipe/polarization.css';
 import '../components/swipe/settings.css';
+import '../components/swipe/dna-lab.css';
 import '../components/swipe/structure.css';
 import '../components/swipe/elice.css';
 import '../components/swipe/lotte.css';
@@ -57,7 +58,7 @@ function IntroHost() {
 
 createRoot(document.getElementById('root')!).render(<>
   <Backdrop />
-  {/* 4.11.0~: 소리 · 크기 · 답 가리기 · 갑툭튀 · 롯데 로고 · 업데이트 확인은 떠 있는 설정(≡) 버튼 안에 모았다. */}
+  {/* 5.0.0~: 소리 · 크기 · 답 가리기 · 갑툭튀 · 롯데 로고 · 업데이트 확인은 떠 있는 설정(≡) 버튼 안에 모았다. */}
   {!isElice && <><BlessingToggle /><SettingsDock /></>}
   <AuthGate><Suspense fallback={<LoadingCard />}><Menu /></Suspense></AuthGate>
   {/* 정보 코딩 연습장: 가호 · 업데이트 확인 · 소리 · 버전을 위쪽 막대 오른쪽에 작게 모은다(components/swipe/elice.css). */}

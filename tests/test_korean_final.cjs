@@ -13,7 +13,7 @@ assert.equal(deck.cards, cards);
 assert.equal(deck.writtenQuestions, written);
 
 const len = s => [...s].length;
-// 4.11.0~: 검수를 통과한 묶음만 들어가므로 수는 묶음이 늘 때마다 커진다(최소 기준만 둔다).
+// 5.0.0~: 검수를 통과한 묶음만 들어가므로 수는 묶음이 늘 때마다 커진다(최소 기준만 둔다).
 assert.ok(cards.length >= 20, `${cards.length} cards`);
 const all = [...cards, ...written];
 assert.equal(new Set(all.map(c => c.id)).size, all.length);

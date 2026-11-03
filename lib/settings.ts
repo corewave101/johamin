@@ -1,4 +1,4 @@
-// 설정(≡) 버튼에서 켜고 끄는 값들(4.11.0~). 이 기기에만 저장한다(localStorage, 키는 johamin- 접두사).
+// 설정(≡) 버튼에서 켜고 끄는 값들(5.0.0~). 이 기기에만 저장한다(localStorage, 키는 johamin- 접두사).
 //   scares    — 갑툭튀(하민의 가호 · 직접 만든 가호의 갑툭튀). 끄면 어떤 가호에서도 안 나온다.
 //   lottePeek — 메인 화면 구석의 롯데 로고(LottePeek). 롯데 페이지 자체는 그대로다.
 export type ToggleKey = 'scares' | 'lottePeek';
