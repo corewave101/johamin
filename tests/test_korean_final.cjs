@@ -17,7 +17,7 @@ const len = s => [...s].length;
 assert.ok(cards.length >= 20, `${cards.length} cards`);
 const all = [...cards, ...written];
 assert.equal(new Set(all.map(c => c.id)).size, all.length);
-assert.equal(new Set(cards.map(c => (c.subject ?? '') + c.question)).size, cards.length);
+assert.equal(new Set(cards.map(c => (c.subject ?? c.passage ?? '') + c.question)).size, cards.length);
 // 1차(001~119) · 2차 초안(120~197) 번호는 학생 기록 · 초안과 섞이지 않게 다시 쓰지 않는다.
 for (const c of cards) assert.ok(Number(c.id.slice(-3)) >= 201, `${c.id} reuses an old id`);
 for (const c of cards) {
