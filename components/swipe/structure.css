@@ -94,3 +94,4 @@
   .structure-palette .glass-button { padding: 6px 10px; font-size: 13px; min-width: 40px; }
 }
 .structure-en { display: block; margin-top: 2px; font-size: .72em; font-weight: 700; opacity: .7; letter-spacing: .01em; }
+.structure-choice.is-long span { font-size: .84em; word-break: keep-all; overflow-wrap: normal; }

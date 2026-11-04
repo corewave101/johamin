@@ -97,4 +97,39 @@ export const chemistryFinalConcepts: ConceptLesson[] = [
         '–OH 탄소에 붙은 R의 수: 1개 일차, 2개 이차, 3개 삼차 알코올',
       ] },
     ]),
+  // 5.1.1~ PPT 6 · 7(탄화수소 유도체 · 산화를 통한 변환). 아직 카드가 없어 예시 문제 없이 개념만, 연습은 구조식 실습에서. 산화수는 선배 개인 메모라 넣지 않았다.
+  {
+    id: 'chemistry-final-concept-5', deckId: 'chemistry-final', title: '탄화수소 유도체 · 산화를 통한 변환', topicKeys: [],
+    sourceNote: '주민지T PPT 6 · 7번 · 22.4 탄화수소 유도체',
+    summary: '알데하이드 · 케톤 · 카복실산 · 에스터는 모두 카보닐기(C=O)를 가지며, C=O 양옆에 무엇이 붙느냐로 나뉜다. 이름은 모체 알케인의 -e를 -al · -one · -oic acid로 바꾸고, 에스터는 「알킬 + -oate」다. 알코올은 산화되며 알데하이드 → 카복실산(1차), 케톤(2차)이 되고, 알코올과 카복실산이 만나 에스터가 된다.',
+    sections: [
+      { heading: '작용기 표(PPT 6 · 11쪽, 필기: 외워라)', table: { columns: ['종류', '작용기', '일반식', '예'], rows: [
+        ['알코올', '–OH', 'R–OH', 'CH₃OH 메탄올(메틸 알코올)'],
+        ['알데하이드', '–CHO', 'R–CHO', 'CH₂O 메탄알(폼알데하이드)'],
+        ['케톤', '–CO–', 'R–CO–R′', 'CH₃COCH₃ 프로판온(다이메틸 케톤, 아세톤)'],
+        ['카복실산', '–COOH', 'R–COOH', 'CH₃COOH 에탄산(아세트산)'],
+        ['에스터', '–COO–', 'R–COO–R′', 'CH₃COOCH₂CH₃ 아세트산 에틸'],
+      ] } },
+      { heading: '카보닐기(C=O) 양옆으로 구별하기(PPT 6 · 2~6쪽)', points: [
+        '알데하이드: C=O에 R와 H → 사슬 끝에만 있다',
+        '케톤: C=O에 R와 R′ → 사슬 중간',
+        '카복실산: C=O에 R와 OH · 수용액에서 약산',
+        '에스터: C=O에 R와 O–R′ · O–R′ 부분(알콕시기)은 알코올에서 온 부분',
+      ] },
+      { heading: '이름 붙이기(PPT 6 · 7~10쪽)', table: { columns: ['종류', '규칙', '예'], rows: [
+        ['알데하이드', '모체 포화 탄화수소의 -e → -al · –CHO 탄소 번호가 가장 낮게(늘 1번이라 생략)', 'butanal, 2-methylpropanal'],
+        ['케톤', '-e → -one · 카보닐 탄소 번호가 가장 낮게', 'propanone(= 아세톤), 2-butanone, 3-methyl-2-butanone'],
+        ['카복실산', '-e → -oic acid', 'ethanoic acid(= acetic acid, 아세트산), propanoic acid'],
+        ['에스터', '알킬기 이름 + (-oic acid → -oate)', 'ethyl ethanoate'],
+      ] } },
+      { heading: '산화를 통한 변환(PPT 7 · 2~5쪽)', points: [
+        '산화 = 전자를 잃는 것 · 전기음성도 O > C > H',
+        '알코올 → 알데하이드 → 카복실산: 산화제와 반응하며 아래로 내려간다',
+        '2차 알코올은 케톤이 된다: 2-propanol → 2-propanone(아세톤)',
+        '알코올 + 카복실산 → 에스터',
+        '예(PPT 7 필기): ethanol → ethanal → ethanoic acid, 여기에 CH₃–O가 붙으면 methyl ethanoate',
+      ] },
+      { heading: '연습', points: ['학습 메뉴 맨 앞 「구조식 실습」에서 범위를 알데하이드 · 케톤 · 카복실산 · 에스터로 고르면 이름 맞히기 · 그리기를 할 수 있어요(🔥 고난도 포함).'] },
+    ],
+  },
 ];

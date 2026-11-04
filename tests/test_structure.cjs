@@ -64,6 +64,18 @@ for (const cat of cats) for (let i = 0; i < 25; i += 1) {
   assert.ok(choices.includes(p.name));
   hardMade += 1;
 }
+// 탄화수소 유도체 고난도(5.1.1~): 주사슬 6~10개(에스터 산 쪽 5~8개), 가지 2개 이상, 영어 이름, 보기 넷은 서로 다르다.
+for (const cat of ['aldehyde', 'ketone', 'acid', 'ester']) for (let i = 0; i < 25; i += 1) {
+  const p = S.makePuzzle([cat], rng, { hard: true });
+  assert.equal(p.category, cat);
+  assert.ok(p.spec && p.plan.subs.length >= 2 && p.name.length >= 18 && /^[0-9a-z ,-]+$/.test(p.name), p.name);
+  const again = S.nameOf(p.mol);
+  assert.ok(again.ok && again.name === p.name, p.name);
+  const choices = S.nameChoices(p, rng);
+  assert.equal(new Set(choices).size, 4, choices.join());
+  assert.ok(choices.includes(p.name) && choices.every(c => /^[0-9a-z ,-]+$/.test(c)), choices.join());
+  hardMade += 1;
+}
 // 주사슬 후보에 표에 없는 가지가 생기는 분자는 이름을 붙이지 않는다(엉뚱한 사슬로 이름 짓지 않게).
 assert.equal(S.nameOf(S.parseSmiles('CCCC(CC)C(C)CCC')).ok, true);
 // 틀린 이름 함정: 반대쪽 번호, 알파벳 순서 무시
@@ -71,25 +83,27 @@ const w = S.wrongNames(S.layout(S.parseSmiles('CC(C)CCC(CC)CC')));
 assert.ok(w.includes('3-에틸-6-메틸헵테인') && w.includes('2-메틸-5-에틸헵테인'), w.join());
 assert.equal(S.formula(S.parseSmiles('CC(C)(O)CCCCBr')), 'C₇H₁₅BrO');
 
-// 5.1.0 탄화수소 유도체(PPT 6): 알데하이드 -알 · 케톤 -온(C=O 탄소 번호 작게) · 카복실산 -산 · 에스터 「산 이름 + 알킬」, 영어 이름도.
+// 5.1.0 탄화수소 유도체(PPT 6), 5.1.1~ 이름은 영어(-al · -one · -oic acid · 「알킬 + -oate」), 한국어 이름은 koreanName으로 같이.
 const derivative = {
-  'CCCCC=O': ['펜탄알', 'pentanal'], 'CC(C)CC=O': ['3-메틸뷰탄알', '3-methylbutanal'], 'CCCC(=O)C': ['2-펜탄온', '2-pentanone'], 'CCC(=O)CC': ['3-펜탄온', '3-pentanone'],
-  'CC(C)CC(=O)C': ['4-메틸-2-펜탄온', '4-methyl-2-pentanone'], 'CCCC(=O)O': ['뷰탄산', 'butanoic acid'], 'CC(C)C(=O)O': ['2-메틸프로판산', '2-methylpropanoic acid'],
-  'CCC(=O)OC': ['프로판산 메틸', 'methyl propanoate'], 'C(=O)OCC': ['메탄산 에틸', 'ethyl methanoate'], 'CC(=O)OC(C)C': ['에탄산 아이소프로필', 'isopropyl ethanoate'],
+  'CCCCC=O': ['pentanal', '펜탄알'], 'CC(C)CC=O': ['3-methylbutanal', '3-메틸뷰탄알'], 'CCCC(=O)C': ['2-pentanone', '2-펜탄온'], 'CCC(=O)CC': ['3-pentanone', '3-펜탄온'],
+  'CC(C)CC(=O)C': ['4-methyl-2-pentanone', '4-메틸-2-펜탄온'], 'CCCC(=O)O': ['butanoic acid', '뷰탄산'], 'CC(C)C(=O)O': ['2-methylpropanoic acid', '2-메틸프로판산'],
+  'CCC(=O)OC': ['methyl propanoate', '프로판산 메틸'], 'C(=O)OCC': ['ethyl methanoate', '메탄산 에틸'], 'CC(=O)OC(C)C': ['isopropyl ethanoate', '에탄산 아이소프로필'],
+  'CC(=O)OCC': ['ethyl ethanoate', '에탄산 에틸'], 'CC(C)CC(C)C(=O)CC(C)(C)C': ['2,2,5,7-tetramethyl-4-octanone', '2,2,5,7-테트라메틸-4-옥탄온'],
 };
-for (const [smiles, [ko, en]] of Object.entries(derivative)) {
+for (const [smiles, [en, ko]] of Object.entries(derivative)) {
   const mol = S.layout(S.parseSmiles(smiles)); const r = S.nameOf(mol);
-  assert.ok(r.ok, smiles); assert.equal(r.name, ko, smiles); assert.equal(S.englishName(r.plan), en, smiles);
+  assert.ok(r.ok, smiles); assert.equal(r.name, en, smiles); assert.equal(S.koreanName(r.plan), ko, smiles); assert.equal(S.englishName(r.plan), en);
 }
-assert.equal(S.englishName(S.nameOf(S.layout(S.parseSmiles('CC(=O)OCC'))).plan), 'ethyl ethanoate');
-assert.equal(S.englishName(S.nameOf(S.layout(S.parseSmiles('CCCC'))).plan), undefined, '탄화수소 · 알코올은 영어 이름 없음');
+assert.equal(S.koreanName(S.nameOf(S.layout(S.parseSmiles('CCCC'))).plan), undefined, '탄화수소 · 알코올은 한국어 이름 그대로');
+assert.equal(named('CCCC'), '뷰테인');
 // 분자식: =O · –O–에는 H가 없다.
 assert.equal(S.formula(S.parseSmiles('CC(=O)OCC')), 'C₄H₈O₂');
 assert.equal(S.formula(S.parseSmiles('CCC=O')), 'C₃H₆O');
-// 함정: 어미 바꾸기 · 에스터 자리 바꾸기 · 이성질체 산.
+// 함정: 어미 바꾸기 · -oate ↔ -oic acid · 에스터 자리 바꾸기 · 이성질체 산 · 반대 번호.
 const traps = smiles => S.wrongNames(S.layout(S.parseSmiles(smiles)));
-assert.ok(traps('CCCC=O').includes('뷰탄올') && traps('CCC(=O)C').includes('뷰탄알') && traps('CCC(=O)C').includes('3-뷰탄온'));
-assert.ok(traps('CCC(=O)OC').includes('메탄산 프로필') && traps('CC(=O)OCC').includes('뷰탄산'));
+assert.ok(traps('CCCC=O').includes('butanol') && traps('CCCC=O').includes('butanoic acid'));
+assert.ok(traps('CCC(=O)C').includes('butanal') && traps('CCC(=O)C').includes('3-butanone') && traps('CCC(=O)C').includes('2-butanol'));
+assert.ok(traps('CCC(=O)OC').includes('propyl methanoate') && traps('CC(=O)OCC').includes('butanoic acid') && traps('CC(=O)OCC').includes('ethyl ethanoic acid'));
 // 라벨: –OH, =O, –O–
 const labels = smiles => S.skeleton(S.layout(S.parseSmiles(smiles))).labels.map(l => l.text).sort().join();
 assert.equal(labels('CC(=O)O'), 'O,OH');

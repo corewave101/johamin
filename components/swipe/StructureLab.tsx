@@ -5,7 +5,7 @@ import type { Direction } from '../../data/swipe-cards';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playResult, playTick } from '../../lib/sound';
 import {
-  CARBONYL, CATEGORY_LABEL, carbonCount, englishName, explain, formula, makePuzzle, nameChoices, nameOf, sameMolecule, skeleton,
+  CARBONYL, CATEGORY_LABEL, carbonCount, explain, formula, koreanName, makePuzzle, nameChoices, nameOf, sameMolecule, skeleton,
   type Category, type El, type Mol, type Order, type Puzzle,
 } from '../../lib/structure';
 import MenuCard from './MenuCard';
@@ -116,8 +116,9 @@ function NameQuiz({ range, hard, rangeBar }: { range: Category[]; hard: boolean;
   return <section className="biology-menu glass structure-panel">
     <div className="structure-top">{rangeBar}<p className="structure-score">맞힌 문제 <b>{score.right}</b> / {score.total}</p></div>
     <div className={`structure-quiz${hard ? ' is-hard' : ''}`}>
-      {directions.map(d => <button key={d} type="button" className={`structure-choice choice-${d}${picked ? (d === answer ? ' is-right' : d === picked ? ' is-wrong' : ' is-dim') : ''}`} onClick={() => choose(d)} disabled={!slots[d]}>
-        <kbd>{arrows[d]}</kbd><span>{slots[d]}</span></button>)}
+      {directions.map(d => <button key={d} type="button" className={`structure-choice choice-${d}${(slots[d]?.length ?? 0) > 28 ? ' is-long' : ''}${picked ? (d === answer ? ' is-right' : d === picked ? ' is-wrong' : ' is-dim') : ''}`} onClick={() => choose(d)} disabled={!slots[d]}>
+        {/* 긴 영어 이름은 하이픈 · 쉼표 뒤에서만 줄을 바꾼다. */}
+        <kbd>{arrows[d]}</kbd><span>{slots[d]?.replace(/([-,])/g, '$1\u200b')}</span></button>)}
       <div className="structure-card" style={{ transform: `translate(${drag.x * 0.35}px, ${drag.y * 0.35}px) rotate(${drag.x * 0.02}deg)` }}
         onPointerDown={event => { pointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId); }}
         onPointerMove={event => { if (pointer.current?.id === event.pointerId) setDrag({ x: event.clientX - pointer.current.x, y: event.clientY - pointer.current.y }); }}
@@ -128,7 +129,7 @@ function NameQuiz({ range, hard, rangeBar }: { range: Category[]; hard: boolean;
       </div>
     </div>
     {picked ? <div className={`structure-result ${picked === answer ? 'is-right' : 'is-wrong'}`} role="status">
-      <h2>{picked === answer ? '정답이에요!' : '아쉬워요'} · {p.name}{englishName(p.plan) && <small className="structure-en">{englishName(p.plan)}</small>}</h2>
+      <h2>{picked === answer ? '정답이에요!' : '아쉬워요'} · {p.name}{koreanName(p.plan) && <small className="structure-en">{koreanName(p.plan)}</small>}</h2>
       <ul>{explain(p.plan).map((line, i) => <li key={i}>{line}</li>)}</ul>
       {p.page && <p className="structure-source">주민지T {p.page}에 나온 화합물이에요.</p>}
       <button type="button" className="glass-button is-primary" onClick={() => choose('up')} autoFocus>다음 문제 →</button>
@@ -334,7 +335,7 @@ function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: C
   return <section className="biology-menu glass structure-panel">
     <div className="structure-top">{rangeBar}{!free && <p className="structure-score">맞힌 문제 <b>{score.right}</b> / {score.total}</p>}</div>
     {free ? <p className="structure-prompt">아무 구조식이나 그려 보세요. <b>이름을 바로 알려 줘요.</b></p>
-      : <p className={`structure-prompt${hard && !CARBONYL.includes(target.category) ? ' is-hard' : ''}`}>이 이름의 구조식을 그려요: <b>{target.name}</b>{englishName(target.plan) && <small className="structure-en">{englishName(target.plan)}</small>}</p>}
+      : <p className={`structure-prompt${hard && !CARBONYL.includes(target.category) ? ' is-hard' : ''}`}>이 이름의 구조식을 그려요: <b>{target.name}</b>{koreanName(target.plan) && <small className="structure-en">{koreanName(target.plan)}</small>}</p>}
     <div className="structure-palette" role="toolbar" aria-label="그리기 도구">
       <div role="group" aria-label="원자">{ATOM_TOOLS.map(t => <button key={t} type="button" className="glass-button" aria-pressed={tool === t} onClick={() => { setTool(t); setSelected(null); }}>{TOOL_LABEL[t]}</button>)}</div>
       <div role="group" aria-label="결합">{BOND_TOOLS.map(t => <button key={t} type="button" className="glass-button" aria-pressed={tool === t} onClick={() => { setTool(t); setSelected(null); }}>{TOOL_LABEL[t]}</button>)}</div>
@@ -359,7 +360,7 @@ function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: C
     <p className="structure-hint">{hint}</p>
     {free ? <div className="structure-result" role="status">
       {!drawnName ? <p>아직 그린 게 없어요.</p> : drawnName.ok ? <>
-        <h2>{drawnName.name}{englishName(drawnName.plan) && <small className="structure-en">{englishName(drawnName.plan)}</small>}</h2>
+        <h2>{drawnName.name}{koreanName(drawnName.plan) && <small className="structure-en">{koreanName(drawnName.plan)}</small>}</h2>
         <p className="structure-formula">{formula(mol)}</p>
         <ul>{explain(drawnName.plan).map((line, i) => <li key={i}>{line}</li>)}</ul>
       </> : <p>{drawnName.reason}</p>}
