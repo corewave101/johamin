@@ -4,16 +4,19 @@
 //   → 치환기는 알파벳 순서(di/tri, sec-/tert-는 무시), 같은 치환기는 다이 · 트라이. 고리는 사이클로-, 고리형 알켄은 이중 결합이 1 · 2번.
 //   알켄은 이중 결합의 같은 쪽에 사슬이 있으면 시스, 반대쪽이면 트랜스(그린 모양에서 읽는다).
 // 치환기는 표 22.2(메틸 · 에틸 · 프로필 · 아이소프로필 · 뷰틸 · sec-뷰틸 · 아이소뷰틸 · tert-뷰틸)와 알코올 단원의 클로로 · 브로모.
+// 5.1.0~ PPT 6 「탄화수소 유도체」: 알데하이드(-알, –CHO 탄소가 1번) · 케톤(-온, C=O 탄소 번호가 작게) · 카복실산(-산) ·
+//   에스터(산 쪽 이름 + 알코올 쪽 알킬, 예: 에탄산 에틸 = ethyl ethanoate). 영어 이름(-al · -one · -oic acid · -oate)도 같이 만든다.
 
 export type El = 'C' | 'O' | 'Cl' | 'Br';
 export type Order = 1 | 2 | 3;
 export interface Atom { el: El; x: number; y: number }
 export interface Bond { a: number; b: number; order: Order }
 export interface Mol { atoms: Atom[]; bonds: Bond[] }
-export type Category = 'alkane' | 'cyclo' | 'alkene' | 'alkyne' | 'alcohol';
+export type Category = 'alkane' | 'cyclo' | 'alkene' | 'alkyne' | 'alcohol' | 'aldehyde' | 'ketone' | 'acid' | 'ester';
 export type Stereo = 'cis' | 'trans';
 
-export const CATEGORY_LABEL: Record<Category, string> = { alkane: '알케인', cyclo: '고리형', alkene: '알켄', alkyne: '알카인', alcohol: '알코올' };
+export const CATEGORY_LABEL: Record<Category, string> = { alkane: '알케인', cyclo: '고리형', alkene: '알켄', alkyne: '알카인', alcohol: '알코올', aldehyde: '알데하이드', ketone: '케톤', acid: '카복실산', ester: '에스터' };
+export const CARBONYL: Category[] = ['aldehyde', 'ketone', 'acid', 'ester'];
 
 // ── 작은 SMILES(C · O · Cl · Br, 가지 (), 고리 번호, = #) ───────────────────────────
 export function parseSmiles(smiles: string): Mol {
@@ -75,16 +78,20 @@ const ALKANE = ['', '메테인', '에테인', '프로페인', '뷰테인', '펜�
 const ALKENE = ['', '', '에텐', '프로펜', '뷰텐', '펜텐', '헥센', '헵텐', '옥텐', '노넨', '데센'];
 const ALKYNE = ['', '', '에타인', '프로파인', '뷰타인', '펜타인', '헥사인', '헵타인', '옥타인', '노나인', '데카인'];
 const ALCOHOL = ['', '메탄올', '에탄올', '프로판올', '뷰탄올', '펜탄올', '헥산올', '헵탄올', '옥탄올', '노난올', '데칸올'];
+/** 탄화수소 유도체 이름의 줄기(메탄 → 메탄알 · 메탄산, 프로판 → 프로판온). */
+const STEM = ['', '메탄', '에탄', '프로판', '뷰탄', '펜탄', '헥산', '헵탄', '옥탄', '노난', '데칸'];
+const STEM_EN = ['', 'meth', 'eth', 'prop', 'but', 'pent', 'hex', 'hept', 'oct', 'non', 'dec'];
+const MULTIPLIER_EN = ['', '', 'di', 'tri', 'tetra', 'penta', 'hexa'];
 const MULTIPLIER = ['', '', '다이', '트라이', '테트라', '펜타', '헥사'];
 export const MAX_CHAIN = 10;
 
-interface Group { ko: string; key: string; size: number }
+interface Group { ko: string; key: string; size: number; en?: string }
 const GROUPS: Record<string, Group> = {
-  methyl: { ko: '메틸', key: 'methyl', size: 1 }, ethyl: { ko: '에틸', key: 'ethyl', size: 2 },
-  propyl: { ko: '프로필', key: 'propyl', size: 3 }, isopropyl: { ko: '아이소프로필', key: 'isopropyl', size: 3 },
-  butyl: { ko: '뷰틸', key: 'butyl', size: 4 }, 'sec-butyl': { ko: 'sec-뷰틸', key: 'butyl', size: 4 },
-  isobutyl: { ko: '아이소뷰틸', key: 'isobutyl', size: 4 }, 'tert-butyl': { ko: 'tert-뷰틸', key: 'butyl', size: 4 },
-  chloro: { ko: '클로로', key: 'chloro', size: 0 }, bromo: { ko: '브로모', key: 'bromo', size: 0 },
+  methyl: { ko: '메틸', key: 'methyl', size: 1, en: 'methyl' }, ethyl: { ko: '에틸', key: 'ethyl', size: 2, en: 'ethyl' },
+  propyl: { ko: '프로필', key: 'propyl', size: 3, en: 'propyl' }, isopropyl: { ko: '아이소프로필', key: 'isopropyl', size: 3, en: 'isopropyl' },
+  butyl: { ko: '뷰틸', key: 'butyl', size: 4, en: 'butyl' }, 'sec-butyl': { ko: 'sec-뷰틸', key: 'butyl', size: 4, en: 'sec-butyl' },
+  isobutyl: { ko: '아이소뷰틸', key: 'isobutyl', size: 4, en: 'isobutyl' }, 'tert-butyl': { ko: 'tert-뷰틸', key: 'butyl', size: 4, en: 'tert-butyl' },
+  chloro: { ko: '클로로', key: 'chloro', size: 0, en: 'chloro' }, bromo: { ko: '브로모', key: 'bromo', size: 0, en: 'bromo' },
 };
 export const SUBSTITUENT_NAMES = Object.values(GROUPS).map(g => g.ko);
 
@@ -129,6 +136,10 @@ export interface Plan {
   parent: number[];
   subs: Sub[];
   oh?: number;
+  /** 탄화수소 유도체: 작용기 탄소(C=O)의 번호. 알데하이드 · 카복실산 · 에스터는 늘 1. */
+  fg?: number;
+  /** 에스터: O에 붙은 알코올 쪽 알킬(에탄산 '에틸'). */
+  ester?: Group;
   multi?: { locant: number; order: 2 | 3 };
   stereo?: Stereo;
 }
@@ -144,7 +155,7 @@ const alphaLocants = (subs: Sub[]) => [...subs].sort((x, y) => x.group.key.local
 
 /** 이름 붙이기 순서대로 비교할 값(작을수록 좋다). */
 function numberingKey(plan: Plan): number[][] {
-  return [[plan.oh ?? 0], [plan.multi?.locant ?? 0], sortedLocants(plan.subs), alphaLocants(plan.subs)];
+  return [[plan.oh ?? plan.fg ?? 0], [plan.multi?.locant ?? 0], sortedLocants(plan.subs), alphaLocants(plan.subs)];
 }
 const compareKeys = (a: number[][], b: number[][]) => {
   for (let i = 0; i < a.length; i += 1) { const c = compareLists(a[i], b[i]); if (c) return c; }
@@ -171,6 +182,34 @@ function alkeneStereo(mol: Mol, adj: Adj, a: number, b: number, groupOf: (atom: 
   return Math.sign(s1) === Math.sign(s2) ? 'cis' : 'trans';
 }
 
+type Functional = { kind: 'none' } | { kind: 'alcohol' | 'aldehyde' | 'ketone' | 'acid'; carbon: number } | { kind: 'ester'; carbon: number; alkyl: Group };
+/** 산소가 어떤 작용기를 이루는지: –OH(알코올), C=O(알데하이드 · 케톤), C(=O)OH(카복실산), C(=O)O–C(에스터). */
+function functionalGroup(mol: Mol, adj: Adj): Functional | { reason: string } {
+  const os = mol.atoms.map((a, i) => (a.el === 'O' ? i : -1)).filter(i => i >= 0);
+  if (!os.length) return { kind: 'none' };
+  const carbonyl = os.filter(o => adj[o][0].order === 2);
+  const hydroxyl = os.filter(o => adj[o].length === 1 && adj[o][0].order === 1);
+  const bridge = os.filter(o => adj[o].length === 2);
+  if (os.length === 1 && hydroxyl.length === 1) return { kind: 'alcohol', carbon: adj[hydroxyl[0]][0].to };
+  if (os.length === 1 && carbonyl.length === 1) {
+    const c = adj[carbonyl[0]][0].to;
+    return { kind: carbonNeighbors(mol, adj, c).length <= 1 ? 'aldehyde' : 'ketone', carbon: c };
+  }
+  if (os.length === 2 && carbonyl.length === 1) {
+    const c = adj[carbonyl[0]][0].to;
+    if (hydroxyl.length === 1 && adj[hydroxyl[0]][0].to === c) return { kind: 'acid', carbon: c };
+    if (bridge.length === 1 && adj[bridge[0]].some(nb => nb.to === c)) {
+      const r = adj[bridge[0]].find(nb => nb.to !== c)!.to;
+      const alkyl = classify(mol, adj, r, bridge[0]);
+      if (!alkyl || alkyl.size === 0) return { reason: '에스터의 알코올 쪽은 메틸 · 에틸 · 프로필 · 뷰틸 같은 알킬기만 써요.' };
+      return { kind: 'ester', carbon: c, alkyl };
+    }
+  }
+  if (os.length === 1 && bridge.length === 1) return { reason: '에터(C–O–C)는 수업 범위 밖이에요.' };
+  if (hydroxyl.length >= 2) return { reason: 'OH가 2개 이상인 화합물은 수업 범위 밖이에요.' };
+  return { reason: '작용기가 2개 이상인 화합물은 수업 범위 밖이에요.' };
+}
+
 /** 구조 → 이름. PPT 범위 밖(고리 2개, 다이올, 에터 등)이면 이유와 함께 ok: false. */
 export function nameOf(mol: Mol): NameResult {
   const fail = (reason: string): NameResult => ({ ok: false, reason });
@@ -194,23 +233,35 @@ function candidatePlans(mol: Mol): { list: Candidate[]; all: Candidate[] } | { r
   for (let i = 0; i < n; i += 1) {
     const el = mol.atoms[i].el;
     if (el === 'C' && valence(adj, i) > 4) return { reason: '결합이 4개보다 많은 탄소가 있어요. 탄소는 결합을 4개까지 해요.' };
-    if (el !== 'C' && (adj[i].length !== 1 || adj[i][0].order !== 1 || mol.atoms[adj[i][0].to].el !== 'C')) return { reason: `${el === 'O' ? 'OH' : el}는 탄소 하나에 단일 결합으로만 붙어요.` };
+    if (el === 'O') {
+      const toC = adj[i].every(nb => mol.atoms[nb.to].el === 'C');
+      const ok = toC && ((adj[i].length === 1 && adj[i][0].order <= 2) || (adj[i].length === 2 && adj[i].every(nb => nb.order === 1)));
+      if (!ok) return { reason: 'O는 탄소에 –OH, =O, –O– 모양으로만 붙어요.' };
+      continue;
+    }
+    if (el !== 'C' && (adj[i].length !== 1 || adj[i][0].order !== 1 || mol.atoms[adj[i][0].to].el !== 'C')) return { reason: `${el}는 탄소 하나에 단일 결합으로만 붙어요.` };
   }
-  const oxygens = mol.atoms.filter(a => a.el === 'O').length;
-  if (oxygens > 1) return { reason: 'OH가 2개 이상인 화합물은 수업 범위 밖이에요.' };
-  const multis = mol.bonds.filter(b => b.order > 1);
+  const fn = functionalGroup(mol, adj);
+  if ('reason' in fn) return fn;
+  const oxygens = fn.kind === 'alcohol' ? 1 : 0;
+  const multis = mol.bonds.filter(b => b.order > 1 && mol.atoms[b.a].el === 'C' && mol.atoms[b.b].el === 'C');
   if (multis.length > 1) return { reason: '이중 · 삼중 결합은 하나만 넣어요(수업 범위).' };
   const carbonBonds = mol.bonds.filter(b => mol.atoms[b.a].el === 'C' && mol.atoms[b.b].el === 'C').length;
-  const rings = carbonBonds - carbons.length + 1;
+  const rings = carbonBonds + (fn.kind === 'ester' ? 1 : 0) - carbons.length + 1; // 에스터는 C–O–C가 두 탄소 조각을 잇는다
   if (rings > 1) return { reason: '고리가 2개 이상이면 수업 범위 밖이에요.' };
   const halogens = mol.atoms.filter(a => a.el === 'Cl' || a.el === 'Br').length;
   const multi = multis[0];
   if (multi && oxygens) return { reason: 'OH와 다중 결합이 함께 있는 화합물은 수업 범위 밖이에요.' };
+  if (fn.kind !== 'none' && fn.kind !== 'alcohol') {
+    if (rings) return { reason: '고리가 있는 탄화수소 유도체는 수업 범위 밖이에요.' };
+    if (multi) return { reason: 'C=C · C≡C가 함께 있는 탄화수소 유도체는 수업 범위 밖이에요.' };
+    if (halogens) return { reason: '할로젠이 붙은 탄화수소 유도체는 수업 범위 밖이에요.' };
+  }
   if (multi && halogens) return { reason: '할로젠과 다중 결합이 함께 있는 화합물은 수업 범위 밖이에요.' };
   const groupOf = (atom: number, from: number) => classify(mol, adj, atom, from);
 
   if (rings === 1) {
-    if (oxygens || halogens) return { reason: '고리에 OH · 할로젠이 붙은 화합물은 수업 범위 밖이에요.' };
+    if (oxygens || halogens || fn.kind !== 'none') return { reason: '고리에 OH · 할로젠 · 작용기가 붙은 화합물은 수업 범위 밖이에요.' };
     // 가지를 잘라 내면 고리만 남는다.
     const deg = new Map(carbons.map(c => [c, carbonNeighbors(mol, adj, c).length]));
     const alive = new Set(carbons);
@@ -256,9 +307,17 @@ function candidatePlans(mol: Mol): { list: Candidate[]; all: Candidate[] } | { r
   }
 
   // 사슬: 탄소 골격은 나무 모양. 끝 탄소 두 개를 잇는 길이 후보 주사슬이다.
-  const ohCarbon = mol.atoms.findIndex(a => a.el === 'O') >= 0 ? adj[mol.atoms.findIndex(a => a.el === 'O')][0].to : -1;
-  const required = [ohCarbon, ...(multi ? [multi.a, multi.b] : [])].filter(a => a >= 0);
-  const leaves = carbons.filter(c => carbonNeighbors(mol, adj, c).length <= 1);
+  const ohCarbon = fn.kind === 'alcohol' ? fn.carbon : -1;
+  const star = fn.kind !== 'none' && fn.kind !== 'alcohol' ? fn.carbon : -1;
+  const required = [ohCarbon, star, ...(multi ? [multi.a, multi.b] : [])].filter(a => a >= 0);
+  // 에스터: 주사슬은 산 쪽(C=O 쪽) 탄소에서만 고른다. O 건너편은 알코올 쪽 알킬.
+  const side = new Set<number>(carbons);
+  if (fn.kind === 'ester') {
+    side.clear(); const q = [fn.carbon]; side.add(fn.carbon);
+    while (q.length) { const a = q.shift()!; for (const m of carbonNeighbors(mol, adj, a)) if (!side.has(m)) { side.add(m); q.push(m); } }
+  }
+  const leaves = carbons.filter(c => side.has(c) && carbonNeighbors(mol, adj, c).length <= 1);
+  const endAtStar = fn.kind === 'aldehyde' || fn.kind === 'acid' || fn.kind === 'ester';
   const pathBetween = (from: number, to: number): number[] => {
     const prev = new Map<number, number>([[from, -1]]);
     const queue = [from];
@@ -270,7 +329,7 @@ function candidatePlans(mol: Mol): { list: Candidate[]; all: Candidate[] } | { r
   const paths: number[][] = [];
   for (const a of leaves) for (const b of leaves) if (a <= b) {
     const p = pathBetween(a, b);
-    if (required.every(r => p.includes(r))) { paths.push(p); if (a !== b) paths.push([...p].reverse()); }
+    if (required.every(r => p.includes(r))) for (const q of a !== b ? [p, [...p].reverse()] : [p]) if (!endAtStar || q[0] === star) paths.push(q);
   }
   if (!paths.length) return { reason: '주사슬을 정하지 못했어요.' };
   const all: Candidate[] = [];
@@ -284,7 +343,7 @@ function candidatePlans(mol: Mol): { list: Candidate[]; all: Candidate[] } | { r
     parent.forEach((atom, k) => {
       for (const nb of adj[atom]) {
         if (inChain.has(nb.to)) continue;
-        if (mol.atoms[nb.to].el === 'O') { oh = k + 1; continue; }
+        if (mol.atoms[nb.to].el === 'O') { if (fn.kind === 'alcohol') oh = k + 1; continue; }
         branches += 1;
         const g = groupOf(nb.to, atom);
         if (!g) { bad = true; subs.push({ group: { ko: '?', key: '?', size: 9 }, locant: k + 1 }); } else subs.push({ group: g, locant: k + 1 });
@@ -297,8 +356,9 @@ function candidatePlans(mol: Mol): { list: Candidate[]; all: Candidate[] } | { r
       multiInfo = { locant: Math.min(i, j) + 1, order: multi.order as 2 | 3 };
       if (multi.order === 2) stereoState = alkeneStereo(mol, adj, multi.a, multi.b, groupOf);
     }
-    const category: Category = oh ? 'alcohol' : multi ? (multi.order === 3 ? 'alkyne' : 'alkene') : 'alkane';
-    const plan: Plan = { category, ring: false, parent, subs, oh, multi: multiInfo, stereo: stereoState === 'cis' || stereoState === 'trans' ? stereoState : undefined };
+    const category: Category = fn.kind !== 'none' && fn.kind !== 'alcohol' ? fn.kind : oh ? 'alcohol' : multi ? (multi.order === 3 ? 'alkyne' : 'alkene') : 'alkane';
+    const fg = star >= 0 ? parent.indexOf(star) + 1 : undefined;
+    const plan: Plan = { category, ring: false, parent, subs, oh, fg, ester: fn.kind === 'ester' ? fn.alkyl : undefined, multi: multiInfo, stereo: stereoState === 'cis' || stereoState === 'trans' ? stereoState : undefined };
     all.push({ plan, stereoState, length: parent.length, subCount: branches, bad });
   }
   if (!all.some(c => !c.bad)) return { reason: '수업에서 배운 치환기(메틸 · 에틸 · 프로필 · 아이소프로필 · 뷰틸들 · 클로로 · 브로모)만 쓸 수 있어요.' };
@@ -337,11 +397,48 @@ export function render(plan: Plan, alphabetical = true): string {
   let locant: number | undefined;
   if (plan.ring) base = `사이클로${(plan.multi ? ALKENE : ALKANE)[n]}`;
   else if (plan.category === 'alcohol') { base = ALCOHOL[n]; if (n > 2) locant = plan.oh; }
+  else if (plan.category === 'aldehyde') base = `${STEM[n]}알`;
+  else if (plan.category === 'ketone') { base = `${STEM[n]}온`; if (n > 3) locant = plan.fg; }
+  else if (plan.category === 'acid' || plan.category === 'ester') base = `${STEM[n]}산`;
   else if (plan.category === 'alkene') { base = ALKENE[n]; if (n > 3) locant = plan.multi!.locant; }
   else if (plan.category === 'alkyne') { base = ALKYNE[n]; if (n > 3) locant = plan.multi!.locant; }
   else base = ALKANE[n];
   const core = locant ? `${prefix ? `${prefix}-` : ''}${locant}-${base}` : `${prefix}${base}`;
+  if (plan.ester) return `${core} ${plan.ester.ko}`;
   return plan.stereo ? `${plan.stereo === 'cis' ? '시스' : '트랜스'}-${core}` : core;
+}
+
+/** 탄화수소 유도체의 영어 이름(PPT 6 필기: butanal · 2-butanone · ethanoic acid · ethyl ethanoate). 다른 범주는 없음. */
+export function englishName(plan: Plan): string | undefined {
+  if (!CARBONYL.includes(plan.category)) return undefined;
+  const groups = new Map<string, { group: Group; locants: number[] }>();
+  for (const s of plan.subs) { const g = groups.get(s.group.ko) ?? { group: s.group, locants: [] }; g.locants.push(s.locant); groups.set(s.group.ko, g); }
+  const list = [...groups.values()].map(g => ({ ...g, locants: g.locants.sort((a, b) => a - b) })).sort((x, y) => x.group.key.localeCompare(y.group.key));
+  const prefix = list.map(g => `${g.locants.join(',')}-${MULTIPLIER_EN[g.locants.length] ?? ''}${g.group.en}`).join('-');
+  const n = plan.parent.length, stem = STEM_EN[n];
+  if (plan.category === 'ketone') return n > 3 ? `${prefix ? `${prefix}-` : ''}${plan.fg}-${stem}anone` : `${prefix}${stem}anone`;
+  if (plan.category === 'aldehyde') return `${prefix}${stem}anal`;
+  if (plan.category === 'acid') return `${prefix}${stem}anoic acid`;
+  return `${plan.ester!.en} ${prefix}${stem}anoate`;
+}
+
+const ALKYL_KO = ['', '메틸', '에틸', '프로필', '뷰틸'];
+/** 탄화수소 유도체에서 잘 나오는 함정: 어미(-올 · -알 · -온 · -산) 바꾸기, 에스터 산 · 알킬 자리 바꾸기. */
+function carbonylTraps(plan: Plan): string[] {
+  const n = plan.parent.length;
+  const plain = !plan.subs.length;
+  const out: string[] = [];
+  const pre = render({ ...plan, category: 'alkane', subs: plan.subs, fg: undefined, ester: undefined }).replace(new RegExp(`${ALKANE[n]}$`), '');
+  if (plan.category === 'aldehyde') out.push(`${pre}${ALCOHOL[n]}`, `${pre}${STEM[n]}산`);
+  if (plan.category === 'ketone') out.push(`${pre}${STEM[n]}알`, n > 2 ? `${pre ? `${pre}-` : ''}${plan.fg}-${ALCOHOL[n]}`.replace('--', '-') : `${pre}${ALCOHOL[n]}`);
+  if (plan.category === 'acid') out.push(`${pre}${STEM[n]}알`, `${pre}${ALCOHOL[n]}`);
+  if (plan.category === 'ester' && plan.ester) {
+    out.push(`${plan.ester.ko} ${pre}${STEM[n]}산`);
+    const r = plan.ester.size, straight = plan.ester.key === plan.ester.en && ['methyl', 'ethyl', 'propyl', 'butyl'].includes(plan.ester.key);
+    if (plain && straight && ALKYL_KO[n] && r !== n) out.push(`${STEM[r]}산 ${ALKYL_KO[n]}`);
+    if (plain && n + r <= 10) out.push(`${STEM[n + r]}산`);
+  }
+  return out;
 }
 
 /** 시험에 잘 나오는 틀린 이름들: 반대쪽 번호, 알파벳 순서 무시, 더 짧은 사슬, 시스 ↔ 트랜스. */
@@ -361,6 +458,7 @@ export function wrongNames(mol: Mol): string[] {
   }
   out.add(render(best, false));
   if (best.stereo) out.add(render({ ...best, stereo: best.stereo === 'cis' ? 'trans' : 'cis' }));
+  for (const t of carbonylTraps(best)) out.add(t);
   out.delete(right);
   return [...out];
 }
@@ -406,7 +504,7 @@ export const formula = (mol: Mol) => {
   let c = 0, h = 0, o = 0, cl = 0, br = 0;
   mol.atoms.forEach((a, i) => {
     if (a.el === 'C') { c += 1; h += 4 - valence(adj, i); }
-    else if (a.el === 'O') { o += 1; h += 1; }
+    else if (a.el === 'O') { o += 1; h += 2 - valence(adj, i); }
     else if (a.el === 'Cl') cl += 1; else br += 1;
   });
   const sub = (k: number) => (k > 1 ? String(k).split('').map(d => '₀₁₂₃₄₅₆₇₈₉'[Number(d)]).join('') : '');
@@ -553,6 +651,16 @@ export const PPT_EXAMPLES: { smiles: string; name: string; stereo?: Stereo; page
   { smiles: 'CC(O)CC', name: '2-뷰탄올', page: 'PPT 5 · 11쪽' },
   { smiles: 'OCCCCl', name: '3-클로로-1-프로판올', page: 'PPT 5 · 11쪽' },
   { smiles: 'CC(C)(O)CCCCBr', name: '6-브로모-2-메틸-2-헥산올', page: 'PPT 5 · 11쪽' },
+  { smiles: 'CCCC=O', name: '뷰탄알', page: 'PPT 6 · 7쪽' },
+  { smiles: 'CC(C)C=O', name: '2-메틸프로판알', page: 'PPT 6 · 7쪽' },
+  { smiles: 'CC(=O)C', name: '프로판온', page: 'PPT 6 · 8쪽' },
+  { smiles: 'CCC(=O)C', name: '2-뷰탄온', page: 'PPT 6 · 8쪽' },
+  { smiles: 'CC(C)C(=O)C', name: '3-메틸-2-뷰탄온', page: 'PPT 6 · 8쪽' },
+  { smiles: 'CC(=O)O', name: '에탄산', page: 'PPT 6 · 9쪽' },
+  { smiles: 'CCC(=O)O', name: '프로판산', page: 'PPT 6 · 9쪽' },
+  { smiles: 'CC(=O)OCC', name: '에탄산 에틸', page: 'PPT 6 · 10쪽' },
+  { smiles: 'C=O', name: '메탄알', page: 'PPT 6 · 11쪽' },
+  { smiles: 'CC=O', name: '에탄알', page: 'PPT 7 · 3쪽' },
 ];
 
 export interface Puzzle { mol: Mol; name: string; category: Category; page?: string; plan: Plan; spec?: HardSpec }
@@ -628,6 +736,7 @@ function generate(category: Category, rng: Rng): { smiles: string; stereo?: Ster
     }
     return { smiles: chainSmiles(n, branches, { at, order }), stereo: order === 2 ? (rng() < 0.5 ? 'cis' : 'trans') : undefined };
   }
+  if (CARBONYL.includes(category)) return carbonylSmiles(category, rng);
   const n = 1 + Math.floor(rng() * 6);
   const ohAt = Math.floor(rng() * n);
   const count = n >= 3 ? Math.floor(rng() * 3) : n === 2 ? Math.floor(rng() * 2) : 0;
@@ -638,6 +747,24 @@ function generate(category: Category, rng: Rng): { smiles: string; stereo?: Ster
     add(k, g);
   }
   return { smiles: chainSmiles(n, branches, undefined, ohAt) };
+}
+
+/** 탄화수소 유도체 문제: 1번(또는 케톤은 안쪽) 탄소에 =O, 메틸 · 에틸 가지가 조금. */
+function carbonylSmiles(category: Category, rng: Rng): { smiles: string } {
+  const branches = new Map<number, string[]>();
+  const n = category === 'ketone' ? 3 + Math.floor(rng() * 5) : category === 'ester' ? 1 + Math.floor(rng() * 4) : 1 + Math.floor(rng() * 6);
+  const at = category === 'ketone' ? 1 + Math.floor(rng() * (n - 2)) : 0;
+  const count = n >= 3 ? Math.floor(rng() * (category === 'ester' ? 2 : 3)) : 0;
+  for (let i = 0; i < count; i += 1) {
+    const g = weighted<string>([['methyl', 4], ['ethyl', 1]], rng);
+    const k = 1 + Math.floor(rng() * (n - 2));
+    if (k === at || Math.min(k, n - 1 - k) < GROUPS[g].size || (branches.get(k)?.length ?? 0) >= 1) continue;
+    branches.set(k, [ALKYL_SMILES[g]]);
+  }
+  branches.set(at, [...(branches.get(at) ?? []), '=O']);
+  if (category === 'acid') branches.set(0, [...branches.get(0)!, 'O']);
+  if (category === 'ester') branches.set(0, [...branches.get(0)!, `O${ALKYL_SMILES[weighted<string>([['methyl', 3], ['ethyl', 3], ['propyl', 1.5], ['isopropyl', 1], ['butyl', 1]], rng)]}`]);
+  return { smiles: chainSmiles(n, branches) };
 }
 
 // ── 고난도: 주사슬 7~10개, 치환기 3~6개(표 22.2 전부 · 할로젠), 시스 · 트랜스 ─────────────────
@@ -740,8 +867,9 @@ function puzzleFromSpec(spec: HardSpec, rng: Rng): Puzzle | null {
 /** 문제 하나. PPT 화합물이 자주 나오고, 나머지는 범위 안에서 새로 만든다. */
 export function makePuzzle(categories: Category[], rng: Rng = Math.random, options: { minCarbons?: number; hard?: boolean } = {}): Puzzle {
   const minCarbons = options.minCarbons ?? 1;
-  if (options.hard) for (let tries = 0; tries < 400; tries += 1) {
-    const category = pick(categories, rng);
+  const hardPool = categories.filter(c => !CARBONYL.includes(c)); // 탄화수소 유도체는 고난도 없이 기본 문제로
+  if (options.hard && hardPool.length) for (let tries = 0; tries < 400; tries += 1) {
+    const category = pick(hardPool, rng);
     const p = puzzleFromSpec(hardSpec(category, rng), rng);
     if (!p || p.category !== category || p.plan.subs.length < 3 || p.name.length < 18) continue;
     if (category === 'alkene' && !p.plan.stereo) continue;
@@ -769,6 +897,7 @@ export function makePuzzle(categories: Category[], rng: Rng = Math.random, optio
 }
 
 function categoryOfSmiles(smiles: string): Category {
+  if (smiles.includes('=O')) { const fn = functionalGroup(parseSmiles(smiles), adjacency(parseSmiles(smiles))); if (!('reason' in fn) && fn.kind !== 'none' && fn.kind !== 'alcohol') return fn.kind; }
   if (/\d/.test(smiles)) return 'cyclo';
   if (smiles.includes('O')) return 'alcohol';
   if (smiles.includes('#')) return 'alkyne';
@@ -806,6 +935,18 @@ export function nameChoices(puzzle: Puzzle, rng: Rng = Math.random): string[] {
 export function explain(plan: Plan): string[] {
   const n = plan.parent.length;
   const lines: string[] = [];
+  if (CARBONYL.includes(plan.category)) {
+    const what = plan.category === 'aldehyde' ? '–CHO' : plan.category === 'ketone' ? 'C=O' : plan.category === 'acid' ? '–COOH' : 'C=O 쪽';
+    const ending = plan.category === 'aldehyde' ? '-알(-al)' : plan.category === 'ketone' ? '-온(-one)' : plan.category === 'acid' ? '-산(-oic acid)' : '-산(-oate)';
+    lines.push(`가장 긴 사슬 탄소 ${n}개(${what} 탄소 포함) → ${ALKANE[n]}의 끝을 ${ending}로: ${STEM[n]}${plan.category === 'aldehyde' ? '알' : plan.category === 'ketone' ? '온' : '산'}`);
+    if (plan.category === 'ketone') lines.push(n > 3 ? `카보닐(C=O) 탄소가 작은 번호가 되게: ${plan.fg}번` : '카보닐 탄소 자리가 하나뿐이라 번호를 안 붙여요(아세톤)');
+    else lines.push(`${what} 탄소가 1번(번호는 쓰지 않아요)`);
+    if (plan.subs.length) lines.push(`치환기: ${[...plan.subs].sort((a, b) => a.locant - b.locant).map(s => `${s.locant}번 ${s.group.ko}`).join(', ')}`);
+    if (plan.ester) lines.push(`O에 붙은 알코올 쪽 알킬 → ${plan.ester.ko} · 이름은 「산 이름 + 알킬」(영어는 알킬 + -oate)`);
+    const en = englishName(plan);
+    if (en) lines.push(`영어: ${en}`);
+    return lines;
+  }
   if (plan.ring) lines.push(`고리 탄소 ${n}개 → 사이클로${(plan.multi ? ALKENE : ALKANE)[n]}${plan.multi ? '(이중 결합 탄소가 1 · 2번)' : ''}`);
   else {
     const need = plan.category === 'alcohol' ? ' (OH가 붙은 탄소 포함)' : plan.multi ? ` (${plan.multi.order === 2 ? '이중' : '삼중'} 결합 포함)` : '';
@@ -824,7 +965,7 @@ export interface Label { x: number; y: number; text: string }
 /** 골격 구조식 선분들. 좌표는 분자 단위(결합 길이 1), y는 위가 +. 이중 결합은 안쪽에 짧은 선, 삼중 결합은 양쪽에 선. */
 export function skeleton(mol: Mol): { strokes: Stroke[]; labels: Label[]; box: { minX: number; maxX: number; minY: number; maxY: number } } {
   const adj = adjacency(mol);
-  const labels: Label[] = mol.atoms.map((a, i) => ({ a, i })).filter(({ a }) => a.el !== 'C').map(({ a }) => ({ x: a.x, y: a.y, text: a.el === 'O' ? 'OH' : a.el }));
+  const labels: Label[] = mol.atoms.map((a, i) => ({ a, i })).filter(({ a }) => a.el !== 'C').map(({ a, i }) => ({ x: a.x, y: a.y, text: a.el === 'O' ? (valence(adj, i) === 1 ? 'OH' : 'O') : a.el }));
   const center = (() => { const xs = mol.atoms.map(a => a.x), ys = mol.atoms.map(a => a.y); return { x: xs.reduce((s, v) => s + v, 0) / xs.length, y: ys.reduce((s, v) => s + v, 0) / ys.length }; })();
   const strokes: Stroke[] = [];
   const trim = (i: number) => (mol.atoms[i].el === 'C' ? 0 : 0.32);

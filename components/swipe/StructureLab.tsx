@@ -5,13 +5,13 @@ import type { Direction } from '../../data/swipe-cards';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playResult, playTick } from '../../lib/sound';
 import {
-  CATEGORY_LABEL, carbonCount, explain, formula, makePuzzle, nameChoices, nameOf, sameMolecule, skeleton,
+  CARBONYL, CATEGORY_LABEL, carbonCount, englishName, explain, formula, makePuzzle, nameChoices, nameOf, sameMolecule, skeleton,
   type Category, type El, type Mol, type Order, type Puzzle,
 } from '../../lib/structure';
 import MenuCard from './MenuCard';
 
 type Page = 'menu' | 'name' | 'draw' | 'free';
-const CATEGORIES: Category[] = ['alkane', 'cyclo', 'alkene', 'alkyne', 'alcohol'];
+const CATEGORIES: Category[] = ['alkane', 'cyclo', 'alkene', 'alkyne', 'alcohol', 'aldehyde', 'ketone', 'acid', 'ester'];
 const RANGE_KEY = 'johamin-structure-range-v1';
 const LEVEL_KEY = 'johamin-structure-level-v1';
 type Level = 'basic' | 'hard';
@@ -128,7 +128,7 @@ function NameQuiz({ range, hard, rangeBar }: { range: Category[]; hard: boolean;
       </div>
     </div>
     {picked ? <div className={`structure-result ${picked === answer ? 'is-right' : 'is-wrong'}`} role="status">
-      <h2>{picked === answer ? '정답이에요!' : '아쉬워요'} · {p.name}</h2>
+      <h2>{picked === answer ? '정답이에요!' : '아쉬워요'} · {p.name}{englishName(p.plan) && <small className="structure-en">{englishName(p.plan)}</small>}</h2>
       <ul>{explain(p.plan).map((line, i) => <li key={i}>{line}</li>)}</ul>
       {p.page && <p className="structure-source">주민지T {p.page}에 나온 화합물이에요.</p>}
       <button type="button" className="glass-button is-primary" onClick={() => choose('up')} autoFocus>다음 문제 →</button>
@@ -143,7 +143,7 @@ const REACH_PX = UNIT * 1.9; // 고른 원자에서 이만큼 안쪽을 누르�
 type Tool = 'C' | 'O' | 'Cl' | 'Br' | 1 | 2 | 3 | 'move' | 'erase';
 const ATOM_TOOLS: Tool[] = ['C', 'O', 'Cl', 'Br'];
 const BOND_TOOLS: Tool[] = [1, 2, 3];
-const TOOL_LABEL: Record<string, string> = { C: '탄소', O: 'OH', Cl: 'Cl', Br: 'Br', 1: '단일 C–C', 2: '이중 C=C', 3: '삼중 C≡C', move: '✥ 옮기기', erase: '지우개' };
+const TOOL_LABEL: Record<string, string> = { C: '탄소', O: 'O', Cl: 'Cl', Br: 'Br', 1: '단일 결합', 2: '이중 결합', 3: '삼중 결합', move: '✥ 옮기기', erase: '지우개' };
 const isAtomTool = (t: Tool): t is El => t === 'C' || t === 'O' || t === 'Cl' || t === 'Br';
 const isBondTool = (t: Tool): t is Order => t === 1 || t === 2 || t === 3;
 interface CAtom { id: number; el: El; x: number; y: number }
@@ -244,12 +244,12 @@ function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: C
       const made = place(drawing, el, p);
       const link = fromAtom && near(p);
       commit(link ? bond(made.drawing, fromAtom.id, made.atom.id, 1, false) : made.drawing);
-      setSelected(el === 'C' ? made.atom.id : null);
+      setSelected(el === 'C' || el === 'O' ? made.atom.id : null);
       playTick();
       return;
     }
     if (fromAtom?.id === hit.id) { setSelected(null); return; }
-    if (fromAtom && near(hit)) { commit(bond(drawing, fromAtom.id, hit.id, 1, false)); setSelected(hit.el === 'C' ? hit.id : null); playTick(); return; }
+    if (fromAtom && near(hit)) { commit(bond(drawing, fromAtom.id, hit.id, 1, false)); setSelected(hit.el === 'C' || hit.el === 'O' ? hit.id : null); playTick(); return; }
     setSelected(hit.id);
   };
 
@@ -282,11 +282,11 @@ function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: C
     const end = atomAt(p);
     if (end && end.id === pr.atom) return;
     const order: Order = isBondTool(tool) ? tool : 1;
-    if (end) { commit(bond(drawing, pr.atom, end.id, order, isBondTool(tool))); setSelected(end.el === 'C' ? end.id : null); playTick(); return; }
+    if (end) { commit(bond(drawing, pr.atom, end.id, order, isBondTool(tool))); setSelected(end.el === 'C' || end.el === 'O' ? end.id : null); playTick(); return; }
     const el: El = isAtomTool(tool) ? tool : 'C';
     const made = place(drawing, el, p);
     commit(bond(made.drawing, pr.atom, made.atom.id, order, false));
-    setSelected(el === 'C' ? made.atom.id : null);
+    setSelected(el === 'C' || el === 'O' ? made.atom.id : null);
     playTick();
   };
   const onKeyDown = (event: ReactKeyboardEvent<SVGSVGElement>) => {
@@ -330,11 +330,11 @@ function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: C
   const sel = drawing.atoms.find(a => a.id === selected);
   const hint = tool === 'erase' ? '지울 원자나 결합을 눌러요.' : tool === 'move' ? '원자를 끌어서 옮겨요(시스 · 트랜스 모양 바꾸기).'
     : isBondTool(tool) ? `원자 두 개를 차례로 누르거나 이미 있는 결합을 누르면 ${TOOL_LABEL[tool].slice(0, 2)} 결합이 돼요.`
-    : sel ? `고른 원자 근처를 누르면 ${tool === 'O' ? 'OH' : tool === 'C' ? '탄소' : tool}가 이어서 생겨요(가까운 원자를 누르면 고리처럼 이어져요). 멀리 누르면 따로 시작해요.` : `빈 곳을 누르면 그 자리에 ${tool === 'O' ? 'OH' : tool === 'C' ? '탄소' : tool}가 생겨요. 이미 있는 원자를 누르면 거기서부터 이어 그려요.`;
+    : sel ? `고른 원자 근처를 누르면 ${tool === 'C' ? '탄소' : tool}가 이어서 생겨요(가까운 원자를 누르면 고리처럼 이어져요). 멀리 누르면 따로 시작해요.${tool === 'O' ? ' C=O는 이중 결합 도구로 C–O 결합을 눌러요.' : ''}` : `빈 곳을 누르면 그 자리에 ${tool === 'C' ? '탄소' : tool}가 생겨요. 이미 있는 원자를 누르면 거기서부터 이어 그려요.${tool === 'O' ? ' O 하나만 붙이면 –OH, 이중 결합이면 =O, 양쪽에 탄소면 –O–예요.' : ''}`;
   return <section className="biology-menu glass structure-panel">
     <div className="structure-top">{rangeBar}{!free && <p className="structure-score">맞힌 문제 <b>{score.right}</b> / {score.total}</p>}</div>
     {free ? <p className="structure-prompt">아무 구조식이나 그려 보세요. <b>이름을 바로 알려 줘요.</b></p>
-      : <p className={`structure-prompt${hard ? ' is-hard' : ''}`}>이 이름의 구조식을 그려요: <b>{target.name}</b></p>}
+      : <p className={`structure-prompt${hard && !CARBONYL.includes(target.category) ? ' is-hard' : ''}`}>이 이름의 구조식을 그려요: <b>{target.name}</b>{englishName(target.plan) && <small className="structure-en">{englishName(target.plan)}</small>}</p>}
     <div className="structure-palette" role="toolbar" aria-label="그리기 도구">
       <div role="group" aria-label="원자">{ATOM_TOOLS.map(t => <button key={t} type="button" className="glass-button" aria-pressed={tool === t} onClick={() => { setTool(t); setSelected(null); }}>{TOOL_LABEL[t]}</button>)}</div>
       <div role="group" aria-label="결합">{BOND_TOOLS.map(t => <button key={t} type="button" className="glass-button" aria-pressed={tool === t} onClick={() => { setTool(t); setSelected(null); }}>{TOOL_LABEL[t]}</button>)}</div>
@@ -359,7 +359,7 @@ function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: C
     <p className="structure-hint">{hint}</p>
     {free ? <div className="structure-result" role="status">
       {!drawnName ? <p>아직 그린 게 없어요.</p> : drawnName.ok ? <>
-        <h2>{drawnName.name}</h2>
+        <h2>{drawnName.name}{englishName(drawnName.plan) && <small className="structure-en">{englishName(drawnName.plan)}</small>}</h2>
         <p className="structure-formula">{formula(mol)}</p>
         <ul>{explain(drawnName.plan).map((line, i) => <li key={i}>{line}</li>)}</ul>
       </> : <p>{drawnName.reason}</p>}

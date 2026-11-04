@@ -36,8 +36,9 @@ assert.ok(!same('CCC(C)CC', 'CC(C)CCC') && !same('C=CCC', 'CC=CC') && !same('CCC
 let seed = 42;
 const rng = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
 const cats = ['alkane', 'cyclo', 'alkene', 'alkyne', 'alcohol'];
+const allCats = [...cats, 'aldehyde', 'ketone', 'acid', 'ester'];
 let made = 0;
-for (const cat of cats) for (let i = 0; i < 60; i += 1) {
+for (const cat of allCats) for (let i = 0; i < 60; i += 1) {
   const p = S.makePuzzle([cat], rng, { minCarbons: 2 });
   assert.equal(p.category, cat);
   const again = S.nameOf(p.mol);
@@ -69,6 +70,33 @@ assert.equal(S.nameOf(S.parseSmiles('CCCC(CC)C(C)CCC')).ok, true);
 const w = S.wrongNames(S.layout(S.parseSmiles('CC(C)CCC(CC)CC')));
 assert.ok(w.includes('3-에틸-6-메틸헵테인') && w.includes('2-메틸-5-에틸헵테인'), w.join());
 assert.equal(S.formula(S.parseSmiles('CC(C)(O)CCCCBr')), 'C₇H₁₅BrO');
+
+// 5.1.0 탄화수소 유도체(PPT 6): 알데하이드 -알 · 케톤 -온(C=O 탄소 번호 작게) · 카복실산 -산 · 에스터 「산 이름 + 알킬」, 영어 이름도.
+const derivative = {
+  'CCCCC=O': ['펜탄알', 'pentanal'], 'CC(C)CC=O': ['3-메틸뷰탄알', '3-methylbutanal'], 'CCCC(=O)C': ['2-펜탄온', '2-pentanone'], 'CCC(=O)CC': ['3-펜탄온', '3-pentanone'],
+  'CC(C)CC(=O)C': ['4-메틸-2-펜탄온', '4-methyl-2-pentanone'], 'CCCC(=O)O': ['뷰탄산', 'butanoic acid'], 'CC(C)C(=O)O': ['2-메틸프로판산', '2-methylpropanoic acid'],
+  'CCC(=O)OC': ['프로판산 메틸', 'methyl propanoate'], 'C(=O)OCC': ['메탄산 에틸', 'ethyl methanoate'], 'CC(=O)OC(C)C': ['에탄산 아이소프로필', 'isopropyl ethanoate'],
+};
+for (const [smiles, [ko, en]] of Object.entries(derivative)) {
+  const mol = S.layout(S.parseSmiles(smiles)); const r = S.nameOf(mol);
+  assert.ok(r.ok, smiles); assert.equal(r.name, ko, smiles); assert.equal(S.englishName(r.plan), en, smiles);
+}
+assert.equal(S.englishName(S.nameOf(S.layout(S.parseSmiles('CC(=O)OCC'))).plan), 'ethyl ethanoate');
+assert.equal(S.englishName(S.nameOf(S.layout(S.parseSmiles('CCCC'))).plan), undefined, '탄화수소 · 알코올은 영어 이름 없음');
+// 분자식: =O · –O–에는 H가 없다.
+assert.equal(S.formula(S.parseSmiles('CC(=O)OCC')), 'C₄H₈O₂');
+assert.equal(S.formula(S.parseSmiles('CCC=O')), 'C₃H₆O');
+// 함정: 어미 바꾸기 · 에스터 자리 바꾸기 · 이성질체 산.
+const traps = smiles => S.wrongNames(S.layout(S.parseSmiles(smiles)));
+assert.ok(traps('CCCC=O').includes('뷰탄올') && traps('CCC(=O)C').includes('뷰탄알') && traps('CCC(=O)C').includes('3-뷰탄온'));
+assert.ok(traps('CCC(=O)OC').includes('메탄산 프로필') && traps('CC(=O)OCC').includes('뷰탄산'));
+// 라벨: –OH, =O, –O–
+const labels = smiles => S.skeleton(S.layout(S.parseSmiles(smiles))).labels.map(l => l.text).sort().join();
+assert.equal(labels('CC(=O)O'), 'O,OH');
+assert.equal(labels('CC(=O)OC'), 'O,O');
+// 범위 밖: 에터, 작용기 둘, 고리 유도체, C=C 있는 유도체
+for (const bad of ['CCOC', 'OCC=O', 'O=C1CCCC1', 'C=CC=O', 'CC(=O)CC(=O)C']) { const r = S.nameOf(S.parseSmiles(bad)); assert.equal(r.ok, false, bad); }
+assert.ok(!S.sameMolecule(S.parseSmiles('CCC(=O)OC'), S.parseSmiles('CC(=O)OCC')) && S.sameMolecule(S.parseSmiles('CC(=O)OCC'), S.parseSmiles('CCOC(C)=O')));
 
 // 화면 연결: 화학(주민지T · 기말) 덱 학습 메뉴 맨 앞 '구조식 실습'.
 const { finalMenu } = require('../data/final-subjects.ts');
