@@ -938,6 +938,88 @@ export function makePuzzle(categories: Category[], rng: Rng = Math.random, optio
   return { mol: fallback, name: named.name, category: 'alkane', plan: named.plan };
 }
 
+// ── 산화 그리기(5.2.0~, PPT 7 「산화를 통한 변환」) ─────────────────────────────────────
+// 산화제는 탄소 골격을 그대로 두고, 작용기 탄소의 H를 떼고 O를 붙인다. 그래서
+//   1차 알코올 → 알데하이드 → 카복실산, 2차 알코올 → 케톤, 3차 알코올 · 케톤 · 카복실산은 더 산화되지 않는다(C–C를 끊어야 해서).
+// 필요한 산화제 세기는 더 많이 산화될수록 강하다(출발 물질에서 몇 단계 산화됐는지로 비교).
+export type OxidationStart = 'primary' | 'secondary' | 'tertiary' | 'aldehyde' | 'ketone' | 'acid';
+export const OXIDATION_START_LABEL: Record<OxidationStart, string> = { primary: '1차 알코올', secondary: '2차 알코올', tertiary: '3차 알코올', aldehyde: '알데하이드', ketone: '케톤', acid: '카복실산' };
+export interface OxidationProduct { mol: Mol; name: string; steps: number }
+export interface OxidationPuzzle { start: Mol; name: string; kind: OxidationStart; products: OxidationProduct[] }
+
+/** 알코올의 영어 이름(PPT 7: ethanol · 2-propanol). */
+export function alcoholEnglish(plan: Plan): string | undefined {
+  if (plan.category !== 'alcohol') return undefined;
+  const n = plan.parent.length, pre = prefixEn(plan.subs);
+  return n > 2 ? `${pre ? `${pre}-` : ''}${plan.oh}-${STEM_EN[n]}anol` : `${pre}${STEM_EN[n]}anol`;
+}
+
+/** 출발 물질이 무엇인지와, 산화제로 만들 수 있는 생성물(단계 수와 함께). */
+export function oxidationOf(mol: Mol): { kind: OxidationStart; products: { mol: Mol; steps: number }[] } | null {
+  const adj = adjacency(mol);
+  const fn = functionalGroup(mol, adj);
+  if ('reason' in fn || fn.kind === 'none' || fn.kind === 'ester') return null;
+  const c = fn.carbon;
+  const withO = (base: Mol, order: Order, extra = false): Mol => {
+    const atoms = base.atoms.map(a => ({ ...a }));
+    const bonds = base.bonds.map(b => ({ ...b }));
+    const o = atoms.findIndex((a, i) => a.el === 'O' && bonds.some(b => (b.a === i && b.b === c) || (b.b === i && b.a === c)));
+    const bond = bonds.find(b => (b.a === o && b.b === c) || (b.b === o && b.a === c))!;
+    bond.order = order;
+    if (extra) { atoms.push({ el: 'O', x: 0, y: 0 }); bonds.push({ a: c, b: atoms.length - 1, order: 1 }); }
+    return { atoms, bonds };
+  };
+  const relayout = (m: Mol) => layout(m) ?? m;
+  if (fn.kind === 'alcohol') {
+    const degree = carbonNeighbors(mol, adj, c).length;
+    if (degree >= 3) return { kind: 'tertiary', products: [] };
+    if (degree === 2) return { kind: 'secondary', products: [{ mol: relayout(withO(mol, 2)), steps: 1 }] };
+    const aldehyde = withO(mol, 2);
+    return { kind: 'primary', products: [{ mol: relayout(aldehyde), steps: 1 }, { mol: relayout(withO(aldehyde, 2, true)), steps: 2 }] };
+  }
+  if (fn.kind === 'aldehyde') return { kind: 'aldehyde', products: [{ mol: relayout(withO(mol, 2, true)), steps: 1 }] };
+  return { kind: fn.kind, products: [] };
+}
+
+/** 두 생성물에 필요한 산화제 세기 비교(더 많이 산화될수록 강하다). */
+export const strengthOrder = (a: number, b: number): '<' | '=' | '>' => (a < b ? '<' : a > b ? '>' : '=');
+
+/** 산화 그리기 문제 하나. 기본은 짧은 사슬, 고난도는 긴 사슬에 가지. */
+export function makeOxidationPuzzle(rng: Rng = Math.random, hard = false): OxidationPuzzle {
+  for (let tries = 0; tries < 200; tries += 1) {
+    const kind = weighted<OxidationStart>([['primary', 4], ['secondary', 3], ['tertiary', 1.2], ['aldehyde', 1.5], ['ketone', 0.8], ['acid', 0.6]], rng);
+    const n = hard ? 5 + Math.floor(rng() * 4) : 2 + Math.floor(rng() * 4);
+    const branches = new Map<number, string[]>();
+    const want = hard ? 2 + Math.floor(rng() * 2) : Math.floor(rng() * 2);
+    // 작용기 탄소 자리: 1차 · 알데하이드 · 카복실산은 끝, 2차 · 케톤은 안쪽, 3차는 안쪽에 가지 하나 더.
+    const at = kind === 'secondary' || kind === 'ketone' || kind === 'tertiary' ? 1 + Math.floor(rng() * Math.max(1, n - 2)) : 0;
+    if ((kind === 'secondary' || kind === 'ketone' || kind === 'tertiary') && n < 3) continue;
+    for (let i = 0; i < 20 && [...branches.values()].flat().length < want; i += 1) {
+      const g = weighted<string>(hard ? [['methyl', 4], ['ethyl', 2], ['isopropyl', 1]] : [['methyl', 1]], rng);
+      const k = 1 + Math.floor(rng() * Math.max(1, n - 2));
+      if (k === at || k >= n - 1 || Math.min(k, n - 1 - k) < GROUPS[g].size || (branches.get(k)?.length ?? 0) >= 1) continue;
+      branches.set(k, [ALKYL_SMILES[g]]);
+    }
+    const head = kind === 'primary' || kind === 'secondary' ? ['O'] : kind === 'tertiary' ? ['C', 'O'] : kind === 'acid' ? ['=O', 'O'] : ['=O'];
+    branches.set(at, [...(branches.get(at) ?? []), ...head]);
+    const base = parseSmiles(chainSmiles(n, branches));
+    const start = layout(base, undefined, rng);
+    if (!start) continue;
+    const named = nameOf(start);
+    const ox = oxidationOf(start);
+    if (!named.ok || !ox || ox.kind !== kind) continue;
+    const products: OxidationProduct[] = [];
+    let ok = true;
+    for (const p of ox.products) { const r = nameOf(p.mol); if (!r.ok) { ok = false; break; } products.push({ mol: p.mol, name: r.name, steps: p.steps }); }
+    if (!ok) continue;
+    const en = alcoholEnglish(named.plan);
+    return { start, name: en ?? named.name, kind, products };
+  }
+  const start = layout(parseSmiles('CCCO'))!;
+  const ox = oxidationOf(start)!;
+  return { start, name: '1-propanol', kind: 'primary', products: ox.products.map(p => ({ ...p, name: (nameOf(p.mol) as Extract<NameResult, { ok: true }>).name })) };
+}
+
 function categoryOfSmiles(smiles: string): Category {
   if (smiles.includes('=O')) { const fn = functionalGroup(parseSmiles(smiles), adjacency(parseSmiles(smiles))); if (!('reason' in fn) && fn.kind !== 'none' && fn.kind !== 'alcohol') return fn.kind; }
   if (/\d/.test(smiles)) return 'cyclo';
