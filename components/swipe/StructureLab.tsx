@@ -1,12 +1,12 @@
 // 주민지T 「Ⅲ. 탄소 화합물과 반응」 구조식 실습: 골격 구조식 보고 이름 맞히기 · 이름 보고 구조식 그리기 · 자유 그리기.
 // 화학 로직(이름 붙이기 · 같은 분자 판정 · 그림 좌표)은 lib/structure.ts.
-import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent } from 'react';
 import type { Direction } from '../../data/swipe-cards';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playResult, playTick } from '../../lib/sound';
 import {
-  CARBONYL, CATEGORY_LABEL, carbonCount, explain, formula, koreanName, makePuzzle, nameChoices, nameOf, sameMolecule, skeleton,
-  type Category, type El, type Mol, type Order, type Puzzle,
+  CARBONYL, CATEGORY_LABEL, OXIDATION_START_LABEL, carbonCount, explain, formula, koreanName, makeOxidationPuzzle, strengthOrder, makePuzzle, nameChoices, nameOf, sameMolecule, skeleton,
+  type Category, type El, type Mol, type Order, type OxidationPuzzle, type Puzzle,
 } from '../../lib/structure';
 import MenuCard from './MenuCard';
 
@@ -53,6 +53,7 @@ export default function StructureLab({ onBack }: { onBack: () => void }) {
   const [page, setPage] = useState<Page>('menu');
   const [range, setRange] = useState<Category[]>(loadRange);
   const [level, setLevel] = useState<Level>(loadLevel);
+  const [drawMode, setDrawMode] = useState<'name' | 'oxidation'>('name');
   useEffect(() => { try { localStorage.setItem(RANGE_KEY, JSON.stringify(range)); localStorage.setItem(LEVEL_KEY, level); } catch { /* not saved */ } }, [range, level]);
   const toMenu = useCallback(() => { playTick(); setPage('menu'); }, []);
   if (page === 'menu') return <MenuCard topic="주민지T · 구조식 실습" question="무엇을 해 볼까요?"
@@ -64,14 +65,15 @@ export default function StructureLab({ onBack }: { onBack: () => void }) {
   </MenuCard>;
   const rangeBar = page === 'free' ? null : <div className="structure-filters">
     <div className="structure-level" role="group" aria-label="난이도">{(['basic', 'hard'] as Level[]).map(l => <button key={l} type="button" className={`glass-button${l === 'hard' ? ' is-hard' : ''}`} aria-pressed={level === l} onClick={() => setLevel(l)}>{l === 'basic' ? '기본' : '🔥 고난도'}</button>)}</div>
-    <div className="structure-range" role="group" aria-label="범위">{CATEGORIES.map(c => <button key={c} type="button" className="glass-button" aria-pressed={range.includes(c)}
-      onClick={() => setRange(r => r.includes(c) ? (r.length > 1 ? r.filter(x => x !== c) : r) : [...r, c])}>{CATEGORY_LABEL[c]}</button>)}</div>
+    {!(page === 'draw' && drawMode === 'oxidation') && <div className="structure-range" role="group" aria-label="범위">{CATEGORIES.map(c => <button key={c} type="button" className="glass-button" aria-pressed={range.includes(c)}
+      onClick={() => setRange(r => r.includes(c) ? (r.length > 1 ? r.filter(x => x !== c) : r) : [...r, c])}>{CATEGORY_LABEL[c]}</button>)}</div>}
   </div>;
   const hard = level === 'hard';
   return <main className="swipe-app biology-app structure-app"><div className="biology-study">
     <header className="biology-header glass"><button type="button" className="glass-button" onClick={toMenu}>← 구조식 실습</button><h1>{page === 'name' ? '이름 맞히기' : page === 'draw' ? '구조식 그리기' : '자유 그리기'}</h1></header>
     {page === 'name' ? <NameQuiz key={`${level}-${range.join()}`} range={range} hard={hard} rangeBar={rangeBar} />
-      : <DrawPractice key={`${page}-${level}-${range.join()}`} free={page === 'free'} range={range} hard={hard} rangeBar={rangeBar} />}
+      : <DrawPractice key={`${page}-${level}-${range.join()}-${drawMode}`} free={page === 'free'} range={range} hard={hard} rangeBar={rangeBar}
+        oxidation={page === 'draw' && drawMode === 'oxidation'} onMode={page === 'draw' ? setDrawMode : undefined} />}
   </div></main>;
 }
 
@@ -162,8 +164,17 @@ const segmentDistance = (p: { x: number; y: number }, a: CAtom, b: CAtom) => {
   return Math.hypot(p.x - (a.x + vx * t), p.y - (a.y + vy * t));
 };
 
-function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: Category[]; hard: boolean; rangeBar: React.ReactNode }) {
+type Op = '<' | '=' | '>';
+const OPS: Op[] = ['<', '=', '>'];
+
+function DrawPractice({ free, range, hard, rangeBar, oxidation = false, onMode }: { free: boolean; range: Category[]; hard: boolean; rangeBar: React.ReactNode; oxidation?: boolean; onMode?: (mode: 'name' | 'oxidation') => void }) {
   const newTarget = useCallback(() => makePuzzle(range, Math.random, { minCarbons: 2, hard }), [range, hard]);
+  // 산화 그리기(5.2.0~): 출발 물질을 산화제로 산화시켜 만들 수 있는 것을 모두 그리고, 필요한 산화제 세기를 부등호로.
+  const [ox, setOx] = useState<OxidationPuzzle | null>(() => (oxidation ? makeOxidationPuzzle(Math.random, hard) : null));
+  const [slots, setSlots] = useState<{ mol: Mol; name: string }[]>([]);
+  const [ops, setOps] = useState<Op[]>([]);
+  const [none, setNone] = useState(false);
+  const [note, setNote] = useState('');
   const [target, setTarget] = useState<Puzzle>(newTarget);
   const [drawing, setDrawing] = useState<Drawing>(EMPTY);
   const [history, setHistory] = useState<Drawing[]>([]);
@@ -307,7 +318,42 @@ function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: C
   const mol = useMemo(() => drawingToMol(drawing), [drawing]);
   const drawnName = useMemo(() => (drawing.atoms.length ? nameOf(mol) : null), [mol, drawing.atoms.length]);
   const overfull = useMemo(() => new Set(drawing.atoms.filter(a => a.el === 'C' && drawing.bonds.filter(b => b.a === a.id || b.b === a.id).reduce((s, b) => s + b.order, 0) > 4).map(a => a.id)), [drawing]);
+  const addSlot = () => {
+    if (!drawnName) { setNote('먼저 생성물 하나를 그려요.'); return; }
+    if (!drawnName.ok) { setNote(drawnName.reason); return; }
+    if (slots.some(s => sameMolecule(s.mol, mol))) { setNote('이미 넣은 생성물이에요.'); return; }
+    setSlots(list => [...list, { mol, name: drawnName.name }]);
+    if (slots.length) setOps(list => [...list, '<']);
+    setNone(false); setNote(''); setHistory(h => [...h.slice(-60), drawing]); setDrawing(EMPTY); setSelected(null); setResult(null); playTick();
+  };
+  const removeSlot = (i: number) => { setSlots(list => list.filter((_, j) => j !== i)); setOps(list => list.filter((_, j) => j !== Math.max(0, i - 1))); setResult(null); };
+  const checkOxidation = (puzzle: OxidationPuzzle) => {
+    const lines: string[] = [];
+    const expected = puzzle.products;
+    let ok: boolean;
+    if (!expected.length) {
+      ok = none && !slots.length;
+      lines.push(ok ? '맞아요. 산화제로는 더 산화되지 않아요.' : `${OXIDATION_START_LABEL[puzzle.kind]}은(는) 산화제로 더 산화되지 않아요 → 「생성물 없음」이 정답이에요.`);
+    } else if (none || !slots.length) {
+      ok = false;
+      lines.push(`생성물이 ${expected.length}개 있어요. 그려서 「생성물로 추가」를 눌러요.`);
+    } else {
+      const matched = slots.map(s => expected.find(e => sameMolecule(e.mol, s.mol)));
+      const missing = expected.filter(e => !slots.some(s => sameMolecule(e.mol, s.mol)));
+      const extra = slots.filter((_, i) => !matched[i]);
+      const opsOk = slots.slice(1).every((_, i) => !matched[i] || !matched[i + 1] || ops[i] === strengthOrder(matched[i]!.steps, matched[i + 1]!.steps));
+      ok = !missing.length && !extra.length && opsOk;
+      if (extra.length) lines.push(`만들 수 없는 것: ${extra.map(s => s.name).join(', ')} (탄소 골격은 그대로, 작용기 탄소의 H · O만 바뀌어요)`);
+      if (missing.length) lines.push(`빠진 생성물이 ${missing.length}개 있어요.`);
+      if (!missing.length && !extra.length && !opsOk) lines.push('생성물은 맞는데 부등호가 틀렸어요. 더 많이 산화된 것일수록 강한 산화제가 필요해요.');
+      if (ok) lines.push(`맞아요! ${slots.map((s, i) => `${i ? ` ${ops[i - 1]} ` : ''}${s.name}`).join('')}`);
+    }
+    setResult({ ok, lines });
+    setScore(s => ({ right: s.right + (ok ? 1 : 0), total: s.total + 1 }));
+    playResult(ok);
+  };
   const check = () => {
+    if (ox) { checkOxidation(ox); return; }
     const lines: string[] = [];
     if (!drawnName) { setResult({ ok: false, lines: ['먼저 구조식을 그려요.'] }); return; }
     const same = sameMolecule(mol, target.mol);
@@ -325,7 +371,7 @@ function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: C
     setScore(s => ({ right: s.right + (ok ? 1 : 0), total: s.total + 1 }));
     playResult(ok);
   };
-  const nextTarget = () => { setTarget(newTarget()); setDrawing(EMPTY); setHistory([]); setResult(null); setReveal(false); setSelected(null); playTick(); };
+  const nextTarget = () => { if (ox) { setOx(makeOxidationPuzzle(Math.random, hard)); setSlots([]); setOps([]); setNone(false); setNote(''); } else setTarget(newTarget()); setDrawing(EMPTY); setHistory([]); setResult(null); setReveal(false); setSelected(null); playTick(); };
 
   const { strokes, labels } = skeleton(mol);
   const sel = drawing.atoms.find(a => a.id === selected);
@@ -334,7 +380,15 @@ function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: C
     : sel ? `고른 원자 근처를 누르면 ${tool === 'C' ? '탄소' : tool}가 이어서 생겨요(가까운 원자를 누르면 고리처럼 이어져요). 멀리 누르면 따로 시작해요.${tool === 'O' ? ' C=O는 이중 결합 도구로 C–O 결합을 눌러요.' : ''}` : `빈 곳을 누르면 그 자리에 ${tool === 'C' ? '탄소' : tool}가 생겨요. 이미 있는 원자를 누르면 거기서부터 이어 그려요.${tool === 'O' ? ' O 하나만 붙이면 –OH, 이중 결합이면 =O, 양쪽에 탄소면 –O–예요.' : ''}`;
   return <section className="biology-menu glass structure-panel">
     <div className="structure-top">{rangeBar}{!free && <p className="structure-score">맞힌 문제 <b>{score.right}</b> / {score.total}</p>}</div>
-    {free ? <p className="structure-prompt">아무 구조식이나 그려 보세요. <b>이름을 바로 알려 줘요.</b></p>
+    {onMode && <div className="structure-mode" role="group" aria-label="그리기 문제 종류">
+      <button type="button" className="glass-button" aria-pressed={!oxidation} onClick={() => onMode('name')}>이름 보고 그리기</button>
+      <button type="button" className="glass-button" aria-pressed={oxidation} onClick={() => onMode('oxidation')}>산화 생성물 그리기</button>
+    </div>}
+    {ox ? <div className="structure-ox-prompt">
+      <p className="structure-prompt">산화제로 산화시켜 만들 수 있는 것을 <b>모두</b> 그리고, 필요한 산화제 세기를 부등호로 비교해요. <small>탄소 골격은 그대로예요.</small></p>
+      <div className="structure-ox-start"><MoleculeSvg mol={ox.start} label={`${ox.name}의 골격 구조식`} /><p><b>{ox.name}</b><small>{formula(ox.start)}</small></p></div>
+    </div>
+    : free ? <p className="structure-prompt">아무 구조식이나 그려 보세요. <b>이름을 바로 알려 줘요.</b></p>
       : <p className={`structure-prompt${hard && !CARBONYL.includes(target.category) ? ' is-hard' : ''}`}>이 이름의 구조식을 그려요: <b>{target.name}</b>{koreanName(target.plan) && <small className="structure-en">{koreanName(target.plan)}</small>}</p>}
     <div className="structure-palette" role="toolbar" aria-label="그리기 도구">
       <div role="group" aria-label="원자">{ATOM_TOOLS.map(t => <button key={t} type="button" className="glass-button" aria-pressed={tool === t} onClick={() => { setTool(t); setSelected(null); }}>{TOOL_LABEL[t]}</button>)}</div>
@@ -365,8 +419,23 @@ function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: C
         <ul>{explain(drawnName.plan).map((line, i) => <li key={i}>{line}</li>)}</ul>
       </> : <p>{drawnName.reason}</p>}
     </div> : <>
+      {ox && <div className="structure-ox">
+        <div className="structure-actions">
+          <button type="button" className="glass-button" onClick={addSlot} disabled={!drawing.atoms.length}>＋ 생성물로 추가</button>
+          <button type="button" className="glass-button" aria-pressed={none} onClick={() => { setNone(v => !v); setSlots([]); setOps([]); setResult(null); }}>생성물 없음</button>
+        </div>
+        {note && <p className="structure-hint" role="status">{note}</p>}
+        <div className="structure-slots" aria-label="내 답: 생성물과 산화제 세기">
+          {none ? <p className="structure-slot-empty">생성물 없음</p> : !slots.length ? <p className="structure-slot-empty">그린 생성물이 여기에 차례로 들어와요.</p>
+            : slots.map((s, i) => <Fragment key={i}>
+              {i > 0 && <button type="button" className="structure-op glass-button" aria-label={`산화제 세기 비교: ${ops[i - 1]} (눌러서 바꾸기)`} onClick={() => { setOps(list => list.map((o, j) => (j === i - 1 ? OPS[(OPS.indexOf(o) + 1) % OPS.length] : o))); setResult(null); }}>{ops[i - 1]}</button>}
+              <div className="structure-slot"><MoleculeSvg mol={s.mol} label={s.name} /><span>{s.name}</span><button type="button" aria-label={`${s.name} 빼기`} onClick={() => removeSlot(i)}>✕</button></div>
+            </Fragment>)}
+        </div>
+        {slots.length > 1 && <p className="structure-hint">부등호를 누르면 &lt; → = → &gt; 로 바뀌어요. 왼쪽 생성물에 필요한 산화제 세기 ○ 오른쪽.</p>}
+      </div>}
       <div className="structure-actions">
-        <button type="button" className="glass-button is-primary" onClick={check} disabled={!drawing.atoms.length}>채점하기</button>
+        <button type="button" className="glass-button is-primary" onClick={check} disabled={ox ? !slots.length && !none : !drawing.atoms.length}>채점하기</button>
         <button type="button" className="glass-button" onClick={() => setReveal(v => !v)}>{reveal ? '정답 가리기' : '정답 보기'}</button>
         <button type="button" className="glass-button" onClick={nextTarget}>다음 문제 →</button>
       </div>
@@ -374,10 +443,16 @@ function DrawPractice({ free, range, hard, rangeBar }: { free: boolean; range: C
         <h2>{result.ok ? '정답이에요!' : '다시 해 봐요'}</h2>
         <ul>{result.lines.map((line, i) => <li key={i}>{line}</li>)}</ul>
       </div>}
-      {reveal && <div className="structure-reveal">
+      {reveal && (ox ? <div className="structure-reveal">
+        {ox.products.length ? <div className="structure-slots">{ox.products.map((p, i) => <Fragment key={i}>{i > 0 && <span className="structure-op">{strengthOrder(ox.products[i - 1].steps, p.steps)}</span>}<div className="structure-slot"><MoleculeSvg mol={p.mol} label={p.name} /><span>{p.name}</span></div></Fragment>)}</div> : <p>생성물 없음</p>}
+        <ul>
+          <li>{OXIDATION_START_LABEL[ox.kind]}{ox.kind === 'primary' ? ' → 알데하이드 → 카복실산(더 산화될수록 강한 산화제)' : ox.kind === 'secondary' ? ' → 케톤 하나(케톤은 더 산화되지 않아요)' : ox.kind === 'aldehyde' ? ' → 카복실산' : ox.kind === 'tertiary' ? ': OH가 붙은 탄소에 H가 없어 산화되지 않아요' : ': 더 산화하려면 탄소 골격(C–C)을 끊어야 해서 산화제로는 안 돼요'}</li>
+          <li>산화제는 탄소 골격(C–C)은 그대로 두고, 작용기 탄소의 H를 떼거나 O를 붙여요.</li>
+        </ul>
+      </div> : <div className="structure-reveal">
         <MoleculeSvg mol={target.mol} numbers={target.plan.parent} label={`${target.name}의 골격 구조식`} />
         <ul>{explain(target.plan).map((line, i) => <li key={i}>{line}</li>)}</ul>
-      </div>}
+      </div>)}
     </>}
   </section>;
 }

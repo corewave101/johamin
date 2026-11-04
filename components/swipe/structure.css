@@ -95,3 +95,28 @@
 }
 .structure-en { display: block; margin-top: 2px; font-size: .72em; font-weight: 700; opacity: .7; letter-spacing: .01em; }
 .structure-choice.is-long span { font-size: .84em; word-break: keep-all; overflow-wrap: normal; }
+
+/* 5.2.0 산화 생성물 그리기 */
+.structure-mode { display: flex; flex-wrap: wrap; gap: 6px; }
+.structure-mode .glass-button { padding: 7px 14px; font-size: 14px; font-weight: 800; }
+.structure-ox-prompt { display: grid; gap: 8px; }
+.structure-ox-prompt small { display: block; margin-top: 2px; font-size: 13px; color: var(--ink-soft); }
+.structure-ox-start { display: flex; align-items: center; gap: 14px; padding: 8px 14px; border-radius: 16px; background: #fffdf8; }
+.structure-ox-start .structure-svg { width: min(220px, 48%); max-height: 140px; margin: 0; }
+.structure-ox-start p { margin: 0; display: grid; gap: 2px; }
+.structure-ox-start b { font-size: 19px; color: var(--navy); word-break: break-all; }
+.structure-ox-start small { font-size: 14px; font-weight: 700; color: #475467; }
+.structure-ox { display: grid; gap: 8px; }
+.structure-slots { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 60px; padding: 8px; border-radius: 16px; border: 1.5px dashed color-mix(in srgb, var(--theme-base) 60%, #d7deea); background: rgba(255, 255, 255, .55); }
+.structure-reveal .structure-slots { border-style: solid; margin-bottom: 8px; }
+.structure-slot-empty { margin: 0 auto; font-size: 13.5px; color: var(--ink-soft); }
+.structure-slot { position: relative; display: grid; justify-items: center; gap: 2px; width: 140px; padding: 6px 8px 8px; border-radius: 14px; background: #fffdf8; box-shadow: var(--glass-shadow); }
+.structure-slot .structure-svg { max-height: 80px; }
+.structure-slot span { font-size: 13px; font-weight: 800; color: var(--ink); text-align: center; word-break: break-all; }
+.structure-slot button { position: absolute; top: 2px; right: 4px; border: 0; background: none; font-size: 14px; color: #98a2b3; cursor: pointer; }
+.structure-op { display: grid; place-items: center; min-width: 44px; height: 44px; padding: 0; font-size: 22px; font-weight: 900; color: var(--navy); }
+.structure-panel .glass-button.structure-op { padding: 0; }
+@media (max-width: 700px) {
+  .structure-slot { width: 112px; }
+  .structure-op { min-width: 38px; height: 38px; font-size: 19px; }
+}

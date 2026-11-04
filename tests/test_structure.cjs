@@ -112,6 +112,29 @@ assert.equal(labels('CC(=O)OC'), 'O,O');
 for (const bad of ['CCOC', 'OCC=O', 'O=C1CCCC1', 'C=CC=O', 'CC(=O)CC(=O)C']) { const r = S.nameOf(S.parseSmiles(bad)); assert.equal(r.ok, false, bad); }
 assert.ok(!S.sameMolecule(S.parseSmiles('CCC(=O)OC'), S.parseSmiles('CC(=O)OCC')) && S.sameMolecule(S.parseSmiles('CC(=O)OCC'), S.parseSmiles('CCOC(C)=O')));
 
+// 5.2.0 산화 생성물 그리기: 산화제는 골격(C–C)을 그대로 두고 작용기 탄소의 H · O만 바꾼다(CO₂까지 가지 않는다).
+const oxNames = smiles => { const r = S.oxidationOf(S.layout(S.parseSmiles(smiles))); assert.ok(r, smiles); return { kind: r.kind, products: r.products.map(p => `${S.nameOf(p.mol).name}:${p.steps}`).join(' ') }; };
+assert.deepEqual(oxNames('CCCO'), { kind: 'primary', products: 'propanal:1 propanoic acid:2' });
+assert.deepEqual(oxNames('CC(C)O'), { kind: 'secondary', products: 'propanone:1' });
+assert.deepEqual(oxNames('CC(C)(C)O'), { kind: 'tertiary', products: '' });
+assert.deepEqual(oxNames('CCC=O'), { kind: 'aldehyde', products: 'propanoic acid:1' });
+assert.deepEqual(oxNames('CC(C)=O'), { kind: 'ketone', products: '' });
+assert.deepEqual(oxNames('CC(=O)O'), { kind: 'acid', products: '' });
+assert.equal(S.oxidationOf(S.layout(S.parseSmiles('CCCC'))), null, '작용기 없는 탄화수소는 문제가 아니다');
+assert.equal(S.strengthOrder(1, 2), '<'); assert.equal(S.strengthOrder(2, 1), '>'); assert.equal(S.strengthOrder(1, 1), '=');
+let oxMade = 0;
+for (const hard of [false, true]) for (let i = 0; i < 150; i++) {
+  const p = S.makeOxidationPuzzle(Math.random, hard);
+  assert.ok(p.name && !p.name.startsWith('ERR'), p.name);
+  for (const pr of p.products) {
+    const r = S.nameOf(pr.mol); assert.ok(r.ok, `${p.name} 생성물 이름`); assert.equal(r.name, pr.name);
+    assert.equal(S.carbonCount(pr.mol), S.carbonCount(p.start), '탄소 수가 그대로');
+  }
+  if (p.kind === 'primary') assert.deepEqual(p.products.map(x => x.steps), [1, 2]);
+  if (['tertiary', 'ketone', 'acid'].includes(p.kind)) assert.equal(p.products.length, 0);
+  oxMade++;
+}
+
 // 화면 연결: 화학(주민지T · 기말) 덱 학습 메뉴 맨 앞 '구조식 실습'.
 const { finalMenu } = require('../data/final-subjects.ts');
 const chem = finalMenu.children.find(n => n.id === 'science').children.find(n => n.id === 'physics-chemistry').children.find(n => n.id === 'chemistry-final');
@@ -119,4 +142,4 @@ assert.equal(chem.lab, 'structure');
 const study = fs.readFileSync('components/swipe/SubjectStudy.tsx', 'utf8');
 assert.ok(study.includes("const structure = labs.includes('structure');") && study.includes('<StructureLab'));
 assert.ok(!/from '\.\.\/\.\.\/data\//.test(fs.readFileSync('components/swipe/StructureLab.tsx', 'utf8').replace("import type { Direction } from '../../data/swipe-cards';", '')), '실습 화면은 카드 묶음을 불러오지 않는다');
-console.log(`PASS: 구조식 실습 — PPT 화합물 ${S.PPT_EXAMPLES.length}개 이름 그대로, 명명 규칙 ${Object.keys(known).length}개, 같은 분자 · 시스/트랜스, 문제 ${made}개 · 고난도 ${hardMade}개 다시 확인`);
+console.log(`PASS: 구조식 실습 — PPT 화합물 ${S.PPT_EXAMPLES.length}개 이름 그대로, 명명 규칙 ${Object.keys(known).length}개, 같은 분자 · 시스/트랜스, 문제 ${made}개 · 고난도 ${hardMade}개 · 산화 문제 ${oxMade}개 다시 확인`);
