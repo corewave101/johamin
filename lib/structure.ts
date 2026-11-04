@@ -380,8 +380,14 @@ function candidatePlans(mol: Mol): { list: Candidate[]; all: Candidate[] } | { r
   return { list, all: all.filter(c => !c.bad) };
 }
 
-/** Plan → 한국어 이름. alphabetical=false면 번호 순서로 늘어놓은(틀린) 이름. */
+/** Plan → 이름. 탄화수소 유도체(5.1.1~)는 영어 이름, 나머지는 한국어. alphabetical=false면 번호 순서로 늘어놓은(틀린) 이름. */
 export function render(plan: Plan, alphabetical = true): string {
+  return CARBONYL.includes(plan.category) ? englishName(plan, alphabetical)! : renderKo(plan, alphabetical);
+}
+/** 탄화수소 유도체의 한국어 이름(뷰탄알 · 2-뷰탄온 · 에탄산 에틸). 화면에 작게 같이 보여 준다. */
+export const koreanName = (plan: Plan) => (CARBONYL.includes(plan.category) ? renderKo(plan) : undefined);
+
+function renderKo(plan: Plan, alphabetical = true): string {
   const groups = new Map<string, { group: Group; locants: number[] }>();
   for (const s of plan.subs) {
     const g = groups.get(s.group.ko) ?? { group: s.group, locants: [] };
@@ -408,13 +414,18 @@ export function render(plan: Plan, alphabetical = true): string {
   return plan.stereo ? `${plan.stereo === 'cis' ? '시스' : '트랜스'}-${core}` : core;
 }
 
-/** 탄화수소 유도체의 영어 이름(PPT 6 필기: butanal · 2-butanone · ethanoic acid · ethyl ethanoate). 다른 범주는 없음. */
-export function englishName(plan: Plan): string | undefined {
-  if (!CARBONYL.includes(plan.category)) return undefined;
+/** 영어 치환기 앞부분(2,3-dimethyl · 3-ethyl-2-methyl). alphabetical=false면 번호 순서(틀린 순서). */
+function prefixEn(subs: Sub[], alphabetical = true): string {
   const groups = new Map<string, { group: Group; locants: number[] }>();
-  for (const s of plan.subs) { const g = groups.get(s.group.ko) ?? { group: s.group, locants: [] }; g.locants.push(s.locant); groups.set(s.group.ko, g); }
-  const list = [...groups.values()].map(g => ({ ...g, locants: g.locants.sort((a, b) => a - b) })).sort((x, y) => x.group.key.localeCompare(y.group.key));
-  const prefix = list.map(g => `${g.locants.join(',')}-${MULTIPLIER_EN[g.locants.length] ?? ''}${g.group.en}`).join('-');
+  for (const s of subs) { const g = groups.get(s.group.ko) ?? { group: s.group, locants: [] }; g.locants.push(s.locant); groups.set(s.group.ko, g); }
+  const list = [...groups.values()].map(g => ({ ...g, locants: g.locants.sort((a, b) => a - b) }));
+  list.sort(alphabetical ? (x, y) => x.group.key.localeCompare(y.group.key) : (x, y) => x.locants[0] - y.locants[0] || x.group.key.localeCompare(y.group.key));
+  return list.map(g => `${g.locants.join(',')}-${MULTIPLIER_EN[g.locants.length] ?? ''}${g.group.en}`).join('-');
+}
+/** 탄화수소 유도체의 영어 이름(PPT 6 필기: butanal · 2-butanone · ethanoic acid · ethyl ethanoate). 다른 범주는 없음. */
+export function englishName(plan: Plan, alphabetical = true): string | undefined {
+  if (!CARBONYL.includes(plan.category)) return undefined;
+  const prefix = prefixEn(plan.subs, alphabetical);
   const n = plan.parent.length, stem = STEM_EN[n];
   if (plan.category === 'ketone') return n > 3 ? `${prefix ? `${prefix}-` : ''}${plan.fg}-${stem}anone` : `${prefix}${stem}anone`;
   if (plan.category === 'aldehyde') return `${prefix}${stem}anal`;
@@ -422,21 +433,21 @@ export function englishName(plan: Plan): string | undefined {
   return `${plan.ester!.en} ${prefix}${stem}anoate`;
 }
 
-const ALKYL_KO = ['', '메틸', '에틸', '프로필', '뷰틸'];
-/** 탄화수소 유도체에서 잘 나오는 함정: 어미(-올 · -알 · -온 · -산) 바꾸기, 에스터 산 · 알킬 자리 바꾸기. */
+const ALKYL_EN = ['', 'methyl', 'ethyl', 'propyl', 'butyl'];
+/** 탄화수소 유도체에서 잘 나오는 함정(영어): 어미(-ol · -al · -one · -oic acid) 바꾸기, 에스터 -oate ↔ -oic acid, 산 · 알킬 자리 바꾸기. */
 function carbonylTraps(plan: Plan): string[] {
-  const n = plan.parent.length;
+  const n = plan.parent.length, stem = STEM_EN[n];
   const plain = !plan.subs.length;
   const out: string[] = [];
-  const pre = render({ ...plan, category: 'alkane', subs: plan.subs, fg: undefined, ester: undefined }).replace(new RegExp(`${ALKANE[n]}$`), '');
-  if (plan.category === 'aldehyde') out.push(`${pre}${ALCOHOL[n]}`, `${pre}${STEM[n]}산`);
-  if (plan.category === 'ketone') out.push(`${pre}${STEM[n]}알`, n > 2 ? `${pre ? `${pre}-` : ''}${plan.fg}-${ALCOHOL[n]}`.replace('--', '-') : `${pre}${ALCOHOL[n]}`);
-  if (plan.category === 'acid') out.push(`${pre}${STEM[n]}알`, `${pre}${ALCOHOL[n]}`);
+  const pre = prefixEn(plan.subs);
+  if (plan.category === 'aldehyde') out.push(`${pre}${stem}anol`, `${pre}${stem}anoic acid`);
+  if (plan.category === 'ketone') out.push(`${pre}${stem}anal`, `${pre ? `${pre}-` : ''}${plan.fg}-${stem}anol`);
+  if (plan.category === 'acid') out.push(`${pre}${stem}anal`, `${pre}${stem}anol`);
   if (plan.category === 'ester' && plan.ester) {
-    out.push(`${plan.ester.ko} ${pre}${STEM[n]}산`);
-    const r = plan.ester.size, straight = plan.ester.key === plan.ester.en && ['methyl', 'ethyl', 'propyl', 'butyl'].includes(plan.ester.key);
-    if (plain && straight && ALKYL_KO[n] && r !== n) out.push(`${STEM[r]}산 ${ALKYL_KO[n]}`);
-    if (plain && n + r <= 10) out.push(`${STEM[n + r]}산`);
+    out.push(`${plan.ester.en} ${pre}${stem}anoic acid`);
+    const r = plan.ester.size, straight = ['methyl', 'ethyl', 'propyl', 'butyl'].includes(plan.ester.en ?? '');
+    if (plain && straight && ALKYL_EN[n] && r !== n) out.push(`${ALKYL_EN[n]} ${STEM_EN[r]}anoate`);
+    if (plain && n + r <= 10) out.push(`${STEM_EN[n + r]}anoic acid`);
   }
   return out;
 }
@@ -651,16 +662,16 @@ export const PPT_EXAMPLES: { smiles: string; name: string; stereo?: Stereo; page
   { smiles: 'CC(O)CC', name: '2-뷰탄올', page: 'PPT 5 · 11쪽' },
   { smiles: 'OCCCCl', name: '3-클로로-1-프로판올', page: 'PPT 5 · 11쪽' },
   { smiles: 'CC(C)(O)CCCCBr', name: '6-브로모-2-메틸-2-헥산올', page: 'PPT 5 · 11쪽' },
-  { smiles: 'CCCC=O', name: '뷰탄알', page: 'PPT 6 · 7쪽' },
-  { smiles: 'CC(C)C=O', name: '2-메틸프로판알', page: 'PPT 6 · 7쪽' },
-  { smiles: 'CC(=O)C', name: '프로판온', page: 'PPT 6 · 8쪽' },
-  { smiles: 'CCC(=O)C', name: '2-뷰탄온', page: 'PPT 6 · 8쪽' },
-  { smiles: 'CC(C)C(=O)C', name: '3-메틸-2-뷰탄온', page: 'PPT 6 · 8쪽' },
-  { smiles: 'CC(=O)O', name: '에탄산', page: 'PPT 6 · 9쪽' },
-  { smiles: 'CCC(=O)O', name: '프로판산', page: 'PPT 6 · 9쪽' },
-  { smiles: 'CC(=O)OCC', name: '에탄산 에틸', page: 'PPT 6 · 10쪽' },
-  { smiles: 'C=O', name: '메탄알', page: 'PPT 6 · 11쪽' },
-  { smiles: 'CC=O', name: '에탄알', page: 'PPT 7 · 3쪽' },
+  { smiles: 'CCCC=O', name: 'butanal', page: 'PPT 6 · 7쪽' },
+  { smiles: 'CC(C)C=O', name: '2-methylpropanal', page: 'PPT 6 · 7쪽' },
+  { smiles: 'CC(=O)C', name: 'propanone', page: 'PPT 6 · 8쪽' },
+  { smiles: 'CCC(=O)C', name: '2-butanone', page: 'PPT 6 · 8쪽' },
+  { smiles: 'CC(C)C(=O)C', name: '3-methyl-2-butanone', page: 'PPT 6 · 8쪽' },
+  { smiles: 'CC(=O)O', name: 'ethanoic acid', page: 'PPT 6 · 9쪽' },
+  { smiles: 'CCC(=O)O', name: 'propanoic acid', page: 'PPT 6 · 9쪽' },
+  { smiles: 'CC(=O)OCC', name: 'ethyl ethanoate', page: 'PPT 6 · 10쪽' },
+  { smiles: 'C=O', name: 'methanal', page: 'PPT 6 · 11쪽' },
+  { smiles: 'CC=O', name: 'ethanal', page: 'PPT 7 · 3쪽' },
 ];
 
 export interface Puzzle { mol: Mol; name: string; category: Category; page?: string; plan: Plan; spec?: HardSpec }
@@ -769,7 +780,9 @@ function carbonylSmiles(category: Category, rng: Rng): { smiles: string } {
 
 // ── 고난도: 주사슬 7~10개, 치환기 3~6개(표 22.2 전부 · 할로젠), 시스 · 트랜스 ─────────────────
 /** 고난도 문제의 설계도. 보기(헷갈리는 다른 분자)를 만들 때 조금씩 바꿔 쓴다. */
-export interface HardSpec { ring: boolean; n: number; subs: [number, string][]; multi?: { at: number; order: 2 | 3 }; ohAt?: number; stereo?: Stereo }
+export interface HardSpec { ring: boolean; n: number; subs: [number, string][]; multi?: { at: number; order: 2 | 3 }; ohAt?: number; stereo?: Stereo;
+  /** 탄화수소 유도체(5.1.1~): C=O 자리(알데하이드 · 카복실산 · 에스터는 0), 에스터의 알코올 쪽 알킬. */
+  carbonyl?: { kind: 'aldehyde' | 'ketone' | 'acid' | 'ester'; at: number; alkyl?: string } }
 /** 붙은 탄소에서 가지 끝까지 탄소 수(이보다 주사슬 남은 쪽이 짧으면 주사슬이 바뀐다). */
 const REACH: Record<string, number> = { methyl: 1, ethyl: 2, propyl: 3, isopropyl: 2, butyl: 4, 'sec-butyl': 3, isobutyl: 3, 'tert-butyl': 2, chloro: 0, bromo: 0 };
 const BUTYLS = ['butyl', 'sec-butyl', 'isobutyl', 'tert-butyl'];
@@ -777,6 +790,10 @@ const BUTYLS = ['butyl', 'sec-butyl', 'isobutyl', 'tert-butyl'];
 function specSmiles(spec: HardSpec): string {
   const branches = new Map<number, string[]>();
   for (const [k, g] of spec.subs) branches.set(k, [...(branches.get(k) ?? []), ALKYL_SMILES[g]]);
+  if (spec.carbonyl) {
+    const { kind, at, alkyl } = spec.carbonyl;
+    branches.set(at, [...(branches.get(at) ?? []), '=O', ...(kind === 'acid' ? ['O'] : kind === 'ester' ? [`O${ALKYL_SMILES[alkyl ?? 'methyl']}`] : [])]);
+  }
   if (!spec.ring) return chainSmiles(spec.n, branches, spec.multi, spec.ohAt);
   let s = '';
   for (let k = 0; k < spec.n; k += 1) {
@@ -799,6 +816,11 @@ function validSpec(spec: HardSpec): boolean {
     if (REACH[g] > Math.min(k, spec.n - 1 - k) && !end) return false;
     if (spec.multi && (k === spec.multi.at || k === spec.multi.at + 1)) return false; // 시스 · 트랜스가 또렷하게
     if (k === spec.ohAt && g !== 'methyl' && g !== 'ethyl') return false;
+    if (spec.carbonyl && (k === spec.carbonyl.at || g === 'chloro' || g === 'bromo')) return false; // C=O 탄소엔 가지 없음, 유도체에 할로젠 없음
+  }
+  if (spec.carbonyl) {
+    const { kind, at } = spec.carbonyl;
+    if (kind === 'ketone' ? at < 1 || at > spec.n - 2 : at !== 0) return false;
   }
   for (const [k, c] of count) {
     const end = !spec.ring && (k === 0 || k === spec.n - 1);
@@ -810,6 +832,19 @@ function validSpec(spec: HardSpec): boolean {
 
 function hardSpec(category: Category, rng: Rng): HardSpec {
   const alkyls: [string, number][] = [['methyl', 4], ['ethyl', 3], ['propyl', 1.5], ['isopropyl', 2], ['tert-butyl', 1.2], ['sec-butyl', 0.8], ['isobutyl', 0.8], ['butyl', 0.5]];
+  if (CARBONYL.includes(category)) {
+    // 탄화수소 유도체 고난도: 주사슬 6~10개(에스터 산 쪽 5~8개), 가지 2~4개, 에스터 알코올 쪽은 표 22.2 알킬 전부.
+    const kind = category as 'aldehyde' | 'ketone' | 'acid' | 'ester';
+    const n = kind === 'ester' ? 5 + Math.floor(rng() * 4) : 6 + Math.floor(rng() * 5);
+    const at = kind === 'ketone' ? 1 + Math.floor(rng() * (n - 2)) : 0;
+    const spec: HardSpec = { ring: false, n, subs: [], carbonyl: { kind, at, alkyl: kind === 'ester' ? weighted(alkyls, rng) : undefined } };
+    const want = 2 + Math.floor(rng() * 3);
+    for (let i = 0; i < 40 && spec.subs.length < want; i += 1) {
+      const next: HardSpec = { ...spec, subs: [...spec.subs, [Math.floor(rng() * n), weighted(alkyls, rng)]] };
+      if (validSpec(next)) spec.subs = next.subs;
+    }
+    return spec;
+  }
   if (category === 'cyclo') {
     const n = 5 + Math.floor(rng() * 4);
     const spec: HardSpec = { ring: true, n, subs: [], multi: rng() < 0.35 ? { at: 0, order: 2 } : undefined };
@@ -851,6 +886,13 @@ function mutations(spec: HardSpec, rng: Rng): HardSpec[] {
   if (spec.multi && !spec.ring) for (const d of [-1, 1]) out.push({ ...spec, multi: { ...spec.multi, at: spec.multi.at + d } });
   if (spec.ohAt !== undefined) for (const d of [-1, 1]) out.push({ ...spec, ohAt: spec.ohAt + d });
   if (spec.stereo) out.push({ ...spec, stereo: spec.stereo === 'cis' ? 'trans' : 'cis' });
+  if (spec.carbonyl) {
+    const cb = spec.carbonyl;
+    if (cb.kind === 'ketone') for (const d of [-1, 1]) out.push({ ...spec, carbonyl: { ...cb, at: cb.at + d } });
+    if (cb.kind === 'aldehyde') out.push({ ...spec, carbonyl: { ...cb, kind: 'acid' } });
+    if (cb.kind === 'acid') out.push({ ...spec, carbonyl: { ...cb, kind: 'aldehyde' } });
+    if (cb.kind === 'ester' && cb.alkyl) for (const other of SIMILAR[cb.alkyl] ?? []) out.push({ ...spec, carbonyl: { ...cb, alkyl: other } });
+  }
   for (let i = out.length - 1; i > 0; i -= 1) { const j = Math.floor(rng() * (i + 1)); [out[i], out[j]] = [out[j], out[i]]; }
   return out.filter(m => validSpec(m) && (!m.multi || m.ring || (m.multi.at >= 1 && m.multi.at + 1 <= m.n - 2)) && (m.ohAt === undefined || (m.ohAt >= 0 && m.ohAt < m.n)));
 }
@@ -867,11 +909,11 @@ function puzzleFromSpec(spec: HardSpec, rng: Rng): Puzzle | null {
 /** 문제 하나. PPT 화합물이 자주 나오고, 나머지는 범위 안에서 새로 만든다. */
 export function makePuzzle(categories: Category[], rng: Rng = Math.random, options: { minCarbons?: number; hard?: boolean } = {}): Puzzle {
   const minCarbons = options.minCarbons ?? 1;
-  const hardPool = categories.filter(c => !CARBONYL.includes(c)); // 탄화수소 유도체는 고난도 없이 기본 문제로
-  if (options.hard && hardPool.length) for (let tries = 0; tries < 400; tries += 1) {
-    const category = pick(hardPool, rng);
+  if (options.hard) for (let tries = 0; tries < 400; tries += 1) {
+    const category = pick(categories, rng);
     const p = puzzleFromSpec(hardSpec(category, rng), rng);
-    if (!p || p.category !== category || p.plan.subs.length < 3 || p.name.length < 18) continue;
+    const derivative = CARBONYL.includes(category);
+    if (!p || p.category !== category || p.plan.subs.length < (derivative ? 2 : 3) || p.name.length < 18) continue;
     if (category === 'alkene' && !p.plan.stereo) continue;
     return p;
   }
@@ -937,14 +979,14 @@ export function explain(plan: Plan): string[] {
   const lines: string[] = [];
   if (CARBONYL.includes(plan.category)) {
     const what = plan.category === 'aldehyde' ? '–CHO' : plan.category === 'ketone' ? 'C=O' : plan.category === 'acid' ? '–COOH' : 'C=O 쪽';
-    const ending = plan.category === 'aldehyde' ? '-알(-al)' : plan.category === 'ketone' ? '-온(-one)' : plan.category === 'acid' ? '-산(-oic acid)' : '-산(-oate)';
-    lines.push(`가장 긴 사슬 탄소 ${n}개(${what} 탄소 포함) → ${ALKANE[n]}의 끝을 ${ending}로: ${STEM[n]}${plan.category === 'aldehyde' ? '알' : plan.category === 'ketone' ? '온' : '산'}`);
+    const ending = plan.category === 'aldehyde' ? '-al' : plan.category === 'ketone' ? '-one' : plan.category === 'acid' ? '-oic acid' : '-oate';
+    const enEnd = plan.category === 'aldehyde' ? 'anal' : plan.category === 'ketone' ? 'anone' : plan.category === 'acid' ? 'anoic acid' : 'anoate';
+    lines.push(`가장 긴 사슬 탄소 ${n}개(${what} 탄소 포함) → ${STEM_EN[n]}ane의 -e를 ${ending}로: ${STEM_EN[n]}${enEnd}`);
     if (plan.category === 'ketone') lines.push(n > 3 ? `카보닐(C=O) 탄소가 작은 번호가 되게: ${plan.fg}번` : '카보닐 탄소 자리가 하나뿐이라 번호를 안 붙여요(아세톤)');
     else lines.push(`${what} 탄소가 1번(번호는 쓰지 않아요)`);
-    if (plan.subs.length) lines.push(`치환기: ${[...plan.subs].sort((a, b) => a.locant - b.locant).map(s => `${s.locant}번 ${s.group.ko}`).join(', ')}`);
-    if (plan.ester) lines.push(`O에 붙은 알코올 쪽 알킬 → ${plan.ester.ko} · 이름은 「산 이름 + 알킬」(영어는 알킬 + -oate)`);
-    const en = englishName(plan);
-    if (en) lines.push(`영어: ${en}`);
+    if (plan.subs.length) lines.push(`치환기: ${[...plan.subs].sort((a, b) => a.locant - b.locant).map(s => `${s.locant}-${s.group.en}`).join(', ')}${new Set(plan.subs.map(s => s.group.key)).size > 1 ? ' → 이름은 알파벳 순서' : ''}`);
+    if (plan.ester) lines.push(`O에 붙은 알코올 쪽 알킬 → ${plan.ester.en} · 영어는 「알킬 + -oate」(한국어는 「산 이름 + 알킬」)`);
+    lines.push(`한국어: ${renderKo(plan)}`);
     return lines;
   }
   if (plan.ring) lines.push(`고리 탄소 ${n}개 → 사이클로${(plan.multi ? ALKENE : ALKANE)[n]}${plan.multi ? '(이중 결합 탄소가 1 · 2번)' : ''}`);

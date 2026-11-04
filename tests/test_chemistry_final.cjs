@@ -32,7 +32,7 @@ for (const c of cards) {
 }
 for (const q of written) assert.ok(q.modelAnswer.length > 80 && q.criteria.length >= 3, q.id);
 const lessons = conceptsFor('chemistry-final');
-assert.equal(lessons.length, 4);
+assert.equal(lessons.length, 5); // +1: PPT 6 · 7 탄화수소 유도체(5.1.1)
 for (const card of cards) assert.ok(lessons.some(l => l.topicKeys.includes(card.topic)), card.topic);
 
 // Facts from the PPT, checked by meaning.
