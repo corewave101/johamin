@@ -98,7 +98,7 @@ function CourseList({ records }: { records: Record<string, EliceRecord> }) {
       <div className="elice-progress-bar"><span style={{ width: `${done / eliceProblems.length * 100}%` }} /></div>
       <p><b>{done}</b> / {eliceProblems.length} 완료{average !== null && <> · 평균 <b>{average}</b>점</>}</p>
     </div>
-    {ELICE_CHAPTERS.map(chapter => <section key={chapter.id} className={`elice-chapter${chapter.id === 'must' ? ' is-must' : ''}`}>
+    {ELICE_CHAPTERS.map(chapter => <section key={chapter.id} className={`elice-chapter${chapter.id === 'must' || chapter.id === 'must3' ? ' is-must' : ''}`}>
       <h2>{chapter.name}<small>{chapter.note}</small></h2>
       <ol>
         {eliceProblems.filter(p => p.chapter === chapter.id).map(p => {
