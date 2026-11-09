@@ -3,8 +3,9 @@
 // 4.3.1~: DFS(스택) 한 문제만 빈칸(____) 채우기이고, 나머지는 입력 받는 코드만 주어지고 나머지를 직접 짠다.
 // 제출하면 브라우저 안 파이썬(Pyodide)이 숨은 테스트로 채점한다. 숨은 테스트의 정답 출력은 채점할 때 solution을 돌려 만든다.
 // 근거: 정보 수업 자료 「6. DFS와 BFS」 「7. 시간 복잡도 · 완전탐색 · 이진탐색」 노트북, 엘리스 수행 화면(두 개의 카드 · 도서관 책 찾기 · 리본 자르기).
+// 5.3.0~: 3차 수행 목록(선택 · 삽입 정렬, 주식왕, 점프, 1로 만들기, 배낭 채우기)과 「8. 정렬 알고리즘」 「9. 탐욕법과 동적계획법」 노트북. 3차 문제 원문은 아직 없어서 목록 이름과 수업 자료로 만들었다.
 
-export type EliceChapterId = 'must' | 'graph' | 'time' | 'brute' | 'binary';
+export type EliceChapterId = 'must3' | 'sort' | 'dp' | 'must' | 'graph' | 'time' | 'brute' | 'binary';
 
 export interface EliceTest {
   /** 표준 입력 그대로. */
@@ -19,7 +20,7 @@ export interface EliceProblem {
   id: string;
   chapter: EliceChapterId;
   title: string;
-  /** 수행평가에 꼭 나온다고 한 6문제. */
+  /** 수행평가에 나온다고 한 문제(2차 · 3차 수행 목록). */
   must?: boolean;
   /** 문제 설명 문단. `코드`는 고정폭 글씨로 보인다. */
   statement: string[];
@@ -43,7 +44,10 @@ export interface EliceProblem {
 export const BLANK = '____';
 
 export const ELICE_CHAPTERS: { id: EliceChapterId; name: string; note: string }[] = [
-  { id: 'must', name: '수행평가 6문제', note: '꼭 나온다는 6문제 · 엘리스 화면 그대로' },
+  { id: 'must3', name: '3차 수행평가', note: '선택 · 삽입 정렬, 주식왕, 점프, 1로 만들기, 배낭 채우기' },
+  { id: 'sort', name: '8. 정렬', note: '버블 · 삽입 · 병합 합치기' },
+  { id: 'dp', name: '9. 탐욕법 · 동적계획법', note: '거스름돈, 강당 예약, 동전 DP, 주식 · 점프 · 계단 응용' },
+  { id: 'must', name: '2차 수행평가 6문제', note: '꼭 나온다던 6문제 · 엘리스 화면 그대로' },
   { id: 'graph', name: '6. DFS와 BFS', note: '스택 · 큐 · visited, 덩어리, 최단 거리, 격자' },
   { id: 'time', name: '7. 시간 복잡도', note: '최고차항, 역산표, 숨은 O(n)' },
   { id: 'brute', name: '7. 완전탐색', note: '모든 경우 다 해 보기' },
@@ -65,6 +69,712 @@ const SCATTER = ['A', 'B C', 'C B', 'D', 'E F G', 'F E', 'G E', 'H', 'J K', 'K J
 const MATERIAL_MAZE = ['5 5', '0 0 1 0 0', '1 0 1 0 1', '0 0 0 0 0', '0 1 1 1 0', '0 0 0 1 0'];
 
 export const eliceProblems: EliceProblem[] = [
+  // ───────────── 3차 수행평가 (5.3.0~) ─────────────
+  {
+    id: 'info-27', chapter: 'must3', must: true, title: '선택 정렬 구현',
+    statement: [
+      'N개의 정수를 **선택 정렬**로 오름차순 정렬하려고 한다. 선택 정렬은 남은 수 중 가장 작은 수를 골라(선택) 남은 구간의 맨 앞 수와 바꾸는 일을 반복한다.',
+      '정렬이 제대로 되는지 확인하려고, **한 바퀴(최솟값을 찾아 한 번 바꾸기)가 끝날 때마다** 리스트 전체를 출력한다. `sort()`나 `sorted()`는 쓰지 않는다.',
+    ],
+    input: ['첫째 줄에 수의 개수 `N`이 주어진다. (2 ≤ N ≤ 100)', '둘째 줄에 정수 `N`개가 공백으로 구분되어 주어진다. (−1,000 ≤ 정수 ≤ 1,000)'],
+    output: ['`N − 1`줄에 걸쳐, 바퀴가 끝날 때마다 리스트의 수를 공백으로 구분해 출력한다.', '최솟값이 이미 맨 앞에 있어 바뀌지 않은 바퀴도 그대로 출력한다.'],
+    examples: [
+      { input: '6\n5 3 8 1 9 2', output: '1 3 8 5 9 2\n1 2 8 5 9 3\n1 2 3 5 9 8\n1 2 3 5 9 8\n1 2 3 5 8 9' },
+      { input: '3\n3 2 1', output: '1 2 3\n1 2 3' },
+    ],
+    template: py`
+n = int(input())
+arr = list(map(int, input().split()))
+`,
+    solution: py`
+n = int(input())
+arr = list(map(int, input().split()))
+
+for i in range(n - 1):
+    min_idx = i                        # 일단 i번이 제일 작다고 치고
+    for j in range(i + 1, n):          # 뒤를 다 훑어서
+        if arr[j] < arr[min_idx]:      # 더 작은 게 있으면
+            min_idx = j                # 위치만 기억
+    arr[i], arr[min_idx] = arr[min_idx], arr[i]    # 한 바퀴에 딱 한 번 바꾼다
+    print(*arr)
+`,
+    tests: [
+      { input: '6\n5 3 8 1 9 2' }, { input: '3\n3 2 1' }, { input: '2\n1 2' }, { input: '5\n1 2 3 4 5' },
+      { input: '5\n4 1 3 1 2' }, { input: '6\n-3 7 0 -8 7 2' }, { input: '4\n9 9 9 9' },
+      { gen: py`
+import random
+random.seed(27)
+n = 100
+print(n)
+print(*[random.randint(-1000, 1000) for _ in range(n)])
+` },
+    ],
+    tips: [
+      '바퀴마다 `print(*arr)` 한 줄. 바깥 `for i` 안, 안쪽 `for j`가 끝난 뒤에 출력해요.',
+      '흔한 실수: 더 작은 수를 볼 때마다 바로 바꾸기. 결과는 정렬돼도 중간 모습이 달라져서 틀려요. 위치(`min_idx`)만 기억했다가 마지막에 한 번 바꿔요.',
+      '실제 수행에서 정렬 결과만 묻는다면 마지막 줄만 출력하면 돼요. 바깥 반복이 `n − 1`바퀴인 이유: 마지막 하나는 저절로 제자리예요.',
+    ],
+    source: '3차 수행 목록 · 8. 정렬 알고리즘 「2. 선택 정렬」',
+  },
+  {
+    id: 'info-28', chapter: 'must3', must: true, title: '삽입 정렬 구현',
+    statement: [
+      'N개의 정수를 **삽입 정렬**로 오름차순 정렬하려고 한다. 삽입 정렬은 카드를 정리하듯, 앞쪽의 이미 정렬된 부분에 다음 수를 꺼내 자기 자리에 끼워 넣는다.',
+      '두 번째 수부터 **한 개를 끼워 넣을 때마다** 리스트 전체를 출력한다. `sort()`나 `sorted()`는 쓰지 않는다.',
+    ],
+    input: ['첫째 줄에 수의 개수 `N`이 주어진다. (2 ≤ N ≤ 100)', '둘째 줄에 정수 `N`개가 공백으로 구분되어 주어진다. (−1,000 ≤ 정수 ≤ 1,000)'],
+    output: ['`N − 1`줄에 걸쳐, 수 하나를 끼워 넣을 때마다 리스트의 수를 공백으로 구분해 출력한다.', '이미 제자리라 움직이지 않은 경우도 그대로 출력한다.'],
+    examples: [
+      { input: '6\n5 3 8 1 9 2', output: '3 5 8 1 9 2\n3 5 8 1 9 2\n1 3 5 8 9 2\n1 3 5 8 9 2\n1 2 3 5 8 9' },
+      { input: '4\n4 3 2 1', output: '3 4 2 1\n2 3 4 1\n1 2 3 4' },
+    ],
+    template: py`
+n = int(input())
+arr = list(map(int, input().split()))
+`,
+    solution: py`
+n = int(input())
+arr = list(map(int, input().split()))
+
+for i in range(1, n):                      # 1번부터 한 개씩 꺼내서
+    j = i
+    while j > 0 and arr[j - 1] > arr[j]:   # 왼쪽이 더 크면
+        arr[j - 1], arr[j] = arr[j], arr[j - 1]    # 한 칸 앞으로
+        j -= 1
+    print(*arr)
+`,
+    tests: [
+      { input: '6\n5 3 8 1 9 2' }, { input: '4\n4 3 2 1' }, { input: '2\n2 1' }, { input: '5\n1 2 3 4 5' },
+      { input: '6\n3 1 3 1 2 2' }, { input: '5\n0 -5 10 -5 3' }, { input: '7\n1 2 3 4 5 7 6' },
+      { gen: py`
+import random
+random.seed(28)
+n = 100
+print(n)
+print(*[random.randint(-1000, 1000) for _ in range(n)])
+` },
+    ],
+    tips: [
+      '`while` 조건의 순서가 중요해요: `j > 0`을 먼저 봐야 `arr[-1]`(맨 뒤 수)과 비교하는 실수를 막아요.',
+      '`arr[j - 1] > arr[j]`처럼 **큰 경우에만** 옮겨요. `>=`로 쓰면 같은 수끼리 자리를 바꿔 쓸데없이 움직여요.',
+      '거의 정렬된 데이터면 `while`이 바로 끝나서 빨라요(최선 O(n)). 선택 정렬은 정렬 상태와 상관없이 끝까지 비교해요.',
+    ],
+    source: '3차 수행 목록 · 8. 정렬 알고리즘 「3. 삽입 정렬」',
+  },
+  {
+    id: 'info-29', chapter: 'must3', must: true, title: '주식왕',
+    statement: [
+      '하민이는 앞으로 N일 동안 어떤 주식의 하루 가격을 미리 알게 되었다. 이 주식을 **딱 한 번 사고(매수), 산 날보다 뒤의 어느 날 딱 한 번 판다(매도)**.',
+      '얻을 수 있는 가장 큰 이익(판 가격 − 산 가격)을 구하는 프로그램을 작성하시오. 어떻게 해도 이익이 나지 않으면 사지 않고 `0`을 출력한다.',
+    ],
+    input: ['첫째 줄에 날 수 `N`이 주어진다. (2 ≤ N ≤ 100,000)', '둘째 줄에 1일부터 N일까지의 주가가 공백으로 구분되어 주어진다. (1 ≤ 주가 ≤ 1,000,000)'],
+    output: ['가장 큰 이익을 출력한다.'],
+    examples: [
+      { input: '6\n7 1 5 3 6 4', output: '5' },
+      { input: '5\n7 6 4 3 1', output: '0' },
+    ],
+    template: py`
+n = int(input())
+prices = list(map(int, input().split()))
+`,
+    solution: py`
+n = int(input())
+prices = list(map(int, input().split()))
+
+min_price = prices[0]        # 지금까지 본 가장 싼 가격(이때 샀다고 치기)
+best = 0
+for p in prices[1:]:
+    if p - min_price > best:     # 오늘 팔면 얼마나 남나
+        best = p - min_price
+    if p < min_price:            # 더 싼 날이 나오면 산 날을 바꾼다
+        min_price = p
+print(best)
+`,
+    limit: 3,
+    tests: [
+      { input: '6\n7 1 5 3 6 4' }, { input: '5\n7 6 4 3 1' }, { input: '2\n1 2' }, { input: '2\n5 5' },
+      { input: '7\n3 8 1 2 2 4 3' }, { input: '5\n9 1 9 1 9' }, { input: '6\n2 4 1 7 5 11' },
+      { gen: py`
+import random
+random.seed(29)
+n = 100000
+print(n)
+print(*[random.randint(1, 1000000) for _ in range(n)])
+`, limit: 5 },
+      { gen: py`
+n = 100000
+print(n)
+print(*range(n, 0, -1))
+`, limit: 5 },
+    ],
+    tips: [
+      '모든 (산 날, 판 날) 쌍을 다 보면 O(n²) → 10만 일이면 50억 번이라 시간 초과예요.',
+      '탐욕법: 왼쪽에서 오른쪽으로 한 번 훑으면서 **지금까지의 최저가**만 기억하면, 오늘 팔 때의 최대 이익이 바로 나와요. O(n).',
+      '최저가를 먼저 바꾸고 이익을 계산하면 같은 날 사고파는 셈이 돼요(이익 0이라 답은 같지만 순서를 지키는 습관!).',
+      '실제 수행 문제의 조건(여러 번 사고팔 수 있는지 등)이 다를 수 있어요. 여러 번 사고파는 버전은 「주식왕 2」에 있어요.',
+    ],
+    source: '3차 수행 목록 · 9. 탐욕법과 동적계획법 「1. 탐욕법」',
+  },
+  {
+    id: 'info-30', chapter: 'must3', must: true, title: '점프',
+    statement: [
+      '개구리가 출발점에서 일렬로 놓인 돌 위를 점프해 N번째 돌까지 가려고 한다. 개구리는 한 번에 **1칸 또는 2칸**을 점프할 수 있다.',
+      'N번째 돌에 도착하는 서로 다른 방법의 수를 구하는 프로그램을 작성하시오. 예를 들어 3번째 돌까지는 1+1+1, 1+2, 2+1로 3가지다.',
+    ],
+    input: ['첫째 줄에 `N`이 주어진다. (1 ≤ N ≤ 90)'],
+    output: ['N번째 돌에 도착하는 방법의 수를 출력한다.'],
+    examples: [
+      { input: '4', output: '5' },
+      { input: '10', output: '89' },
+    ],
+    template: py`
+n = int(input())
+`,
+    solution: py`
+n = int(input())
+
+table = [0] * (n + 2)        # n이 1이어도 table[2]를 쓸 수 있게 한 칸 더
+table[1] = 1
+table[2] = 2
+for i in range(3, n + 1):
+    table[i] = table[i - 1] + table[i - 2]   # 직전 칸에서 1칸 + 두 칸 전에서 2칸
+print(table[n])
+`,
+    tests: [
+      { input: '4' }, { input: '10' }, { input: '1' }, { input: '2' }, { input: '3' }, { input: '50' }, { input: '90' },
+    ],
+    tips: [
+      '마지막 점프를 보면 관계가 보여요: N번째 돌 바로 전에는 N−1번째(1칸 점프)나 N−2번째(2칸 점프)에 있었어요. 그래서 f(N) = f(N−1) + f(N−2).',
+      '재귀로 쓰면 같은 계산을 계속 반복해서 N = 90이면 끝나지 않아요. 작은 칸부터 표를 채워요(타뷸레이션).',
+      '`table = [0] * (n + 1)`로 만들고 `table[2] = 2`를 쓰면 N = 1일 때 칸이 없어서 오류가 나요. 한 칸 더 만들거나 N = 1을 따로 처리해요.',
+      '실제 수행의 「점프」가 다른 모양(격자 위 점프 등)일 수 있어요. 격자 버전은 「점프 (격자)」에 있어요.',
+    ],
+    source: '3차 수행 목록 · 9. 탐욕법과 동적계획법 「2-5. 계단 오르기」',
+  },
+  {
+    id: 'info-31', chapter: 'must3', must: true, title: '1로 만들기',
+    statement: [
+      '정수 X에 쓸 수 있는 연산은 세 가지다.',
+      '① X가 3으로 나누어떨어지면 3으로 나눈다. ② X가 2로 나누어떨어지면 2로 나눈다. ③ 1을 뺀다.',
+      '정수 N이 주어질 때, 이 연산을 써서 N을 1로 만드는 **연산 횟수의 최솟값**을 구하는 프로그램을 작성하시오.',
+    ],
+    input: ['첫째 줄에 정수 `N`이 주어진다. (1 ≤ N ≤ 1,000,000)'],
+    output: ['연산 횟수의 최솟값을 출력한다.'],
+    examples: [
+      { input: '2', output: '1' },
+      { input: '10', output: '3' },
+    ],
+    template: py`
+n = int(input())
+`,
+    solution: py`
+n = int(input())
+
+table = [0] * (n + 1)        # table[x] = x를 1로 만드는 최소 횟수, table[1] = 0
+for x in range(2, n + 1):
+    table[x] = table[x - 1] + 1                  # ③ 1을 뺀 경우
+    if x % 2 == 0:
+        table[x] = min(table[x], table[x // 2] + 1)   # ② 2로 나눈 경우
+    if x % 3 == 0:
+        table[x] = min(table[x], table[x // 3] + 1)   # ① 3으로 나눈 경우
+print(table[n])
+`,
+    limit: 3,
+    tests: [
+      { input: '2' }, { input: '10' }, { input: '1' }, { input: '3' }, { input: '642' }, { input: '999999' },
+      { input: '1000000', limit: 6 },
+    ],
+    tips: [
+      '탐욕법(나눌 수 있으면 무조건 나누기)은 틀려요: 10 → 5 → 4 → 2 → 1은 4번, 10 → 9 → 3 → 1은 3번.',
+      '「마지막에 한 연산」으로 나눠 생각하면 점화식이 나와요: f(x) = min(f(x−1), f(x/2), f(x/3)) + 1 (나누어떨어질 때만).',
+      '작은 수부터 표를 채우면 O(N). 재귀로 짜면 100만에서 재귀 한도에 걸려요.',
+    ],
+    source: '3차 수행 목록 · 9. 탐욕법과 동적계획법 「2-1 관계로 생각하기 · 2-4 거스름돈」',
+  },
+  {
+    id: 'info-32', chapter: 'must3', must: true, title: '배낭 채우기',
+    statement: [
+      '무게를 K까지 담을 수 있는 배낭과 물건 N개가 있다. 물건마다 무게 W와 가치 V가 정해져 있고, **물건은 쪼갤 수 없으며 한 개씩만** 있다.',
+      '배낭에 넣은 물건 무게의 합이 K를 넘지 않게 할 때, 넣을 수 있는 **가치의 합의 최댓값**을 구하는 프로그램을 작성하시오.',
+    ],
+    input: ['첫째 줄에 물건의 수 `N`과 배낭이 버틸 수 있는 무게 `K`가 주어진다. (1 ≤ N ≤ 100, 1 ≤ K ≤ 10,000)', '다음 `N`줄에 각 물건의 무게 `W`와 가치 `V`가 공백으로 주어진다. (1 ≤ W ≤ 10,000, 0 ≤ V ≤ 1,000)'],
+    output: ['가치의 합의 최댓값을 출력한다.'],
+    examples: [
+      { input: '3 50\n10 60\n20 100\n30 120', output: '220' },
+      { input: '4 7\n6 13\n4 8\n3 6\n5 12', output: '14' },
+    ],
+    template: py`
+n, k = map(int, input().split())
+items = []
+for _ in range(n):
+    w, v = map(int, input().split())
+    items.append((w, v))
+`,
+    solution: py`
+n, k = map(int, input().split())
+items = []
+for _ in range(n):
+    w, v = map(int, input().split())
+    items.append((w, v))
+
+# table[i][j] = 앞의 물건 i개만 써서, 무게 j까지 담을 때 가치의 최댓값
+table = [[0] * (k + 1) for _ in range(n + 1)]
+for i in range(1, n + 1):
+    weight, value = items[i - 1]
+    for j in range(1, k + 1):
+        if weight <= j:      # 넣을 수 있으면: 안 넣기 vs 넣기
+            table[i][j] = max(table[i - 1][j], table[i - 1][j - weight] + value)
+        else:                # 못 넣으면 그대로
+            table[i][j] = table[i - 1][j]
+print(table[n][k])
+`,
+    limit: 4,
+    tests: [
+      { input: '3 50\n10 60\n20 100\n30 120' }, { input: '4 7\n6 13\n4 8\n3 6\n5 12' }, { input: '1 5\n6 100' }, { input: '1 5\n5 100' },
+      { input: '3 10\n5 10\n5 10\n6 19' }, { input: '4 10\n1 1\n2 3\n3 5\n10 8' },
+      { gen: py`
+import random
+random.seed(32)
+n, k = 100, 10000
+print(n, k)
+for _ in range(n):
+    print(random.randint(1, 1000), random.randint(0, 1000))
+`, limit: 8 },
+    ],
+    tips: [
+      '탐욕법(무게당 가치가 높은 것부터)은 틀려요: 첫 예제에서 A(10, 60) → B(20, 100)를 넣으면 160, 남은 20에 C(30)가 안 들어가요. 정답은 B + C = 220.',
+      '물건 하나씩 「넣는다 / 안 넣는다」 두 경우를 비교해요. 넣으면 `table[i − 1][j − weight] + value` — **i − 1**(그 물건을 쓰기 전)이라야 같은 물건을 두 번 넣지 않아요.',
+      '표 크기는 (N + 1) × (K + 1). 0번 줄 · 0번 칸은 「물건 없음 · 무게 0」이라 0이에요.',
+    ],
+    source: '3차 수행 목록 · 9. 탐욕법과 동적계획법 「2-6. 배낭 문제」',
+  },
+
+  // ───────────── 8. 정렬 ─────────────
+  {
+    id: 'info-33', chapter: 'sort', title: '버블 정렬 (몇 바퀴?)',
+    statement: [
+      '**개선한 버블 정렬**로 N개의 정수를 오름차순 정렬한다. 이웃한 두 수를 비교해 왼쪽이 크면 바꾸는 일을 한 바퀴씩 반복하되, **한 바퀴 동안 한 번도 바꾸지 않았으면 이미 정렬된 것이니 멈춘다.**',
+      '정렬 결과와, 멈출 때까지 돈 바퀴 수(마지막에 아무것도 안 바꾼 바퀴 포함)를 출력하시오.',
+    ],
+    input: ['첫째 줄에 `N`이 주어진다. (2 ≤ N ≤ 1,000)', '둘째 줄에 정수 `N`개가 주어진다.'],
+    output: ['첫째 줄에 정렬된 수를 공백으로 구분해 출력한다.', '둘째 줄에 돈 바퀴 수를 출력한다. 바퀴는 많아야 `N − 1`번 돈다.'],
+    examples: [
+      { input: '6\n5 3 8 1 9 2', output: '1 2 3 5 8 9\n5' },
+      { input: '5\n1 2 3 4 5', output: '1 2 3 4 5\n1' },
+    ],
+    template: py`
+n = int(input())
+arr = list(map(int, input().split()))
+`,
+    solution: py`
+n = int(input())
+arr = list(map(int, input().split()))
+
+rounds = 0
+for i in range(n - 1):                 # 많아야 n-1 바퀴
+    rounds += 1
+    swapped = False
+    for j in range(n - 1 - i):         # 확정된 뒤쪽은 빼고
+        if arr[j] > arr[j + 1]:
+            arr[j], arr[j + 1] = arr[j + 1], arr[j]
+            swapped = True
+    if not swapped:                    # 한 번도 안 바꿨으면 끝
+        break
+print(*arr)
+print(rounds)
+`,
+    tests: [
+      { input: '6\n5 3 8 1 9 2' }, { input: '5\n1 2 3 4 5' }, { input: '5\n5 4 3 2 1' }, { input: '2\n2 1' },
+      { input: '6\n2 1 3 4 5 6' }, { input: '6\n2 3 4 5 6 1' }, { input: '4\n7 7 7 7' },
+      { gen: py`
+import random
+random.seed(33)
+n = 1000
+print(n)
+print(*[random.randint(1, 100000) for _ in range(n)])
+` },
+    ],
+    tips: [
+      '`swapped`는 바퀴마다 `False`로 다시 시작해요. 바깥 반복 밖에 두면 한 번 바꾼 뒤로 계속 `True`라서 멈추지 않아요.',
+      '`[2, 3, 4, 5, 6, 1]`처럼 작은 수가 맨 뒤에 있으면 한 바퀴에 한 칸씩만 앞으로 와서 바퀴가 많이 필요해요.',
+    ],
+    source: '8. 정렬 알고리즘 「1. 버블 정렬 · 버블정렬 개선해보기」',
+  },
+  {
+    id: 'info-34', chapter: 'sort', title: '삽입 정렬 이동 횟수',
+    statement: [
+      'N개의 정수를 삽입 정렬로 오름차순 정렬할 때, 수가 **한 칸 앞으로 옮겨진 횟수의 합**을 구하는 프로그램을 작성하시오.',
+      '`while j > 0 and arr[j - 1] > arr[j]` 안에서 자리를 한 번 바꿀 때마다 1번으로 센다. 거의 정렬된 데이터일수록 이 횟수가 작다.',
+    ],
+    input: ['첫째 줄에 `N`이 주어진다. (1 ≤ N ≤ 1,000)', '둘째 줄에 정수 `N`개가 주어진다.'],
+    output: ['옮겨진 횟수의 합을 출력한다.'],
+    examples: [
+      { input: '6\n5 3 8 1 9 2', output: '8' },
+      { input: '5\n1 2 3 4 5', output: '0' },
+    ],
+    template: py`
+n = int(input())
+arr = list(map(int, input().split()))
+`,
+    solution: py`
+n = int(input())
+arr = list(map(int, input().split()))
+
+moves = 0
+for i in range(1, n):
+    j = i
+    while j > 0 and arr[j - 1] > arr[j]:
+        arr[j - 1], arr[j] = arr[j], arr[j - 1]
+        moves += 1                     # 한 칸 옮길 때마다 센다
+        j -= 1
+print(moves)
+`,
+    tests: [
+      { input: '6\n5 3 8 1 9 2' }, { input: '5\n1 2 3 4 5' }, { input: '5\n5 4 3 2 1' }, { input: '1\n42' },
+      { input: '6\n3 3 3 1 1 1' }, { input: '6\n1 2 3 4 6 5' },
+      { gen: py`
+import random
+random.seed(34)
+n = 1000
+print(n)
+print(*[random.randint(1, 1000000) for _ in range(n)])
+` },
+    ],
+    tips: ['완전히 거꾸로면 1 + 2 + … + (N − 1) = N(N − 1)/2번(최악 O(n²)), 이미 정렬돼 있으면 0번(최선 O(n)).', '같은 수끼리는 옮기지 않아요(`>`이지 `>=`가 아니에요).'],
+    source: '8. 정렬 알고리즘 「3. 삽입 정렬 · 4-2 거의 정렬된 데이터라면?」',
+  },
+  {
+    id: 'info-35', chapter: 'sort', title: '정렬된 두 줄 합치기',
+    statement: [
+      '오름차순으로 정렬된 두 리스트 A, B가 주어진다. 두 리스트를 합쳐 오름차순으로 정렬된 하나의 리스트를 출력하는 프로그램을 작성하시오.',
+      '병합 정렬의 「합치기」처럼 **두 리스트의 맨 앞끼리만 비교**해 작은 쪽을 꺼내면 O(N + M)에 끝난다.',
+    ],
+    input: ['첫째 줄에 `N`과 `M`이 주어진다. (1 ≤ N, M ≤ 100,000)', '둘째 줄에 오름차순으로 정렬된 정수 `N`개(리스트 A), 셋째 줄에 오름차순으로 정렬된 정수 `M`개(리스트 B)가 주어진다.'],
+    output: ['합친 리스트의 수를 공백으로 구분해 한 줄에 출력한다.'],
+    examples: [
+      { input: '3 3\n3 5 8\n1 2 9', output: '1 2 3 5 8 9' },
+      { input: '2 4\n1 10\n2 3 4 5', output: '1 2 3 4 5 10' },
+    ],
+    template: py`
+n, m = map(int, input().split())
+a = list(map(int, input().split()))
+b = list(map(int, input().split()))
+`,
+    solution: py`
+n, m = map(int, input().split())
+a = list(map(int, input().split()))
+b = list(map(int, input().split()))
+
+result = []
+i = 0                               # a에서 볼 위치
+j = 0                               # b에서 볼 위치
+while i < len(a) and j < len(b):
+    if a[i] <= b[j]:
+        result.append(a[i])
+        i += 1
+    else:
+        result.append(b[j])
+        j += 1
+result += a[i:]                     # 남은 것 붙이기(이미 정렬돼 있다)
+result += b[j:]
+print(*result)
+`,
+    limit: 3,
+    tests: [
+      { input: '3 3\n3 5 8\n1 2 9' }, { input: '2 4\n1 10\n2 3 4 5' }, { input: '1 1\n5\n5' }, { input: '3 2\n1 2 3\n4 5' },
+      { input: '2 3\n7 8\n1 2 3' }, { input: '4 4\n-5 0 0 7\n-5 -1 0 9' },
+      { gen: py`
+import random
+random.seed(35)
+n = m = 50000
+print(n, m)
+print(*sorted(random.randint(-10**5, 10**5) for _ in range(n)))
+print(*sorted(random.randint(-10**5, 10**5) for _ in range(m)))
+`, limit: 6 },
+    ],
+    tips: ['마지막 두 줄(`result += a[i:]`, `result += b[j:]`)을 빼먹으면 한쪽이 먼저 바닥났을 때 남은 수가 사라져요.', '`a[i] <= b[j]`의 `=`: 같으면 왼쪽(a)을 먼저 꺼내요(안정 정렬).'],
+    source: '8. 정렬 알고리즘 「7. 병합 정렬 · merge」',
+  },
+
+  // ───────────── 9. 탐욕법 · 동적계획법 ─────────────
+  {
+    id: 'info-36', chapter: 'dp', title: '거스름돈 (탐욕법)',
+    statement: [
+      '편의점에서 N원을 거슬러 줘야 한다. 동전은 **500원, 100원, 50원, 10원**이 충분히 있다.',
+      '동전 개수를 가장 적게 하여 거슬러 줄 때 동전의 개수를 구하는 프로그램을 작성하시오.',
+    ],
+    input: ['첫째 줄에 `N`이 주어진다. N은 10의 배수다. (10 ≤ N ≤ 1,000,000,000)'],
+    output: ['동전 개수의 최솟값을 출력한다.'],
+    examples: [
+      { input: '1260', output: '6' },
+      { input: '10', output: '1' },
+    ],
+    template: py`
+money = int(input())
+`,
+    solution: py`
+money = int(input())
+
+count = 0
+for c in [500, 100, 50, 10]:        # 큰 동전부터
+    count += money // c             # 낼 수 있는 만큼 한꺼번에
+    money %= c                      # 남은 돈
+print(count)
+`,
+    tests: [{ input: '1260' }, { input: '10' }, { input: '500' }, { input: '990' }, { input: '1000000000' }, { input: '123450' }],
+    tips: ['`while money >= c: money -= c`로 하나씩 빼면 10억 원에서 200만 번 넘게 돌아요. 몫(`//`)과 나머지(`%`)면 동전 종류마다 한 번이에요.', '이 동전들은 큰 동전이 작은 동전의 배수라서 탐욕법이 항상 맞아요. 동전이 1, 3, 4원이면 틀려요(「동전 최소 개수」).'],
+    source: '9. 탐욕법과 동적계획법 「1-1. 거스름돈 퀴즈」',
+  },
+  {
+    id: 'info-37', chapter: 'dp', title: '강당 예약',
+    statement: [
+      '학교 강당을 쓰고 싶은 행사 N개의 시작 시각과 끝 시각이 주어진다. 시간이 겹치는 행사는 동시에 할 수 없지만, **한 행사가 끝나는 시각에 다른 행사를 시작하는 건 괜찮다.**',
+      '강당에서 열 수 있는 **행사의 최대 개수**를 구하는 프로그램을 작성하시오. 시작 시각과 끝 시각이 같은 행사도 있을 수 있다.',
+    ],
+    input: ['첫째 줄에 행사의 수 `N`이 주어진다. (1 ≤ N ≤ 100,000)', '다음 `N`줄에 각 행사의 시작 시각과 끝 시각이 공백으로 주어진다. (0 ≤ 시작 ≤ 끝 ≤ 1,000,000,000)'],
+    output: ['열 수 있는 행사의 최대 개수를 출력한다.'],
+    examples: [
+      { input: '8\n1 4\n3 5\n0 6\n5 7\n3 9\n5 9\n6 10\n8 11', output: '3' },
+      { input: '3\n1 5\n4 7\n6 10', output: '2' },
+    ],
+    template: py`
+n = int(input())
+events = []
+for _ in range(n):
+    s, e = map(int, input().split())
+    events.append((s, e))
+`,
+    solution: py`
+n = int(input())
+events = []
+for _ in range(n):
+    s, e = map(int, input().split())
+    events.append((s, e))
+
+# 일찍 끝나는 것부터, 끝이 같으면 일찍 시작하는 것부터
+events.sort(key=lambda ev: (ev[1], ev[0]))
+count = 0
+last_end = 0                        # 강당이 비는 시각
+for s, e in events:
+    if last_end <= s:               # 강당이 빈 뒤에 시작하면 고른다
+        count += 1
+        last_end = e
+print(count)
+`,
+    limit: 3,
+    tests: [
+      { input: '8\n1 4\n3 5\n0 6\n5 7\n3 9\n5 9\n6 10\n8 11' }, { input: '3\n1 5\n4 7\n6 10' }, { input: '1\n0 0' },
+      { input: '2\n2 2\n1 2' }, { input: '3\n3 3\n1 3\n3 3' }, { input: '4\n1 10\n2 3\n4 5\n6 7' },
+      { gen: py`
+import random
+random.seed(37)
+n = 40000
+print(n)
+for _ in range(n):
+    s = random.randint(0, 10**8)
+    print(s, s + random.randint(0, 10**5))
+`, limit: 5 },
+    ],
+    tips: [
+      '기준이 핵심이에요. 짧은 것부터(반례: 1~5, 4~7, 6~10)나 일찍 시작하는 것부터는 틀려요. **일찍 끝나는 것부터**가 항상 맞아요: 가장 일찍 끝나는 걸 고르면 남은 시간이 가장 많이 남거든요.',
+      '자료 코드처럼 끝 시각만으로 정렬하면 `(2, 2)`와 `(1, 2)` 순서로 놓였을 때 하나밖에 못 골라요. 끝이 같으면 시작이 빠른 것부터: `key=lambda ev: (ev[1], ev[0])`.',
+    ],
+    source: '9. 탐욕법과 동적계획법 「1-2 강당 예약 · 1-4 왜 일찍 끝나는 것부터는 항상 맞을까」',
+  },
+  {
+    id: 'info-38', chapter: 'dp', title: '동전 최소 개수 (동적계획법)',
+    statement: [
+      '어느 나라의 동전 N종류가 각각 충분히 있다. 이 동전들로 정확히 K원을 만들 때, **동전 개수의 최솟값**을 구하는 프로그램을 작성하시오.',
+      '동전이 1, 3, 4원이고 K = 6이면 큰 동전부터 고르는 탐욕법은 4 + 1 + 1(3개)이지만, 3 + 3(2개)이 더 적다. K원을 만들 수 없으면 `-1`을 출력한다.',
+    ],
+    input: ['첫째 줄에 동전 종류 수 `N`과 금액 `K`가 주어진다. (1 ≤ N ≤ 100, 1 ≤ K ≤ 10,000)', '둘째 줄에 동전의 가치 `N`개가 주어진다. (1 ≤ 가치 ≤ 10,000, 서로 다름)'],
+    output: ['동전 개수의 최솟값을 출력한다. 만들 수 없으면 `-1`을 출력한다.'],
+    examples: [
+      { input: '3 6\n1 3 4', output: '2' },
+      { input: '2 7\n2 4', output: '-1' },
+    ],
+    template: py`
+n, k = map(int, input().split())
+coins = list(map(int, input().split()))
+`,
+    solution: py`
+n, k = map(int, input().split())
+coins = list(map(int, input().split()))
+
+INF = float("inf")
+table = [INF] * (k + 1)      # table[x] = x원을 만드는 최소 동전 수
+table[0] = 0
+for x in range(1, k + 1):
+    for c in coins:
+        if c <= x:           # 마지막에 낸 동전이 c였다면
+            table[x] = min(table[x], table[x - c] + 1)
+if table[k] == INF:
+    print(-1)
+else:
+    print(table[k])
+`,
+    limit: 4,
+    tests: [
+      { input: '3 6\n1 3 4' }, { input: '2 7\n2 4' }, { input: '3 8\n1 4 5' }, { input: '4 1260\n500 100 50 10' },
+      { input: '1 9\n10' }, { input: '2 11\n5 7' }, { input: '3 30\n1 15 25' },
+      { gen: py`
+import random
+random.seed(38)
+print(100, 10000)
+print(*random.sample(range(2, 10001), 100))
+`, limit: 8 },
+    ],
+    tips: [
+      '점화식: f(x) = min(f(x − c) + 1) (모든 동전 c ≤ x), f(0) = 0.',
+      '처음 값을 0으로 채우면 min이 늘 0이 돼요. **무한대(`float("inf")`)로 채우고** 0원만 0으로.',
+      '마지막에 여전히 무한대면 만들 수 없는 금액이에요 → `-1`.',
+    ],
+    source: '9. 탐욕법과 동적계획법 「1-5 다시 거스름돈 · 2-4 거스름돈 문제(동적계획법)」',
+  },
+  {
+    id: 'info-39', chapter: 'dp', title: '주식왕 2 (여러 번 사고팔기)',
+    statement: [
+      'N일 동안의 주가를 미리 안다. 이번에는 주식을 **여러 번 사고팔 수 있다.** 단, 한 번에 **한 주만** 가질 수 있어서, 주식을 가지고 있는 동안은 더 살 수 없고 먼저 팔아야 한다. 같은 날 팔고 다시 사는 것은 괜찮다.',
+      '얻을 수 있는 이익의 최댓값을 구하는 프로그램을 작성하시오.',
+    ],
+    input: ['첫째 줄에 날 수 `N`이 주어진다. (1 ≤ N ≤ 100,000)', '둘째 줄에 1일부터 N일까지의 주가가 주어진다. (1 ≤ 주가 ≤ 1,000,000)'],
+    output: ['이익의 최댓값을 출력한다.'],
+    examples: [
+      { input: '6\n7 1 5 3 6 4', output: '7' },
+      { input: '5\n1 2 3 4 5', output: '4' },
+    ],
+    template: py`
+n = int(input())
+prices = list(map(int, input().split()))
+`,
+    solution: py`
+n = int(input())
+prices = list(map(int, input().split()))
+
+profit = 0
+for i in range(1, n):
+    if prices[i] > prices[i - 1]:      # 오르는 날마다 어제 사서 오늘 판다
+        profit += prices[i] - prices[i - 1]
+print(profit)
+`,
+    limit: 3,
+    tests: [
+      { input: '6\n7 1 5 3 6 4' }, { input: '5\n1 2 3 4 5' }, { input: '5\n7 6 4 3 1' }, { input: '1\n100' },
+      { input: '7\n3 8 1 2 2 4 3' },
+      { gen: py`
+import random
+random.seed(39)
+n = 100000
+print(n)
+print(*[random.randint(1, 1000000) for _ in range(n)])
+`, limit: 5 },
+    ],
+    tips: ['1 → 5로 한 번에 오르나, 1 → 3 → 5로 두 번에 나눠 오르나 이익은 같아요. 그래서 **오르는 날의 차이를 전부 더하면** 최대예요(탐욕법).', '「주식왕」(한 번만 사고팔기)과 헷갈리지 않게 조건부터 읽어요.'],
+    source: '9. 탐욕법과 동적계획법 「1. 탐욕법」 (주식왕 응용)',
+  },
+  {
+    id: 'info-40', chapter: 'dp', title: '점프 (격자)',
+    statement: [
+      'N×N 게임판의 각 칸에 0부터 9까지의 수가 적혀 있다. 맨 왼쪽 위 칸에서 출발해 맨 오른쪽 아래 칸까지 가려고 한다.',
+      '각 칸에 적힌 수는 그 칸에서 **오른쪽 또는 아래쪽으로 정확히 점프해야 하는 칸 수**다. 게임판 밖으로 나가면 안 되고, 0이 적힌 칸에서는 더 갈 수 없다. 맨 오른쪽 아래 칸에는 항상 0이 적혀 있다.',
+      '맨 왼쪽 위에서 맨 오른쪽 아래까지 갈 수 있는 경로의 수를 구하는 프로그램을 작성하시오.',
+    ],
+    input: ['첫째 줄에 게임판의 크기 `N`이 주어진다. (2 ≤ N ≤ 100)', '다음 `N`줄에 각 칸의 수 `N`개가 공백으로 주어진다.'],
+    output: ['경로의 수를 출력한다.'],
+    examples: [
+      { input: '4\n2 3 3 1\n1 2 1 3\n1 2 3 1\n3 1 1 0', output: '3' },
+      { input: '3\n1 1 1\n1 1 1\n1 1 0', output: '6' },
+    ],
+    template: py`
+n = int(input())
+board = [list(map(int, input().split())) for _ in range(n)]
+`,
+    solution: py`
+n = int(input())
+board = [list(map(int, input().split())) for _ in range(n)]
+
+ways = [[0] * n for _ in range(n)]    # ways[x][y] = (x, y)에 도착하는 경로 수
+ways[0][0] = 1
+for x in range(n):                    # 위 → 아래, 왼쪽 → 오른쪽 순서로 훑으면
+    for y in range(n):                #   들어오는 경로는 이미 다 더해져 있다
+        jump = board[x][y]
+        if jump == 0 or ways[x][y] == 0:
+            continue
+        if y + jump < n:              # 오른쪽으로 점프
+            ways[x][y + jump] += ways[x][y]
+        if x + jump < n:              # 아래쪽으로 점프
+            ways[x + jump][y] += ways[x][y]
+print(ways[n - 1][n - 1])
+`,
+    limit: 3,
+    tests: [
+      { input: '4\n2 3 3 1\n1 2 1 3\n1 2 3 1\n3 1 1 0' }, { input: '3\n1 1 1\n1 1 1\n1 1 0' }, { input: '2\n1 1\n1 0' }, { input: '2\n2 1\n1 0' },
+      { input: '3\n0 1 1\n1 1 1\n1 1 0' },
+      { gen: py`
+n = 100
+print(n)
+for x in range(n):
+    print(*[0 if x == y == n - 1 else 1 for y in range(n)])
+` },
+      { gen: py`
+import random
+random.seed(40)
+n = 100
+print(n)
+for x in range(n):
+    print(*[0 if x == y == n - 1 else random.randint(1, 3) for y in range(n)])
+` },
+    ],
+    tips: ['모든 경로를 DFS로 하나씩 따라가면 경로가 수십억 개라 끝나지 않아요. 칸마다 「여기 도착하는 경로 수」를 적어 두고 뒤로 넘겨줘요(동적계획법).', '오른쪽 · 아래로만 가니까 위에서 아래, 왼쪽에서 오른쪽 순서로 훑으면 한 칸을 볼 때 그 칸으로 오는 경로가 이미 다 모여 있어요.', '경로 수가 아주 커져도 파이썬 정수는 넘치지 않아요.'],
+    source: '9. 탐욕법과 동적계획법 「2. 동적계획법」 + 6. DFS와 BFS 「5. 격자」 (점프 응용)',
+  },
+  {
+    id: 'info-41', chapter: 'dp', title: '계단 오르기 (점수)',
+    statement: [
+      '계단 N개에 각각 점수가 적혀 있다. 계단 아래 시작점에서 출발해 꼭대기(N번째 계단)까지 오르며, 밟은 계단의 점수를 모두 얻는다.',
+      '한 번에 **1계단 또는 2계단**씩 오를 수 있지만, **연속된 세 개의 계단을 모두 밟을 수는 없다**(시작점은 계단이 아니다). **마지막 계단은 반드시 밟아야** 한다. 얻을 수 있는 점수 합의 최댓값을 구하는 프로그램을 작성하시오.',
+    ],
+    input: ['첫째 줄에 계단의 수 `N`이 주어진다. (1 ≤ N ≤ 300)', '다음 `N`줄에 아래 계단부터 차례로 점수가 하나씩 주어진다. (1 ≤ 점수 ≤ 10,000)'],
+    output: ['점수 합의 최댓값을 출력한다.'],
+    examples: [
+      { input: '6\n10\n20\n15\n25\n10\n20', output: '75' },
+      { input: '3\n1\n2\n3', output: '5' },
+    ],
+    template: py`
+n = int(input())
+score = [int(input()) for _ in range(n)]
+`,
+    solution: py`
+n = int(input())
+score = [int(input()) for _ in range(n)]
+
+s = [0] + score                  # s[i] = i번째 계단 점수 (1번부터)
+best = [0] * (n + 1)             # best[i] = i번째 계단을 밟고 끝날 때 최대 점수
+for i in range(1, n + 1):
+    if i == 1:
+        best[i] = s[1]
+    elif i == 2:
+        best[i] = s[1] + s[2]
+    else:
+        # 마지막 걸음이 2칸(i-2에서) 또는 1칸(i-1에서, 그 전은 i-3에서 2칸)
+        best[i] = max(best[i - 2], best[i - 3] + s[i - 1]) + s[i]
+print(best[n])
+`,
+    tests: [
+      { input: '6\n10\n20\n15\n25\n10\n20' }, { input: '3\n1\n2\n3' }, { input: '1\n7' }, { input: '2\n3\n4' },
+      { input: '4\n1\n100\n100\n1' }, { input: '5\n5\n5\n5\n5\n5' },
+      { gen: py`
+import random
+random.seed(41)
+n = 300
+print(n)
+for _ in range(n):
+    print(random.randint(1, 10000))
+` },
+    ],
+    tips: ['「점프」(방법의 수)와 달리 점수의 **최댓값**이고, 세 칸 연속 금지 조건이 있어요.', 'i번째에 1칸으로 왔다면 i−1번째를 밟았고, 그 전은 반드시 i−3에서 2칸 점프했어야 해요(세 칸 연속 금지). 그래서 `best[i − 3] + s[i − 1]`.', 'i = 3일 때 `best[0] = 0`이라 시작점에서 2칸 점프한 경우가 저절로 들어가요.'],
+    source: '9. 탐욕법과 동적계획법 「2-5. 계단 오르기」 (응용)',
+  },
   // ───────────── 수행평가 6문제 ─────────────
   {
     id: 'info-01', chapter: 'must', must: true, title: 'DFS 방문 순서 (스택)',
@@ -1246,8 +1956,7 @@ print(*[random.randint(1, 10**9) for _ in range(n)])
     ],
     tips: ['높이를 0부터 하나씩 올려 보면 최대 10억 번 → 시간 초과. 이진탐색은 30번이면 끝나요.'],
     source: '7. 이진탐색 + 엘리스 리본 자르기 (응용)',
-  },
-];
+  },];
 
 /** 정답 코드. */
 export const solutionOf = (problem: EliceProblem): string => problem.solution;

@@ -23,8 +23,10 @@ assert.equal(problems.find(p => p.id === 'info-03').title, '미로 최단 거리
 assert.equal(problems.find(p => p.id === 'info-09').title, '최단 거리 (BFS)');
 const must = problems.filter(p => p.must);
 assert.deepEqual(problems.filter(p => p.blanks).map(p => p.id), ['info-01'], '빈칸 문제는 DFS(스택) 하나');
-assert.deepEqual(must.map(p => p.title), ['DFS 방문 순서 (스택)', '덩어리 개수 세기', '최단 거리 (BFS)', '두 개의 카드', '도서관 책 찾기', '리본 자르기']);
-assert.ok(must.every(p => p.chapter === 'must'));
+assert.deepEqual(must.filter(p => p.chapter === 'must').map(p => p.title), ['DFS 방문 순서 (스택)', '덩어리 개수 세기', '최단 거리 (BFS)', '두 개의 카드', '도서관 책 찾기', '리본 자르기']);
+// 5.3.0~ 3차 수행 목록(원문이 없어 목록 이름 · 수업 자료로 만든 문제).
+assert.deepEqual(must.filter(p => p.chapter === 'must3').map(p => p.title), ['선택 정렬 구현', '삽입 정렬 구현', '주식왕', '점프', '1로 만들기', '배낭 채우기']);
+assert.ok(must.every(p => p.chapter === 'must' || p.chapter === 'must3'));
 const chapterIds = ELICE_CHAPTERS.map(c => c.id);
 for (const c of chapterIds) assert.ok(problems.some(p => p.chapter === c), c);
 
