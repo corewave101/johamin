@@ -12,7 +12,7 @@ const physics = finalMenu.children.find(n => n.id === 'science').children.find(n
 const deck = physics.children.find(n => n.id === 'physics-yang-final');
 assert.equal(deck.cards, cards);
 assert.equal(deck.writtenQuestions, written);
-assert.deepEqual(deck.lab, ['polarization', 'optics']); // 4.10.0~: 편광 가상실험실 + 빛과 렌즈 실습
+assert.deepEqual(deck.lab, ['castle', 'polarization', 'optics']); // 6.0.0~: 피직스 캐슬 + 4.10.0~: 편광 가상실험실 + 빛과 렌즈 실습
 
 assert.ok(cards.length >= 150, `${cards.length} cards`);
 assert.equal(written.length, 6); // 4.10.0~: +2 편광(말뤼스 법칙 유도 · 세 장)

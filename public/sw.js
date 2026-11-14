@@ -52,7 +52,9 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
   if (url.origin === self.location.origin) {
-    if (request.mode === 'navigate') event.respondWith(page(request));
+    // 피직스 캐슬은 따로 된 페이지: 앱 첫 화면(SHELL)으로 저장하면 안 된다. 인터넷 먼저, 안 되면 저장해 둔 것.
+    if (/\/physics-castle(\/|$)/.test(url.pathname)) event.respondWith(castle(request));
+    else if (request.mode === 'navigate') event.respondWith(page(request));
     else event.respondWith(asset(request));
   } else if (url.hostname === 'cdn.jsdelivr.net') {
     // 정보 코딩 연습장의 파이썬(Pyodide)은 버전이 주소에 박혀 있어 바뀌지 않는다: 한 번 받으면 다시 받지 않는다.
@@ -72,6 +74,19 @@ async function page(request) {
     return response;
   } catch {
     return (await cache.match(SHELL)) ?? Response.error();
+  }
+}
+
+// 피직스 캐슬: 한 번 열면 그 기기에 사본을 남겨서 다음엔 인터넷 없이도 열린다(새 버전이 나오면 캐시와 함께 새로 받는다).
+async function castle(request) {
+  const cache = await caches.open(CACHE);
+  try {
+    const response = await Promise.race([fetch(request), new Promise((_, reject) => setTimeout(reject, 8000))]);
+    if (response.redirected) return Response.redirect(response.url, 302); // /physics-castle → /physics-castle/
+    if (response.ok && response.status === 200) await cache.put(request, response.clone());
+    return response;
+  } catch {
+    return (await cache.match(request, { ignoreSearch: true })) ?? Response.error();
   }
 }
 

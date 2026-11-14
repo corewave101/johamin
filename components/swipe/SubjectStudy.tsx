@@ -50,7 +50,7 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   // 양동비T 빛과 렌즈 실습(4.1.0부터 정식 기능): 덱에 lab: 'optics'가 있으면 학습 메뉴 맨 앞에 나온다.
   // 4.10.0~: 같은 덱에 편광 가상실험실(lab: 'polarization')도 있어서 lab은 배열일 수 있다.
   const labs = labsOf(deck);
-  const optics = labs.includes('optics'), polarization = labs.includes('polarization');
+  const optics = labs.includes('optics'), polarization = labs.includes('polarization'), castle = labs.includes('castle');
   // 주민지T 구조식 실습(4.4.0~): lab: 'structure'.
   const structure = labs.includes('structure');
   // 박상영T 수행평가 대비(5.0.0~): lab: 'dna' — 구강상피세포 DNA 추출 · NanoDrop 실험 장면.
@@ -91,6 +91,8 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
     const topicCount = new Set(generalCards.map(card => card.topic)).size;
     const hand: HandCard[] = [
       ...(dna ? [{ id: 'practice-dna', kicker: '수행평가 대비', title: 'DNA 추출 실험 장면', note: '피펫 · 스핀 컬럼 · NanoDrop', onPlay: () => { setPractice('dna'); setMode('practice'); } }] : []),
+      // 피직스 캐슬(6.0.0~): 3D 게임이라 따로 된 페이지로 간다. 앱을 처음 열 때는 받지 않고, 누를 때 받는다.
+      ...(castle ? [{ id: 'practice-castle', kicker: '물리 디펜스 게임', title: '피직스 캐슬', note: '렌즈 · 편광 · 광전 효과 · 레이저', onPlay: () => { window.location.href = 'physics-castle/'; } }] : []),
       ...(polarization ? [{ id: 'practice-polarization', kicker: '편광 가상실험실', title: '편광판 돌려 보기', note: '말뤼스 법칙 · LCD · 광자 정보', onPlay: () => { setPractice('polarization'); setMode('practice'); } }] : []),
       ...(optics ? [{ id: 'practice', kicker: '빛과 렌즈 실습', title: '광선 작도하기', note: '렌즈 · 거울 · 스크린 상맺힘', onPlay: () => { setPractice('optics'); setMode('practice'); } }] : []),
       ...(structure ? [{ id: 'practice', kicker: '구조식 실습', title: '구조식 ↔ 이름', note: '이름 맞히기 · 점 이어 그리기', onPlay: () => setMode('practice') }] : []),
