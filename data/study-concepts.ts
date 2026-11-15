@@ -12,6 +12,7 @@ import { socialSungFinalConcepts } from './social-sung-final-concepts';
 import { englishFinalConcepts } from './english-final-concepts';
 import { mathTrigFinalConcepts } from './math-trig-final-concepts';
 import { astronomyJeonFinalConcepts } from './astronomy-jeon-final-concepts';
+import { astronomyHwangFinalConcepts } from './astronomy-hwang-final-concepts';
 import { physicsYangFinalConcepts } from './physics-yang-final-concepts';
 import { koreanFinalConcepts } from './korean-final-concepts';
 import { biologyParkFinalConcepts } from './biology-park-final-concepts';
@@ -42,6 +43,7 @@ export const studyConcepts: ConceptLesson[] = [
   ...englishFinalConcepts,
   ...mathTrigFinalConcepts,
   ...astronomyJeonFinalConcepts,
+  ...astronomyHwangFinalConcepts,
   ...physicsYangFinalConcepts,
   ...koreanFinalConcepts,
   {
