@@ -9,7 +9,7 @@ function recordsHtml(){
     <div class="row"><span>최고 방어 밤</span><b>${G.best.wave}</b></div>
     <div class="row"><span>최고 초당 데미지</span><b>${G.best.dps.toFixed(1)}</b></div>
     <div class="row"><span>토벌 최고 수확</span><b>${G.best.sortie}G</b></div></div>
-    <p class="muted">이 기기에만 저장돼요. 학교 계정 로그인을 붙이면 Supabase 랭킹으로 올릴 자리예요.</p></div>`;
+    <p class="muted">이 기기에 저장돼요. 로그인하면 아래 랭킹에도 올라가요.</p></div>` + rankHtml();
 }
 function placePanel(){
   let h = '';
@@ -133,7 +133,7 @@ function settingsPanel(){
     ${row('gfx', '그래픽 (그림자)', [['auto', '자동'], ['high', '높게'], ['low', '낮게']])}
     ${row('hard', '문제 난이도', [['false', '보통 · 특수각'], ['true', '하드 · 덧셈정리']])}
     <p class="muted">설정과 진행은 이 기기(브라우저)에만 저장돼요. 낮마다 자동 저장되고, 밤 도중에 꺼지면 그날 낮으로 돌아와요.</p>
-    <button class="btn danger" type="button" data-act="${G.confirmReset ? 'resetYes' : 'resetAsk'}">${G.confirmReset ? '정말 지울까요? 한 번 더 누르면 처음부터' : '저장 지우고 처음부터'}</button><p class="muted">피직스 캐슬 v1.0.0</p></div>`;
+    <button class="btn danger" type="button" data-act="${G.confirmReset ? 'resetYes' : 'resetAsk'}">${G.confirmReset ? '정말 지울까요? 한 번 더 누르면 처음부터' : '저장 지우고 처음부터'}</button><p class="muted">피직스 캐슬 v1.1.0</p></div>`;
 }
 const STICK_PX = {s:108, m:132, l:164};
 function applySettings(){

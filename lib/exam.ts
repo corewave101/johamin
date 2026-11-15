@@ -15,6 +15,8 @@ export const ELICE_URL = `${BASE}elice/`;
 export const LOTTE_URL = `${BASE}lotte/`;
 /** 처음 화면(기말고사) 주소. */
 export const HOME_URL = BASE;
+/** 피직스 캐슬(따로 된 게임 페이지, 6.0.0~). 랭킹 로그인 뒤 돌아갈 수 있는 주소. */
+export const CASTLE_URL = `${BASE}physics-castle/`;
 
 /** True on /johamin/midterm (with or without the last slash). */
 export const isMidterm = page ? /\/midterm\/?$/.test(page.location.pathname) : false;
@@ -26,6 +28,8 @@ export type ExamPage = 'final' | 'midterm' | 'elice' | 'lotte';
 export const examPage: ExamPage = isLotte ? 'lotte' : isElice ? 'elice' : isMidterm ? 'midterm' : 'final';
 /** 페이지마다 첫 화면 주소(로그인하고 돌아올 곳). */
 export const PAGE_URL: Record<ExamPage, string> = { final: HOME_URL, midterm: MIDTERM_URL, elice: ELICE_URL, lotte: LOTTE_URL };
+/** 로그인이 끝나고 돌려보내도 되는 주소(이 목록 밖은 무시한다). */
+export const RETURN_URLS: string[] = [...Object.values(PAGE_URL), CASTLE_URL];
 /** 상단 글자: 롯데 페이지는 원중이레츠고. */
 export const BRAND = isLotte ? { first: '원중이', rest: '레츠고' } : { first: '조하민', rest: '레츠고' };
 

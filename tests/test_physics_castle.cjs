@@ -38,5 +38,29 @@ const sw = read('public/sw.js');
 check(/physics-castle[\s\S]{0,80}castle\(request\)/.test(sw), 'sw.js가 physics-castle 요청을 castle()로 따로 처리해야 해요');
 check(sw.indexOf('castle(request)') < sw.indexOf("request.mode === 'navigate') event.respondWith(page(request))"), 'physics-castle 검사가 page()보다 먼저여야 해요');
 
+// 랭킹(6.1.0~): 앱 로그인을 같이 쓴다. 키 · 주소가 앱과 어긋나면 로그인해도 게임이 모른다.
+const rank = fs.readFileSync(path.join(dir, 'js/rank.js'), 'utf8');
+const authTs = read('lib/auth.ts'), cfg = read('lib/supabase-config.ts'), examTs = read('lib/exam.ts');
+const val = (src, re) => { const m = src.match(re); return m && m[1]; };
+check(scripts.includes('js/rank.js') && scripts.indexOf('js/rank.js') < scripts.indexOf('js/ui.js'), 'rank.js를 ui.js보다 먼저 불러야 해요');
+check(val(rank, /RK_AUTH = '([^']+)'/) === val(authTs, /storageKey: '([^']+)'/), '게임의 로그인 키가 lib/auth.ts storageKey와 같아야 해요');
+check(val(rank, /RK_RETURN = '([^']+)'/) === val(authTs, /RETURN_KEY = '([^']+)'/), '로그인 뒤 돌아오기 키가 lib/auth.ts RETURN_KEY와 같아야 해요');
+check(val(rank, /RK_URL = '([^']+)'/) === val(cfg, /SUPABASE_URL = '([^']+)'/), 'Supabase 주소가 lib/supabase-config.ts와 같아야 해요');
+check(val(rank, /RK_KEY = '([^']+)'/) === val(cfg, /SUPABASE_PUBLISHABLE_KEY = '([^']+)'/), '공개 키가 lib/supabase-config.ts와 같아야 해요');
+check(/^sb_publishable_/.test(val(rank, /RK_KEY = '([^']+)'/) || ''), '게임에는 공개 키(sb_publishable_)만 넣어요');
+check(!/service_role|sb_secret_/.test(rank), '비밀 키 금지');
+for (const k of [...rank.matchAll(/const RK_(?:NICK|SENT) = '([^']+)'/g)].map(m => m[1])) check(k.startsWith('johamin-castle-'), `랭킹 저장 키 '${k}'는 johamin-castle- 접두사여야 해요`);
+check(/CASTLE_URL = `\$\{BASE\}physics-castle\/`/.test(examTs) && /RETURN_URLS[^\n]*CASTLE_URL/.test(examTs), 'lib/exam.ts RETURN_URLS에 피직스 캐슬 주소가 있어야 해요');
+check(/RETURN_URLS\.includes\(returnTo\)/.test(authTs), 'lib/auth.ts가 RETURN_URLS로 돌아갈 곳을 확인해야 해요');
+const sql = read('db/castle-ranking-6.1.0.sql');
+for (const fn of ['castle_submit', 'castle_board', 'castle_me', 'castle_forget']){
+  check(new RegExp(`function public\\.${fn}\\(`).test(sql), `db: ${fn} 함수가 있어야 해요`);
+  check(new RegExp(`revoke execute on function public\\.${fn}\\([^)]*\\) from public, anon`).test(sql), `db: ${fn}은 로그인 안 한 사람에게 막혀야 해요`);
+  check(rank.includes(`'${fn}'`), `rank.js가 ${fn}을 불러야 해요`);
+}
+check(/castle_scores enable row level security/.test(sql) && !/create policy[^;]*castle_scores/i.test(sql), 'castle_scores는 RLS를 켜고 정책 없이 함수로만 써요');
+check(!/email/i.test(sql.replace(/--[^\n]*/g, '')), '랭킹 표에 이메일을 저장하지 않아요');
+check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정보처리방침에 랭킹(별명 · 기록)을 적어야 해요');
+
 if (failed){ console.error(`physics castle: ${failed}개 실패`); process.exit(1); }
 console.log('physics castle ok');

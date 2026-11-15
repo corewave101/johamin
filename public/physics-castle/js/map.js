@@ -77,7 +77,7 @@ function mapPanel(){
       <div class="row"><span>쫄병</span><b>${G.soldiers.length}명</b></div>
       <div class="row"><span>금속 조각</span><b>${['na','cs','ag','ca'].map(k => `${METALS[k].name} ${G.metals[k] || 0}`).join(' · ')}</b></div>
     </div>
-    <div class="btns"><button class="btn primary" type="button" data-act="night">밤 시작 · 웨이브 ${G.wave}</button><button class="btn" type="button" data-act="dress">캐릭터 꾸미기</button></div>
+    <div class="btns"><button class="btn primary" type="button" data-act="night">밤 시작 · 웨이브 ${G.wave}</button><button class="btn" type="button" data-act="dress">캐릭터 꾸미기</button><button class="btn" type="button" data-act="rkGo">랭킹</button></div>
     ${G.wave === 1 ? '<p class="muted">첫날은 탑이 없어요. 제작부에서 탑을 만들어 두면 첫 밤이 끝난 뒤 완성돼요. 첫 밤은 주인공 LED 랜턴으로 버텨요!</p>' : ''}
     <p class="muted">낮마다 자동 저장돼요. 밤 도중에 꺼지면 그날 낮으로 돌아와요.</p></div>` + recordsHtml();
 }
