@@ -3,14 +3,18 @@
 import { AuthClient, type Session } from '@supabase/auth-js';
 import { clearCachedRows } from './card-store';
 import { clearMark, readMark, saveMark, SCHOOL_DOMAIN, takeAuthError } from './member';
-import { examPage, HOME_URL, PAGE_URL } from './exam';
+import { examPage, HOME_URL, PAGE_URL, RETURN_URLS } from './exam';
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from './supabase-config';
 import { countVisit } from './visits';
 
 // 로그인은 항상 처음 화면 주소로 돌아온다(Supabase에 등록된 주소). 중간고사 보관함에서 눌렀으면 끝난 뒤 그리로 다시 보낸다.
+// 피직스 캐슬은 이 키에 게임 주소를 적고 처음 화면으로 보낸다. 로그인 전이면 키를 남겨 두었다가 로그인 뒤에 쓴다.
 const RETURN_KEY = 'johamin-after-login-v1';
-function takeReturn(): string | null {
-  try { const path = sessionStorage.getItem(RETURN_KEY); sessionStorage.removeItem(RETURN_KEY); return path; } catch { return null; }
+function peekReturn(): string | null {
+  try { return sessionStorage.getItem(RETURN_KEY); } catch { return null; }
+}
+function dropReturn() {
+  try { sessionStorage.removeItem(RETURN_KEY); } catch { /* nothing saved */ }
 }
 
 export const auth = new AuthClient({
@@ -47,7 +51,7 @@ async function askMember(session: Session): Promise<boolean> {
 
 /** Finishes a login that just came back from Google (if any), then asks the database whether this account may enter. */
 export async function checkAccess(): Promise<Access> {
-  const returnTo = takeReturn();
+  const returnTo = peekReturn();
   const urlError = takeAuthError(window.location.href);
   if (urlError.message) window.history.replaceState(window.history.state, '', urlError.clean);
   const { error: initError } = await auth.initialize();
@@ -60,13 +64,14 @@ export async function checkAccess(): Promise<Access> {
     return { state: 'signed-out', message: urlError.message ?? (initError ? '로그인이 끝나지 않았어요. 한 번 더 눌러 주세요.' : undefined) };
   }
   const email = session.user.email ?? '';
+  dropReturn();
   try {
     const ok = await askMember(session);
     saveMark({ userId: session.user.id, email, ok, at: Date.now() });
     // 명단에서 빠졌거나 차단된 계정: 이 기기에 저장해 둔 카드 사본도 지운다(오프라인으로 계속 보지 못하게).
     // 통과 기록은 위에서 ok=false로 바뀌어 오프라인 통과도 막힌다. 풀이 기록(progress)은 건드리지 않는다.
     if (!ok) clearCachedRows();
-    if (ok && returnTo && returnTo !== HOME_URL && returnTo !== PAGE_URL[examPage] && Object.values(PAGE_URL).includes(returnTo)) { window.location.replace(returnTo); return { state: 'checking' }; }
+    if (ok && returnTo && returnTo !== HOME_URL && returnTo !== PAGE_URL[examPage] && RETURN_URLS.includes(returnTo)) { window.location.replace(returnTo); return { state: 'checking' }; }
     // 익명 접속 수: 하루 한 번 숫자만 1 올린다(누구인지는 보내지 않는다).
     if (ok) void countVisit(session.access_token);
     return ok ? { state: 'ok', email } : { state: 'denied', email };
