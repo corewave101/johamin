@@ -11,6 +11,7 @@ const RK_RETURN = 'johamin-after-login-v1';  // 로그인 뒤 돌아올 주소(l
 const RK_NICK = 'johamin-castle-nick';
 const RK_SENT = 'johamin-castle-rank-sent';
 const RK_METRICS = [['wave', '방어 밤'], ['dps', '초당 데미지'], ['sortie', '토벌 수확']];
+const RK_OFF = !/\/johamin\//.test(location.pathname);   // 조하민 밖(시안 등)에서는 서버에 안 붙는다
 const RK = {state:'checking', nick:'', metric:'wave', board:{}, loading:false, msg:'', confirmForget:false, editNick:false, sending:false};
 
 function rkGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
@@ -46,6 +47,7 @@ async function rkRpc(name, body){
 
 function rkRefresh(){ if (typeof renderAll === 'function' && G) renderAll(); }
 async function rankInit(){
+  if (RK_OFF){ RK.state = 'off'; rkRefresh(); return; }
   RK.nick = rkGet(RK_NICK) || '';
   if (!rkSession()){ RK.state = 'out'; rkRefresh(); return; }
   try {
@@ -89,6 +91,7 @@ function rkPaint(){ const el = document.getElementById('rankBox'); if (el) el.in
 
 const rkFmt = (m, v) => m === 'dps' ? (+v).toFixed(1) : m === 'sortie' ? `${Math.round(v)}G` : `밤 ${Math.round(v)}`;
 function rankInner(){
+  if (RK.state === 'off') return '<p class="muted">랭킹은 조하민(학교 계정 로그인)에서 열려요. 이 시안에서는 기록만 보여요.</p>';
   if (RK.state === 'checking') return '<p class="muted">로그인 확인 중…</p>';
   if (RK.state === 'out') return `<p class="muted">학교 계정으로 로그인하면 기록을 올리고 친구들과 순위를 겨뤄요. 게임 진행은 그대로 이어져요.</p>
     <button class="btn primary" type="button" data-act="rkLogin">학교 계정으로 로그인</button>`;

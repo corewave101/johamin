@@ -51,7 +51,7 @@ function tSync(){
   for (const s of G.soldiers.filter(q => q.role === 'sortie')){ if (!s.slot || slotTaken(s.slot[0], s.slot[1], s)) s.slot = freeSlot() || [0, 4]; put(s, slotPos(s.slot[0], s.slot[1])); }
   idle.forEach((s, i) => put(s, V(BARRACK.x0 + 1.1 + (i % 3)*1.9, 0, BARRACK.z0 + 1.6 + Math.floor(i/3)*2.1)));
   duty.forEach((s, i) => put(s, V(DUTY.x0 + 1.1 + (i % 3)*1.9, 0, DUTY.z0 + 1.6 + Math.floor(i/3)*2.1)));
-  if (!G.soldiers.length){ const l = label(['아직 쫄병이 없어요', '오른쪽 창에서 모집해요'], {size:22, color:'#fff', sub:'#ffd9b8', bg:'rgba(11,18,32,.85)', h:.026}); l.position.set(0, 1.5, 0); tDyn.add(l); }
+  if (!G.soldiers.length){ const l = label(['아직 쫄병이 없어요', '아래 모집 버튼으로 뽑아요'], {size:22, color:'#fff', sub:'#ffd9b8', bg:'rgba(11,18,32,.85)', h:.026}); l.position.set(0, 1.5, 0); tDyn.add(l); }
 }
 const tPlane = new THREE.Plane(V(0, 1, 0), 0);
 /* 손가락이 조금 빗나가도 잡히게: 직접 맞히기 → 바닥에서 가장 가까운 쫄병(1.4칸 안) */
@@ -141,7 +141,14 @@ function labLines(){
 const labIsat = () => labLines().reduce((s, q) => s + q.I, 0);
 const labV0 = () => { const q = labLines(); return q.length ? Math.max(...q.map(z => z.V)) : 0; };
 /* x = 검출판 전위 − 금속판 전위. 음수면 역전압 */
-function labI(x){ const l = LS(); if (!l.closed) return 0; const q = labLines(); return x >= 0 ? q.reduce((s, z) => s + z.I, 0) : currentAt(q, -x); }
+/* 광전류–전압: 역전압 u에서는 운동 에너지가 eu보다 큰 전자만 넘어가서 0 → 0 V까지 서서히 늘고(정지 전압에서 0),
+   0 V보다 높으면 검출판이 전자를 더 많이 모아서 포화 전류로 다가간다. 계단 모양이 아니다. */
+const LAB_A = .55, LAB_U0 = .35;
+function labI(x){
+  const l = LS(); if (!l.closed) return 0; const q = labLines();
+  if (x >= 0) return q.reduce((s, z) => s + z.I*(1 - (1 - LAB_A)*Math.exp(-x/LAB_U0)), 0);
+  return q.reduce((s, z) => s + (z.V > -x ? z.I*LAB_A*(1 + x/z.V)**2 : 0), 0);
+}
 const r2 = v => Math.round(v*100)/100;
 function noteSeen(){ const l = LS(); l.seen[l.light ? (l.closed ? 'onC' : 'onO') : 'off'] = true; }
 
