@@ -230,9 +230,9 @@ function wUp(ev){
   const w = ray.intersectObjects(walkways.filter(m => built(m.userData.floor)))[0];
   if (w){ goTo(w.point.x, w.object.userData.floor); G.sel = null; buildPreview(); renderAll(); }
 }
-canvas.addEventListener('pointerdown', ev => { canvas.setPointerCapture(ev.pointerId); if (G.mode === 'forge') fDown(ev); else if (G.mode === 'train') tDown(ev); else if (G.mode === 'dress') dDown(ev); else if (G.mode === 'solar') sTap(ev); else if (G.mode !== 'map' && G.mode !== 'build') wDown(ev); });
-canvas.addEventListener('pointermove', ev => { if (G.mode === 'forge'){ if (!(fDrag && fDrag.card)) fMove(ev); } else if (G.mode === 'train') tMove(ev); else if (G.mode === 'dress') dMove(ev); else wMove(ev); });
-canvas.addEventListener('pointerup', ev => { if (G.mode === 'forge'){ if (!(fDrag && fDrag.card)) fUp(ev); } else if (G.mode === 'train') tUp(ev); else if (G.mode === 'dress') dUp(ev); else wUp(ev); });
+canvas.addEventListener('pointerdown', ev => { canvas.setPointerCapture(ev.pointerId); if (G.mode === 'forge') fDown(ev); else if (G.mode === 'train') tDown(ev); else if (G.mode === 'dress') dDown(ev); else if (G.mode === 'solar') sTap(ev); else if (G.mode === 'keep') kTap(ev); else if (G.mode !== 'map' && G.mode !== 'build') wDown(ev); });
+canvas.addEventListener('pointermove', ev => { if (G.mode === 'forge'){ if (!(fDrag && fDrag.card)) fMove(ev); } else if (G.mode === 'train') tMove(ev); else if (G.mode === 'dress') dMove(ev); else if (G.mode !== 'keep') wMove(ev); });
+canvas.addEventListener('pointerup', ev => { if (G.mode === 'forge'){ if (!(fDrag && fDrag.card)) fUp(ev); } else if (G.mode === 'train') tUp(ev); else if (G.mode === 'dress') dUp(ev); else if (G.mode !== 'keep') wUp(ev); });
 canvas.addEventListener('pointercancel', ev => { if (ev.pointerId === floatPid){ floatEnd(); return; } if (!(fDrag && fDrag.card)) fCancel(); wPtr = null; G.aimHeld = false; if (!G.ride) G.aim = null; });
 // 사이드바 카드 끌기
 $('parts').addEventListener('pointerdown', ev => { const c = ev.target.closest('.pcard'); if (!c || G.mode !== 'forge') return; ev.preventDefault(); startCardDrag(c, ev); });
@@ -270,7 +270,7 @@ $('map').addEventListener('keydown', ev => { if ((ev.key === 'Enter' || ev.key =
 function enterForge(dept){
   G.mode = 'forge'; G.dept = DEPTS.some(q => q[0] === dept) ? dept : 'design'; G.winOpen = true; G.showSettings = false; G.building = null;
   if (G.learn && !F.learn) loadProblem(); fSync(); renderAll();
-  hint(G.dept === 'research' ? '연구로 성능 한계를 올려요' : G.dept === 'craft' ? '설계도를 골라 제작을 시작해요 · 밤이 지나면 완성' : G.dept === 'test' ? '실험부: m 단위 사격장에서 표적에 쏴 봐요' : G.learn ? '문제를 읽고 계산해서 값을 넣어요' : '설계부: 부품함 카드를 끌어다 경통(cm) 안에 놓아요');
+  hint(G.dept === 'research' ? '연구로 성능 한계를 올려요' : G.dept === 'craft' ? '설계도를 골라 제작을 시작해요 · 밤이 지나면 완성' : G.dept === 'test' ? '실험부: m 단위 사격장에서 표적에 쏴 봐요' : G.learn ? '문제를 읽고 계산해서 값을 넣어요' : '설계부: 아래 부품함 선반에서 끌어다 경통(cm) 안에 놓아요');
 }
 
 /* ═════════ 버튼 ═════════ */
@@ -445,7 +445,7 @@ function frame(){
     if (lastMode !== key){ const snap = G.mode === 'forge' || key.endsWith('r') || lastMode === 'map' || lastMode === null; lastMode = key; if (snap){ camPos.copy(goalPos); camLook.copy(goalLook); } }
     camPos.lerp(goalPos, k); camLook.lerp(goalLook, k);
     camera.position.copy(camPos); camera.lookAt(camLook);
-    const sc = G.mode === 'forge' ? fScene : G.mode === 'train' ? tScene : G.mode === 'solar' ? sScene : G.mode === 'dress' ? dScene : wScene;
+    const sc = G.mode === 'forge' ? fScene : G.mode === 'train' ? tScene : G.mode === 'solar' ? sScene : G.mode === 'dress' ? dScene : G.mode === 'keep' ? kScene : wScene;
     if (sc === wScene){ applySky(['wave', 'sortie', 'over'].includes(G.mode)); wAnimate(time); gfxSample(rawDt); }
     renderer.setClearColor(G.mode === 'forge' ? 0x0f355e : G.mode === 'train' ? 0x9fc7e8 : G.mode === 'solar' ? 0xa8d8f0 : 0x0b1220);
     renderer.render(sc, camera);
