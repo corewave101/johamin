@@ -8,6 +8,8 @@ const rnd = a => a[Math.floor(Math.random()*a.length)];
 const rint = (a, b) => a + Math.floor(Math.random()*(b - a + 1));
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 const r1 = v => Math.round(v*10)/10;
+/* 조사: 앞말 끝 글자에 받침이 있으면 앞 것(이 · 을 · 은), 없으면 뒤 것(가 · 를 · 는) */
+const josa = (w, a, b) => { const c = String(w).charCodeAt(String(w).length - 1) - 0xac00; return w + (c >= 0 && c <= 11171 && c % 28 ? a : b); };
 
 /* ═════════ 광원 · 스펙트럼 ═════════ */
 function normSpec(a){ const s = a.reduce((t, [, w]) => t + w, 0); return a.map(([n, w]) => [n, w/s]); }
@@ -21,14 +23,19 @@ const SPEC = {
 };
 const PIX = {w:{name:'흰 화면', nm:null}, r:{name:'빨강', nm:620, color:'#ff5a5a'}, g:{name:'초록', nm:535, color:'#5aff7a'}, b:{name:'파랑', nm:455, color:'#5a8cff'}};
 /* 단위: 경통 · 렌즈는 cm, 전장은 m. 전류 mA · 전압 V · 저항 kΩ · 전력 mW */
-const RT = .5, DMG_K = 840,   /* 840: 광전관 식을 실제 식으로 바꾸면서(평균 0.36배) 기본 설계들의 중앙값이 예전과 같게 맞춘 값 */ LASER_MW = 100, LASER_WMIN = 1.0, LOSS = .03;
+/* 6.4 몸 전체 판정: 예전에는 급소(반지름 0.5 cm)에 들어간 빛만 쳤다 → 상이 크면 몬스터가 빛 속에 있어도 데미지가 0에 가까웠다.
+   이제 빛이 적의 몸(반지름 rb cm, 아래 FOES)에 들어간 만큼 친다. 대신 금속의 양자 효율(광자 하나당 튀어나오는 전자 수)이
+   실제처럼 아주 작다(ETA = 5×10⁻⁴: 광자 2000개에 전자 1개) → 광전류 I₀ = ETA · Σ P/E.
+   BODY_REF: 설계 화면 · 교전 범위가 기준으로 쓰는 몸 반지름(젤리 · 슬라임).
+   DMG_K: 기본 설계 · 적 · 거리 250곳의 중앙값이 예전과 같게 맞춘 값. LASER_MW: 레이저가 램프와 겨룰 수 있게 1200 mW 기준 */
+const BODY_REF = 30, ETA = 5e-4, DMG_K = 2700, LASER_MW = 2800, LASER_WMIN = 1.0, LOSS = .03;
 /* A: 가운데에서 나온 광선(높이 cm, 기울기), B: 광원 가장자리에서 나온 평행 광선 → 빔 반지름 = |A| + |B| */
 const SOURCES = {
-  bulb:{id:'bulb', name:'백열전등', price:10, draw:1.0, out:3200, pol:null, s:.5, div:.1, color:'#ffb35c', work:.5, sub:'연속 스펙트럼 · 대부분 적외선 · 밝지만 전기 많이'},
-  fluo:{id:'fluo', name:'형광등', price:20, draw:.5, out:1600, pol:null, s:.9, div:.12, color:'#dff1ff', work:.5, sub:'선 스펙트럼 · 관이 길어 상이 커요'},
-  led:{id:'led', name:'백색 LED', price:35, draw:.3, out:150, pol:null, s:.15, div:.06, color:'#f2f5ff', work:.5, sub:'파란 빛 + 노란 형광 · 작은 칩'},
-  uv:{id:'uv', name:'UV 블랙라이트', price:60, draw:.45, out:120, pol:null, s:.4, div:.08, color:'#b47cff', work:1, sub:'365 nm 자외선 · 어둡지만 진동수 높음'},
-  disp:{id:'disp', name:'디스플레이', price:40, draw:.2, out:350, pol:90, s:.7, div:.1, color:'#9fc4ff', work:1, sub:'RGB 화소 · 이미 90° 편광된 빛'},
+  bulb:{id:'bulb', name:'백열전등', price:10, draw:1.0, out:3400, pol:null, s:.5, div:.1, color:'#ffb35c', work:.5, sub:'연속 스펙트럼 · 대부분 적외선 · 밝지만 전기 많이'},
+  fluo:{id:'fluo', name:'형광등', price:20, draw:.5, out:850, pol:null, s:.9, div:.12, color:'#dff1ff', work:.5, sub:'선 스펙트럼 · 관이 길어 상이 커요'},
+  led:{id:'led', name:'백색 LED', price:35, draw:.3, out:400, pol:null, s:.15, div:.06, color:'#f2f5ff', work:.5, sub:'파란 빛 + 노란 형광 · 작은 칩'},
+  uv:{id:'uv', name:'UV 블랙라이트', price:60, draw:.45, out:110, pol:null, s:.4, div:.08, color:'#b47cff', work:1, sub:'365 nm 자외선 · 어둡지만 진동수 높음'},
+  disp:{id:'disp', name:'디스플레이', price:40, draw:.2, out:220, pol:90, s:.7, div:.1, color:'#9fc4ff', work:1, sub:'RGB 화소 · 이미 90° 편광된 빛'},
   laser:{id:'laser', name:'레이저', price:0, research:'laser', pol:0, r0:.8, th:.0004, color:null, work:2, sub:'단색 · 지향성 · 0° 편광'},
 };
 const LAMP_IDS = ['bulb', 'fluo', 'led', 'uv', 'disp'];
@@ -51,11 +58,14 @@ const BARRELS = [{L:20, price:0}, {L:40, price:15}, {L:80, price:40}, {L:120, pr
 const barrelPrice = L => (BARRELS.find(b => b.L === L) || BARRELS[0]).price;
 /* 몬스터 = 광전관에 물린 저항 R. W는 일함수 */
 const FOES = {
-  ag:{name:'산화세슘 젤리', short:'젤리', W:1.1, R:3,  color:'#ff9ad5', hp:40,  speed:4.6, reward:6,  wall:1, drop:3},
-  cs:{name:'세슘 슬라임',   short:'슬라임', W:2.1, R:4,  color:'#7be0c3', hp:60,  speed:5,   reward:8,  wall:1, drop:4},
-  na:{name:'나트륨 고블린', short:'고블린', W:2.3, R:6,  color:'#f2c14e', hp:90,  speed:6,   reward:11, wall:1, drop:5},
-  ca:{name:'칼슘 골렘',     short:'골렘', W:2.9, R:10, color:'#c9c4b8', hp:70,  speed:3,  reward:20, wall:3, drop:12},
-  kn:{name:'편광 기사',     short:'기사', W:2.3, R:6,  color:'#9db4ff', hp:110, speed:4.4,  reward:16, wall:2, drop:8},
+  ag:{name:'산화세슘 젤리', short:'젤리', W:1.1, R:3,  color:'#ff9ad5', hp:40,  speed:4.6, reward:6,  wall:1, drop:3, rb:30},
+  cs:{name:'세슘 슬라임',   short:'슬라임', W:2.1, R:4,  color:'#7be0c3', hp:60,  speed:5,   reward:8,  wall:1, drop:4, rb:30},
+  na:{name:'나트륨 고블린', short:'고블린', W:2.3, R:6,  color:'#f2c14e', hp:90,  speed:6,   reward:11, wall:1, drop:5, rb:35},
+  ca:{name:'칼슘 골렘',     short:'골렘', W:2.9, R:10, color:'#c9c4b8', hp:70,  speed:3,  reward:20, wall:3, drop:12, rb:60},
+  kn:{name:'편광 기사',     short:'기사', W:2.3, R:6,  color:'#9db4ff', hp:110, speed:4.4,  reward:16, wall:2, drop:8, rb:40},
+  /* 6.4 새 몬스터 · 몸 크기가 다르다: 작은 박쥐는 빛을 작게 모아야 다 맞고, 큰 거인은 저항이 커서 전압이 금방 막힌다 */
+  bt:{name:'칼륨 박쥐',     short:'박쥐', W:2.3, R:5,  color:'#a88bff', hp:30,  speed:8,   reward:9,  wall:1, drop:3, rb:12, fly:true, unit:.5},
+  gt:{name:'바륨 거인',     short:'거인', W:2.5, R:40, color:'#d98c5f', hp:320, speed:2.2, reward:48, wall:5, drop:20, rb:90, unit:4.5},   /* unit: 웨이브 체력 예산에서 몇 마리 몫인지 */
 };
 const pumpOk = q => !q.research || G.research[q.research];
 const mediumOk = m => !m.research || G.research[m.research];
@@ -69,9 +79,13 @@ function specOf(d){
   return SPEC[d.source];
 }
 function capMult(){ const r = G.research; return r.ap2 ? 16 : r.ap1 ? 9 : r.doublet ? 6 : 4; }
+/* 큰 렌즈 · 겹렌즈 연구: 램프에서 퍼져 나가는 빛을 렌즈가 더 많이 받아 모은다 (렌즈 지름 ∝ √capMult → 모으는 빛 ×√(capMult/4)) */
+const lampGain = () => Math.sqrt(capMult()/4);
 function minWOf(d){ return isLaser(d) ? LASER_WMIN/Math.sqrt(capMult()/4) : 0; }
-function srcPower(d){ return isLaser(d) ? (d.medium && d.pump ? powerAt(d.pump, d.R, d.loss ?? LOSS)*LASER_MW : 0) : srcOf(d).out*(d.source === 'disp' && d.pix && d.pix !== 'w' ? 1/3 : 1); }
-function drawOf(d){ return isLaser(d) ? .4 + .2*d.pump + (MEDIA[d.medium] && MEDIA[d.medium].research ? .3 : 0) : srcOf(d).draw; }
+/* 대형 무기(6.4): 같은 광원 N개를 한 경통에 묶는다(mods) → 광출력 N배 · 전기 N배 */
+const modsOf = d => d.mods || 1;
+function srcPower(d){ return modsOf(d)*(isLaser(d) ? (d.medium && d.pump ? powerAt(d.pump, d.R, d.loss ?? LOSS)*LASER_MW : 0) : srcOf(d).out*lampGain()*(d.source === 'disp' && d.pix && d.pix !== 'w' ? 1/3 : 1)); }
+function drawOf(d){ return modsOf(d)*(isLaser(d) ? .4 + .2*d.pump + (MEDIA[d.medium] && MEDIA[d.medium].research ? .3 : 0) : srcOf(d).draw); }
 function beamColor(d){ if (isLaser(d)) return MEDIA[d.medium].color; if (d.source === 'disp' && d.pix && d.pix !== 'w') return PIX[d.pix].color; return srcOf(d).color; }
 function withPol(els, theta){ if (theta == null) return els; let done = false; return els.map(e => (!done && e.type === 'pol') ? (done = true, Object.assign({}, e, {theta})) : e); }
 const fmtF = f => f >= 1000 ? `${+(f/100).toFixed(2)} m` : `${+f.toFixed(1)} cm`;
@@ -108,7 +122,9 @@ function solveCircuit(lines, R){
   const u = (lo + hi)/2;
   return {u, I:Iat(u), Itot, sat:R*Itot >= V0, V0};
 }
-const kindScale = d => d.kind === 'weapon' ? weaponScale() : d.kind === 'soldier' ? soldierScale() : 1;
+const kindScale = d => (d.kind === 'weapon' ? weaponScale() : d.kind === 'soldier' ? soldierScale() : 1)*(G && G.sites && G.sites.scoutDay === G.wave && G.mode === 'wave' ? SCOUT_BUFF : 1);
+/* 성벽에 올리는 것: 탑 · 대형 무기 */
+const isMount = d => d.kind === 'tower' || d.kind === 'siege';
 function hitD(d, foe, dist, armor, polTheta, scaleOverride){
   const p = srcPower(d), zero = why => ({v:0, why, w:1, I:0, V0:0, u:0, sat:false, Ph:0, frac:0, t:0});
   if (!p) return zero('발진 안 함');
@@ -116,12 +132,15 @@ function hitD(d, foe, dist, armor, polTheta, scaleOverride){
   if (!sp.some(([nm]) => 1240/nm > foe.W)) return Object.assign(zero('E < W'), {w:tr.w});
   let t = tr.t; if (armor != null) t *= tr.pol == null ? .5 : cos2(tr.pol - armor);
   if (t < .005) return Object.assign(zero('편광 차단'), {w:tr.w});
-  const frac = Math.min(1, (RT/Math.max(tr.w, minWOf(d)))**2), Ph = p*t*frac;
-  const c = solveCircuit(sp.map(([nm, w]) => { const E = 1240/nm; return {I:Ph*w/E, V:E - foe.W}; }), foe.R);
+  const rb = foe.rb || BODY_REF, frac = Math.min(1, (rb/Math.max(tr.w, minWOf(d)))**2), Ph = p*t*frac;
+  const c = solveCircuit(sp.map(([nm, w]) => { const E = 1240/nm; return {I:ETA*Ph*w/E, V:E - foe.W}; }), foe.R);
   const P = c.u*c.u/foe.R, scale = scaleOverride ?? kindScale(d);
-  return {v:DMG_K*P*scale, why:'', w:tr.w, I:c.I, Itot:c.Itot, V0:c.V0, u:c.u, sat:c.sat, P, Ph, frac, t, scale};
+  return {v:DMG_K*P*scale, why:'', w:tr.w, I:c.I, Itot:c.Itot, V0:c.V0, u:c.u, sat:c.sat, P, Ph, frac, t, scale, rb};
 }
-const fracAt = (d, dist) => Math.min(1, (RT/Math.max(traceD(d, Math.max(.01, dist)).w, minWOf(d)))**2);
+const fracAt = (d, dist, rb = BODY_REF) => Math.min(1, (rb/Math.max(traceD(d, Math.max(.01, dist)).w, minWOf(d)))**2);
+/* 정예는 몸이 1.45배 */
+const ELITE_FOES = {};
+const foeOf = e => !e.elite ? FOES[e.type] : (ELITE_FOES[e.type] = ELITE_FOES[e.type] || Object.assign({}, FOES[e.type], {rb:FOES[e.type].rb*1.45}));
 function band(d){ let mx = 0; const f = []; for (let m = 1; m <= 100; m++){ f[m] = fracAt(d, m); mx = Math.max(mx, f[m]); } let lo = null, hi = null; for (let m = 1; m <= 100; m++) if (f[m] >= mx/2){ if (lo == null) lo = m; hi = m; } return lo == null ? null : [lo, hi]; }
 function costOf(d){ let c = (isLaser(d) ? MEDIA[d.medium].price + PUMPS[d.pump-1].price + PRICE.mirror : srcOf(d).price) + barrelPrice(barrelOf(d)); for (const e of d.els) c += PRICE[e.type]; return c; }
 function workOf(d){ return srcOf(d).work + .5*d.els.length + (barrelOf(d) >= 120 ? .5 : 0); }
@@ -163,7 +182,7 @@ const UPG = {
   sPow:    {b:'train', name:'쫄병 사격 훈련', max:5, cost:l => 80*(l + 1), eff:l => `무기 배율 ×${(.5 + .1*l).toFixed(1)} → ×${(.6 + .1*l).toFixed(1)}`},
   barracks:{b:'train', name:'병영 늘리기', max:4, cost:l => 120*(l + 1), eff:l => `정원 ${3 + 2*l} → ${5 + 2*l}명`},
   hHp:     {b:'train', name:'주인공 체력', max:5, cost:l => 60*(l + 1), eff:l => `토벌 체력 ${12 + 5*l} → ${17 + 5*l}`},
-  hPow:    {b:'train', name:'주인공 사격', max:5, cost:l => 70*(l + 1), eff:l => `무기 배율 ×${(.6*(1 + .25*l)).toFixed(2)} → ×${(.6*(1 + .25*(l+1))).toFixed(2)}`},
+  hPow:    {b:'train', name:'주인공 사격', max:5, cost:l => 70*(l + 1), eff:l => `무기 배율 ×${(.8*(1 + .25*l)).toFixed(2)} → ×${(.8*(1 + .25*(l+1))).toFixed(2)}`},
   hSpd:    {b:'train', name:'주인공 달리기', max:5, cost:l => 50*(l + 1), eff:l => `속도 +${12*l}% → +${12*(l+1)}%`},
   wallHp:  {b:'wall', name:'성벽 보강', max:5, cost:l => 100*(l + 1), eff:l => `성벽 ${30 + 10*l} → ${40 + 10*l}`},
 };
@@ -178,7 +197,7 @@ const METALS = {
   ag:{name:'산화세슘', W:1.1, color:'#ff9ad5', need:25},
   ca:{name:'칼슘', W:2.9, color:'#c9c4b8', need:null},
 };
-const DROP_METAL = {ag:'ag', cs:'cs', na:'na', kn:'na', ca:'ca'};
+const DROP_METAL = {ag:'ag', cs:'cs', na:'na', kn:'na', ca:'ca'};   // 박쥐(칼륨) · 거인(바륨)은 패널 금속이 아니라 골드만
 const PANEL_K = 1280, PN_U = .55, PN_EG = 1.1;
 /* 금속판 패널 한 장 = 평행판 광전관. 충전 전압 U를 거슬러 반대쪽 판에 닿은 전자만 충전한다.
    전자: 운동 에너지 0 ~ Kmax(= E − W)에 고르게, 방향 cos θ 분포. 평행판에서는 판에 수직인 운동 에너지 K cos²θ ≥ eU여야 닿는다
@@ -207,38 +226,50 @@ const soldierScale = () => .5 + .1*up('sPow');
 const soldierMax = () => 3 + 2*up('barracks');
 const recruitCost = () => 40 + 15*G.soldiers.length;
 const heroHpMax = () => 12 + 5*up('hHp');
-function weaponScale(){ return .6*(1 + .25*up('hPow')); }
+function weaponScale(){ return .8*(1 + .25*up('hPow')); }
 const heroSpeed = () => 1 + .12*up('hSpd');
 const wallMax = () => 30 + 10*up('wallHp');
 const AUTO_PRICE = 40;
+/* ═════════ 지도 터 (6.4): 대형 무기 공방 · 서쪽 호수 · 동쪽 바위산 ═════════ */
+const SIEGE_BUILD = 400, SIEGE_MODS = [2, 3, 4], SIEGE_FEE = 120, SCOUT_BUFF = 1.1;
+function siegeDesign(base, n){ const d = copy(base); delete d.id; d.kind = 'siege'; d.mods = n; d.base = base.id; d.name = `대형 ${base.name} ×${n}`; return d; }
+const siegeCost = (base, n) => costOf(base)*n + SIEGE_FEE*(n - 1);
+const siegeWork = (base, n) => workOf(base)*(1 + .5*(n - 1));
 const FLOOR_COST = {3:250, 2:450, 1:700};
 
 /* ═════════ 웨이브 밸런스 (무리함수: 초반에 빨리, 뒤로 갈수록 완만하게) ═════════ */
 const sq = n => Math.sqrt(Math.max(0, n - 1));
-/* ═════════ 웨이브 곡선 (6.4 · 사용자 아이디어: (지수 + 1) × x · sin x + x)
-   밤 n의 총 체력(기본 몬스터 체력 단위) B(n) = 4·[1 + k(1 − aⁿ)u(n) − k(1 − a)u(1)],  u(n) = n + (P/2π)·sin(2πn/P)
-     · (1 − aⁿ): 처음 몇 밤은 천천히, 그 뒤는 거의 직선 → 30밤쯤 정체하던 √ 곡선을 바꾼다
-     · u(n): 기울기 1 + cos(2πn/P) → 5의 배수 밤 근처에서 가파르게 오르고 그 사이는 평평 (계단 같은 숨 고르기)
-     · a = 0.6: 0.85로 하면 2~4밤이 예전의 60%로 너무 쉬워져서 앞쪽을 조금 빨리 올렸다
-     · 첫 밤 B(1) = 4 (예전과 같음). 5밤 ≈ 18 · 10밤 ≈ 37 · 30밤 ≈ 110 · 60밤 ≈ 215 (예전 16 · 28 · 59 · 102)
+/* ═════════ 웨이브 곡선 (6.4 · 두 번째 판, 사용자: "사인 빼고 미분한 식이 이차함수가 되게, 골드가 쌓이면 쉬워져서")
+   밤 n의 총 체력(기본 몬스터 체력 단위), m = n − 1:
+     B(n) = 4·(1 + c₁m + c₂m² + c₃m³)   →   B′(n) = 4·(c₁ + 2c₂m + 3c₃m²)  (이차함수: 밤마다 느는 양 자체가 점점 빨리 는다)
+     c₁ = 0.7 · c₂ = 0.03 · c₃ = 0.001
+     5밤 ≈ 17 · 10밤 ≈ 42 · 20밤 ≈ 128 · 30밤 ≈ 284 · 60밤 ≈ 1407 (첫 판 18 · 37 · 74 · 110 · 215)
    마리 수 = 총 체력 ÷ 천천히 느는 한 마리 체력(1 + 0.1(n−1)). 40마리에 닿으면 그 뒤는 한 마리 체력이 늘어난다.
-   밤마다 테마(젤리 떼는 많고 약하게 · 골렘 습격은 적고 세게) · 5밤마다 정예(체력 ×4) ═════════ */
-const WAVE_A = .6, WAVE_K = .9, WAVE_P = 5, WAVE_CAP = 40, ELITE_HP = 4;
-const waveU = n => n + WAVE_P/(2*Math.PI)*Math.sin(2*Math.PI*n/WAVE_P);
-const waveB = n => 4*(1 + WAVE_K*(1 - WAVE_A**n)*waveU(n) - WAVE_K*(1 - WAVE_A)*waveU(1));
+   밤마다 테마(젤리 떼는 많고 약하게 · 골렘 습격은 적고 세게) · 5밤마다 정예(체력 ×4, 몸 ×1.45) ═════════ */
+const WAVE_C = [.7, .03, .001], WAVE_CAP = 40, ELITE_HP = 4;
+const waveB = n => { const m = n - 1; return 4*(1 + WAVE_C[0]*m + WAVE_C[1]*m*m + WAVE_C[2]*m*m*m); };
+const waveDB = n => { const m = n - 1; return 4*(WAVE_C[0] + 2*WAVE_C[1]*m + 3*WAVE_C[2]*m*m); };
 const hpBase = n => 1 + .1*(n - 1);   // 0.06이면 마리 수가 너무 빨리 불어나서(10밤 20마리) 새는 적이 성벽을 금방 깬다
 const eliteCount = n => n % 5 === 0 ? Math.min(3, 1 + Math.floor(n/20)) : 0;   // 5밤마다 1마리, 20밤부터 2 · 40밤부터 3
 const WAVE_THEMES = {
   mix:{name:'섞여서', w:{}},
   jelly:{name:'젤리 떼', w:{ag:3, cs:2}, count:1.25},
+  bat:{name:'박쥐 떼', w:{bt:4}, count:1.3, from:4},
   knight:{name:'기사 행진', w:{kn:3}, from:5},
   golem:{name:'골렘 습격', w:{ca:3}, count:.6, from:6},
+  giant:{name:'거인 행진', w:{gt:12}, count:.45, from:10},   // 거인은 한 마리가 4.5마리 몫이라 마리 수를 줄인다
 };
-function waveTheme(n){ if (n < 4) return 'mix'; const t = ['jelly', 'knight', 'golem', 'mix'][(n - 4) % 4]; return n >= (WAVE_THEMES[t].from || 0) ? t : 'mix'; }
-const waveSize = n => clamp(Math.round(waveB(n)/hpBase(n)*(WAVE_THEMES[waveTheme(n)].count || 1)) - ELITE_HP*eliteCount(n), 3, WAVE_CAP);
+const THEME_CYCLE = ['jelly', 'bat', 'knight', 'golem', 'giant', 'mix'];
+function waveTheme(n){ if (n < 4) return 'mix'; const t = THEME_CYCLE[(n - 4) % THEME_CYCLE.length]; return n >= (WAVE_THEMES[t].from || 0) ? t : 'mix'; }
+/* 처음 나오는 밤 (지도 · 요약에 쓴다) */
+const FOE_FROM = {ag:1, cs:2, na:3, bt:4, kn:5, ca:6, gt:10};
+const waveSize = n => clamp(Math.round(waveB(n)/hpBase(n)*(WAVE_THEMES[waveTheme(n)].count || 1)) - eliteCount(n), 3, WAVE_CAP);
 const waveCount = waveSize;
-/* 한 마리 체력 배율 = 총 체력 ÷ (마리 수 + 정예 몫). 정예 한 마리는 보통 ELITE_HP마리 몫 */
+/* 한 마리 체력 배율(보상 계산용 어림값) = 총 체력 ÷ (마리 수 + 정예 몫). 정예 한 마리는 보통 ELITE_HP마리 몫 */
 const hpMul = n => waveB(n)/(waveSize(n) + ELITE_HP*eliteCount(n));
+/* 실제 밤의 체력 배율: 뽑힌 몬스터들의 몫(unit · 정예 ×ELITE_HP)을 다 더해서 총 체력이 꼭 B(n)이 되게 */
+const unitOf = q => (FOES[q.type].unit || 1)*(q.elite ? ELITE_HP : 1);
+const waveHpMul = (list, n) => waveB(n)/Math.max(1e-9, list.reduce((s, q) => s + unitOf(q), 0));
 const spdMul = n => 1 + .04*sq(n);
 const rewardMul = n => Math.pow(hpMul(n), .9);
 function waveList(n){
@@ -249,6 +280,8 @@ function waveList(n){
     if (n >= 3) w.push(['na', .6 + .05*sq(n)]);
     if (n >= 5) w.push(['kn', .3 + .05*sq(n)]);
     if (n >= 6) w.push(['ca', .15 + .05*sq(n)]);
+    if (n >= 4) w.push(['bt', .3 + .04*sq(n)]);
+    if (n >= 10) w.push(['gt', .05 + .02*sq(n)]);
     for (const q of w) if (th.w[q[0]]) q[1] *= th.w[q[0]] + 1;   // 테마 몬스터가 더 자주
     const tot = w.reduce((t, [, x]) => t + x, 0); let r = Math.random()*tot, type = w[0][0];
     for (const [k, x] of w){ if ((r -= x) <= 0){ type = k; break; } }
@@ -261,8 +294,7 @@ function waveList(n){
   return out;
 }
 function waveSummary(n){
-  const c = {ag:'젤리', cs:'슬라임', na:'고블린', kn:'기사', ca:'골렘'}, have = [];
-  if (n >= 1) have.push(c.ag); if (n >= 2) have.push(c.cs); if (n >= 3) have.push(c.na); if (n >= 5) have.push(c.kn); if (n >= 6) have.push(c.ca);
+  const have = Object.keys(FOE_FROM).filter(k => n >= FOE_FROM[k]).map(k => FOES[k].short);
   const th = waveTheme(n), ec = eliteCount(n);
   return `약 ${waveSize(n)}마리${th !== 'mix' ? ` · ${WAVE_THEMES[th].name}` : ''}${ec ? ` · 정예 ${ec}` : ''} · ${have.join(' · ')}${n >= 8 ? ' · 기사 갑옷 각도 섞임' : ''}`;
 }
@@ -303,6 +335,7 @@ function newGame(){
     learn:true, ptype:0, solved:{}, winOpen:true, showSettings:false,
     autoSortie:'off', tSel:null,
     panelMetal:'na', metals:{na:0, cs:0, ag:0, ca:0}, lab:{recs:[]}, chargeU:U_DEFAULT,
+    sites:{siege:false, mount:false, lakeDay:0, mountDay:0, scoutDay:0},
     stick:{x:0, y:0}, keys:{}, settings:loadSettings(), best:loadBest(), report:null,
   };
 }
@@ -310,7 +343,7 @@ const bumpBest = v => { if (v > G.best.dps){ G.best.dps = v; bestDirty = true; }
 
 /* ═════════ 자동 저장 (낮 상태만 저장 · 밤 도중에 꺼지면 그날 낮으로) ═════════ */
 const SAVE_KEY = 'johamin-castle-save-v1';
-const SAVE_FIELDS = ['wave', 'gold', 'wallHp', 'designs', 'weapon', 'nextDesign', 'inventory', 'craft', 'soldiers', 'nextSoldier', 'energy', 'research', 'up', 'floors', 'laserExam', 'exams', 'learn', 'ptype', 'solved', 'autoSortie', 'panelMetal', 'metals', 'lab', 'chargeU', 'look'];
+const SAVE_FIELDS = ['wave', 'gold', 'wallHp', 'designs', 'weapon', 'nextDesign', 'inventory', 'craft', 'soldiers', 'nextSoldier', 'energy', 'research', 'up', 'floors', 'laserExam', 'exams', 'learn', 'ptype', 'solved', 'autoSortie', 'panelMetal', 'metals', 'lab', 'chargeU', 'look', 'sites'];
 function snapshot(){
   const o = {v:6, at:Date.now(), nextUid};
   for (const k of SAVE_FIELDS) o[k] = G[k];

@@ -506,6 +506,33 @@ input[type=range]#sFl{height:22px}
 .rng-key{font-size:11px;margin:0 0 4px}
 .rng-key .k{display:inline-block;width:10px;height:8px;border-radius:2px;margin:0 3px 0 0;vertical-align:middle}
 .rng-key .k.bd{background:rgba(127,211,255,.6)}.rng-key .k.sel{background:var(--ember)}
+
+/* v10 (6.4): 지도 터 카드 · 새 몬스터 칸 */
+.vs{grid-template-columns:repeat(7,1fr)}
+.sg-lab{font-size:11px;color:var(--muted);margin:8px 0 4px}
+.sg-base{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+.sg-base button{justify-content:flex-start;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sg-base button i,.foeseg button i{flex:0 0 auto}
+.sg-chart{width:100%;height:auto;margin-top:8px;font-size:10px;fill:var(--muted)}
+.sg-chart text{fill:var(--muted)}
+.sg-v{font-size:12.5px;line-height:1.45;margin:6px 0}
+.sg-v .ok,.eq .ok{color:var(--good)} .sg-v .gold{color:var(--gold)} .sg-v .warn{color:var(--bad)}
+.lake,.scope{width:100%;height:auto;display:block;border-radius:10px}
+.lake{aspect-ratio:2/1} .scope{aspect-ratio:1/1;max-width:190px;margin:0 auto} .sg-chart{aspect-ratio:280/118}
+/* 넓은 화면: 그림 | 조작 두 칸 */
+.pop.site{width:min(640px,calc(100% - 20px))}
+.st-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start}
+.st-grid > div{display:grid;gap:7px;min-width:0}
+.chips{display:flex;gap:5px;overflow-x:auto;padding-bottom:3px;scrollbar-width:thin}
+.chips button{flex:0 0 auto;padding:6px 9px;border-radius:7px;border:1px solid var(--line);background:var(--panel-2);font-size:12px;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.chips button[aria-pressed="true"]{border-color:var(--ember);color:var(--ember)}
+.chips button i{width:9px;height:9px;border-radius:50%;display:inline-block}
+@media (max-width:620px){ .st-grid{grid-template-columns:minmax(0,1fr)} .scope{max-width:150px} .lake{max-width:300px;margin:0 auto} }
+.lk-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;margin-top:8px}
+.lk-row b{color:var(--gold)}
+.pop.site input[type=range]{width:100%;accent-color:var(--ember)}
+.pop.site .eq{font-size:11.5px;line-height:1.5}
+#map .site{cursor:pointer}
 </style>
 <style>html,body{margin:0;height:100%;background:#0b1220}[hidden]{display:none!important}</style>
 </head>
@@ -555,5 +582,6 @@ input[type=range]#sFl{height:22px}
 <script src="js/rank.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/hud.js"></script>
+<script src="js/sites.js"></script>
 </body>
 </html>

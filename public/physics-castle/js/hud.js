@@ -179,7 +179,7 @@ window.mapPanel = function(){
 };
 const _mapSVG = window.mapSVG;
 window.mapSVG = function(){
-  const ink = '#5a3e28', s = _mapSVG(), inv = G.inventory.filter(i => i.design.kind === 'tower').length, placed = SOCKETS.filter(q => q.tower).length;
+  const ink = '#5a3e28', s = _mapSVG(), inv = G.inventory.filter(i => isMount(i.design)).length, placed = SOCKETS.filter(q => q.tower).length;
   const jobs = G.craft.length ? G.craft.map(j => `${j.design.name} ${Math.max(1, Math.ceil((j.need - j.done)/craftSpeed()))}밤`).join(' · ') : '';
   const extra = `<g font-family="Gaegu, 'IBM Plex Sans KR', sans-serif" fill="${ink}" text-anchor="middle">
       <text x="500" y="192" font-size="18" opacity=".85">오늘 밤 · ${waveSummary(G.wave)}</text>
@@ -214,7 +214,7 @@ window.recordsHtml = function(){
 const sockPos = () => { const so = SOCKETS[G.sel]; return so ? so.ring.getWorldPosition(new THREE.Vector3()).add(V(0, 1.2, 0)) : null; };
 window.placePanel = function(){
   if (!painted) return renderAll();
-  const next = [3, 2, 1].find(f => !built(f)), inv = G.inventory.filter(i => i.design.kind === 'tower').length, placed = SOCKETS.filter(s => s.tower).length;
+  const next = [3, 2, 1].find(f => !built(f)), inv = G.inventory.filter(i => isMount(i.design)).length, placed = SOCKETS.filter(s => s.tower).length;
   paintDock(dgrp('', cGold() + cWall()) +
     dgrp('증축', next ? dk(`data-build="${next}" ${G.gold >= FLOOR_COST[next] ? '' : 'disabled'}`, `${FLOORS[next].name} 증축`, `${FLOOR_COST[next]}G · 탑 자리 4개`) : `<span class="dl">${builtFloors().length}층 다 지음</span>`) +
     dgrp('성벽', upgradeDockBtns('wall')) +
@@ -236,14 +236,14 @@ function sockHtml(){
       <p class="muted">쏠 때 ${drawOf(d).toFixed(2)} ⚡/초 · 자동은 유지비 ${autoUpkeep().toFixed(2)} ⚡/초 더. 밤에 탑 근처에서 직접 탈 수도 있어요.</p>
       <button class="btn danger" type="button" data-act="unplace" ${here ? '' : 'disabled'}>창고로 내리기</button>`;
   }
-  const items = G.inventory.filter(i => i.design.kind === 'tower');
+  const items = G.inventory.filter(i => isMount(i.design));
   if (!items.length) return `${head(`${sockName(so)} 자리`)}<p class="muted">창고에 탑이 없어요. 대장간 제작부에서 탑을 만들면 밤이 지난 뒤 올릴 수 있어요.</p>`;
   const groups = {}; for (const it of items){ const k = it.design.name + '|' + formula(it.design); (groups[k] = groups[k] || []).push(it); }
   const pv = items.find(i => i.uid === G.previewUid);
   return `${head(`${sockName(so)} 자리`)}<p class="muted">탑을 누르면 바닥에 세기 띠가 보여요.</p>
     <div class="trows">${Object.values(groups).map(g => { const it = g[0], d = it.design, on = g.some(i => i.uid === G.previewUid);
       return `<div class="trow ${on ? 'on' : ''}"><button class="tpick" type="button" data-prev="${it.uid}"><i style="background:${beamColor(d)}"></i><b>${d.name}</b><small>${bandHtml(d).replace(/<\/?b>/g, '')}${g.length > 1 ? ` · ${g.length}개` : ''}</small></button>
-        <button class="btn" type="button" data-place="${it.uid}" ${here ? '' : 'disabled'}>설치</button><button class="btn primary" type="button" data-place="${it.uid}" data-auto="1" ${here && G.gold >= AUTO_PRICE ? '' : 'disabled'}>+자동</button></div>`; }).join('')}</div>
+        ${d.kind === 'siege' && siegeBlock(so) ? `<button class="btn" type="button" disabled data-why="${siegeBlock(so)}">${siegeBlock(so).split(' · ')[0]}</button>` : `<button class="btn" type="button" data-place="${it.uid}" ${here ? '' : 'disabled'}>설치</button><button class="btn primary" type="button" data-place="${it.uid}" data-auto="1" ${here && G.gold >= AUTO_PRICE ? '' : 'disabled'}>+자동</button>`}</div>`; }).join('')}</div>
     ${pv ? `<div class="bp-f">${formula(pv.design)}</div>${vsHtml(pv.design, 44)}` : ''}`;
 }
 
@@ -277,7 +277,7 @@ window.renderLive = function(){
     const so = SOCKETS[G.ride.sock], d = so.tower.design, e = G.ride.target;
     if (!e) rl.innerHTML = `조준 거리 ${Math.round(G.ride.aimD)} m · ${G.ride.firing || G.keys[' '] ? '발사 중' : '발사 버튼을 누르고 있으면 쏴요'}`;
     else {
-      const oo = towerOrigin(so), dist = Math.hypot(e.mesh.position.x - oo.x, e.mesh.position.z - oo.z)/M2W, th = hasPol(d) ? G.ride.theta : null, r = hitD(d, FOES[e.type], dist, e.armor, th), tr = traceD(d, dist, th);
+      const oo = towerOrigin(so), dist = Math.hypot(e.mesh.position.x - oo.x, e.mesh.position.z - oo.z)/M2W, th = hasPol(d) ? G.ride.theta : null, r = hitD(d, foeOf(e), dist, e.armor, th), tr = traceD(d, dist, th);
       rl.innerHTML = `${FOES[e.type].name}${e.armor != null ? ` · 갑옷 ${e.armor}°` : ''} @ ${Math.round(dist)} m<br>` +
         (e.armor != null ? `편광 ${tr.t.toFixed(2)} × ${tr.pol == null ? '자연광 ½' : `cos²(${tr.pol}° − ${e.armor}°)`} = <b>${(tr.t*(tr.pol == null ? .5 : cos2(tr.pol - e.armor))).toFixed(2)}</b><br>` : '') +
         (r.v ? `I ${r.Itot.toFixed(3)} mA · V₀ ${r.V0.toFixed(2)} V · ${r.sat ? '<span class="gold">전압 포화</span>' : '전류 제한'}<br>초당 <b class="ok">${r.v.toFixed(1)}</b>` : `<span class="warn">0 · ${r.why}</span>`);
@@ -463,7 +463,7 @@ function researchHtml(){
     }
     const ex = ek && myExam && !examPassed(ek) ? `<div class="exam">${exam.map((q, i) => `<p>${i+1}. ${q.q}</p>${q.opts.map((o, j) => `<button type="button" class="opt ${q.pick === j ? 'on' : ''}" data-exq="${i}:${j}">${o}</button>`).join('')}`).join('')}<button class="btn primary" type="button" data-act="examSubmit" ${exam.every(q => q.pick != null) ? '' : 'disabled'}>제출</button></div>` : '';
     return `<div class="bpcard ${done ? 'done' : ''}"><div class="bph"><b>${r.name}</b><span>${done ? '완료' : r.unit}</span></div>${BP_ART[r.art] || ''}<p>${r.desc}</p>${btn}${ex}</div>`; };
-  return `<p class="muted pnote">레이저 최소 반지름 ${(LASER_WMIN/Math.sqrt(capMult()/4)).toFixed(2)} cm · 레이저(23번 레이저)와 교전 범위(20번 렌즈)는 자격 시험 3문제를 통과해야 연구할 수 있어요.</p><div class="bpgrid">${RESEARCH.map(card).join('')}</div>`;
+  return `<p class="muted pnote">렌즈가 모으는 램프 빛 ×${lampGain().toFixed(2)} · 레이저 최소 반지름 ${(LASER_WMIN/Math.sqrt(capMult()/4)).toFixed(2)} cm · 레이저(23번 레이저)와 교전 범위(20번 렌즈)는 자격 시험 3문제를 통과해야 연구할 수 있어요.</p><div class="bpgrid">${RESEARCH.map(card).join('')}</div>`;
 }
 function craftHtml(){
   const inv = {}; for (const it of G.inventory){ const k = it.design.name + '|' + it.design.kind; (inv[k] = inv[k] || {d:it.design, items:[]}).items.push(it); }

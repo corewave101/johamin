@@ -37,7 +37,7 @@ function placePanel(){
         <p class="muted">쏠 때마다 ${drawOf(d).toFixed(2)} ⚡/초. 자동은 유지비 ${autoUpkeep().toFixed(2)} ⚡/초가 더 들어요. 쫄병이 있으면 쫄병이 먼저 쏴요.</p>
         <button class="btn danger" type="button" data-act="unplace" ${here ? '' : 'disabled'}>창고로 내리기</button></div>`;
     } else {
-      const items = G.inventory.filter(i => i.design.kind === 'tower');
+      const items = G.inventory.filter(i => isMount(i.design));
       h = `<div class="sec"><div class="ed-head"><h3>${sockName(so)} 자리</h3><span class="${here?'go':''}">${here ? '도착' : '이동 중…'}</span></div>
         ${items.length ? `<p class="muted">창고에 있는 탑을 올려요. 카드를 누르면 바닥에 세기 띠가 보여요.</p><div class="bps">${items.map(it => { const d = it.design;
           return `<div class="bp ${G.previewUid===it.uid?'on':''}" data-prev="${it.uid}" role="button" tabindex="0"><div class="bp-h"><i style="background:${beamColor(d)}"></i><b>${d.name}</b></div>
@@ -75,7 +75,7 @@ function renderLive(){
     const so = SOCKETS[G.ride.sock], d = so.tower.design, e = G.ride.target;
     if (!e) rl.innerHTML = `조준 거리 ${Math.round(G.ride.aimD)} m · ${G.ride.firing || G.keys[' '] ? '발사 중' : '발사 버튼을 누르고 있으면 쏴요'}`;
     else {
-      const oo = towerOrigin(so), dist = Math.hypot(e.mesh.position.x - oo.x, e.mesh.position.z - oo.z)/M2W, th = hasPol(d) ? G.ride.theta : null, r = hitD(d, FOES[e.type], dist, e.armor, th), tr = traceD(d, dist, th);
+      const oo = towerOrigin(so), dist = Math.hypot(e.mesh.position.x - oo.x, e.mesh.position.z - oo.z)/M2W, th = hasPol(d) ? G.ride.theta : null, r = hitD(d, foeOf(e), dist, e.armor, th), tr = traceD(d, dist, th);
       rl.innerHTML = `${FOES[e.type].name}${e.armor != null ? ` · 갑옷 ${e.armor}°` : ''} @ ${Math.round(dist)} m<br>` +
         (e.armor != null ? `편광 ${tr.t.toFixed(2)} × ${tr.pol == null ? '자연광 ½' : `cos²(${tr.pol}° − ${e.armor}°)`} = <b>${(tr.t*(tr.pol == null ? .5 : cos2(tr.pol - e.armor))).toFixed(2)}</b><br>` : '') +
         (r.v ? `I ${r.Itot.toFixed(3)} mA · V₀ ${r.V0.toFixed(2)} V · ${r.sat ? '<span class="gold">전압 포화</span>' : '전류 제한'}<br>초당 <b class="ok">${r.v.toFixed(1)}</b>` : `<span class="warn">0 · ${r.why}</span>`);
@@ -303,7 +303,8 @@ document.addEventListener('click', ev => {
   if (ds.craft){ startCraft(ds.craft); renderAll(); return; }
   if (ds.equip){ const it = G.inventory.find(q => q.uid === +ds.equip); if (!it) return; G.inventory = G.inventory.filter(q => q !== it); G.inventory.push({uid:nextUid++, design:copy(G.weapon)}); G.weapon = copy(it.design); hint(`${G.weapon.name} 장착`); renderAll(); return; }
   if (ds.prev){ G.previewUid = +ds.prev; buildPreview(); renderAll(); return; }
-  if (ds.place){ const so = SOCKETS[G.sel], it = G.inventory.find(q => q.uid === +ds.place), auto = !!ds.auto; if (!so || !it || so.tower || !atSocket(G.sel) || (auto && G.gold < AUTO_PRICE)) return; if (auto) G.gold -= AUTO_PRICE; G.inventory = G.inventory.filter(q => q !== it); placeTower(so, it, auto); hint(`${sockName(so)}에 ${it.design.name} 설치`); buildPreview(); renderAll(); return; }
+  if (ds.place){ const so = SOCKETS[G.sel], it = G.inventory.find(q => q.uid === +ds.place), auto = !!ds.auto; if (!so || !it || so.tower || !atSocket(G.sel) || (auto && G.gold < AUTO_PRICE)) return;
+    if (it.design.kind === 'siege' && siegeBlock(so)){ hint(siegeBlock(so)); return; } if (auto) G.gold -= AUTO_PRICE; G.inventory = G.inventory.filter(q => q !== it); placeTower(so, it, auto); hint(`${sockName(so)}에 ${it.design.name} 설치`); buildPreview(); renderAll(); return; }
   if (ds.assign != null){ const so = SOCKETS[+ds.assign], s = G.soldiers.find(q => q.role === 'idle' && !q.down); if (!so.tower || !s) return; s.role = 'tower'; s.sock = so.i; setOperator(so.tower, s); hint(`${s.name}이 ${sockName(so)}를 맡았어요`); renderAll(); return; }
   if (ds.unassign != null){ const so = SOCKETS[+ds.unassign], s = G.soldiers.find(q => q.id === so.tower.soldier); if (s){ s.role = 'idle'; s.sock = null; } setOperator(so.tower, null); renderAll(); return; }
   if (ds.srole){ const s = G.soldiers.find(q => q.id === +ds.srole); if (!s || s.role === 'tower') return; s.role = s.role === 'sortie' ? 'idle' : 'sortie'; if (s.role === 'sortie' && (!s.slot || slotTaken(s.slot[0], s.slot[1], s))) s.slot = freeSlot(); if (G.mode === 'train') tSync(); renderAll(); return; }
@@ -459,6 +460,7 @@ document.addEventListener('visibilitychange', () => { if (document.hidden){ try 
 function applySave(o){
   for (const k of SAVE_FIELDS) if (o[k] !== undefined) G[k] = o[k];
   G.exams = G.exams || {};
+  G.sites = Object.assign({siege:false, mount:false, lakeDay:0, mountDay:0, scoutDay:0}, G.sites || {});
   nextUid = Math.max(nextUid, o.nextUid || 1);
   for (const s of G.soldiers){ s.down = false; if (s.role === 'tower') s.role = 'idle'; s.sock = null; }
   (o.towers || []).forEach((t, i) => { const so = SOCKETS[i]; if (!t || !so || !built(so.floor)) return; placeTower(so, {uid:t.uid, design:t.design}, t.auto); so.tower.autoOn = t.autoOn !== false; so.tower.rng = t.rng || null;

@@ -109,12 +109,36 @@ check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정�
   }
   // 웨이브 곡선: 첫 밤 4, 계속 오른다, 5의 배수 근처가 더 가파르다, 마리 수 상한
   const csrc = fs.readFileSync(path.join(dir, 'js/core.js'), 'utf8');
-  const blk = csrc.slice(csrc.indexOf('const WAVE_A'), csrc.indexOf('function waveList'));
-  const env = new Function('sq', 'clamp', `${blk}; return {waveB, waveSize, hpMul, eliteCount, ELITE_HP, WAVE_CAP};`)(n => Math.sqrt(Math.max(0, n - 1)), (v, a, b) => Math.max(a, Math.min(b, v)));
+  const blk = csrc.slice(csrc.indexOf('const WAVE_C'), csrc.indexOf('function waveList'));
+  const env = new Function('sq', 'clamp', `${blk}; return {waveB, waveDB, waveSize, hpMul, eliteCount, ELITE_HP, WAVE_CAP};`)(n => Math.sqrt(Math.max(0, n - 1)), (v, a, b) => Math.max(a, Math.min(b, v)));
   check(Math.abs(env.waveB(1) - 4) < 1e-9, '웨이브 1의 총 체력은 4 (예전과 같게)');
   let mono = true; for (let n = 2; n <= 80; n++) if (env.waveB(n) <= env.waveB(n - 1)) mono = false;
   check(mono, '총 체력은 밤마다 늘어야 해요');
-  check(env.waveB(5) - env.waveB(4) > env.waveB(8) - env.waveB(7), '5밤 근처가 7~8밤 사이보다 가파르게 올라야 해요(계단)');
+  // 도함수가 이차함수: 밤마다 느는 양이 계속 커지고, 그 느는 양의 증가도 일정하게 커진다(이계차가 직선 → 삼계차가 상수)
+  for (let n = 3; n <= 80; n++) check(env.waveB(n) - env.waveB(n - 1) > env.waveB(n - 1) - env.waveB(n - 2), `밤 ${n}: 늘어나는 양이 앞 밤보다 커야 해요`);
+  const d3 = n => env.waveB(n + 3) - 3*env.waveB(n + 2) + 3*env.waveB(n + 1) - env.waveB(n);
+  for (let n = 1; n <= 60; n++) check(Math.abs(d3(n) - d3(1)) < 1e-6 && d3(1) > 0, `웨이브 곡선은 삼차식이어야 해요(삼계차 일정) · 밤 ${n}`);
+  for (let n = 1; n <= 60; n++){ const h = 1e-4, num = (env.waveB(n + h) - env.waveB(n - h))/(2*h); check(Math.abs(num - env.waveDB(n)) < 1e-4, `B′(${n}) 식이 수치 미분과 달라요`); }
+  // 실제 밤: 뽑힌 몬스터 몫을 다 더하면 총 체력 B(n) (거인 4.5마리 몫 · 박쥐 0.5 · 정예 ×4)
+  { const ctx = {}; const run = new Function('ctx', csrc.replace(/^'use strict';/, '') + '; ctx.f = {waveList, waveHpMul, waveB, unitOf, FOES, waveTheme}; ');
+    try { run(ctx); } catch(e){ /* 브라우저 전용 코드가 섞여 있으면 건너뜀 */ }
+    if (ctx.f){ for (let n = 1; n <= 40; n++){ const L = ctx.f.waveList(n), m = ctx.f.waveHpMul(L, n), tot = L.reduce((s, q) => s + ctx.f.unitOf(q)*m, 0); check(Math.abs(tot - ctx.f.waveB(n)) < 1e-6, `밤 ${n}: 몬스터 몫 × 배율 ≠ 총 체력`); check(L.length >= 3, `밤 ${n}: 너무 적어요`); } }
+  }
+  // 6.4 몸 전체 판정: 빛이 몸 반지름 안에 다 들어가면 100%, 상이 커도 몸에 걸친 만큼 맞는다
+  { const ctx = {}; new Function('ctx', csrc.replace(/^'use strict';/, '') + '; newGame(); ctx.f = {hitD, traceD, FOES, PRESETS, siegeDesign, srcPower, drawOf, BODY_REF, fracAt};')(ctx); const f = ctx.f;
+    const led = f.PRESETS.find(d => d.id === 'ledT');
+    for (const m of [10, 30, 60]){ const h = f.hitD(led, f.FOES.gt, m, null), w = f.traceD(led, m).w; check(Math.abs(h.frac - Math.min(1, (90/w)**2)) < 1e-12, `거인 몸 판정 (${m} m)`); }
+    const bulb = f.PRESETS.find(d => d.id === 'bulbT'), wide = f.traceD(bulb, 60).w;
+    check(wide > 30 && f.hitD(bulb, f.FOES.ag, 60, null).v > 0, '상이 몸보다 커도 몸에 걸친 빛만큼은 데미지가 나야 해요');
+    check(f.hitD(led, f.FOES.bt, 80, null).frac < f.hitD(led, f.FOES.cs, 80, null).frac, '작은 박쥐는 같은 빛이 덜 들어가야 해요');
+    // 거인(R 40 kΩ)은 세기를 올리면 전압 포화로 막힌다
+    const uvl = f.PRESETS.find(d => d.id === 'uv'), g1 = f.hitD(uvl, f.FOES.gt, 30, null), g4 = f.hitD(f.siegeDesign(uvl, 4), f.FOES.gt, 30, null);
+    check(g1.sat && g4.v/g1.v > 1 && g4.v/g1.v < 4, `거인은 광원 4개로 늘려도 4배(N배)도 안 돼야 해요 · 전류 제한이면 16배 (×${(g4.v/g1.v).toFixed(2)})`);
+    const s1 = f.hitD(led, f.FOES.cs, 30, null), s3 = f.hitD(f.siegeDesign(led, 3), f.FOES.cs, 30, null);
+    check(s3.v/s1.v > 2.5, `전류 제한인 슬라임은 광원 3개면 크게 늘어야 해요 (×${(s3.v/s1.v).toFixed(2)})`);
+    check(Math.abs(f.srcPower(f.siegeDesign(led, 3)) - 3*f.srcPower(led)) < 1e-9 && Math.abs(f.drawOf(f.siegeDesign(led, 3)) - 3*f.drawOf(led)) < 1e-9, '대형 무기: 광출력 · 전기 N배');
+  }
+  check(env.waveB(30)/env.waveB(10) > 5, '30밤은 10밤보다 훨씬 세야 해요(골드가 쌓여도 어렵게)');
   for (let n = 1; n <= 80; n++){ const c = env.waveSize(n); check(c >= 3 && c <= env.WAVE_CAP, `밤 ${n}의 마리 수 ${c}가 3~${env.WAVE_CAP} 밖이에요`); check(Math.abs((c + env.ELITE_HP*env.eliteCount(n))*env.hpMul(n) - env.waveB(n)) < 1e-6, `밤 ${n}: 마리 수 × 체력 ≠ 총 체력`); }
   // 탑 광전관: solveCircuit이 u = R·I(u)를 풀었는지
   const sc = csrc.match(/function solveCircuit\(lines, R\)\{[\s\S]*?\n\}/), pf = csrc.match(/const panelFrac = ([^\n]*);/);

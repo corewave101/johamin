@@ -116,7 +116,7 @@ function setOperator(T, s){
   if (s){ T.opMesh = soldierMesh(s);T.opMesh.position.set(-.75, 0, .35); T.mesh.add(T.opMesh); }
 }
 function placeTower(so, item, auto){
-  const mesh = towerMesh(item.design); mesh.position.set(so.x, so.y, so.z); mesh.userData.sock = so; wScene.add(mesh);
+  const mesh = towerMesh(item.design); if (item.design.kind === 'siege') mesh.scale.setScalar(1.25 + .1*modsOf(item.design)); mesh.position.set(so.x, so.y, so.z); mesh.userData.sock = so; wScene.add(mesh);
   so.tower = {design:item.design, uid:item.uid, mesh, auto:false, autoOn:true, soldier:null, beam:beamMesh(beamColor(item.design))};
   wScene.add(so.tower.beam);
   if (auto){ so.tower.auto = true; addAutoMesh(so.tower); }
@@ -131,7 +131,7 @@ function removeTower(so){
 function buildPreview(){
   clearGroup(previewGroup);
   if (G.mode !== 'place' || G.sel == null) return;
-  const so = SOCKETS[G.sel], d = so.tower ? so.tower.design : (G.inventory.find(it => it.uid === G.previewUid && it.design.kind === 'tower') || {}).design; if (!d) return;
+  const so = SOCKETS[G.sel], d = so.tower ? so.tower.design : (G.inventory.find(it => it.uid === G.previewUid && isMount(it.design)) || {}).design; if (!d) return;
   const col = new THREE.Color(beamColor(d)), pos = [], cols = [], idx = []; let cap = 1e-9; for (let m = 1; m <= 100; m++) cap = Math.max(cap, fracAt(d, m));
   for (let m = 0; m <= 100; m++){
     const tr = traceD(d, Math.max(.01, m)), fr = fracAt(d, m), hw = clamp(.15 + tr.w*.012, .15, 1.6), z = dToZ(m), b = clamp(Math.sqrt(fr/cap), .06, 1)*Math.max(.15, tr.t);
@@ -173,7 +173,7 @@ const atSocket = i => i != null && SOCKETS[i].floor === H().floor && !H().climb 
 const nearSockets = () => SOCKETS.filter(s => built(s.floor) && s.floor === H().floor && !H().climb && Math.abs(H().x - s.x) < (G.mode === 'wave' ? 1.2 : .3)).sort((a, b) => Math.abs(H().x - a.x) - Math.abs(H().x - b.x));
 function selectSocket(i){
   G.sel = i; const so = SOCKETS[i]; goTo(so.x, so.floor);
-  G.previewUid = (G.inventory.find(it => it.design.kind === 'tower') || {}).uid;
+  G.previewUid = (G.inventory.find(it => isMount(it.design)) || {}).uid;
   buildPreview(); hint(so.tower ? `${sockName(so)} · 바닥 띠가 센 구간이에요` : `${sockName(so)} 자리로 가는 중`); renderAll();
 }
 
@@ -181,13 +181,13 @@ function selectSocket(i){
 function foeMesh(type, armor, scale = 1){
   const f = FOES[type], mat = std(f.color, {emissive:f.color, emissiveIntensity:.15, roughness:.5});
   const g = new THREE.Group(), body = foeBody(type, armor, mat);
-  body.position.y = type === 'ca' ? .75 : type === 'na' ? .6 : .5; body.scale.setScalar(scale*(type === 'ca' ? 1.25 : 1)); g.add(body);
+  body.position.y = type === 'ca' ? .75 : type === 'na' ? .6 : type === 'bt' ? 1.4 : type === 'gt' ? .6 : .5; body.scale.setScalar(scale*(type === 'ca' ? 1.25 : 1)); g.add(body);
   g.userData.body = body.userData.body;
-  const bar = new THREE.Mesh(new THREE.PlaneGeometry(1.1, .12), new THREE.MeshBasicMaterial({color:0x5ad48e, fog:false})); bar.position.y = type === 'ca' ? 2.1 : 1.55; g.add(bar); g.userData.bar = bar;
+  const bar = new THREE.Mesh(new THREE.PlaneGeometry(1.1, .12), new THREE.MeshBasicMaterial({color:0x5ad48e, fog:false})); bar.position.y = type === 'ca' ? 2.1 : type === 'gt' ? 3.2*scale : type === 'bt' ? 2.1 : 1.55; g.add(bar); g.userData.bar = bar;
   return g;
 }
 function startWave(){
-  G.queue = waveList(G.wave); G.total = G.queue.length; G.kills = 0; G.waveGold = 0; G.spawnT = .5; G.enemies = []; G.waveT = 0;
+  G.queue = waveList(G.wave); G.waveMul = waveHpMul(G.queue, G.wave); G.total = G.queue.length; G.kills = 0; G.waveGold = 0; G.spawnT = .5; G.enemies = []; G.waveT = 0;
   G.mode = 'wave'; G.sel = null; G.ride = null; G.showSettings = false; G.sortieUsed = false; G.sortieResult = null; G.building = null;
   if (G.settings.autoClose) G.winOpen = false;
   H().route = []; buildPreview(); setWallXray(true);
@@ -196,9 +196,9 @@ function startWave(){
   renderAll();
 }
 function spawnFoe(spec){
-  const f = FOES[spec.type], hp = Math.round(f.hp*hpMul(G.wave)*(spec.elite ? ELITE_HP : 1)), mesh = foeMesh(spec.type, spec.armor, spec.elite ? 1.45 : 1), x = -15 + Math.random()*30;
+  const f = FOES[spec.type], hp = Math.round(f.hp*(G.waveMul || hpMul(G.wave))*(spec.elite ? ELITE_HP : 1)), mesh = foeMesh(spec.type, spec.armor, spec.elite ? 1.45 : 1), x = -15 + Math.random()*30;
   mesh.position.set(x, 0, dToZ(100)); wScene.add(mesh);
-  if (spec.elite){ const l = label('정예', {size:18, color:'#1a0d04', bg:'rgba(255,209,102,.95)', h:.022, bold:true}); l.position.set(0, 3.1, 0); mesh.add(l); hint(`정예 ${f.short}가 나타났어요 · 체력 ×${ELITE_HP}`); }
+  if (spec.elite){ const l = label('정예', {size:18, color:'#1a0d04', bg:'rgba(255,209,102,.95)', h:.022, bold:true}); l.position.set(0, 3.1, 0); mesh.add(l); hint(`정예 ${josa(f.short, '이', '가')} 나타났어요 · 체력 ×${ELITE_HP} · 몸 ×1.45`); }
   G.enemies.push({type:spec.type, armor:spec.armor, mesh, x, d:100, hp, max:hp, hitT:0, elite:!!spec.elite});
 }
 function killFoe(e, list){ wScene.remove(e.mesh); dispose(e.mesh); list.splice(list.indexOf(e), 1); }
@@ -218,7 +218,7 @@ function pickNearest(ox, oz, list, cone, maxD, design){
     if (cone && Math.atan2(Math.abs(dx), -dz) > rad(cone)) continue;
     const dist = Math.hypot(dx, dz)/M2W; if (dist > maxD) continue;
     if (dist < bd){ bd = dist; best = e; }
-    if (design && dist < gd && hitD(design, FOES[e.type], dist, e.armor, null).v > 0){ gd = dist; good = e; }
+    if (design && dist < gd && hitD(design, foeOf(e), dist, e.armor, null).v > 0){ gd = dist; good = e; }
   }
   if (good) return {e:good, dist:gd};
   return best ? {e:best, dist:bd} : null;
@@ -232,14 +232,14 @@ function pickTower(T, o, op){
     const dx = e.mesh.position.x - o.x, dz = e.mesh.position.z - o.z; if (dz > 0 || Math.atan2(Math.abs(dx), -dz) > rad(42)) continue;
     const dist = Math.hypot(dx, dz)/M2W; if (dist < lo || dist > hi) continue;
     if (dist < bd){ bd = dist; best = e; }
-    if (op === 'auto' && dist < gd){ const v = hitD(T.design, FOES[e.type], dist, e.armor, null).v; if (v > 0 && (!eff || v >= EFF_MIN*peakV(T.design, e.type, e.armor))){ gd = dist; good = e; } }
+    if (op === 'auto' && dist < gd){ const v = hitD(T.design, foeOf(e), dist, e.armor, null).v; if (v > 0 && (!eff || v >= EFF_MIN*peakV(T.design, e.type, e.armor))){ gd = dist; good = e; } }
   }
   if (good) return {e:good, dist:gd};
   if (eff) return null;
   return best ? {e:best, dist:bd} : null;
 }
 function applyHit(design, e, dist, dt, polTheta, acc = 1, scale){
-  const r = hitD(design, FOES[e.type], dist, e.armor, polTheta, scale);
+  const r = hitD(design, foeOf(e), dist, e.armor, polTheta, scale);
   if (r.v){ e.hp -= r.v*dt*acc; e.hitT = .1; bumpBest(r.v); }
   return r;
 }
@@ -247,6 +247,16 @@ function applyHit(design, e, dist, dt, polTheta, acc = 1, scale){
 function splash(design, center, dist, dt, r, acc = 1, scale){
   const R = spreadW(r.w); if (R < .35) return;
   for (const o of G.enemies) if (o !== center && o.mesh.position.distanceTo(center.mesh.position) < R + .3) applyHit(design, o, dist, dt, null, acc, scale);
+}
+/* 대형 무기: 굵은 빔이 첫 적을 지나 같은 줄에 선 적들도 비춘다 (각자 자기 거리 · 자기 몸 크기로 계산) */
+function pierce(design, o, first, dt, acc = 1){
+  const dx0 = first.mesh.position.x - o.x, dz0 = first.mesh.position.z - o.z, L = Math.hypot(dx0, dz0) || 1, ux = dx0/L, uz = dz0/L;
+  for (const q of G.enemies){
+    if (q === first) continue;
+    const px = q.mesh.position.x - o.x, pz = q.mesh.position.z - o.z, t = px*ux + pz*uz; if (t <= L*.98) continue;
+    const dist = t/M2W, lat = Math.abs(px*uz - pz*ux), w = traceD(design, dist).w;
+    if (lat < (foeOf(q).rb/100)*M2W + spreadW(w) + .15) applyHit(design, q, dist, dt, null, acc);
+  }
 }
 function fireAlong(design, origin, dirX, dirZ, dt, polTheta, zeroCtx){
   let best = null, bt = 1e9;
@@ -274,7 +284,7 @@ function updateWave(dt){
   if (S) sortieMove(dt);
   const sm = spdMul(G.wave);
   for (const e of G.enemies){
-    const slow = e.d <= RIVER[1] && e.d >= RIVER[0] ? .35 : 1, sp = FOES[e.type].speed*slow*sm;
+    const slow = !FOES[e.type].fly && e.d <= RIVER[1] && e.d >= RIVER[0] ? .35 : 1, sp = FOES[e.type].speed*slow*sm;
     e.hitT = Math.max(0, e.hitT - dt);
     let chased = false;
     if (S){
@@ -334,6 +344,7 @@ function updateWave(dt){
     const jit = (1 - acc)*1.6, jx = (Math.random() - .5)*jit, jz = (Math.random() - .5)*jit;
     head.rotation.y = Math.atan2(-(e.mesh.position.x + jx - o.x), -(e.mesh.position.z + jz - o.z));
     const r = applyHit(T.design, e, nb.dist, dt, null, op === 'soldier' ? .5 + .5*acc : 1); splash(T.design, e, nb.dist, dt, r, op === 'soldier' ? .5 + .5*acc : 1);
+    if (T.design.kind === 'siege') pierce(T.design, o, e, dt, op === 'soldier' ? .5 + .5*acc : 1);
     T.zeroT = (T.zeroT || 0) - dt;
     if (!r.v && T.zeroT <= 0){ T.zeroT = 1.2; floatText(r.why, V(e.mesh.position.x, 2.6, e.mesh.position.z), true); }
     setBeam(T.beam, o, tB.set(e.mesh.position.x + jx, e.mesh.position.y + .8, e.mesh.position.z + jz), beamW(r.w), r.v ? (r.sat ? .8 : .5) : .2);
@@ -361,12 +372,12 @@ function updateWave(dt){
   for (const e of G.enemies.slice()){
     if (e.hp <= 0){
       const f = FOES[e.type], rw = Math.round(f.reward*rm*(e.elite ? ELITE_HP : 1)); G.kills++;
-      if (Math.random() < .35){ const mt = DROP_METAL[e.type]; G.metals[mt] = (G.metals[mt] || 0) + 1; floatText(`+${METALS[mt].name} 조각`, V(e.mesh.position.x, 3.0, e.mesh.position.z)); }
+      if (DROP_METAL[e.type] && Math.random() < .35){ const mt = DROP_METAL[e.type]; G.metals[mt] = (G.metals[mt] || 0) + 1; floatText(`+${METALS[mt].name} 조각`, V(e.mesh.position.x, 3.0, e.mesh.position.z)); }
       if (S){ const v = Math.round(rw*1.5), cr = new THREE.Mesh(new THREE.OctahedronGeometry(.3), new THREE.MeshStandardMaterial({color:0xffd166, emissive:0xffb020, emissiveIntensity:.8})); cr.position.set(e.mesh.position.x, .5, e.mesh.position.z); wScene.add(cr); S.drops.push({m:cr, v}); }
       else { G.gold += rw; G.waveGold += rw; floatText(`+${rw}G`, V(e.mesh.position.x, 2.2, e.mesh.position.z)); }
       killFoe(e, G.enemies);
     }
-    else if (e.d <= 0){ G.wallHp -= FOES[e.type].wall; killFoe(e, G.enemies); hint(`${FOES[e.type].name}가 성벽에 닿았어요 −${FOES[e.type].wall}`); if (G.wallHp <= 0) return gameOver(); }
+    else if (e.d <= 0){ G.wallHp -= FOES[e.type].wall; killFoe(e, G.enemies); hint(`${josa(FOES[e.type].name, '이', '가')} 성벽에 닿았어요 −${FOES[e.type].wall}`); if (G.wallHp <= 0) return gameOver(); }
     else { e.mesh.userData.bar.scale.x = Math.max(.02, e.hp/e.max); e.mesh.userData.bar.quaternion.copy(e.mesh.quaternion).invert().multiply(camera.quaternion); e.mesh.userData.body.material.emissiveIntensity = e.hitT ? .9 : .15; }
   }
   if (S){
@@ -458,7 +469,7 @@ function sortieFire(dt){
       else { setBeam(sortieBeam, o, V(G.aim.x, .2, G.aim.z), .05, .3); hero.rotation.y = Math.atan2(-(G.aim.x - S.x), -(G.aim.z - S.z)); }
     } else nb = pickNearest(S.x, S.z, G.enemies, 0, 40, G.weapon);
     if (nb){
-      const best = nb.e, r = hitD(G.weapon, FOES[best.type], nb.dist, best.armor, null);
+      const best = nb.e, r = hitD(G.weapon, foeOf(best), nb.dist, best.armor, null);
       if (r.v){ best.hp -= r.v*1.4*dt; best.hitT = .1; bumpBest(r.v*1.4); }
       splash(G.weapon, best, nb.dist, dt*1.4, r);
       S.zero.t -= dt; if (!r.v && S.zero.t <= 0){ S.zero.t = 1.2; floatText(r.why, V(best.mesh.position.x, 2.4, best.mesh.position.z), true); }
@@ -474,7 +485,7 @@ function sortieFire(dt){
     if (!u.target){ u.beam.visible = false; continue; }
     const e = u.target, dist = Math.hypot(e.mesh.position.x - u.mesh.position.x, e.mesh.position.z - u.mesh.position.z)/M2W;
     const jit = (1 - acc)*1.8, jx = (Math.random() - .5)*jit, jz = (Math.random() - .5)*jit;
-    const r = hitD(u.gun, FOES[e.type], dist, e.armor, null, sc);
+    const r = hitD(u.gun, foeOf(e), dist, e.armor, null, sc);
     if (r.v){ e.hp -= r.v*(.5 + .5*acc)*dt; e.hitT = .1; }
     setBeam(u.beam, V(u.mesh.position.x, .8, u.mesh.position.z), V(e.mesh.position.x + jx, .7, e.mesh.position.z + jz), .04, .55);
     u.mesh.rotation.y = Math.atan2(-(e.mesh.position.x - u.mesh.position.x), -(e.mesh.position.z - u.mesh.position.z));

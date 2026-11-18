@@ -146,7 +146,7 @@ function buildRange(){
   const hit = fHit();
   if (!hide && fReady() && p){
     const s = [], end = F.dummy.x, mw = minWOf(d); let fmax = 0;
-    for (let m = 0; m <= end + 1e-9; m += .5){ const tr = traceD(d, Math.max(.01, m)), fr = Math.min(1, (RT/Math.max(tr.w, mw))**2); fmax = Math.max(fmax, fr); s.push({X:mToW(m), w:tr.w, t:tr.t, pol:tr.pol, fr, x:m}); }
+    for (let m = 0; m <= end + 1e-9; m += .5){ const tr = traceD(d, Math.max(.01, m)), fr = Math.min(1, ((fFoe().rb || BODY_REF)/Math.max(tr.w, mw))**2); fmax = Math.max(fmax, fr); s.push({X:mToW(m), w:tr.w, t:tr.t, pol:tr.pol, fr, x:m}); }
     fDrawBeam(s.map(q => ({X:q.X, r:clamp(.035*q.w, .03, 2.4), t:q.t, pol:q.pol, b:Math.max(.12, Math.sqrt(q.fr/Math.max(fmax, 1e-9))), x:q.x})), col, false);
     for (const im of fImages()){ const m = im.at/100; if (m > .5 && m <= 100){ const X = mToW(m);
       const dot = new THREE.Mesh(new THREE.SphereGeometry(.09, 12, 8), new THREE.MeshBasicMaterial({color:0xffffff})); dot.position.set(X, BEAM_Y, 0); fDyn.add(dot);
@@ -457,8 +457,9 @@ function elecHtml(hit, foe, armor){
   if (!hit.v) return `<div class="eq"><span class="warn">0 · ${hit.why}</span>${hit.why === 'E < W' ? `<br>어떤 광자도 일함수 ${foe.W} eV를 못 넘어요. 세기를 올려도 소용없어요 → 진동수를 올려요.` : hit.why === '편광 차단' ? '<br>편광 방향과 갑옷 투과축이 수직이에요.' : ''}</div>`;
   const lim = hit.sat ? `I₀R = ${(hit.Itot*foe.R).toFixed(2)} V &gt; V₀ → <span class="gold">전압 포화</span>: u가 V₀ 아래에서 막혀요<br>→ 세기를 올려도 거의 그대로, 진동수를 올려야 세져요` : `I₀R = ${(hit.Itot*foe.R).toFixed(2)} V &lt; V₀ → <span class="ok">전류 제한</span><br>→ 빛을 더 모으면(세기↑) 더 세져요`;
   const pct = hit.Itot > 0 ? Math.round(hit.I/hit.Itot*100) : 0;
-  return `<div class="eq">빔 반지름 ${fmtLen(hit.w)} → 급소(반지름 ${RT} cm)에 ${(hit.frac*100).toFixed(hit.frac < .01 ? 2 : 1)}%${hit.t < 1 ? ` · 편광 투과 ${hit.t.toFixed(3)}` : ''}<br>
-    들어간 빛 ${hit.Ph < .1 ? hit.Ph.toFixed(3) : hit.Ph.toFixed(2)} mW → 다 모이면 광전류 I₀ = Σ P/E = <b>${hit.Itot < .01 ? hit.Itot.toFixed(4) : hit.Itot.toFixed(3)} mA</b><br>
+  return `<div class="eq">빔 반지름 ${fmtLen(hit.w)} → ${foe.short || '적'} 몸(반지름 ${hit.rb} cm)에 ${(hit.frac*100).toFixed(hit.frac < .01 ? 2 : hit.frac >= 1 ? 0 : 1)}%${hit.frac >= 1 ? ' (빛이 몸 안에 다 들어가요)' : ''}${hit.t < 1 ? ` · 편광 투과 ${hit.t.toFixed(3)}` : ''}<br>
+    들어간 빛 ${hit.Ph < .1 ? hit.Ph.toFixed(3) : hit.Ph.toFixed(1)} mW → 광자 2000개에 전자 1개(양자 효율 η = ${ETA})<br>
+    다 모이면 광전류 I₀ = η·Σ P/E = <b>${hit.Itot < .01 ? hit.Itot.toFixed(4) : hit.Itot.toFixed(3)} mA</b><br>
     정지 전압 V₀ = E − W = <b>${hit.V0.toFixed(2)} V</b> · 저항 R = ${foe.R} kΩ<br>
     R에 생긴 전압 u가 역전압이 돼서 일부 전자만 넘어가요 → u = R·I(u)를 풀면 <b>u = ${hit.u.toFixed(2)} V</b>, I = ${hit.I < .01 ? hit.I.toFixed(4) : hit.I.toFixed(3)} mA (I₀의 ${pct}%)<br>${lim}<br>
     전력 P = u²/R = ${hit.P < .01 ? hit.P.toFixed(4) : hit.P.toFixed(3)} mW × ${DMG_K}${hit.scale !== 1 ? ` × ${hit.scale.toFixed(2)}` : ''} = <b>${hit.v.toFixed(1)}/초</b></div>`;
@@ -505,15 +506,15 @@ function fSave(how){
 /* ═════════ 연구부 (블루프린트) ═════════ */
 const RESEARCH = [
   {id:'laser', name:'레이저', desc:'유도 방출로 빛을 증폭하는 광원. 단색 · 지향성 · 집속성 · 가간섭성', cost:300, exam:true, unit:'23번 레이저', art:'cavity'},
-  {id:'doublet', name:'겹렌즈 · 수차 보정', desc:'볼록 · 오목 렌즈를 겹쳐 수차를 줄여요. 레이저를 모을 수 있는 최소 반지름 1.0 → 0.82 cm', cost:150, req:'laser', unit:'20번 수차', art:'doublet'},
-  {id:'ap1', name:'대구경 렌즈 Ⅰ', desc:'렌즈 지름을 키우면 회절로 퍼지는 정도가 줄어요. 0.82 → 0.67 cm', cost:300, req:'doublet', unit:'회절 한계', art:'lens'},
-  {id:'ap2', name:'대구경 렌즈 Ⅱ', desc:'0.67 → 0.5 cm (급소 크기와 같아져요)', cost:600, req:'ap1', unit:'회절 한계', art:'lens'},
+  {id:'doublet', name:'겹렌즈 · 수차 보정', desc:'볼록 · 오목 렌즈를 겹쳐 수차를 줄이면 더 큰 렌즈를 쓸 수 있어요. 램프 빛을 모으는 양 ×1.22 · 레이저 최소 반지름 1.0 → 0.82 cm', cost:150, req:'laser', unit:'20번 수차', art:'doublet'},
+  {id:'ap1', name:'대구경 렌즈 Ⅰ', desc:'렌즈 지름을 키우면 램프에서 퍼지는 빛을 더 많이 받아요(×1.5). 회절도 줄어 레이저 0.82 → 0.67 cm', cost:300, req:'doublet', unit:'회절 한계', art:'lens'},
+  {id:'ap2', name:'대구경 렌즈 Ⅱ', desc:'램프 빛을 모으는 양 ×2 · 레이저 0.67 → 0.5 cm', cost:600, req:'ap1', unit:'회절 한계', art:'lens'},
   {id:'pump4', name:'펌핑 Ⅳ', desc:'왕복 이득 g₀ 45% 램프', cost:200, req:'laser', unit:'23번 밀도 반전', art:'pump'},
   {id:'pump5', name:'펌핑 Ⅴ', desc:'왕복 이득 g₀ 55% 램프', cost:400, req:'pump4', unit:'23번 밀도 반전', art:'pump'},
   {id:'krf', name:'KrF 엑시머 248 nm', desc:'더 짧은 파장 → 광자 에너지 5.0 eV → 정지 전압 ↑. 전압이 막히는 단단한 적에게 세요', cost:450, req:'pump4', unit:'22번 광전 효과', art:'excimer'},
   {id:'arf', name:'ArF 엑시머 193 nm', desc:'광자 에너지 6.4 eV. 골렘도 전압 포화로 녹여요', cost:800, req:'krf', unit:'22번 광전 효과', art:'excimer'},
   {id:'range', name:'교전 범위 모듈 Ⅰ', desc:'탑마다 쏘는 거리 [최소–최대 m]를 정해요. 범위 밖 적은 안 쏘고 전기도 안 써요. 연구 뒤 탑 카드에서 탑마다 달아요', cost:150, exam:'range', unit:'20번 렌즈', art:'range'},
-  {id:'range2', name:'교전 범위 Ⅱ · 자동 구간', desc:'설계의 빛이 급소에 절반 넘게 들어가는 구간(반값 폭)에 범위를 자동으로 맞춰요', cost:250, req:'range', unit:'20번 렌즈', art:'range'},
+  {id:'range2', name:'교전 범위 Ⅱ · 자동 구간', desc:'설계의 빛이 적의 몸(반지름 30 cm)에 절반 넘게 들어가는 구간에 범위를 자동으로 맞춰요', cost:250, req:'range', unit:'20번 렌즈', art:'range'},
   {id:'range3', name:'교전 범위 Ⅲ · 효율 문턱', desc:'그 탑이 낼 수 있는 최고 데미지의 35%보다 약하게 맞는 적은 건너뛰어요. 전기를 아껴요', cost:400, req:'range2', unit:'22번 전력', art:'range'},
 ];
 const BP_ART = {

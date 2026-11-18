@@ -26,7 +26,7 @@ function eyes(g, y, z, sep, r = .08, look = 0){
 const lathe = (pts, seg = 28) => new THREE.LatheGeometry(pts.map(([r, y]) => new THREE.Vector2(r, y)), seg);
 
 /* ── 적 (발이 y = −오프셋, foeMesh가 위로 올려 줌) ── */
-const FOE_OFF = {ag:.5, cs:.5, na:.6, ca:.6, kn:.5};
+const FOE_OFF = {ag:.5, cs:.5, na:.6, ca:.6, kn:.5, bt:.3, gt:.6};
 function foeBody(type, armor, mat){
   const outer = new THREE.Group(), g = new THREE.Group(); g.rotation.y = Math.PI; outer.add(g);   // 앞(눈 · 방패)이 성벽(+z)을 보게
   const _g = g, off = FOE_OFF[type] || .5; let body, anim;
@@ -62,6 +62,27 @@ function foeBody(type, armor, mat){
       const e = new THREE.Mesh(new THREE.BoxGeometry(.08, .05, .03), new THREE.MeshBasicMaterial({color:0x8fe9ff})); e.position.set(s*.09, -off + 1.24, -.24); g.add(e);
     }
     anim = t => { g.rotation.z = .05*Math.sin(t*3); };
+  } else if (type === 'bt'){ // 칼륨 박쥐: 작은 몸 · 퍼덕이는 날개 (날아서 강에서 안 느려짐)
+    body = new THREE.Mesh(new THREE.SphereGeometry(.2, 14, 10), mat); body.position.y = -off + .3; body.scale.set(1, 1.1, .9); g.add(body);
+    for (const s of [-1, 1]){ const ear = new THREE.Mesh(new THREE.ConeGeometry(.05, .14, 8), mat); ear.position.set(s*.1, -off + .52, 0); g.add(ear); }
+    const wm = smooth(0x4a3a7a, {side:THREE.DoubleSide}), wings = [];
+    for (const s of [-1, 1]){ const w = new THREE.Group(); w.position.set(s*.16, -off + .32, 0);
+      const sh = new THREE.Shape(); sh.moveTo(0, 0); sh.lineTo(s*.55, .18); sh.lineTo(s*.46, -.02); sh.lineTo(s*.34, .06); sh.lineTo(s*.24, -.08); sh.lineTo(s*.12, .02); sh.lineTo(0, -.1);
+      w.add(new THREE.Mesh(new THREE.ShapeGeometry(sh), wm)); g.add(w); wings.push([w, s]); }
+    eyes(g, -off + .36, -.17, .07, .045);
+    anim = t => { for (const [w, s] of wings) w.rotation.z = s*.7*Math.sin(t*22); body.position.y = -off + .3 + .06*Math.sin(t*5); };
+  } else if (type === 'gt'){ // 바륨 거인: 크고 둔한 몸 · 굵은 팔
+    body = new THREE.Mesh(lathe([[0, 0], [.7, .05], [.82, .6], [.74, 1.2], [.5, 1.5], [0, 1.55]]), mat); body.position.y = -off + .42; g.add(body);
+    const head = new THREE.Mesh(new THREE.SphereGeometry(.38, 18, 14), mat); head.position.y = -off + 2.2; g.add(head);
+    const brow = new THREE.Mesh(new THREE.BoxGeometry(.5, .08, .1), smooth(0x7a4a2e)); brow.position.set(0, -off + 2.32, -.32); g.add(brow);
+    eyes(g, -off + 2.22, -.32, .13, .07);
+    const arms = [];
+    for (const s of [-1, 1]){
+      const arm = new THREE.Mesh(new THREE.CylinderGeometry(.2, .26, 1.2, 12), mat); arm.position.set(s*.98, -off + 1.25, 0); arm.rotation.z = s*.12; g.add(arm); arms.push(arm);
+      const fist = new THREE.Mesh(new THREE.SphereGeometry(.26, 12, 10), mat); fist.position.set(s*1.05, -off + .62, 0); g.add(fist);
+      const leg = new THREE.Mesh(new THREE.CylinderGeometry(.24, .28, .5, 12), smooth(0x5a3a26)); leg.position.set(s*.36, -off + .25, 0); g.add(leg);
+    }
+    anim = t => { g.rotation.z = .06*Math.sin(t*2.2); arms[0].rotation.x = .25*Math.sin(t*2.2); arms[1].rotation.x = -.25*Math.sin(t*2.2); };
   } else { // 편광 기사: 투구 · 갑옷 · 편광 방패(투과축 줄무늬)
     body = new THREE.Mesh(lathe([[0, 0], [.34, .02], [.42, .35], [.36, .7], [.2, .82], [0, .84]]), mat); body.position.y = -off + .12; g.add(body);
     const helm = new THREE.Mesh(new THREE.CylinderGeometry(.24, .26, .32, 18), smooth(0x4b5a7a, {metalness:.6, roughness:.35})); helm.position.y = -off + 1.12; g.add(helm);
