@@ -196,9 +196,10 @@ function startWave(){
   renderAll();
 }
 function spawnFoe(spec){
-  const f = FOES[spec.type], hp = Math.round(f.hp*hpMul(G.wave)), mesh = foeMesh(spec.type, spec.armor), x = -15 + Math.random()*30;
+  const f = FOES[spec.type], hp = Math.round(f.hp*hpMul(G.wave)*(spec.elite ? ELITE_HP : 1)), mesh = foeMesh(spec.type, spec.armor, spec.elite ? 1.45 : 1), x = -15 + Math.random()*30;
   mesh.position.set(x, 0, dToZ(100)); wScene.add(mesh);
-  G.enemies.push({type:spec.type, armor:spec.armor, mesh, x, d:100, hp, max:hp, hitT:0});
+  if (spec.elite){ const l = label('정예', {size:18, color:'#1a0d04', bg:'rgba(255,209,102,.95)', h:.022, bold:true}); l.position.set(0, 3.1, 0); mesh.add(l); hint(`정예 ${f.short}가 나타났어요 · 체력 ×${ELITE_HP}`); }
+  G.enemies.push({type:spec.type, armor:spec.armor, mesh, x, d:100, hp, max:hp, hitT:0, elite:!!spec.elite});
 }
 function killFoe(e, list){ wScene.remove(e.mesh); dispose(e.mesh); list.splice(list.indexOf(e), 1); }
 function floatText(text, pos, bad){
@@ -220,6 +221,21 @@ function pickNearest(ox, oz, list, cone, maxD, design){
     if (design && dist < gd && hitD(design, FOES[e.type], dist, e.armor, null).v > 0){ gd = dist; good = e; }
   }
   if (good) return {e:good, dist:gd};
+  return best ? {e:best, dist:bd} : null;
+}
+/* 탑의 표적: 교전 범위 [최소–최대 m] 밖은 안 본다(안 쏘니 전기도 안 쓴다).
+   자동: 데미지가 나는 가장 가까운 적. 효율 문턱(Ⅲ)을 켜면 그 탑 최고 데미지의 35%보다 약하게 맞는 적은 건너뛴다 */
+function pickTower(T, o, op){
+  const [lo, hi] = rangeOf(T), eff = T.rng && T.rng.eff && G.research.range3;
+  let best = null, bd = 1e9, good = null, gd = 1e9;
+  for (const e of G.enemies){
+    const dx = e.mesh.position.x - o.x, dz = e.mesh.position.z - o.z; if (dz > 0 || Math.atan2(Math.abs(dx), -dz) > rad(42)) continue;
+    const dist = Math.hypot(dx, dz)/M2W; if (dist < lo || dist > hi) continue;
+    if (dist < bd){ bd = dist; best = e; }
+    if (op === 'auto' && dist < gd){ const v = hitD(T.design, FOES[e.type], dist, e.armor, null).v; if (v > 0 && (!eff || v >= EFF_MIN*peakV(T.design, e.type, e.armor))){ gd = dist; good = e; } }
+  }
+  if (good) return {e:good, dist:gd};
+  if (eff) return null;
   return best ? {e:best, dist:bd} : null;
 }
 function applyHit(design, e, dist, dt, polTheta, acc = 1, scale){
@@ -310,7 +326,7 @@ function updateWave(dt){
     const op = T.soldier != null ? 'soldier' : (T.auto && T.autoOn) ? 'auto' : null;
     if (!op){ T.beam.visible = false; continue; }
     if (op === 'auto') G.energy = Math.max(0, G.energy - autoUpkeep()*dt);
-    const nb = pickNearest(o.x, o.z, G.enemies, 42, 100, op === 'auto' ? T.design : null);
+    const nb = pickTower(T, o, op);
     if (!nb){ T.beam.visible = false; continue; }
     if (G.energy < draw*dt){ noPower(); continue; }
     G.energy -= draw*dt;
@@ -344,7 +360,7 @@ function updateWave(dt){
   const rm = rewardMul(G.wave);
   for (const e of G.enemies.slice()){
     if (e.hp <= 0){
-      const f = FOES[e.type], rw = Math.round(f.reward*rm); G.kills++;
+      const f = FOES[e.type], rw = Math.round(f.reward*rm*(e.elite ? ELITE_HP : 1)); G.kills++;
       if (Math.random() < .35){ const mt = DROP_METAL[e.type]; G.metals[mt] = (G.metals[mt] || 0) + 1; floatText(`+${METALS[mt].name} 조각`, V(e.mesh.position.x, 3.0, e.mesh.position.z)); }
       if (S){ const v = Math.round(rw*1.5), cr = new THREE.Mesh(new THREE.OctahedronGeometry(.3), new THREE.MeshStandardMaterial({color:0xffd166, emissive:0xffb020, emissiveIntensity:.8})); cr.position.set(e.mesh.position.x, .5, e.mesh.position.z); wScene.add(cr); S.drops.push({m:cr, v}); }
       else { G.gold += rw; G.waveGold += rw; floatText(`+${rw}G`, V(e.mesh.position.x, 2.2, e.mesh.position.z)); }

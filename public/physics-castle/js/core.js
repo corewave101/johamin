@@ -21,7 +21,7 @@ const SPEC = {
 };
 const PIX = {w:{name:'흰 화면', nm:null}, r:{name:'빨강', nm:620, color:'#ff5a5a'}, g:{name:'초록', nm:535, color:'#5aff7a'}, b:{name:'파랑', nm:455, color:'#5a8cff'}};
 /* 단위: 경통 · 렌즈는 cm, 전장은 m. 전류 mA · 전압 V · 저항 kΩ · 전력 mW */
-const RT = .5, DMG_K = 300, LASER_MW = 100, LASER_WMIN = 1.0, LOSS = .03;
+const RT = .5, DMG_K = 840,   /* 840: 광전관 식을 실제 식으로 바꾸면서(평균 0.36배) 기본 설계들의 중앙값이 예전과 같게 맞춘 값 */ LASER_MW = 100, LASER_WMIN = 1.0, LOSS = .03;
 /* A: 가운데에서 나온 광선(높이 cm, 기울기), B: 광원 가장자리에서 나온 평행 광선 → 빔 반지름 = |A| + |B| */
 const SOURCES = {
   bulb:{id:'bulb', name:'백열전등', price:10, draw:1.0, out:3200, pol:null, s:.5, div:.1, color:'#ffb35c', work:.5, sub:'연속 스펙트럼 · 대부분 적외선 · 밝지만 전기 많이'},
@@ -92,16 +92,21 @@ function traceD(d, distM, polTheta){
   const L = dist - pos; ay += au*L; by += bu*L;
   return {w:Math.abs(ay) + Math.abs(by), t, pol};
 }
-/* 여러 파장 광전관 + 저항 R: 전압 u에서 흐르는 전류 = 정지 전압이 u보다 큰 빛들의 광전류 합. u = I(u)·R 이 되는 점을 찾아요 */
+/* 여러 파장 광전관 + 저항 R (적의 몸 = 금속판, 적의 저항 R)
+   전자가 R에 흐르면 R 양 끝에 u = I·R가 생기고, 이 u가 광전관에 역전압으로 걸린다.
+   한 파장의 전류 = I₀ · panelFrac(u, Kmax)  (평행판 · 운동 에너지 고르게 · cos θ 분포 → 1 − w + w ln w, w = eu/Kmax)
+   → u = R · Σ I₀ · panelFrac(u, Kmax)인 u를 이분법으로 찾는다 (왼쪽은 u가 커질수록 줄고, 오른쪽은 늘어서 답이 하나)
+   sat: 전류가 다 흘렀다면 u가 정지 전압을 넘었을 상황 → 전압이 막혀요(짧은 파장이 필요)
+   (예전 식: 정지 전압이 u보다 큰 빛만 통째로 더함 → 계단) */
 function solveCircuit(lines, R){
-  lines = lines.filter(l => l.V > 0 && l.I > 0).sort((a, b) => b.V - a.V);
-  let C = 0;
-  for (let k = 0; k < lines.length; k++){
-    C += lines[k].I;
-    const vn = k + 1 < lines.length ? lines[k + 1].V : 0, u = Math.min(R*C, lines[k].V);
-    if (u >= vn - 1e-12) return {u, I:C, Itot:lines.reduce((s, l) => s + l.I, 0), sat:R*C >= lines[k].V - 1e-12, V0:lines[0].V};
-  }
-  return {u:0, I:0, Itot:0, sat:false, V0:0};
+  lines = lines.filter(l => l.V > 0 && l.I > 0);
+  if (!lines.length) return {u:0, I:0, Itot:0, sat:false, V0:0};
+  const Itot = lines.reduce((s, l) => s + l.I, 0), V0 = Math.max(...lines.map(l => l.V));
+  const Iat = u => lines.reduce((s, l) => s + l.I*panelFrac(u, l.V), 0);
+  let lo = 0, hi = V0;
+  for (let k = 0; k < 48; k++){ const m = (lo + hi)/2; if (R*Iat(m) > m) lo = m; else hi = m; }
+  const u = (lo + hi)/2;
+  return {u, I:Iat(u), Itot, sat:R*Itot >= V0, V0};
 }
 const kindScale = d => d.kind === 'weapon' ? weaponScale() : d.kind === 'soldier' ? soldierScale() : 1;
 function hitD(d, foe, dist, armor, polTheta, scaleOverride){
@@ -210,30 +215,71 @@ const FLOOR_COST = {3:250, 2:450, 1:700};
 
 /* ═════════ 웨이브 밸런스 (무리함수: 초반에 빨리, 뒤로 갈수록 완만하게) ═════════ */
 const sq = n => Math.sqrt(Math.max(0, n - 1));
-const hpMul = n => 1 + .5*sq(n);
+/* ═════════ 웨이브 곡선 (6.4 · 사용자 아이디어: (지수 + 1) × x · sin x + x)
+   밤 n의 총 체력(기본 몬스터 체력 단위) B(n) = 4·[1 + k(1 − aⁿ)u(n) − k(1 − a)u(1)],  u(n) = n + (P/2π)·sin(2πn/P)
+     · (1 − aⁿ): 처음 몇 밤은 천천히, 그 뒤는 거의 직선 → 30밤쯤 정체하던 √ 곡선을 바꾼다
+     · u(n): 기울기 1 + cos(2πn/P) → 5의 배수 밤 근처에서 가파르게 오르고 그 사이는 평평 (계단 같은 숨 고르기)
+     · a = 0.6: 0.85로 하면 2~4밤이 예전의 60%로 너무 쉬워져서 앞쪽을 조금 빨리 올렸다
+     · 첫 밤 B(1) = 4 (예전과 같음). 5밤 ≈ 18 · 10밤 ≈ 37 · 30밤 ≈ 110 · 60밤 ≈ 215 (예전 16 · 28 · 59 · 102)
+   마리 수 = 총 체력 ÷ 천천히 느는 한 마리 체력(1 + 0.1(n−1)). 40마리에 닿으면 그 뒤는 한 마리 체력이 늘어난다.
+   밤마다 테마(젤리 떼는 많고 약하게 · 골렘 습격은 적고 세게) · 5밤마다 정예(체력 ×4) ═════════ */
+const WAVE_A = .6, WAVE_K = .9, WAVE_P = 5, WAVE_CAP = 40, ELITE_HP = 4;
+const waveU = n => n + WAVE_P/(2*Math.PI)*Math.sin(2*Math.PI*n/WAVE_P);
+const waveB = n => 4*(1 + WAVE_K*(1 - WAVE_A**n)*waveU(n) - WAVE_K*(1 - WAVE_A)*waveU(1));
+const hpBase = n => 1 + .1*(n - 1);   // 0.06이면 마리 수가 너무 빨리 불어나서(10밤 20마리) 새는 적이 성벽을 금방 깬다
+const eliteCount = n => n % 5 === 0 ? Math.min(3, 1 + Math.floor(n/20)) : 0;   // 5밤마다 1마리, 20밤부터 2 · 40밤부터 3
+const WAVE_THEMES = {
+  mix:{name:'섞여서', w:{}},
+  jelly:{name:'젤리 떼', w:{ag:3, cs:2}, count:1.25},
+  knight:{name:'기사 행진', w:{kn:3}, from:5},
+  golem:{name:'골렘 습격', w:{ca:3}, count:.6, from:6},
+};
+function waveTheme(n){ if (n < 4) return 'mix'; const t = ['jelly', 'knight', 'golem', 'mix'][(n - 4) % 4]; return n >= (WAVE_THEMES[t].from || 0) ? t : 'mix'; }
+const waveSize = n => clamp(Math.round(waveB(n)/hpBase(n)*(WAVE_THEMES[waveTheme(n)].count || 1)) - ELITE_HP*eliteCount(n), 3, WAVE_CAP);
+const waveCount = waveSize;
+/* 한 마리 체력 배율 = 총 체력 ÷ (마리 수 + 정예 몫). 정예 한 마리는 보통 ELITE_HP마리 몫 */
+const hpMul = n => waveB(n)/(waveSize(n) + ELITE_HP*eliteCount(n));
 const spdMul = n => 1 + .04*sq(n);
 const rewardMul = n => Math.pow(hpMul(n), .9);
-const waveCount = n => Math.round(4 + 2.2*sq(n));
 function waveList(n){
-  const count = waveCount(n), out = [];
+  const count = waveSize(n), th = WAVE_THEMES[waveTheme(n)], out = [];
   for (let i = 0; i < count; i++){
     const w = [['ag', Math.max(.15, 1 - .25*sq(n))]];
     if (n >= 2) w.push(['cs', .9]);
     if (n >= 3) w.push(['na', .6 + .05*sq(n)]);
     if (n >= 5) w.push(['kn', .3 + .05*sq(n)]);
     if (n >= 6) w.push(['ca', .15 + .05*sq(n)]);
+    for (const q of w) if (th.w[q[0]]) q[1] *= th.w[q[0]] + 1;   // 테마 몬스터가 더 자주
     const tot = w.reduce((t, [, x]) => t + x, 0); let r = Math.random()*tot, type = w[0][0];
     for (const [k, x] of w){ if ((r -= x) <= 0){ type = k; break; } }
     const armor = type === 'kn' ? (n < 8 ? 90 : rnd([0, 45, 90, 90, 135])) : null;
     out.push({type, armor});
   }
-  if (n === 1) for (const o of out) o.type = 'ag';
+  // 정예: 그 밤의 가장 센 종류로, 웨이브 뒤쪽에 섞는다
+  const strong = n >= 6 ? 'ca' : n >= 5 ? 'kn' : n >= 3 ? 'na' : 'cs';
+  for (let i = 0; i < eliteCount(n); i++) out.splice(Math.round(out.length*(.55 + .4*Math.random())), 0, {type:strong, armor:strong === 'kn' ? 90 : null, elite:true});
   return out;
 }
 function waveSummary(n){
   const c = {ag:'젤리', cs:'슬라임', na:'고블린', kn:'기사', ca:'골렘'}, have = [];
   if (n >= 1) have.push(c.ag); if (n >= 2) have.push(c.cs); if (n >= 3) have.push(c.na); if (n >= 5) have.push(c.kn); if (n >= 6) have.push(c.ca);
-  return `약 ${waveCount(n)}마리 · ${have.join(' · ')}${n >= 8 ? ' · 기사 갑옷 각도 섞임' : ''}`;
+  const th = waveTheme(n), ec = eliteCount(n);
+  return `약 ${waveSize(n)}마리${th !== 'mix' ? ` · ${WAVE_THEMES[th].name}` : ''}${ec ? ` · 정예 ${ec}` : ''} · ${have.join(' · ')}${n >= 8 ? ' · 기사 갑옷 각도 섞임' : ''}`;
+}
+
+/* ═════════ 교전 범위 모듈 (6.4): 연구 → 탑마다 구매. Ⅰ 수동 [최소–최대 m] · Ⅱ 설계 반값 폭 구간 자동 · Ⅲ 효율 문턱 ═════════ */
+const RANGE_PRICE = 60, EFF_MIN = .35;
+function rangeOf(T){
+  if (!T || !T.rng) return [0, 100];
+  if (T.rng.auto && G.research.range2){ const b = band(T.design); return b ? [Math.max(0, b[0] - 2), Math.min(100, b[1] + 2)] : [0, 100]; }
+  return [T.rng.min, T.rng.max];
+}
+const peakCache = new WeakMap();
+function peakV(d, type, armor){
+  let m = peakCache.get(d); if (!m){ m = {}; peakCache.set(d, m); }
+  const k = `${type}|${armor}`; if (m[k] != null) return m[k];
+  let best = 0; for (let x = 1; x <= 100; x += 3) best = Math.max(best, hitD(d, FOES[type], x, armor, null).v);
+  return (m[k] = best);
 }
 
 /* ═════════ 상태 ═════════ */
@@ -248,7 +294,7 @@ function newGame(){
     mode:'map', wave:1, gold:400, wallHp:30,
     designs:copy(PRESETS), weapon:copy(PRESETS.find(p => p.id === 'lantern')), nextDesign:1,
     inventory:[], craft:[], soldiers:[], nextSoldier:1,
-    energy:100, research:{}, up:{}, floors:{4:true}, laserExam:false,
+    energy:100, research:{}, up:{}, floors:{4:true}, laserExam:false, exams:{},
     sel:null, placeView:'follow', building:null, dept:'design',
     hero:{x:0, floor:4, route:[], climb:null, yaw:0},
     view:'third', aim:null, aimHeld:false, ride:null,
@@ -264,11 +310,11 @@ const bumpBest = v => { if (v > G.best.dps){ G.best.dps = v; bestDirty = true; }
 
 /* ═════════ 자동 저장 (낮 상태만 저장 · 밤 도중에 꺼지면 그날 낮으로) ═════════ */
 const SAVE_KEY = 'johamin-castle-save-v1';
-const SAVE_FIELDS = ['wave', 'gold', 'wallHp', 'designs', 'weapon', 'nextDesign', 'inventory', 'craft', 'soldiers', 'nextSoldier', 'energy', 'research', 'up', 'floors', 'laserExam', 'learn', 'ptype', 'solved', 'autoSortie', 'panelMetal', 'metals', 'lab', 'chargeU', 'look'];
+const SAVE_FIELDS = ['wave', 'gold', 'wallHp', 'designs', 'weapon', 'nextDesign', 'inventory', 'craft', 'soldiers', 'nextSoldier', 'energy', 'research', 'up', 'floors', 'laserExam', 'exams', 'learn', 'ptype', 'solved', 'autoSortie', 'panelMetal', 'metals', 'lab', 'chargeU', 'look'];
 function snapshot(){
   const o = {v:6, at:Date.now(), nextUid};
   for (const k of SAVE_FIELDS) o[k] = G[k];
-  o.towers = SOCKETS.map(so => so.tower ? {design:so.tower.design, uid:so.tower.uid, auto:so.tower.auto, autoOn:so.tower.autoOn, soldier:so.tower.soldier} : null);
+  o.towers = SOCKETS.map(so => so.tower ? {design:so.tower.design, uid:so.tower.uid, auto:so.tower.auto, autoOn:so.tower.autoOn, soldier:so.tower.soldier, rng:so.tower.rng || null} : null);
   return o;
 }
 let lastSaveStr = '';

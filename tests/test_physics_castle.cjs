@@ -94,5 +94,38 @@ check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정�
     check(worst < .01, `패널 전류 비율이 끊기지 않고 이어져야 해요 (최대 한 걸음 변화 ${worst.toFixed(4)})`);
   }
 }
+
+// 교전 범위 자격 시험(6.4~): 표의 정답이 렌즈 식 · 닮음으로 맞는지, 오답이 정답과 겹치지 않는지
+{
+  const fsrc = fs.readFileSync(path.join(dir, 'js/forge.js'), 'utf8');
+  const m = fsrc.match(/const RANGE_Q = (\{[\s\S]*?\n\});/), wm = fsrc.match(/function wrongs\(ans, cands\)\{[^\n]*\n?/);
+  check(m && wm, 'forge.js에 RANGE_Q와 wrongs가 있어야 해요');
+  if (m && wm){
+    const Q = eval('(' + m[1].replace(/\/\/[^\n]*/g, '') + ')'), wrongs = new Function(`${wm[0]}; return wrongs;`)();
+    for (const [a, f, b] of Q.image) check(Math.abs(1/a + 1/b - 1/f) < 1e-9, `상 거리 문제 a=${a} f=${f} → b=${b}가 렌즈 식과 달라요`);
+    for (const [a, b, f] of Q.focal) check(Math.abs(1/a + 1/b - 1/f) < 1e-9, `초점 거리 문제 a=${a} b=${b} → f=${f}가 렌즈 식과 달라요`);
+    for (const [r, F, D, x] of Q.beam) check(D > F && Math.abs(r*(D - F)/F - x) < 1e-9, `빔 반지름 문제 r=${r} F=${F} D=${D} → ${x}가 닮음과 달라요`);
+    for (const ans of [1, 2, 5, 18, 60]){ const w = wrongs(ans, [ans, ans + 1, ans + 1, -3]); check(w.length === 3 && !w.includes(ans) && new Set(w).size === 3, `오답 고르기(${ans})가 3개 · 서로 다름 · 정답 아님이어야 해요`); }
+  }
+  // 웨이브 곡선: 첫 밤 4, 계속 오른다, 5의 배수 근처가 더 가파르다, 마리 수 상한
+  const csrc = fs.readFileSync(path.join(dir, 'js/core.js'), 'utf8');
+  const blk = csrc.slice(csrc.indexOf('const WAVE_A'), csrc.indexOf('function waveList'));
+  const env = new Function('sq', 'clamp', `${blk}; return {waveB, waveSize, hpMul, eliteCount, ELITE_HP, WAVE_CAP};`)(n => Math.sqrt(Math.max(0, n - 1)), (v, a, b) => Math.max(a, Math.min(b, v)));
+  check(Math.abs(env.waveB(1) - 4) < 1e-9, '웨이브 1의 총 체력은 4 (예전과 같게)');
+  let mono = true; for (let n = 2; n <= 80; n++) if (env.waveB(n) <= env.waveB(n - 1)) mono = false;
+  check(mono, '총 체력은 밤마다 늘어야 해요');
+  check(env.waveB(5) - env.waveB(4) > env.waveB(8) - env.waveB(7), '5밤 근처가 7~8밤 사이보다 가파르게 올라야 해요(계단)');
+  for (let n = 1; n <= 80; n++){ const c = env.waveSize(n); check(c >= 3 && c <= env.WAVE_CAP, `밤 ${n}의 마리 수 ${c}가 3~${env.WAVE_CAP} 밖이에요`); check(Math.abs((c + env.ELITE_HP*env.eliteCount(n))*env.hpMul(n) - env.waveB(n)) < 1e-6, `밤 ${n}: 마리 수 × 체력 ≠ 총 체력`); }
+  // 탑 광전관: solveCircuit이 u = R·I(u)를 풀었는지
+  const sc = csrc.match(/function solveCircuit\(lines, R\)\{[\s\S]*?\n\}/), pf = csrc.match(/const panelFrac = ([^\n]*);/);
+  check(sc && pf, 'core.js에 solveCircuit과 panelFrac이 있어야 해요');
+  if (sc && pf){
+    const panelFrac = eval(pf[1]), solve = new Function('panelFrac', `${sc[0]}; return solveCircuit;`)(panelFrac);
+    for (const [lines, R] of [[[{I:.2, V:1.2}], 3], [[{I:.05, V:.4}, {I:.3, V:2.1}, {I:.1, V:.9}], 6], [[{I:2, V:.7}], 10], [[{I:.001, V:3}], 4]]){
+      const c = solve(lines, R), Iu = lines.reduce((t, l) => t + l.I*panelFrac(c.u, l.V), 0);
+      check(Math.abs(c.u - R*Iu) < 1e-6 && c.u >= 0 && c.u < Math.max(...lines.map(l => l.V)), `탑 회로식이 u = R·I(u)를 못 풀었어요 (R=${R})`);
+    }
+  }
+}
 if (failed){ console.error(`physics castle: ${failed}개 실패`); process.exit(1); }
 console.log('physics castle ok');

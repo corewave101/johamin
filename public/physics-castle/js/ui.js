@@ -298,7 +298,7 @@ document.addEventListener('click', ev => {
   if (ds.ptype != null && b.classList.contains('chip')){ loadProblem(+ds.ptype); fSync(); renderAll(); return; }
   if (ds.lstep){ const v = ds.lstep, k = +v.slice(1), inp = F.prob.inputs[k]; setInput(inp, (+inputVal(inp) || 0) + (v[0] === '+' ? 1 : -1)*inp.step); fSync(); const el = $(`li${k}`); if (el) el.value = inputVal(inp); if (document.querySelector('.res')) learnPanel(); return; }
   if (ds.exq){ const [i, j] = ds.exq.split(':').map(Number); exam[i].pick = j; researchPanel(); return; }
-  if (ds.research){ const r = RESEARCH.find(q => q.id === ds.research); if (!r || G.research[r.id] || G.gold < r.cost || (r.req && !G.research[r.req]) || (r.exam && !G.laserExam)) return; G.gold -= r.cost; G.research[r.id] = true; hint(`${r.name} 연구 완료`); fSync(); renderAll(); return; }
+  if (ds.research){ const r = RESEARCH.find(q => q.id === ds.research); if (!r || G.research[r.id] || G.gold < r.cost || (r.req && !G.research[r.req]) || (r.exam && !examPassed(examKind(r)))) return; G.gold -= r.cost; G.research[r.id] = true; hint(`${r.name} 연구 완료`); fSync(); renderAll(); return; }
   if (ds.up){ const u = UPG[ds.up], lv = up(ds.up); if (!u || lv >= u.max || G.gold < u.cost(lv)) return; G.gold -= u.cost(lv); G.up[ds.up] = lv + 1; if (ds.up === 'wallHp') G.wallHp += 10; if (ds.up === 'battery') G.energy = Math.min(batteryCap(), G.energy); hint(`${u.name} Lv.${lv + 1}`); renderAll(); return; }
   if (ds.craft){ startCraft(ds.craft); renderAll(); return; }
   if (ds.equip){ const it = G.inventory.find(q => q.uid === +ds.equip); if (!it) return; G.inventory = G.inventory.filter(q => q !== it); G.inventory.push({uid:nextUid++, design:copy(G.weapon)}); G.weapon = copy(it.design); hint(`${G.weapon.name} 장착`); renderAll(); return; }
@@ -458,9 +458,10 @@ window.addEventListener('pagehide', () => { try { saveBest(); saveGame(); } catc
 document.addEventListener('visibilitychange', () => { if (document.hidden){ try { saveBest(); saveGame(); } catch(e){} } });
 function applySave(o){
   for (const k of SAVE_FIELDS) if (o[k] !== undefined) G[k] = o[k];
+  G.exams = G.exams || {};
   nextUid = Math.max(nextUid, o.nextUid || 1);
   for (const s of G.soldiers){ s.down = false; if (s.role === 'tower') s.role = 'idle'; s.sock = null; }
-  (o.towers || []).forEach((t, i) => { const so = SOCKETS[i]; if (!t || !so || !built(so.floor)) return; placeTower(so, {uid:t.uid, design:t.design}, t.auto); so.tower.autoOn = t.autoOn !== false;
+  (o.towers || []).forEach((t, i) => { const so = SOCKETS[i]; if (!t || !so || !built(so.floor)) return; placeTower(so, {uid:t.uid, design:t.design}, t.auto); so.tower.autoOn = t.autoOn !== false; so.tower.rng = t.rng || null;
     const s = G.soldiers.find(q => q.id === t.soldier); if (s){ s.role = 'tower'; s.sock = i; setOperator(so.tower, s); } });
   updateFloors(); G.mode = 'map'; G.wallHp = Math.min(G.wallHp, wallMax());
 }
