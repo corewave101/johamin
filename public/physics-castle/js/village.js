@@ -141,14 +141,31 @@ function labLines(){
 const labIsat = () => labLines().reduce((s, q) => s + q.I, 0);
 const labV0 = () => { const q = labLines(); return q.length ? Math.max(...q.map(z => z.V)) : 0; };
 /* x = 검출판 전위 − 금속판 전위. 음수면 역전압 */
-/* 광전류–전압: 역전압 u에서는 운동 에너지가 eu보다 큰 전자만 넘어가서 0 → 0 V까지 서서히 늘고(정지 전압에서 0),
-   0 V보다 높으면 검출판이 전자를 더 많이 모아서 포화 전류로 다가간다. 계단 모양이 아니다. */
-const LAB_A = .55, LAB_U0 = .35;
-function labI(x){
-  const l = LS(); if (!l.closed) return 0; const q = labLines();
-  if (x >= 0) return q.reduce((s, z) => s + z.I*(1 - (1 - LAB_A)*Math.exp(-x/LAB_U0)), 0);
-  return q.reduce((s, z) => s + (z.V > -x ? z.I*LAB_A*(1 + x/z.V)**2 : 0), 0);
+/* 광전류–전압 (실제 식)
+   광전관 모형: 금속판(음극) = 반지름 R인 오목한 구면, 검출판(양극) = 그 가운데 반지름 r인 작은 공. LAB_K = (r/R)²
+   · 광전자는 운동 에너지 K가 0 ~ Kmax(= E − W)에 고르게, 방향은 cos θ(램버트) 분포로 튀어나온다
+   · 에너지 보존 + 중심 둘레 각운동량 보존 → 검출판에 닿을 조건: sin²θ ≤ k(1 + eV/K)   (V = 검출판 − 금속판 전위)
+     (반지름 방향 운동 에너지는 1/ρ에 대해 위로 볼록 → 가장 작은 곳은 두 끝 중 하나이고, 금속판 쪽은 K cos²θ ≥ 0이라 검출판 표면 조건만 보면 된다)
+   · 램버트 분포에서 sin²θ ≤ s 인 전자의 비율 = s → 에너지 K인 전자가 모이는 비율 f(K) = min(1, max(0, k(1 + eV/K)))
+   · K로 평균하면 (u = eV, w = −u/Kmax)
+       역전압 u < 0 : I/I포화 = k(1 − w + w·ln w)  → u = −Kmax(정지 전압)에서 0, 기울기도 0으로 부드럽게 닿는다
+       정전압 u ≥ 0 : Kc = k·u/(1 − k). Kc < Kmax 이면 I/I포화 = [Kc + k(Kmax − Kc) + k·u·ln(Kmax/Kc)]/Kmax,
+                      Kc ≥ Kmax(u ≥ Kmax(1 − k)/k)이면 1 → 모든 전자가 모이는 포화
+     두 식은 u = 0에서 둘 다 k로 이어진다 */
+const LAB_K = .4;
+function labFrac(u, Km){
+  if (Km <= 0 || u <= -Km) return 0;
+  if (u < 0){ const w = -u/Km; return LAB_K*(1 - w + w*Math.log(w)); }
+  if (u === 0) return LAB_K;
+  const Kc = LAB_K*u/(1 - LAB_K); if (Kc >= Km) return 1;
+  return (Kc + LAB_K*(Km - Kc) + LAB_K*u*Math.log(Km/Kc))/Km;
 }
+function labI(x){
+  const l = LS(); if (!l.closed) return 0;
+  return labLines().reduce((s, z) => s + z.I*labFrac(x, z.V), 0);
+}
+/* 정지 전압 근처에서는 전류가 아주 작아져서 μA 둘째 자리로는 0으로 보인다 → 작으면 nA로 보여 준다 */
+const fmtI = I => I >= .1 ? `${I.toFixed(2)} μA` : I*1000 >= .1 ? `${(I*1000).toFixed(I*1000 >= 10 ? 0 : 1)} nA` : I > 0 ? '0.1 nA 미만' : '0 μA';
 const r2 = v => Math.round(v*100)/100;
 function noteSeen(){ const l = LS(); l.seen[l.light ? (l.closed ? 'onC' : 'onO') : 'off'] = true; }
 
@@ -228,7 +245,7 @@ function syncLab(){
 function updateLab(dt){
   const l = LS(), q = labLines(), Isat = q.reduce((s, z) => s + z.I, 0), V0 = labV0(), g = sLab.userData;
   const x = l.closed ? l.x : -V0;   // 열린 회로: 검출판에 전자가 쌓여 정지 전압만큼 역전압이 생김
-  g.am.userData.set('전류계', l.closed ? `${labI(l.x).toFixed(2)} μA` : '0.00 μA', '#7fd3ff');
+  g.am.userData.set('전류계', l.closed ? fmtI(labI(l.x)) : '0 μA', '#7fd3ff');
   g.vm.userData.set(l.closed ? '전압 (검출판 − 금속판)' : '회로 열림 · 전압계', `${(l.closed ? l.x : -V0).toFixed(2)} V`, l.closed ? '#ffd166' : '#ff8a3d');
   const color = new THREE.Color(nmColor(l.src));
   if (l.light){ labFx.spawn += dt*(4 + 10*l.inten/100);
@@ -302,7 +319,7 @@ function recordV0(){
   const l = LS();
   if (!l.light || !l.closed){ hint('빛을 켜고 회로를 연결해야 전류를 잴 수 있어요'); return; }
   const V0 = labV0(); if (!V0){ hint(`전자가 안 나와요 · 광자 에너지가 일함수 ${METALS[l.metal].W} eV보다 작아요`); return; }
-  if (Math.abs(-l.x - V0) > .021){ hint(`전류가 막 0이 되는 전압을 찾아요 · 지금 I = ${labI(l.x).toFixed(2)} μA`); return; }
+  if (Math.abs(-l.x - V0) > .021){ hint(`전류가 막 0이 되는 전압을 찾아요 · 지금 I = ${fmtI(labI(l.x))}`); return; }
   const rec = {metal:l.metal, src:l.src, inten:l.inten, basis:l.basis, V0:r2(V0), Isat:r2(labIsat())};
   G.lab.recs = (G.lab.recs || []).filter(r => !(r.metal === rec.metal && r.src === rec.src && r.inten === rec.inten && r.basis === rec.basis)).concat(rec).slice(-24);
   hint(`기록: 정지 전압 ${rec.V0.toFixed(2)} V · 포화 전류 ${rec.Isat.toFixed(2)} μA`); solarPanel();
@@ -392,7 +409,7 @@ function labLive(){
   const el = $('labLive'); if (!el) return; const l = LS(), V0 = labV0(), E = l.src === 'sun' ? null : 1240/l.src;
   el.innerHTML = `${E ? `광자 에너지 E = 1240 / ${l.src} = <b>${E.toFixed(2)} eV</b>` : '햇빛: 여러 파장이 섞인 빛'} · 일함수 W = ${METALS[l.metal].W} eV<br>` +
     (!l.light ? '빛이 꺼져 있어요 → 전류도 전압도 없어요' : !l.closed ? `회로가 열려 있어요 → 전류는 0, 검출판에 전자가 쌓여서 전압계는 정지 전압 <b>${V0.toFixed(2)} V</b>를 가리켜요` :
-     !V0 ? '<span class="warn">E &lt; W → 광전자가 안 나와요. 세기를 올려도 그대로예요.</span>' : `광전류 I = <b>${labI(l.x).toFixed(2)} μA</b> · 포화 전류 ${labIsat().toFixed(2)} μA`);
+     !V0 ? '<span class="warn">E &lt; W → 광전자가 안 나와요. 세기를 올려도 그대로예요.</span>' : `광전류 I = <b>${fmtI(labI(l.x))}</b> · 포화 전류 ${labIsat().toFixed(2)} μA`);
   const xv = $('labXv'); if (xv) xv.textContent = `${l.x.toFixed(2)} V`;
 }
 document.addEventListener('click', ev => {

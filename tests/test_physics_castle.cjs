@@ -62,5 +62,23 @@ check(/castle_scores enable row level security/.test(sql) && !/create policy[^;]
 check(!/email/i.test(sql.replace(/--[^\n]*/g, '')), '랭킹 표에 이메일을 저장하지 않아요');
 check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정보처리방침에 랭킹(별명 · 기록)을 적어야 해요');
 
+
+// 광전류–전압 곡선(6.3.1~): village.js의 닫힌 식 labFrac이 모형의 정의를 그대로 적분한 값과 같은지 다시 계산한다.
+// 정의: 운동 에너지 K ~ 고르게(0..Kmax), 모이는 비율 f(K) = min(1, max(0, k(1 + u/K)))   (u = eU)
+{
+  const vsrc = fs.readFileSync(path.join(dir, 'js/village.js'), 'utf8');
+  const kM = vsrc.match(/const LAB_K = ([\d.]+);/), fM = vsrc.match(/function labFrac\(u, Km\)\{[\s\S]*?\n\}/);
+  check(kM && fM, 'village.js에 LAB_K와 labFrac이 있어야 해요');
+  if (kM && fM){
+    const LAB_K = +kM[1], labFrac = new Function('LAB_K', `${fM[0]}; return labFrac;`)(LAB_K);
+    const numeric = (u, Km) => { const n = 20000; let s = 0; for (let i = 0; i < n; i++){ const K = (i + .5)/n*Km; s += Math.min(1, Math.max(0, LAB_K*(1 + u/K))); } return s/n; };
+    let worst = 0;
+    for (const Km of [.15, .38, 1, 2.3]) for (let u = -Km*1.1; u <= 2.2; u += Km/37) worst = Math.max(worst, Math.abs(labFrac(u, Km) - numeric(u, Km)));
+    check(worst < 2e-3, `광전류 닫힌 식이 정의를 적분한 값과 달라요 (최대 차이 ${worst.toFixed(4)})`);
+    check(labFrac(-.38, .38) === 0 && labFrac(-.5, .38) === 0, '정지 전압 이하에서는 전류 0');
+    check(Math.abs(labFrac(-1e-9, .38) - LAB_K) < 1e-6 && Math.abs(labFrac(1e-9, .38) - LAB_K) < 1e-6, '0 V에서 양쪽 식이 k로 이어져야 해요');
+    check(labFrac(.38*(1 - LAB_K)/LAB_K + 1e-6, .38) === 1, '포화 전압 이상에서는 포화 전류');
+  }
+}
 if (failed){ console.error(`physics castle: ${failed}개 실패`); process.exit(1); }
 console.log('physics castle ok');
