@@ -80,5 +80,19 @@ check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정�
     check(labFrac(.38*(1 - LAB_K)/LAB_K + 1e-6, .38) === 1, '포화 전압 이상에서는 포화 전류');
   }
 }
+
+// 발전 패널(6.3.2~): 평행판 광전관 → 한 파장의 전류 비율 panelFrac = 1 − w + w ln w (계단 식이 아님)
+{
+  const csrc = fs.readFileSync(path.join(dir, 'js/core.js'), 'utf8');
+  const m = csrc.match(/const panelFrac = ([^\n]*);/);
+  check(m, 'core.js에 panelFrac이 있어야 해요');
+  check(!/const currentAt = \(L, U\) => L\.filter\(l => l\.V > U\)/.test(csrc), '패널 전류를 계단 식(정지 전압이 U보다 큰 빛만 통째로)으로 더하지 않아요');
+  if (m){
+    const f = eval(m[1]); let worst = 0, prev = f(0, .8);
+    for (let U = .001; U < .8; U += .001){ const v = f(U, .8); worst = Math.max(worst, Math.abs(v - prev)); prev = v; }
+    check(f(0, .8) === 1 && f(.8, .8) === 0, '패널: U = 0이면 전부, U = Kmax면 0');
+    check(worst < .01, `패널 전류 비율이 끊기지 않고 이어져야 해요 (최대 한 걸음 변화 ${worst.toFixed(4)})`);
+  }
+}
 if (failed){ console.error(`physics castle: ${failed}개 실패`); process.exit(1); }
 console.log('physics castle ok');

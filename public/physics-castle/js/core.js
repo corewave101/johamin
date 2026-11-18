@@ -165,7 +165,7 @@ const UPG = {
 const CRAFT_SPD = [1, 1.5, 2, 3];
 const up = id => G.up[id] || 0;
 const panelsN = () => 3 + up('panels');
-/* ═════════ 광전 패널 (22번): 금속판 → 광전자 → 검출판. 충전 전압 U에서 전류 = 정지 전압이 U보다 큰 빛들의 광전류 ═════════ */
+/* ═════════ 광전 패널 (22번): 금속판 → 광전자 → 검출판. 충전 전압 U에서 전류 = 각 파장 광전류 × panelFrac (아래) ═════════ */
 const SUN = (() => { const o = []; for (let nm = 300; nm <= 2500; nm += 5) o.push([nm, 1/(Math.pow(nm, 5)*(Math.exp(1.4388e7/(nm*5800)) - 1))]); return normSpec(o); })();
 const METALS = {
   na:{name:'나트륨', W:2.3, color:'#f2c14e', need:0},
@@ -175,13 +175,20 @@ const METALS = {
 };
 const DROP_METAL = {ag:'ag', cs:'cs', na:'na', kn:'na', ca:'ca'};
 const PANEL_K = 1280, PN_U = .55, PN_EG = 1.1;
+/* 금속판 패널 한 장 = 평행판 광전관. 충전 전압 U를 거슬러 반대쪽 판에 닿은 전자만 충전한다.
+   전자: 운동 에너지 0 ~ Kmax(= E − W)에 고르게, 방향 cos θ 분포. 평행판에서는 판에 수직인 운동 에너지 K cos²θ ≥ eU여야 닿는다
+   → 한 파장의 전류 비율 = 1 − w + w ln w  (w = eU/Kmax; 실험실 광전관 식 labFrac에서 k = 1인 경우)
+   (예전 식은 정지 전압이 U보다 큰 빛만 통째로 더해서 그래프가 5 nm 간격 계단이었다)
+   PANEL_KM: 나트륨 패널이 기본 충전 전압 0.5 V에서 예전(0.3 V, 계단 식)과 같은 하루 충전량이 되게 맞춘 값 */
+const PANEL_KM = 7646, U_DEFAULT = .5;
+const panelFrac = (U, Km) => U <= 0 ? 1 : U >= Km ? 0 : (w => 1 - w + w*Math.log(w))(U/Km);
 const labOk = k => !!(G.lab && G.lab[k]);
 function sunLines(W, sc = 1){ return SUN.filter(([nm]) => 1240/nm > W).map(([nm, w]) => ({I:sc*w/(1240/nm), V:1240/nm - W, nm})); }
-const currentAt = (L, U) => L.filter(l => l.V > U).reduce((s, l) => s + l.I, 0);
-const chargeU = () => labOk('cond') ? G.chargeU : .3;
+const currentAt = (L, U) => L.reduce((s, l) => s + l.I*panelFrac(U, l.V), 0);
+const chargeU = () => labOk('cond') ? G.chargeU : U_DEFAULT;
 function panelPower(metal = G.panelMetal, U = chargeU()){
   if (labOk('pn')) return PANEL_K*PN_U*SUN.filter(([nm]) => 1240/nm > PN_EG).reduce((s, [nm, w]) => s + w/(1240/nm), 0);
-  return PANEL_K*U*currentAt(sunLines(METALS[metal].W), U);
+  return PANEL_KM*U*currentAt(sunLines(METALS[metal].W), U);
 }
 function bestU(metal = G.panelMetal){ let b = 0, bu = 0; for (let U = 0; U <= 3.2; U += .01){ const p = panelPower(metal, U); if (p > b){ b = p; bu = U; } } return {U:bu, P:b}; }
 const dayCharge = () => panelsN()*panelPower();
@@ -249,7 +256,7 @@ function newGame(){
     sortie:null, sortieUsed:false, sortieResult:null, floats:[], anim:null,
     learn:true, ptype:0, solved:{}, winOpen:true, showSettings:false,
     autoSortie:'off', tSel:null,
-    panelMetal:'na', metals:{na:0, cs:0, ag:0, ca:0}, lab:{recs:[]}, chargeU:.3,
+    panelMetal:'na', metals:{na:0, cs:0, ag:0, ca:0}, lab:{recs:[]}, chargeU:U_DEFAULT,
     stick:{x:0, y:0}, keys:{}, settings:loadSettings(), best:loadBest(), report:null,
   };
 }

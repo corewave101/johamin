@@ -51,7 +51,7 @@ function tSync(){
   for (const s of G.soldiers.filter(q => q.role === 'sortie')){ if (!s.slot || slotTaken(s.slot[0], s.slot[1], s)) s.slot = freeSlot() || [0, 4]; put(s, slotPos(s.slot[0], s.slot[1])); }
   idle.forEach((s, i) => put(s, V(BARRACK.x0 + 1.1 + (i % 3)*1.9, 0, BARRACK.z0 + 1.6 + Math.floor(i/3)*2.1)));
   duty.forEach((s, i) => put(s, V(DUTY.x0 + 1.1 + (i % 3)*1.9, 0, DUTY.z0 + 1.6 + Math.floor(i/3)*2.1)));
-  if (!G.soldiers.length){ const l = label(['아직 쫄병이 없어요', '아래 모집 버튼으로 뽑아요'], {size:22, color:'#fff', sub:'#ffd9b8', bg:'rgba(11,18,32,.85)', h:.026}); l.position.set(0, 1.5, 0); tDyn.add(l); }
+  if (!G.soldiers.length){ const l = label(['아직 쫄병이 없어요', '🪖 모집 표지판으로 뽑아요'], {size:22, color:'#fff', sub:'#ffd9b8', bg:'rgba(11,18,32,.85)', h:.026}); l.position.set(0, 1.5, 0); tDyn.add(l); }
 }
 const tPlane = new THREE.Plane(V(0, 1, 0), 0);
 /* 손가락이 조금 빗나가도 잡히게: 직접 맞히기 → 바닥에서 가장 가까운 쫄병(1.4칸 안) */
@@ -232,7 +232,7 @@ function sSync(){
   const gauge = new THREE.Mesh(new THREE.CylinderGeometry(.55, .55, 3, 20, 1, true), new THREE.MeshBasicMaterial({color:0x9fb6c9, transparent:true, opacity:.3, side:THREE.DoubleSide})); gauge.position.set(8.4, 1.5, -.6); sDyn.add(gauge);
   const fill = new THREE.Mesh(new THREE.CylinderGeometry(.48, .48, 3*Math.max(.02, lv), 20), new THREE.MeshStandardMaterial({color:0x7fd3ff, emissive:0x2a90c8, emissiveIntensity:.6})); fill.position.set(8.4, 1.5*Math.max(.02, lv), -.6); sDyn.add(fill);
   const bl = label(`${Math.floor(G.energy)} / ${batteryCap()} ⚡`, {size:20, color:'#fff', bg:'rgba(11,18,32,.85)', h:.026, bold:true}); bl.position.set(8.4, 4.4, -.6); sDyn.add(bl);
-  const pl = label([`${labOk('pn') ? 'p-n 반도체' : METALS[G.panelMetal].name + ' 금속판'} 패널 ${panelsN()}장`, `낮마다 +${dayCharge().toFixed(0)} ⚡`], {size:20, color:'#fff', sub:'#cfe3b5', bg:'rgba(11,18,32,.8)', h:.026}); pl.position.set(-6.5, 3.6, -10.5); sDyn.add(pl);
+  // 패널 이름표는 표지판(발전 패널)이 대신한다. 3D 이름표는 만들 때 값이 굳어서 숫자가 어긋났다
   syncLab();
 }
 function syncLab(){
@@ -312,7 +312,7 @@ function submitLab(id){
   LS().msg[key] = '';
   if (R.cost) G.gold -= R.cost;
   if (id === 'B'){ G.lab['B_' + m] = true; G.lab.B = true; } else G.lab[id] = true;
-  if (id === 'cond') G.chargeU = .3;
+  if (id === 'cond') G.chargeU = U_DEFAULT;
   hint(`${LAB_NAMES[id]} 완료! ${R.reward}`); sSync(); renderAll();
 }
 function recordV0(){
@@ -350,15 +350,17 @@ function drawV0f(cv){
   g.fillStyle = '#8e98b0'; g.font = '10px "JetBrains Mono", monospace'; g.textAlign = 'center'; for (const f of [4, 6, 8, 10]) g.fillText(`${f}`, xs(f), h - 5);
   g.textAlign = 'right'; g.fillText('f (×10¹⁴ Hz)', w - pad.r, h - pad.b - 4);
 }
+/* 충전 전압 그래프 · 슬라이더 범위: 전력이 거의 0(최대의 3%)이 되는 곳까지 (끝까지 그리면 곡선이 왼쪽에 찌그러진다) */
+function puRange(mt = G.panelMetal){ const V0 = 1240/300 - METALS[mt].W, pk = bestU(mt); let x = .5; while (x < V0 && panelPower(mt, x) > pk.P*.03) x += .1; return +Math.min(x, Math.max(.5, V0)).toFixed(1); }
 function drawPU(cv){
-  if (!cv) return; const {g, w, h} = plotSetup(cv), pad = {l:30, r:8, t:12, b:20}, mt = G.panelMetal, V0 = METALS[mt].W ? 1240/300 - METALS[mt].W : 2, x1 = Math.max(.5, V0);
+  if (!cv) return; const {g, w, h} = plotSetup(cv), pad = {l:30, r:8, t:12, b:20}, mt = G.panelMetal, x1 = puRange(mt);
   const pts = []; let mx = 0; for (let i = 0; i <= 160; i++){ const U = x1*i/160, p = panelPower(mt, U); pts.push([U, p]); mx = Math.max(mx, p); }
   const xs = U => pad.l + U/x1*(w - pad.l - pad.r), ys = p => h - pad.b - p/Math.max(1, mx)*(h - pad.t - pad.b);
   g.strokeStyle = '#26324d'; g.beginPath(); g.moveTo(pad.l, pad.t); g.lineTo(pad.l, h - pad.b); g.lineTo(w - pad.r, h - pad.b); g.stroke();
   g.strokeStyle = '#ffd166'; g.lineWidth = 2; g.beginPath(); pts.forEach(([U, p], i) => i ? g.lineTo(xs(U), ys(p)) : g.moveTo(xs(U), ys(p))); g.stroke(); g.lineWidth = 1;
   const cur = panelPower(mt, G.chargeU); g.fillStyle = '#ff8a3d'; g.beginPath(); g.arc(xs(G.chargeU), ys(cur), 4.5, 0, Math.PI*2); g.fill();
-  g.fillStyle = '#8e98b0'; g.font = '10px "JetBrains Mono", monospace'; g.textAlign = 'center'; for (let U = 0; U <= x1 + 1e-9; U += .5) g.fillText(`${U.toFixed(1)}V`, xs(U), h - 5);
-  g.textAlign = 'left'; g.fillText('패널 1장 하루 충전 (전력 = U × I)', pad.l + 4, pad.t + 8);
+  g.fillStyle = '#8e98b0'; g.font = '10px "JetBrains Mono", monospace'; g.textAlign = 'center'; const tk = x1 > 1.2 ? .5 : .2; for (let U = 0; U <= x1 + 1e-9; U += tk) g.fillText(`${U.toFixed(1)}V`, xs(U), h - 5);
+  g.textAlign = 'right'; g.fillText('패널 1장 하루 충전 (전력 = U × I)', w - pad.r - 4, pad.t + 8);
 }
 /* ── 창 ── */
 function solarPanel(){
@@ -372,7 +374,7 @@ function solarPanel(){
         <div class="row"><span>배터리</span><b>${Math.floor(G.energy)} / ${batteryCap()} ⚡</b></div></div>
       <div class="eq">${pn ? 'p-n 태양전지: 빛을 흡수하면 반도체 안에 전자–양공 쌍이 생기고, 접합부 전기장이 전자는 n형, 양공은 p형으로 보내 전압과 전류를 만들어요. 금속판보다 빛을 훨씬 많이 전기로 바꿔요.' : `금속판 패널 = 광전관: 햇빛 광자가 금속판에서 전자를 떼어 내고, 전자가 검출판에 모여 배터리로 흘러요. 배터리 전압 U가 역전압 역할을 해서, 정지 전압이 U보다 큰 전자만 넘어가요.<br>밤엔 빛이 없어서 아무것도 안 생겨요 → 낮에 모아 밤에 써요.`}</div>
       ${!pn && labOk('cond') ? `<div class="range"><label for="chgU">충전 전압 U <b>${G.chargeU.toFixed(2)} V</b></label><input id="chgU" type="range" min="0" max="${(1240/300 - METALS[G.panelMetal].W).toFixed(2)}" step="0.01" value="${G.chargeU}"></div>
-        <canvas id="puPlot" class="spec" aria-label="충전 전압과 전력"></canvas><p class="muted">U가 너무 낮으면 전류는 많아도 전압이 작고, 너무 높으면 넘어오는 전자가 줄어요. 전력 = U × I가 최대인 곳을 찾아요. ${G.lab.A ? `(최대 약 ${bu.U.toFixed(2)} V)` : ''}</p>` : !pn ? '<p class="muted">충전 전압은 0.3 V로 고정이에요. 연구 탭의 "회로 조건표"를 끝내면 직접 조절해요.</p>' : ''}
+        <canvas id="puPlot" class="spec" aria-label="충전 전압과 전력"></canvas><p class="muted">U가 너무 낮으면 전류는 많아도 전압이 작고, 너무 높으면 넘어오는 전자가 줄어요. 전력 = U × I가 최대인 곳을 찾아요. ${G.lab.A ? `(최대 약 ${bu.U.toFixed(2)} V)` : ''}</p>` : !pn ? '<p class="muted">충전 전압은 0.5 V로 고정이에요. 연구 탭의 "회로 조건표"를 끝내면 직접 조절해요.</p>' : ''}
     </div>
     ${pn ? '' : `<div class="sec"><h2>패널 금속 · 적이 떨어뜨린 조각으로 도금</h2><div class="rows">${['na', 'cs', 'ag'].map(k => { const M = METALS[k], have = G.metals[k] || 0, on = G.panelMetal === k, meas = k === 'na' || G.lab['B_' + k];
       return `<div class="row"><span><b style="color:var(--ink);font-family:var(--f-body)">${M.name}</b> W ${M.W} eV · 조각 ${have}개<br>${on ? '사용 중' : !meas ? '연구 탭 탐구 B로 일함수를 먼저 재요' : `도금에 조각 ${M.need}개 · 하루 ${(panelsN()*panelPower(k)).toFixed(0)} ⚡ 예상`}</span>${on ? '<b>사용 중</b>' : `<button class="btn" type="button" data-plate="${k}" ${meas && have >= M.need ? '' : 'disabled'}>도금</button>`}</div>`; }).join('')}
@@ -382,7 +384,7 @@ function solarPanel(){
     const V0 = labV0(), E = l.src === 'sun' ? null : 1240/l.src;
     h = `<div class="sec">
       <h2>빛</h2><div class="seg"><button type="button" data-lsrc="sun" aria-pressed="${l.src==='sun'}">햇빛</button>${LAB_NMS.map(nm => `<button type="button" data-lsrc="${nm}" aria-pressed="${l.src===nm}"><i style="background:${nmColor(nm)}"></i>${nm}</button>`).join('')}</div>
-      <div class="range"><label for="labInt">빛의 세기 <b>${l.inten}%</b></label><input id="labInt" type="range" min="25" max="100" step="25" value="${l.inten}"></div>
+      <div class="range"><label for="labInt">빛의 세기 <b>${l.inten}%</b></label><span class="seg inten">${[25, 50, 75, 100].map(v => `<button type="button" data-linten="${v}" aria-pressed="${l.inten === v}">${v}%</button>`).join('')}</span></div>
       ${l.src === 'sun' ? '' : `<div class="seg"><button type="button" data-lbasis="power" aria-pressed="${l.basis==='power'}">광출력 기준</button><button type="button" data-lbasis="photon" aria-pressed="${l.basis==='photon'}">입사 광자 수 기준</button></div>`}
       <h2>금속판</h2><div class="seg">${labMetals().map(k => `<button type="button" data-lmetal="${k}" aria-pressed="${l.metal===k}"><i style="background:${METALS[k].color}"></i>${METALS[k].name}</button>`).join('')}</div>
       <p class="muted">${labMetals().length < 4 ? '적이 떨어뜨린 금속 조각이 있으면 그 금속도 실험할 수 있어요.' : ''}</p>
@@ -416,6 +418,7 @@ document.addEventListener('click', ev => {
   const b = ev.target.closest('button'); if (!b || G.mode !== 'solar') return; const d = b.dataset, l = LS();
   if (d.ltab){ l.tab = d.ltab; solarPanel(); return; }
   if (d.lsrc){ l.src = d.lsrc === 'sun' ? 'sun' : +d.lsrc; syncLab(); solarPanel(); return; }
+  if (d.linten){ l.inten = +d.linten; syncLab(); solarPanel(); return; }
   if (d.lbasis){ l.basis = d.lbasis; solarPanel(); return; }
   if (d.lmetal){ l.metal = d.lmetal; syncLab(); solarPanel(); return; }
   if (d.lact === 'light'){ l.light = !l.light; noteSeen(); syncLab(); solarPanel(); return; }

@@ -357,7 +357,7 @@ window.fRenderEditor = function(){
   } else if (k === 'pump' && fIsLaser()){
     h = `<div class="ed-head"><h3>펌핑 램프</h3></div><div class="seg">${PUMPS.filter(pumpOk).map(q => `<button type="button" aria-pressed="${F.pump === q.lv}" data-fpump="${q.lv}">${q.label}</button>`).join('')}</div>${calcBox()}<canvas id="rplot" class="spec" aria-label="반사율과 출력 그래프"></canvas>`;
   } else if (k === 'mirror' && fIsLaser()){
-    h = `<div class="ed-head"><h3>출력 거울</h3><span>심화 · 시험 범위 밖</span></div><div class="range"><label for="sR">반사율 R <b id="vR"></b></label><input id="sR" type="range" min="60" max="99" step="1" value="${Math.round(F.R*100)}"></div>
+    h = `<div class="ed-head"><h3>출력 거울</h3><span>심화 · 시험 범위 밖</span></div><div class="range"><label for="sR">반사율 R <b id="vR"></b></label><span class="rng"><input id="sR" type="range" min="60" max="99" step="1" value="${Math.round(F.R*100)}"><span class="rng-e"><i>60%</i><i>99%</i></span></span></div>
       <canvas id="rplot" class="spec" aria-label="반사율과 출력 그래프"></canvas>${calcBox()}`;
   } else if (k === 'barrel'){
     h = `<div class="ed-head"><h3>경통 · ${F.barrel} cm</h3></div><div class="seg">${BARRELS.map(b => `<button type="button" data-fbar="${b.L}" aria-pressed="${F.barrel === b.L}" ${F.kind === 'weapon' && b.L > 40 ? 'disabled' : ''}>${b.L}cm${b.price ? ` · ${b.price}G` : ''}</button>`).join('')}</div>
@@ -635,9 +635,9 @@ window.solarPanel = function(){
     const pn = labOk('pn'), bu = bestU();
     paintDock(solarSeg() + dgrp('', cBat()) + dgrp('', dk(`data-act="upgSolar" aria-pressed="${UI.page === 'upg-solar'}"`, '발전단지 업그레이드')));
     paintPop('power', {fixed:'right'}, `<div class="ed-head"><h3>${pn ? 'p-n 반도체' : METALS[G.panelMetal].name + ' 금속판'} 패널</h3><span>${pn ? '' : `W ${METALS[G.panelMetal].W} eV`}</span></div>
-      <div class="eq">${pn ? 'p-n 태양전지: 빛을 흡수하면 전자–양공 쌍이 생기고, 접합부 전기장이 전자는 n형, 양공은 p형으로 보내 전압과 전류를 만들어요.' : `금속판 패널 = 광전관: 햇빛 광자가 금속판에서 전자를 떼어 내고, 전자가 검출판에 모여 배터리로 흘러요. 배터리 전압 U가 역전압 역할을 해서 정지 전압이 U보다 큰 전자만 넘어가요.`}</div>
-      ${!pn && labOk('cond') ? `<div class="range"><label for="chgU">충전 전압 U <b>${G.chargeU.toFixed(2)} V</b></label><input id="chgU" type="range" min="0" max="${(1240/300 - METALS[G.panelMetal].W).toFixed(2)}" step="0.01" value="${G.chargeU}"></div>
-        <canvas id="puPlot" class="spec" aria-label="충전 전압과 전력"></canvas><p class="muted">전력 = U × I가 최대인 곳을 찾아요. ${G.lab.A ? `(최대 약 ${bu.U.toFixed(2)} V)` : ''}</p>` : !pn ? '<p class="muted">충전 전압은 0.3 V로 고정이에요. 연구의 "회로 조건표"를 끝내면 직접 조절해요.</p>' : ''}
+      <div class="eq">${pn ? 'p-n 태양전지: 빛을 흡수하면 전자–양공 쌍이 생기고, 접합부 전기장이 전자는 n형, 양공은 p형으로 보내 전압과 전류를 만들어요.' : `금속판 패널 = 광전관: 햇빛 광자가 금속판에서 전자를 떼어 내고, 전자가 검출판에 모여 배터리로 흘러요. 배터리 전압 U가 역전압 역할을 해서, 판에 수직인 운동 에너지가 eU보다 큰 전자만 넘어가요. 그래서 U를 올리면 전압은 커지지만 넘어가는 전자는 줄어요.`}</div>
+      ${!pn && labOk('cond') ? `<div class="range"><label for="chgU">충전 전압 U <b>${G.chargeU.toFixed(2)} V</b></label><input id="chgU" type="range" min="0" max="${puRange()}" step="0.01" value="${Math.min(G.chargeU, puRange())}"></div>
+        <canvas id="puPlot" class="spec" aria-label="충전 전압과 전력"></canvas><p class="muted">전력 = U × I가 최대인 곳을 찾아요. ${G.lab.A ? `(최대 약 ${bu.U.toFixed(2)} V)` : ''}</p>` : !pn ? '<p class="muted">충전 전압은 0.5 V로 고정이에요. 연구의 "회로 조건표"를 끝내면 직접 조절해요.</p>' : ''}
       ${pn ? '' : `<h2>도금 · 적이 떨어뜨린 조각</h2><div class="rows">${['na', 'cs', 'ag'].map(k => { const M = METALS[k], have = G.metals[k] || 0, on = G.panelMetal === k, meas = k === 'na' || G.lab['B_' + k];
         return `<div class="row"><span><b style="color:var(--ink);font-family:var(--f-body)">${M.name}</b> W ${M.W} eV · 조각 ${have}개<br>${on ? '사용 중' : !meas ? '연구 탐구 B로 일함수를 먼저 재요' : `조각 ${M.need}개 · 하루 ${(panelsN()*panelPower(k)).toFixed(0)} ⚡`}</span>${on ? '<b>사용 중</b>' : `<button class="btn" type="button" data-plate="${k}" ${meas && have >= M.need ? '' : 'disabled'}>도금</button>`}</div>`; }).join('')}</div>`}`, true);
     drawPU($('puPlot'));
@@ -647,8 +647,8 @@ window.solarPanel = function(){
       dgrp('', dseg([['data-lact="circuit"', l.closed ? '회로 연결' : '회로 열림', l.closed]])));
     paintPop('lamp', lampPos, `<div class="ed-head"><h3>램프</h3><span>${nm === 'sun' ? '햇빛' : `${nm} nm`}</span></div>
       <div class="seg"><button type="button" data-lsrc="sun" aria-pressed="${nm === 'sun'}">햇빛</button><button type="button" data-lsrc="${nm === 'sun' ? (UI.lastNm || 400) : nm}" aria-pressed="${nm !== 'sun'}">단색 빛</button></div>
-      ${nm === 'sun' ? '' : `<div class="crow"><span>λ</span><input id="labNm" type="range" min="300" max="600" step="50" value="${nm}"><b id="labNmV" style="color:${nmColor(nm)}">${nm} nm</b></div>`}
-      <div class="crow"><span>세기</span><input id="labInt" type="range" min="25" max="100" step="25" value="${l.inten}"><b>${l.inten}%</b></div>
+      ${nm === 'sun' ? '' : `<div class="crow"><span>λ</span><span class="rng"><input id="labNm" type="range" min="300" max="600" step="50" value="${nm}"><span class="rng-e"><i>300</i><i>600 nm</i></span></span><b id="labNmV" style="color:${nmColor(nm)}">${nm} nm</b></div>`}
+      <div class="crow"><span>세기</span><div class="seg inten">${[25, 50, 75, 100].map(v => `<button type="button" data-linten="${v}" aria-pressed="${l.inten === v}">${v}%</button>`).join('')}</div></div>
       ${nm === 'sun' ? '' : `<div class="seg"><button type="button" data-lbasis="power" aria-pressed="${l.basis === 'power'}">광출력 기준</button><button type="button" data-lbasis="photon" aria-pressed="${l.basis === 'photon'}">광자 수 기준</button></div>`}
       <button class="btn" type="button" data-lact="light">${l.light ? '빛 끄기' : '빛 켜기'}</button>`, true, {side:'left', cls:'narrow'});
     paintPop('lab', labPos, `<div class="ed-head"><h3>전압 = 검출판 − 금속판</h3><span>${l.closed ? '회로 연결' : '회로 열림'}</span></div>
@@ -926,7 +926,8 @@ const _renderTabs5 = window.renderTabs;
 window.renderTabs = function(){ _renderTabs5(); if (G.mode === 'wave' && !painted){ waveSigns(); renderLive(); } };
 window.sortiePanel = function(){
   if (!painted) return renderAll();
-  sign('sstat', () => G.sortie ? V(G.sortie.x, 0, G.sortie.z) : null, `<div class="pill" id="sPill"><button class="pl-flag" type="button" data-act="retreat" title="퇴각 · 바로 성으로 (주운 결정은 그대로)" aria-label="퇴각 · 바로 성으로">🏳</button><span class="pl-hp" title="체력"><i></i></span><b class="pl-n"></b><span class="pl-sq" title="쫄병"></span><span class="pl-g gold" title="광자 결정"></span><span class="pl-e" title="남은 적"></span></div>`, 'pill', 'below');
+  const nw = narrowUI();
+  sign('sstat', () => G.sortie ? V(G.sortie.x, nw ? 2.6 : 0, G.sortie.z) : null, `<div class="pill" id="sPill"><button class="pl-flag" type="button" data-act="retreat" title="퇴각 · 바로 성으로 (주운 결정은 그대로)" aria-label="퇴각 · 바로 성으로">🏳</button><span class="pl-hp" title="체력"><i></i></span><b class="pl-n"></b><span class="pl-sq" title="쫄병"></span><span class="pl-g gold" title="광자 결정"></span><span class="pl-e" title="남은 적"></span></div>`, 'pill', nw ? 'above' : 'below');
   renderLive();
 };
 
@@ -1016,11 +1017,14 @@ window.fUp = function(ev){
 window.trainPanel = function(){
   if (!painted) return renderAll();
   const squad = G.soldiers.filter(q => q.role === 'sortie'), full = G.soldiers.length >= soldierMax(), c = recruitCost(), ok = !full && G.gold >= c;
-  sign('recruit', () => V((BARRACK.x0 + BARRACK.x1)/2, 0, BARRACK.z0 - 1.3), sgB(`data-act="recruit" ${ok ? '' : 'disabled'}`, '🪖', full ? '병영이 꽉 찼어요' : `쫄병 모집 · ${c}G`, `병영 ${G.soldiers.length}/${soldierMax()}${!full && !ok ? ` · 보유 ${G.gold}G` : ''}`, ok ? 'go' : ''));
-  sign('command', () => T_LEAD.clone(), `<span class="sg-t">지휘 깃발 · 토벌대 ${squad.length}명</span>
-      <div class="sg-l">대형</div>${sgRow(Object.entries(FORMS).map(([k, f]) => [`data-form="${k}"`, f.name, false, !squad.length]))}
-      <div class="sg-l">자동 출병</div>${sgRow([['off', '끔'], ['start', '밤 시작'], ['half', '절반 남으면']].map(([k, t]) => [`data-auto="${k}"`, t, G.autoSortie === k]))}`);
-  sign('tupg', () => V((DUTY.x0 + DUTY.x1)/2, 0, DUTY.z0 - 1.3), sgB(`data-act="upgTrain" aria-pressed="${UI.page === 'upg-train'}"`, '📋', '훈련 업그레이드', `조준 ${Math.round(soldierAcc()*100)}% · 체력 ${soldierHpMax()}`));
+  sign('recruit', () => V((BARRACK.x0 + BARRACK.x1)/2, 0, BARRACK.z0 + 4.6), sgB(`data-act="recruit" ${ok ? '' : 'disabled'}`, '🪖', full ? '병영이 꽉 찼어요' : `쫄병 모집 · ${c}G`, `병영 ${G.soldiers.length}/${soldierMax()}${!full && !ok ? ` · 보유 ${G.gold}G` : ''}`, ok ? 'go' : ''));
+  const AUTO_T = {off:'끔', start:'밤 시작', half:'절반 남으면'};
+  sign('command', () => T_LEAD.clone(), `<div class="sg-in"><span class="sg-t">🚩 토벌대<br>${squad.length}명</span>${sgRow([[`data-tmenu="form"`, '대형 ▾', UI.tmenu === 'form', !squad.length], [`data-tmenu="auto"`, `자동 · ${AUTO_T[G.autoSortie] || '끔'} ▾`, UI.tmenu === 'auto']])}</div>${narrowUI() ? `<div class="sg-row2 sg-narrow">${sgB(`data-act="recruit" ${ok ? '' : 'disabled'}`, '🪖', full ? '병영 꽉 참' : `모집 · ${c}G`, `병영 ${G.soldiers.length}/${soldierMax()}`, ok ? 'go' : '')}${sgB(`data-act="upgTrain" aria-pressed="${UI.upg === 'train'}"`, '📋', '훈련', '업그레이드')}</div>` : ''}`);
+  if (narrowUI()){ closePop('recruit'); closePop('tupg'); }
+  if (UI.tmenu === 'form') paintPop('tmenu', {el:'#cards [data-tmenu="form"]', under:'#cards .pop[data-key="command"]'}, `<div class="ed-head"><h3>대형</h3></div>${sgRow(Object.entries(FORMS).map(([k, f]) => [`data-form="${k}"`, f.name, false]))}<p class="muted">토벌대가 깃발 뒤에 서는 모양이에요.</p>`, false, {cls:'narrow'});
+  else if (UI.tmenu === 'auto') paintPop('tmenu', {el:'#cards [data-tmenu="auto"]', under:'#cards .pop[data-key="command"]'}, `<div class="ed-head"><h3>자동 출병</h3></div>${sgRow(Object.entries(AUTO_T).map(([k, t]) => [`data-auto="${k}"`, t, G.autoSortie === k]))}<p class="muted">밤에 토벌대가 알아서 성문 밖으로 나가요.</p>`, false, {cls:'narrow'});
+  else closePop('tmenu');
+  sign('tupg', () => V((DUTY.x0 + DUTY.x1)/2, 0, DUTY.z0 + 4.6), sgB(`data-act="upgTrain" aria-pressed="${UI.upg === 'train'}"`, '📋', '훈련', '업그레이드'));
   const s = G.soldiers.find(q => q.id === G.tSel);
   if (s){
     const roleTxt = q => q.down ? '기절 (다음 밤 회복)' : q.role === 'sortie' ? '토벌대' : q.role === 'tower' ? `${sockName(SOCKETS[q.sock])} 조종` : '병영 대기';
@@ -1041,9 +1045,9 @@ window.solarPanel = function(){
   if (!painted) return renderAll();
   _solarPanel5();
   const t = LS().tab;
-  sign('spanel', () => panelPos().add(V(0, .6, 0)), `<div class="sg-row2">${sgB(`data-ltab="power" aria-pressed="${t === 'power'}"`, '☀', '발전 패널', `밤이 끝나면 +${dayCharge().toFixed(0)} ⚡`)}${sgB(`data-ltab="study" aria-pressed="${t === 'study'}"`, '📖', '연구 노트', '탐구 · 해금')}</div>`, 'lab');
-  if (t !== 'lab') sign('slab', () => LAB0.clone().add(V(0, 2.2, 0)), sgB('data-ltab="lab"', '🔬', '광전관 실험대', '눌러서 실험하기'), 'lab');
-  if (t === 'power'){ const c = CARDS.get('power'); if (c && !c.el.querySelector('.bat-up')) c.el.querySelector('.popb').insertAdjacentHTML('beforeend', `<button class="btn bat-up" type="button" data-act="upgSolar">🔋 배터리 ${Math.floor(G.energy)}/${batteryCap()} · 발전단지 업그레이드</button>`); }
+  sign('spanel', () => panelPos().add(V(0, .6, 0)), `<div class="sg-row2">${sgB(`data-ltab="power" aria-pressed="${t === 'power'}"`, '☀', '발전 패널', `밤이 끝나면 +${dayCharge().toFixed(0)} ⚡`)}${sgB(`data-ltab="study" aria-pressed="${t === 'study'}"`, '📖', '연구 노트', '탐구 · 해금')}${narrowUI() ? sgB(`data-ltab="lab" aria-pressed="${t === 'lab'}"`, '🔬', '실험대', '광전관') : ''}</div>`, 'lab');
+  if (t !== 'lab' && !narrowUI()) sign('slab', () => LAB0.clone().add(V(0, 2.2, 0)), sgB('data-ltab="lab"', '🔬', '광전관 실험대', '눌러서 실험하기'), 'lab');
+  if (t === 'power'){ const c = CARDS.get('power'); if (c && !c.el.querySelector('.ugs')) c.el.querySelector('.popb').insertAdjacentHTML('afterbegin', `<div class="ug-head"><b>🔋 배터리 ${Math.floor(G.energy)} / ${batteryCap()} ⚡</b>${cGold()}</div><div class="ugs">${upgRows(['panels', 'battery'])}</div>`); }
   if (t === 'lab'){ const l = LS(), c = CARDS.get('lab');
     if (c && !c.el.querySelector('.lab-tools')){ const d = document.createElement('div'); d.className = 'lab-tools';
       d.innerHTML = `<div class="seg">${labMetals().map(k => `<button type="button" data-lmetal="${k}" aria-pressed="${l.metal === k}"><i style="background:${METALS[k].color}"></i>${METALS[k].name}</button>`).join('')}</div><button class="btn" type="button" data-lact="circuit">${l.closed ? '회로 열기' : '회로 연결'}</button>`;
@@ -1128,8 +1132,8 @@ window.kTap = function(ev){
 };
 // 발전단지: 램프 · 전압 카드도 물건을 눌러야 열린다
 UI.sCard = 'both';
-const sOpen = k => UI.sCard === 'both' || UI.sCard === k;
-const sAdd = k => { UI.sCard = UI.sCard && UI.sCard !== k ? 'both' : k; };
+const sOpen = k => UI.sCard === k || (UI.sCard === 'both' && !(narrowUI() && k === 'lamp'));
+const sAdd = k => { UI.sCard = narrowUI() ? k : UI.sCard && UI.sCard !== k ? 'both' : k; };   // 좁은 세로 화면은 카드 하나씩
 const _solarPanel6 = window.solarPanel;
 window.solarPanel = function(){
   if (!painted) return renderAll();
@@ -1385,9 +1389,13 @@ function flashResearch(r){
 }
 function whyNot(b){
   const t = b.textContent.replace(/\s+/g, ' ').trim(); let m;
+  if (b.dataset.why){ b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope'); return hint(b.dataset.why); }
   b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope');
   if (b.id === 'labX') return hint('회로가 열려 있어요 · 「회로 연결」을 먼저 눌러요');
-  if ((m = t.match(/^먼저: (.+)$/))){ flashResearch(RESEARCH.find(q => q.name === m[1])); return hint(`먼저 「${m[1]}」 연구를 끝내야 열려요`); }
+  if ((m = t.match(/^먼저: (.+)$/))){
+    if (Object.values(LAB_NAMES).includes(m[1])) return hint(`발전단지 실험대의 연구 노트에서 「${m[1]}」을 먼저 끝내요`);
+    flashResearch(RESEARCH.find(q => q.name === m[1])); return hint(`먼저 「${m[1]}」 연구를 끝내야 열려요`);
+  }
   if (b.dataset.craft && /연구 필요/.test(t)){
     const d = G.designs.find(q => q.id === b.dataset.craft), need = !G.research.laser ? RESEARCH.find(q => q.id === 'laser') : null;
     deptGo('research'); setTimeout(() => flashResearch(need), 300);
@@ -1411,3 +1419,96 @@ document.addEventListener('click', ev => {
   const b = ev.target.closest('[data-dgo]'); if (!b) return;
   ev.stopPropagation(); if (G.mode === 'forge') deptGo(b.dataset.dgo);
 }, true);
+
+/* ═════════════════════════════════════════════════════════════════
+   v8 · 업그레이드는 그 건물 옆 작은 카드 · 대장간 부서는 엄지가 닿는 아래 구석에서도 넘긴다
+   ═════════════════════════════════════════════════════════════════ */
+
+/* ── 업그레이드 카드: 화면 전체 페이지 대신 그 자리(연병장 게시판 · 발전 패널) 옆에 뜬다 ── */
+UI.upg = null; UI.upgTab = 'soldier';
+const UPG_TABS = {soldier:['sAcc', 'sHp', 'sPow', 'barracks'], hero:['hHp', 'hPow', 'hSpd']};
+function upgRows(ids){
+  return ids.map(id => {
+    const u = UPG[id], lv = up(id), max = lv >= u.max, c = max ? 0 : u.cost(lv);
+    const lock = u.req && !labOk(u.req);
+    const btn = lock ? `<button class="btn" type="button" disabled data-why="발전단지 실험대의 연구 노트에서 「${LAB_NAMES[u.req]}」을 먼저 끝내요">🔒</button>`
+      : max ? '<span class="ug-max">최대</span>' : `<button class="btn" type="button" data-up="${id}" ${G.gold >= c ? '' : 'disabled'}>${c}G</button>`;
+    return `<div class="ug"><div><b>${u.name}</b> <small>Lv.${lv}/${u.max}</small><span>${max ? '다 올렸어요' : u.eff(lv)}</span>${lock ? `<span class="ug-lock">연구 노트 「${LAB_NAMES[u.req]}」 먼저</span>` : ''}</div>${btn}</div>`;
+  }).join('');
+}
+function upgCard(){
+  if (UI.upg === 'train' && G.mode === 'train'){
+    const t = UI.upgTab;
+    paintPop('upg', {fixed:'left'}, `<div class="ed-head"><h3>훈련 업그레이드</h3>${cGold()}</div>
+      <div class="seg"><button type="button" data-ugtab="soldier" aria-pressed="${t === 'soldier'}">쫄병</button><button type="button" data-ugtab="hero" aria-pressed="${t === 'hero'}">주인공</button></div>
+      <div class="ugs">${upgRows(UPG_TABS[t])}</div>`, false, {cls:'narrow'});
+  } else closePop('upg');
+}
+const _trainPanel8 = window.trainPanel;
+window.trainPanel = function(){ if (!painted) return renderAll(); _trainPanel8(); if (UI.upg === 'train') closePop('tupg'); upgCard(); };
+const _solarPanel8 = window.solarPanel;
+window.solarPanel = function(){
+  if (!painted) return renderAll(); _solarPanel8();
+  // 패널 표지판: 금속 · 장 수 · 하루 충전량을 한 곳에서 (3D 이름표는 없앴다)
+  const sp = CARDS.get('spanel'); if (sp){ const s = sp.el.querySelector('[data-ltab="power"] small, [data-ltab="power"] .sg-s'); if (s) s.textContent = `${labOk('pn') ? 'p-n 반도체' : METALS[G.panelMetal].name} ${panelsN()}장 · 밤이 끝나면 +${dayCharge().toFixed(0)} ⚡`; }
+  upgCard();
+  if (narrowUI() && LS().tab === 'lab'){
+    if (sOpen('lab')) closePop('slamp'); if (sOpen('lamp')) closePop('slab2');   // 시트에 가린 표지판 대신 시트 머리의 바꾸기 단추
+    for (const [k, o, ic, t] of [['lab', 'lamp', '💡', '램프'], ['lamp', 'lab', '⚡', '전압 · 그래프']]){
+      const c = CARDS.get(k); if (c && !c.el.querySelector('.swap')) c.el.querySelector('.ed-head')?.insertAdjacentHTML('beforeend', `<button class="tbtn swap" type="button" data-scard="${o}">${ic} ${t}</button>`);
+    }
+  }
+};
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('button'); if (!b) return;
+  const a = b.dataset.act;
+  if (a === 'upgTrain' || a === 'upgSolar'){ ev.stopPropagation(); const k = a === 'upgTrain' ? 'train' : 'solar'; UI.upg = UI.upg === k ? null : k; UI.page = null; renderAll(); return; }
+  if (b.dataset.ugtab){ ev.stopPropagation(); UI.upgTab = b.dataset.ugtab; renderAll(); return; }
+  if (b.dataset.pclose === 'upg') UI.upg = null;
+  if (b.dataset.ltab) UI.upg = null;
+}, true);
+(function upgFold(){
+  let st = null;
+  canvas.addEventListener('pointerdown', ev => { st = {x:ev.clientX, y:ev.clientY}; });
+  canvas.addEventListener('pointerup', ev => { if (!st) return; const tap = Math.hypot(ev.clientX - st.x, ev.clientY - st.y) < 8; st = null; if (tap && UI.upg){ UI.upg = null; renderAll(); } });
+})();
+let lastMode8 = G.mode;
+const _renderAll8 = window.renderAll;
+window.renderAll = function(){ if (G.mode !== lastMode8){ lastMode8 = G.mode; UI.upg = null; } _renderAll8.apply(this, arguments); thumbNav(); };
+
+/* ── 대장간 엄지 이동: 패드를 두 손으로 쥐면 위쪽 탭에 손가락이 안 닿는다 → 아래 양 구석에 이전 · 다음 부서 ── */
+const tnav = document.createElement('div'); tnav.className = 'thumbnav'; tnav.hidden = true; stage.appendChild(tnav);
+function thumbNav(){
+  const on = G.mode === 'forge'; tnav.hidden = !on; if (!on) return;
+  const i = DEPT_ORDER.indexOf(G.dept), p = DEPT_ORDER[i - 1], n = DEPT_ORDER[i + 1];
+  const h = `${p ? `<button type="button" class="tn-l" data-dgo="${p}" aria-label="${DEPT_NAME[p]}로"><span>◀</span>${DEPT_NAME[p]}</button>` : '<i></i>'}${n ? `<button type="button" class="tn-r" data-dgo="${n}" aria-label="${DEPT_NAME[n]}로">${DEPT_NAME[n]}<span>▶</span></button>` : '<i></i>'}`;
+  if (tnav.dataset.h !== h){ tnav.innerHTML = h; tnav.dataset.h = h; }
+}
+
+/* ── 훈련소 지휘 메뉴 · 업그레이드 카드는 왼쪽에 붙인다(가운데 표지판을 안 덮게) · 좁은 세로 화면에서는 고정 카드가 아래 시트가 된다 ── */
+UI.tmenu = null;
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('button'); if (!b) return;
+  if (b.dataset.tmenu){ ev.stopPropagation(); UI.tmenu = UI.tmenu === b.dataset.tmenu ? null : b.dataset.tmenu; UI.upg = null; renderAll(); return; }
+  if (b.dataset.form || b.dataset.auto && G.mode === 'train') UI.tmenu = null;
+  if (b.dataset.pclose === 'tmenu') UI.tmenu = null;
+  if (b.dataset.act === 'upgTrain') UI.tmenu = null;
+}, true);
+(function tmenuFold(){
+  let st = null;
+  canvas.addEventListener('pointerdown', ev => { st = {x:ev.clientX, y:ev.clientY}; });
+  canvas.addEventListener('pointerup', ev => { if (!st) return; const tap = Math.hypot(ev.clientX - st.x, ev.clientY - st.y) < 8; st = null; if (tap && UI.tmenu){ UI.tmenu = null; renderAll(); } });
+})();
+const narrowUI = () => stage.clientWidth < 600 && stage.clientHeight > stage.clientWidth;
+const SHEET_KEYS = new Set(['test', 'power', 'dress', 'keepBoard', 'lab', 'lamp', 'upg', 'soldier', 'sock', 'fsel']);
+let sheetH = 0;   // 이번 프레임에 아래 시트가 차지한 높이 → 엄지 이동 버튼을 그 위로 올린다
+(function sheetLoop(){ stage.style.setProperty('--sheeth', `${sheetH}px`); sheetH = 0; requestAnimationFrame(sheetLoop); })();
+const _placeCard8 = placeCard;
+window.placeCard = function(c){
+  _placeCard8(c);
+  const p = c.el, at = c.at, W = stage.clientWidth, Hh = stage.clientHeight;
+  const sheet = narrowUI() && SHEET_KEYS.has(c.key || p.dataset.key);
+  p.classList.toggle('sheet', sheet);
+  if (sheet){ p.style.left = '8px'; p.style.top = `${Math.round(Hh - p.offsetHeight - 8)}px`; p.style.visibility = 'visible'; p.style.scale = ''; sheetH = Math.max(sheetH, p.offsetHeight + 8); return; }
+  if (at && at.fixed === 'left'){ const top0 = 60; p.style.left = '14px'; p.style.top = `${Math.round(clamp((Hh - p.offsetHeight)/2, top0, Math.max(top0, Hh - p.offsetHeight - 10)))}px`; p.style.visibility = 'visible'; }
+};

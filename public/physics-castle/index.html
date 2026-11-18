@@ -460,6 +460,39 @@ input[type=range]#sFl{height:22px}
 .pl-n{font-variant-numeric:tabular-nums;margin-left:-4px}
 .stage[data-mode="sortie"] .timer{display:none!important}
 .model{font-size:12px;color:var(--muted)} .model summary{cursor:pointer;color:var(--ink)} .model p{margin:4px 0} .model b{color:var(--ink)}   /* 직접 토벌 중에는 발밑 알약이 같은 내용을 보여 준다 */
+
+/* v8 · 0에서 시작하지 않는 슬라이더는 양 끝 값을 보여 준다 · 빛 세기 단추 */
+.rng{display:flex;flex-direction:column;flex:1;min-width:0}
+.rng input{width:100%}
+.rng-e{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:-2px;font-family:var(--f-mono, monospace)}
+.rng-e i{font-style:normal}
+.seg.inten{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.seg.inten button{padding:6px 0;font-size:12px}
+.crow .seg.inten{grid-column:2 / 4}
+
+/* v8 · 업그레이드 카드 · 엄지 이동 */
+.ugs{display:flex;flex-direction:column;gap:2px}
+.ug{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.ug:last-child{border-bottom:0}
+.ug > div{min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 6px}
+.ug b{color:var(--ink);font-size:13px}
+.ug small{color:var(--muted);font-size:11px}
+.ug span{flex-basis:100%;color:var(--muted);font-size:12px}
+.ug .btn{flex:none;min-width:64px;padding:8px 10px}
+.ug-max{color:var(--muted);font-size:12px}
+.ug span.ug-lock{color:var(--ember);font-size:11px}
+.ug-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+.ug-head + .ugs{margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.thumbnav{position:absolute;left:0;right:0;bottom:var(--sheeth,0px);transition:bottom .15s;display:flex;justify-content:space-between;align-items:flex-end;padding:0 max(12px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));pointer-events:none;z-index:40}
+.thumbnav button{pointer-events:auto;display:flex;align-items:center;gap:8px;min-height:50px;padding:0 18px;border-radius:999px;border:1px solid rgba(160,200,255,.3);background:rgba(11,22,40,.78);color:var(--ink);font:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.thumbnav button span{color:var(--ember);font-size:12px}
+.thumbnav button:active{background:var(--ember);color:#1a0d04}
+.stage[data-mode="forge"] .page-b{padding-bottom:76px}
+
+/* v8 · 좁은 세로 화면: 고정 카드는 아래 시트 */
+#cards .pop.sheet{width:calc(100% - 16px)!important;max-width:none;max-height:56%;border-radius:16px 16px 12px 12px}
+.pop .ed-head .swap{margin-left:auto;padding:6px 10px;font-size:12px}
+.sg-row2.sg-narrow{margin-top:6px}
 </style>
 <style>html,body{margin:0;height:100%;background:#0b1220}[hidden]{display:none!important}</style>
 </head>
