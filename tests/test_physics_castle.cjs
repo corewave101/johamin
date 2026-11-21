@@ -80,5 +80,138 @@ check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정�
     check(labFrac(.38*(1 - LAB_K)/LAB_K + 1e-6, .38) === 1, '포화 전압 이상에서는 포화 전류');
   }
 }
+
+// 발전 패널(6.3.2~): 평행판 광전관 → 한 파장의 전류 비율 panelFrac = 1 − w + w ln w (계단 식이 아님)
+{
+  const csrc = fs.readFileSync(path.join(dir, 'js/core.js'), 'utf8');
+  const m = csrc.match(/const panelFrac = ([^\n]*);/);
+  check(m, 'core.js에 panelFrac이 있어야 해요');
+  check(!/const currentAt = \(L, U\) => L\.filter\(l => l\.V > U\)/.test(csrc), '패널 전류를 계단 식(정지 전압이 U보다 큰 빛만 통째로)으로 더하지 않아요');
+  if (m){
+    const f = eval(m[1]); let worst = 0, prev = f(0, .8);
+    for (let U = .001; U < .8; U += .001){ const v = f(U, .8); worst = Math.max(worst, Math.abs(v - prev)); prev = v; }
+    check(f(0, .8) === 1 && f(.8, .8) === 0, '패널: U = 0이면 전부, U = Kmax면 0');
+    check(worst < .01, `패널 전류 비율이 끊기지 않고 이어져야 해요 (최대 한 걸음 변화 ${worst.toFixed(4)})`);
+  }
+}
+
+// 교전 범위 자격 시험(6.4~): 표의 정답이 렌즈 식 · 닮음으로 맞는지, 오답이 정답과 겹치지 않는지
+{
+  const fsrc = fs.readFileSync(path.join(dir, 'js/forge.js'), 'utf8');
+  const m = fsrc.match(/const RANGE_Q = (\{[\s\S]*?\n\});/), wm = fsrc.match(/function wrongs\(ans, cands\)\{[^\n]*\n?/);
+  check(m && wm, 'forge.js에 RANGE_Q와 wrongs가 있어야 해요');
+  if (m && wm){
+    const Q = eval('(' + m[1].replace(/\/\/[^\n]*/g, '') + ')'), wrongs = new Function(`${wm[0]}; return wrongs;`)();
+    for (const [a, f, b] of Q.image) check(Math.abs(1/a + 1/b - 1/f) < 1e-9, `상 거리 문제 a=${a} f=${f} → b=${b}가 렌즈 식과 달라요`);
+    for (const [a, b, f] of Q.focal) check(Math.abs(1/a + 1/b - 1/f) < 1e-9, `초점 거리 문제 a=${a} b=${b} → f=${f}가 렌즈 식과 달라요`);
+    for (const [r, F, D, x] of Q.beam) check(D > F && Math.abs(r*(D - F)/F - x) < 1e-9, `빔 반지름 문제 r=${r} F=${F} D=${D} → ${x}가 닮음과 달라요`);
+    for (const ans of [1, 2, 5, 18, 60]){ const w = wrongs(ans, [ans, ans + 1, ans + 1, -3]); check(w.length === 3 && !w.includes(ans) && new Set(w).size === 3, `오답 고르기(${ans})가 3개 · 서로 다름 · 정답 아님이어야 해요`); }
+  }
+  // 웨이브 곡선: 첫 밤 4, 계속 오른다, 5의 배수 근처가 더 가파르다, 마리 수 상한
+  const csrc = fs.readFileSync(path.join(dir, 'js/core.js'), 'utf8');
+  const blk = csrc.slice(csrc.indexOf('const WAVE_C'), csrc.indexOf('function waveList'));
+  const env = new Function('sq', 'clamp', `${blk}; return {waveB, waveDB, waveSize, hpMul, eliteCount, ELITE_HP, WAVE_CAP};`)(n => Math.sqrt(Math.max(0, n - 1)), (v, a, b) => Math.max(a, Math.min(b, v)));
+  check(Math.abs(env.waveB(1) - 4) < 1e-9, '웨이브 1의 총 체력은 4 (예전과 같게)');
+  let mono = true; for (let n = 2; n <= 80; n++) if (env.waveB(n) <= env.waveB(n - 1)) mono = false;
+  check(mono, '총 체력은 밤마다 늘어야 해요');
+  // 도함수가 이차함수: 밤마다 느는 양이 계속 커지고, 그 느는 양의 증가도 일정하게 커진다(이계차가 직선 → 삼계차가 상수)
+  for (let n = 3; n <= 80; n++) check(env.waveB(n) - env.waveB(n - 1) > env.waveB(n - 1) - env.waveB(n - 2), `밤 ${n}: 늘어나는 양이 앞 밤보다 커야 해요`);
+  const d3 = n => env.waveB(n + 3) - 3*env.waveB(n + 2) + 3*env.waveB(n + 1) - env.waveB(n);
+  for (let n = 1; n <= 60; n++) check(Math.abs(d3(n) - d3(1)) < 1e-6 && d3(1) > 0, `웨이브 곡선은 삼차식이어야 해요(삼계차 일정) · 밤 ${n}`);
+  for (let n = 1; n <= 60; n++){ const h = 1e-4, num = (env.waveB(n + h) - env.waveB(n - h))/(2*h); check(Math.abs(num - env.waveDB(n)) < 1e-4, `B′(${n}) 식이 수치 미분과 달라요`); }
+  // 실제 밤: 뽑힌 몬스터 몫을 다 더하면 총 체력 B(n) (거인 4.5마리 몫 · 박쥐 0.5 · 정예 ×4)
+  { const ctx = {}; const run = new Function('ctx', csrc.replace(/^'use strict';/, '') + '; ctx.f = {waveList, waveHpMul, waveB, unitOf, FOES, waveTheme}; ');
+    try { run(ctx); } catch(e){ /* 브라우저 전용 코드가 섞여 있으면 건너뜀 */ }
+    if (ctx.f){ for (let n = 1; n <= 40; n++){ const L = ctx.f.waveList(n), m = ctx.f.waveHpMul(L, n), tot = L.reduce((s, q) => s + ctx.f.unitOf(q)*m, 0); check(Math.abs(tot - ctx.f.waveB(n)) < 1e-6, `밤 ${n}: 몬스터 몫 × 배율 ≠ 총 체력`); check(L.length >= 3, `밤 ${n}: 너무 적어요`); } }
+  }
+  // 6.4 몸 전체 판정: 빛이 몸 반지름 안에 다 들어가면 100%, 상이 커도 몸에 걸친 만큼 맞는다
+  { const ctx = {}; new Function('ctx', csrc.replace(/^'use strict';/, '') + '; newGame(); ctx.f = {hitD, traceD, FOES, PRESETS, siegeDesign, srcPower, drawOf, BODY_REF, fracAt};')(ctx); const f = ctx.f;
+    const led = f.PRESETS.find(d => d.id === 'ledT');
+    for (const m of [10, 30, 60]){ const h = f.hitD(led, f.FOES.gt, m, null), w = f.traceD(led, m).w; check(Math.abs(h.frac - Math.min(1, (90/w)**2)) < 1e-12, `거인 몸 판정 (${m} m)`); }
+    const bulb = f.PRESETS.find(d => d.id === 'bulbT'), wide = f.traceD(bulb, 60).w;
+    check(wide > 30 && f.hitD(bulb, f.FOES.ag, 60, null).v > 0, '상이 몸보다 커도 몸에 걸친 빛만큼은 데미지가 나야 해요');
+    check(f.hitD(led, f.FOES.bt, 80, null).frac < f.hitD(led, f.FOES.cs, 80, null).frac, '작은 박쥐는 같은 빛이 덜 들어가야 해요');
+    // 거인(R 40 kΩ)은 세기를 올리면 전압 포화로 막힌다
+    const uvl = f.PRESETS.find(d => d.id === 'uv'), g1 = f.hitD(uvl, f.FOES.gt, 30, null), g4 = f.hitD(f.siegeDesign(uvl, 4), f.FOES.gt, 30, null);
+    check(g1.sat && g4.v/g1.v > 1 && g4.v/g1.v < 4, `거인은 광원 4개로 늘려도 4배(N배)도 안 돼야 해요 · 전류 제한이면 16배 (×${(g4.v/g1.v).toFixed(2)})`);
+    const s1 = f.hitD(led, f.FOES.cs, 30, null), s3 = f.hitD(f.siegeDesign(led, 3), f.FOES.cs, 30, null);
+    check(s3.v/s1.v > 2.5, `전류 제한인 슬라임은 광원 3개면 크게 늘어야 해요 (×${(s3.v/s1.v).toFixed(2)})`);
+    check(Math.abs(f.srcPower(f.siegeDesign(led, 3)) - 3*f.srcPower(led)) < 1e-9 && Math.abs(f.drawOf(f.siegeDesign(led, 3)) - 3*f.drawOf(led)) < 1e-9, '대형 무기: 광출력 · 전기 N배');
+  }
+  // 6.5 새 몬스터: 네온 정령은 준위 차(1.96 eV) 근처 빛만 흡수 · 양자 유령 줄 고르기는 밝기 ρ에 비례
+  { const ctx = {}; new Function('ctx', csrc.replace(/^'use strict';/, '') + '; newGame(); ctx.f = {hitD, FOES, PRESETS, qgPick, QG_RHO};')(ctx); const f = ctx.f;
+    const las = f.PRESETS.find(d => d.id === 'focus'), mk = m => Object.assign(JSON.parse(JSON.stringify(las)), {medium:m});
+    check(f.hitD(mk('hene'), f.FOES.ne, 30, null).v > 0, '헬륨-네온 633 nm(1.96 eV)는 정령에 흡수돼야 해요');
+    for (const m of ['ruby', 'green', 'argon', 'n2']) check(f.hitD(mk(m), f.FOES.ne, 30, null).why === '흡수선 밖', `${m}은 정령을 그냥 지나가야 해요`);
+    const bulb = f.PRESETS.find(d => d.id === 'bulbT'), hb = f.hitD(bulb, f.FOES.ne, 15, null);
+    check(hb.v > 0 && hb.abs > 0 && hb.abs < .2, `백열등은 흡수선에 걸친 조금만 흡수 (${(hb.abs*100).toFixed(1)}%)`);
+    const cnt = {}; for (let i = 0; i < 5000; i++){ const r = (i + .5)/5000, k = f.qgPick(r); cnt[k] = (cnt[k] || 0) + 1; }
+    const tot = f.QG_RHO.reduce((a, b) => a + b, 0); for (let k = -2; k <= 2; k++) check(Math.abs(cnt[k]/5000 - f.QG_RHO[k + 2]/tot) < .002, `유령 줄 ${k} 확률 = ρ 비율`);
+    check(f.FOES.sp.split === 'sk' && f.FOES.sk.mini && f.FOES.sh.dark && f.FOES.qg.quantum, '새 몬스터 특성');
+  }
+  // 6.6 새 몬스터 5밤 간격 · 보스 밤과 안 겹침 · 보스는 10밤마다, 못 잡으면 다시
+  { const ctx = {}; new Function('ctx', csrc.replace(/^'use strict';/, '') + '; newGame(); ctx.f = {FOE_FROM, FOES, bossFor, waveList, BOSS_ORDER, get G(){ return G; }};')(ctx); const f = ctx.f;
+    const nights = [...new Set(Object.values(f.FOE_FROM))].sort((a, b) => a - b);
+    for (let k = 1; k < nights.length; k++) check(nights[k] - nights[k - 1] >= 5, `새 몬스터 간격 ${nights[k - 1]} → ${nights[k]}밤`);
+    for (const n of nights) check(n % 10 !== 0, `새 몬스터(${n}밤)가 보스 밤과 겹쳐요`);
+    check(f.bossFor(10) === 'Bs' && f.bossFor(11) === null, '10밤 보스 = 슬라임 왕');
+    check(f.bossFor(20) === 'Bs', '슬라임 왕을 못 잡으면 20밤에 또 와요');
+    f.G.bosses.Bs = true; check(f.bossFor(20) === 'Bk', '잡으면 다음 보스(편광 기사왕)');
+    for (const b of f.BOSS_ORDER) check(f.FOES[b].boss && f.FOES[b].mini && f.FOES[f.FOES[b].base], `보스 ${b}`);
+    const L = f.waveList(20); check(L[L.length - 1].type === 'Bk' && L[L.length - 1].boss, '보스는 웨이브 맨 뒤');
+  }
+  // 6.6 던전 퍼즐: 어떤 무작위 문제든 정답이 있고(슬라이더 눈금 위에서), 처음 값은 정답이 아니어야 해요
+  { const dsrc = fs.readFileSync(path.join(dir, 'js/dungeon.js'), 'utf8');
+    const blk = dsrc.slice(dsrc.indexOf('const PZ = {'), dsrc.indexOf('function pzHtml'));
+    const cos2 = d => Math.cos(d*Math.PI/180)**2, rad = d => d*Math.PI/180;
+    const PZ = new Function('cos2', 'rad', 'rnd', `${blk}; return PZ;`)(cos2, rad, a => a[0]);
+    const combos = {photo:[[[2.3, '칼륨'], .5], [[2.3, '칼륨'], .7], [[2.1, '세슘'], .5], [[2.1, '세슘'], .7]], pol3:[[0]], dg:[[40], [50], [60]], lens:[[15], [20]], slit:[[2.0], [2.4], [3.0]]};
+    for (const [type, list] of Object.entries(combos)) for (const c of list){
+      let k = 0; const P = PZ[type], p = new Function('cos2', 'rad', 'rnd', `${blk}; return PZ;`)(cos2, rad, a => c[k++ % c.length] ?? a[0])[type].make();
+      check(!P.solved(p), `${type} ${JSON.stringify(c)}: 처음부터 풀려 있으면 안 돼요`);
+      const sl = P.slider(p), ch = P.chips(p); let ok = false;
+      const chipVals = ch ? ch[0].map(x => x.v) : [null];
+      for (const cv of chipVals){ if (ch) p[ch[1]] = ch[1] === 'mid' ? !!cv : cv; for (let v = sl.min; v <= sl.max + 1e-9 && !ok; v = Math.round((v + sl.step)*1000)/1000){ p.v = v; if (P.solved(p)) ok = true; } if (ok) break; }
+      check(ok, `${type} ${JSON.stringify(c)}: 눈금 위에 정답이 있어야 해요`);
+    }
+    // 물리 값 확인: 데이비슨–저머 54 V 근처 · 니켈 50°, 렌즈 식, 이중 슬릿
+    check(Math.abs(1.226/Math.sqrt(54) - 0.1668) < .001, '물질파 λ = 1.226/√V nm (54 V → 0.167 nm)');
+    check(Math.abs(PZ.pol3.calc({v:45, mid:true}).I - .125) < 1e-9 && PZ.pol3.calc({v:0, mid:true}).I < 1e-12, '세 장 편광판: 45°에서 1/8, 0°에서 0');
+    const ln = PZ.lens.calc({f:20, L:90, v:30}); check(Math.abs(ln.b - 60) < 1e-9 && ln.pass, '렌즈: a 30 · f 20 → b 60 · 배율 2');
+    check(!PZ.lens.calc({f:20, L:90, v:60}).pass, '렌즈: a 60이면 또렷해도 축소라서 안 열려요');
+    check(Math.abs(PZ.slit.calc({v:.5}).dx - 2.4) < 1e-9, '이중 슬릿: Δx = λL/d = 600 nm × 2 m / 0.5 mm = 2.4 mm');
+  }
+  // 6.7 내정: 마을 계산 · 전광판 · 현미경 · 광자 통신
+  { const tsrc = fs.readFileSync(path.join(dir, 'js/town.js'), 'utf8').replace(/^'use strict';/, '');
+    const stub = `const window = {mapSVG(){ return ''; }, siteHtml(){ return ''; }, waveCleared(){}, clearedPanel(){}}; const document = {addEventListener(){}, getElementById(){ return {addEventListener(){}}; }}; const SITE_KEYS = []; const UI = {}; const mapStage = () => 1; const hint = () => {}; const renderAll = () => {}; const cGold = () => ''; const showBossBanner = {};`;
+    const ctx = {}; new Function('ctx', csrc.replace(/^'use strict';/, '') + stub + tsrc + '; newGame(); ctx.f = {T, townTick, TB, cap, foodProd, sanOf, happyTarget, taxGold, dispB, dispCalc, DISP_REQ, dispReq, microCalc, bb84, get G(){ return G; }};')(ctx); const f = ctx.f;
+    const t = f.T(); check(t.pop <= f.cap() && f.foodProd() > t.pop, '처음 마을: 정원 안 · 식량이 남아요');
+    check(Math.abs(f.dispB({lv:1}, 45) - .5) < 1e-12 && Math.abs(f.dispB({lv:1}, 90) - 1) < 1e-12 && f.dispB({lv:1}, 0) === 0, 'LCD 밝기 = sin²φ (말뤼스)');
+    const lcd = {b:'board', lv:1, w:1}, oled = {b:'board', lv:2, w:1}; t.plots[5] = lcd;
+    const R = f.dispReq(); R.set = [0, 0, 0]; const pL0 = f.dispCalc(lcd).power; R.set = [90, 90, 90]; const pL1 = f.dispCalc(lcd).power;
+    R.set = [0, 0, 0]; const pO0 = f.dispCalc(oled).power; R.set = [100, 100, 100]; const pO1 = f.dispCalc(oled).power;
+    check(pL0 === pL1 && pO0 === 0 && pO1 > 0, 'LCD는 그림과 상관없이 전기가 같고, OLED는 검은 화면이 0');
+    t.plague = {kind:'bacteria', sick:2, days:0, found:false}; t.micro = {fo:16, fe:25, kv:1}; const clinic = {b:'clinic', lv:1, w:1};
+    check(!f.microCalc(clinic).ok, '광학 100배: 세균 2 μm → 0.2 mm라 알아보기엔 작아요'); t.micro.fo = 4; check(f.microCalc(clinic).ok && f.microCalc(clinic).mag === 400, '광학 400배면 세균이 보여요');
+    t.plague.kind = 'virus'; check(!f.microCalc(clinic).ok && f.microCalc(clinic).blur, '바이러스는 광학으로 배율을 올려도 안 보여요(분해능)');
+    const em = {b:'clinic', lv:2, w:1}; t.micro.em = true; t.micro.kv = 1; check(!f.microCalc(em).ok, '전자 현미경 1 kV는 아직 흐려요');
+    t.micro.kv = 10; const c10 = f.microCalc(em); check(c10.ok && Math.abs(c10.lam - 1.226/Math.sqrt(10000)) < 1e-12, '10 kV: λ = 1.226/√V nm로 보여요'); t.micro.kv = 30; check(!f.microCalc(em).ok && f.microCalc(em).burn, '30 kV는 시료가 타요');
+    let k = 0, e = 0, k2 = 0, e2 = 0; for (let i = 0; i < 1500; i++){ for (const r of f.bb84(true)) if (r.keep){ k++; if (r.got !== r.bit) e++; } for (const r of f.bb84(false)) if (r.keep){ k2++; if (r.got !== r.bit) e2++; } }
+    check(Math.abs(e/k - .25) < .02 && e2 === 0, `광자 통신: 도적이 있으면 남긴 비트의 25%가 틀려요 (${(e/k*100).toFixed(1)}%) · 없으면 0`);
+    for (let d = 0; d < 40; d++) f.townTick(); check(t.pop >= 1 && t.food >= 0 && t.happy >= 0 && t.happy <= 100, '40일 돌려도 값이 망가지지 않아요');
+  }
+  check(env.waveB(30)/env.waveB(10) > 5, '30밤은 10밤보다 훨씬 세야 해요(골드가 쌓여도 어렵게)');
+  for (let n = 1; n <= 80; n++){ const c = env.waveSize(n); check(c >= 3 && c <= env.WAVE_CAP, `밤 ${n}의 마리 수 ${c}가 3~${env.WAVE_CAP} 밖이에요`); check(Math.abs((c + env.ELITE_HP*env.eliteCount(n))*env.hpMul(n) - env.waveB(n)) < 1e-6, `밤 ${n}: 마리 수 × 체력 ≠ 총 체력`); }
+  // 탑 광전관: solveCircuit이 u = R·I(u)를 풀었는지
+  const sc = csrc.match(/function solveCircuit\(lines, R\)\{[\s\S]*?\n\}/), pf = csrc.match(/const panelFrac = ([^\n]*);/);
+  check(sc && pf, 'core.js에 solveCircuit과 panelFrac이 있어야 해요');
+  if (sc && pf){
+    const panelFrac = eval(pf[1]), solve = new Function('panelFrac', `${sc[0]}; return solveCircuit;`)(panelFrac);
+    for (const [lines, R] of [[[{I:.2, V:1.2}], 3], [[{I:.05, V:.4}, {I:.3, V:2.1}, {I:.1, V:.9}], 6], [[{I:2, V:.7}], 10], [[{I:.001, V:3}], 4]]){
+      const c = solve(lines, R), Iu = lines.reduce((t, l) => t + l.I*panelFrac(c.u, l.V), 0);
+      check(Math.abs(c.u - R*Iu) < 1e-6 && c.u >= 0 && c.u < Math.max(...lines.map(l => l.V)), `탑 회로식이 u = R·I(u)를 못 풀었어요 (R=${R})`);
+    }
+  }
+}
 if (failed){ console.error(`physics castle: ${failed}개 실패`); process.exit(1); }
 console.log('physics castle ok');

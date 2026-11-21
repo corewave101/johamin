@@ -116,7 +116,7 @@ function setOperator(T, s){
   if (s){ T.opMesh = soldierMesh(s);T.opMesh.position.set(-.75, 0, .35); T.mesh.add(T.opMesh); }
 }
 function placeTower(so, item, auto){
-  const mesh = towerMesh(item.design); mesh.position.set(so.x, so.y, so.z); mesh.userData.sock = so; wScene.add(mesh);
+  const mesh = towerMesh(item.design); if (item.design.kind === 'siege') mesh.scale.setScalar(1.25 + .1*modsOf(item.design)); mesh.position.set(so.x, so.y, so.z); mesh.userData.sock = so; wScene.add(mesh);
   so.tower = {design:item.design, uid:item.uid, mesh, auto:false, autoOn:true, soldier:null, beam:beamMesh(beamColor(item.design))};
   wScene.add(so.tower.beam);
   if (auto){ so.tower.auto = true; addAutoMesh(so.tower); }
@@ -131,7 +131,7 @@ function removeTower(so){
 function buildPreview(){
   clearGroup(previewGroup);
   if (G.mode !== 'place' || G.sel == null) return;
-  const so = SOCKETS[G.sel], d = so.tower ? so.tower.design : (G.inventory.find(it => it.uid === G.previewUid && it.design.kind === 'tower') || {}).design; if (!d) return;
+  const so = SOCKETS[G.sel], d = so.tower ? so.tower.design : (G.inventory.find(it => it.uid === G.previewUid && isMount(it.design)) || {}).design; if (!d) return;
   const col = new THREE.Color(beamColor(d)), pos = [], cols = [], idx = []; let cap = 1e-9; for (let m = 1; m <= 100; m++) cap = Math.max(cap, fracAt(d, m));
   for (let m = 0; m <= 100; m++){
     const tr = traceD(d, Math.max(.01, m)), fr = fracAt(d, m), hw = clamp(.15 + tr.w*.012, .15, 1.6), z = dToZ(m), b = clamp(Math.sqrt(fr/cap), .06, 1)*Math.max(.15, tr.t);
@@ -173,32 +173,48 @@ const atSocket = i => i != null && SOCKETS[i].floor === H().floor && !H().climb 
 const nearSockets = () => SOCKETS.filter(s => built(s.floor) && s.floor === H().floor && !H().climb && Math.abs(H().x - s.x) < (G.mode === 'wave' ? 1.2 : .3)).sort((a, b) => Math.abs(H().x - a.x) - Math.abs(H().x - b.x));
 function selectSocket(i){
   G.sel = i; const so = SOCKETS[i]; goTo(so.x, so.floor);
-  G.previewUid = (G.inventory.find(it => it.design.kind === 'tower') || {}).uid;
+  G.previewUid = (G.inventory.find(it => isMount(it.design)) || {}).uid;
   buildPreview(); hint(so.tower ? `${sockName(so)} · 바닥 띠가 센 구간이에요` : `${sockName(so)} 자리로 가는 중`); renderAll();
 }
 
 /* ═════════ 웨이브 ═════════ */
 function foeMesh(type, armor, scale = 1){
   const f = FOES[type], mat = std(f.color, {emissive:f.color, emissiveIntensity:.15, roughness:.5});
-  const g = new THREE.Group(), body = foeBody(type, armor, mat);
-  body.position.y = type === 'ca' ? .75 : type === 'na' ? .6 : .5; body.scale.setScalar(scale*(type === 'ca' ? 1.25 : 1)); g.add(body);
+  if (f.boss) scale *= f.scale;
+  const g = new THREE.Group(), body = foeBody(f.boss ? f.base : type, armor, mat);
+  if (f.boss){ // 왕관
+    const crown = new THREE.Group(), gold = new THREE.MeshStandardMaterial({color:0xffd166, emissive:0xffb020, emissiveIntensity:.6, metalness:.7, roughness:.3});
+    const ring = new THREE.Mesh(new THREE.CylinderGeometry(.22, .25, .14, 16, 1, true), gold); crown.add(ring);
+    for (let i = 0; i < 5; i++){ const sp = new THREE.Mesh(new THREE.ConeGeometry(.06, .2, 6), gold); const a = i/5*Math.PI*2; sp.position.set(Math.cos(a)*.22, .15, Math.sin(a)*.22); crown.add(sp); }
+    const top = {cs:1.05, kn:1.75, ca:1.55, sh:1.68, qg:1.1}[f.base] || 1.2; crown.position.y = top - (FOE_OFF[f.base] || .5); body.add(crown); }
+  const bt = f.boss ? f.base : type;
+  body.position.y = f.boss ? .5*scale : bt === 'ca' ? .75 : bt === 'na' ? .6 : bt === 'bt' ? 1.4 : bt === 'gt' ? .6 : bt === 'ne' ? 1.0 : bt === 'sh' ? .6 : .5; body.scale.setScalar(scale*(bt === 'ca' ? 1.25 : 1)); g.add(body);
   g.userData.body = body.userData.body;
-  const bar = new THREE.Mesh(new THREE.PlaneGeometry(1.1, .12), new THREE.MeshBasicMaterial({color:0x5ad48e, fog:false})); bar.position.y = type === 'ca' ? 2.1 : 1.55; g.add(bar); g.userData.bar = bar;
+  if (f.quantum){ const sh = []; body.traverse(o => { if (o.material && !o.userData.eye){ o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = .1; o.material.depthWrite = false; sh.push(o.material); } }); g.userData.shade = sh;
+    // 땅 위 간섭무늬: 밝은 줄 5개(밝기 = ρ). 유령이 퍼져 있는 동안만 보인다
+    const fr = new THREE.Group();
+    QG_RHO.forEach((rho, i) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 4.2), new THREE.MeshBasicMaterial({color:0xb8f0ff, transparent:true, opacity:.2 + .6*rho, depthWrite:false, fog:false})); m.rotation.x = -Math.PI/2; m.position.set((i - 2)*QG_DX*M2W, .06, 0); fr.add(m); });
+    g.add(fr); g.userData.fringe = fr; }
+  if (f.dark){ const sh = []; body.traverse(o => { if (o.material && !o.userData.eye){ o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = .16; sh.push(o.material); } }); g.userData.shade = sh; }
+  const bar = new THREE.Mesh(new THREE.PlaneGeometry(1.1, .12), new THREE.MeshBasicMaterial({color:0x5ad48e, fog:false})); bar.position.y = f.boss ? 1.9*scale + .4 : type === 'ca' ? 2.1 : type === 'gt' ? 3.2*scale : type === 'bt' || type === 'ne' ? 2.1 : type === 'sh' ? 2.0 : type === 'sk' ? 1.0 : 1.55; g.add(bar); g.userData.bar = bar;
   return g;
 }
 function startWave(){
-  G.queue = waveList(G.wave); G.total = G.queue.length; G.kills = 0; G.waveGold = 0; G.spawnT = .5; G.enemies = []; G.waveT = 0;
+  G.queue = waveList(G.wave); G.waveMul = waveHpMul(G.queue, G.wave); G.total = G.queue.length; G.kills = 0; G.waveGold = 0; G.spawnT = .5; G.enemies = []; G.waveT = 0;
   G.mode = 'wave'; G.sel = null; G.ride = null; G.showSettings = false; G.sortieUsed = false; G.sortieResult = null; G.building = null;
   if (G.settings.autoClose) G.winOpen = false;
   H().route = []; buildPreview(); setWallXray(true);
   heroBeam.material.color.set(beamColor(G.weapon));
-  hint(`밤 ${G.wave} · 적이 온다! 화면을 누르면 그 지점으로 쏴요`);
+  const fresh = Object.keys(FOE_FROM).filter(k => FOE_FROM[k] === G.wave);
+  hint(fresh.length ? `밤 ${G.wave} · 새 몬스터! ${fresh.map(k => FOE_TIP[k]).join(' / ')}` : `밤 ${G.wave} · 적이 온다! 화면을 누르면 그 지점으로 쏴요`);
   renderAll();
 }
 function spawnFoe(spec){
-  const f = FOES[spec.type], hp = Math.round(f.hp*hpMul(G.wave)), mesh = foeMesh(spec.type, spec.armor), x = -15 + Math.random()*30;
+  const f = FOES[spec.type], hp = Math.round(f.hp*(G.waveMul || hpMul(G.wave))*(spec.elite ? ELITE_HP : 1)), mesh = foeMesh(spec.type, spec.armor, spec.elite ? 1.45 : 1), x = f.quantum ? 0 : -15 + Math.random()*30;
   mesh.position.set(x, 0, dToZ(100)); wScene.add(mesh);
-  G.enemies.push({type:spec.type, armor:spec.armor, mesh, x, d:100, hp, max:hp, hitT:0});
+  if (f.boss){ const l = label(f.name, {size:22, color:'#1a0d04', bg:'rgba(255,140,80,.95)', h:.03, bold:true}); l.position.set(0, 1.9*f.scale + 1.1, 0); mesh.add(l); showBossBanner(f); }
+  if (spec.elite){ const l = label('정예', {size:18, color:'#1a0d04', bg:'rgba(255,209,102,.95)', h:.022, bold:true}); l.position.set(0, 3.1, 0); mesh.add(l); hint(`정예 ${josa(f.short, '이', '가')} 나타났어요 · 체력 ×${ELITE_HP} · 몸 ×1.45`); }
+  G.enemies.push({type:spec.type, armor:spec.armor, mesh, x, d:100, hp, max:hp, hitT:0, elite:!!spec.elite, boss:!!f.boss, sum:0});
 }
 function killFoe(e, list){ wScene.remove(e.mesh); dispose(e.mesh); list.splice(list.indexOf(e), 1); }
 function floatText(text, pos, bad){
@@ -210,20 +226,85 @@ const tA = V(), tB = V();
 const beamW = w => clamp(.04 + w*.004, .04, .5);
 const spreadW = w => Math.min(w/100, 2.5)*M2W;   // 빔 반지름(cm) → 월드 반지름
 function towerOrigin(so){ return tA.set(so.x, so.y + 1.05, so.floor === 4 ? -.95 : -1.45); }
+/* ═════════ 보스 ═════════ */
+function bossStep(e, dt){
+  const f = FOES[e.type];
+  if (f.spin){ e.armor = ((e.armor || 0) + f.spin*dt) % 180; const sh = e.mesh.children[0] && e.mesh.children[0].userData.shield; if (sh) sh.rotation.z = rad(e.armor); }
+  const th = [.75, .5, .25][e.sum]; if (th != null && e.hp < e.max*th){ e.sum++;
+    const [t, n] = f.summon; for (let i = 0; i < n; i++){ spawnFoe({type:t, armor:t === 'kn' ? rnd([0, 90]) : null}); const k = G.enemies[G.enemies.length - 1]; k.mesh.position.set(e.mesh.position.x + (i - (n - 1)/2)*1.6, 0, e.mesh.position.z + .8); k.x = k.mesh.position.x; k.d = Math.max(1, zToD(k.mesh.position.z)); }
+    G.total += n; floatText(`졸개 ${n}마리!`, V(e.mesh.position.x, 3.4, e.mesh.position.z), true); }
+}
+function showBossBanner(f){
+  const b = $('banner'); if (!b) return;
+  const tip = {Bs:'체력이 줄 때마다 슬라임을 불러요', Bk:'편광 방패가 계속 돌아요 · 편광된 빛은 cos²으로 출렁이고, 편광 안 된 빛은 늘 절반', Bg:'일함수 3.2 eV · 자외선만 통해요', Bd:'램프 빛 안에서만 보여요', Bq:'간섭무늬 밝은 줄에서만 · 경로 측정기를 켜면 두 줄로'}[Object.keys(FOES).find(k => FOES[k] === f)] || '';
+  b.innerHTML = G.dgRun ? `<b>챕터 우두머리 · ${f.name}</b><span>${tip}<br>쓰러뜨리면 유물을 얻어요</span>` : `<b>보스 등장 · ${f.name}</b><span>${tip}<br>쓰러뜨리면 적의 소굴에 새 챕터가 열려요</span>`; b.hidden = false; clearTimeout(showBossBanner.t); showBossBanner.t = setTimeout(() => { b.hidden = true; }, 5200);
+}
+function bossDefeated(e, f){
+  if (G.dgRun) return;   // 던전 우두머리는 dungeon.js가 처리
+  const id = e.type, first = !G.bosses[id]; G.bosses[id] = true; G.bossDown = true;
+  floatText(`${f.name} 격파!`, V(e.mesh.position.x, 4, e.mesh.position.z));
+  if (first){ const b = $('banner'); if (b){ b.innerHTML = `<b>${f.name} 격파!</b><span>적의 소굴 ${f.ch}장 · ${DG_CH[f.ch].name}이 열렸어요<br>낮에 지도 북쪽으로 올라가요</span>`; b.hidden = false; clearTimeout(showBossBanner.t); showBossBanner.t = setTimeout(() => { b.hidden = true; }, 5200); } }
+}
+/* 그림자 도깨비: 램프 빛이 닿는 곳에서만 보인다 (자동 조준 · 쫄병이 못 본다) */
+const seen = e => (!FOES[e.type].dark || e.lit || e.d < SHADOW_NEAR) && (!FOES[e.type].quantum || e.qShow > 0);
+/* 양자 유령: 퍼져 있다가(QG_SPREAD초) 한 줄에서 관측되어 나타난다(QG_SHOW초) */
+const WHICH_X = 4, WHICH_DRAW = 1;
+function quantumStep(e, dt){
+  const u = e.mesh.userData;
+  // 경로 측정기(상보성): 어느 문으로 왔는지 재면 간섭무늬가 사라지고, 두 문 자리(±4 m) 중 한 줄로만 늘 보이며 온다
+  if (G.which && G.energy > 0 && !G.dgRun){
+    if (e.slit == null) e.slit = Math.random() < .5 ? -1 : 1;
+    e.qShow = 1; e.x = e.slit*WHICH_X*M2W*(FOES[e.type].boss ? .5 : 1); e.mesh.position.x = e.x;
+    for (const m of u.shade || []) m.opacity = .9; if (u.fringe) u.fringe.visible = false; return;
+  }
+  if (e.qShow > 0){ e.qShow -= dt; if (e.qShow <= 0){ e.qWait = QG_SPREAD*(.7 + .6*Math.random()); e.x = 0; e.mesh.position.x = 0; } }
+  else { e.qWait = (e.qWait ?? QG_SPREAD) - dt; if (e.qWait <= 0){ const k = qgPick(Math.random()); e.qShow = QG_SHOW; e.x = k*QG_DX*M2W; e.mesh.position.x = e.x;
+    if (!G.toldGhost){ G.toldGhost = true; hint(`양자 유령: 두 문을 지나 간섭무늬 밝은 줄에서만 나타나요 · 줄 간격 Δx = λL/d = ${QG_DX} m · 가운데 줄이 제일 자주`); } } }
+  const show = e.qShow > 0;
+  for (const m of u.shade || []) m.opacity = show ? .9 : .1;
+  if (u.fringe){ u.fringe.visible = !show; u.fringe.position.x = -e.mesh.position.x; }
+}
+function lightShadows(){
+  const lamps = [];
+  for (const so of SOCKETS) if (so.tower && !isLaser(so.tower.design)) lamps.push([so.x, towerOrigin(so).z]);
+  if (G.weapon && !isLaser(G.weapon)) lamps.push(G.sortie && !G.sortie.auto ? [G.sortie.x, G.sortie.z] : [H().x, heroZ()]);
+  const R = LAMP_LIGHT*M2W;
+  for (const e of G.enemies){ if (!FOES[e.type].dark) continue;
+    const was = e.lit; e.lit = lamps.some(([x, z]) => Math.hypot(e.mesh.position.x - x, e.mesh.position.z - z) < R);
+    const v = seen(e), op = v ? 1 : .16; for (const m of e.mesh.userData.shade || []) m.opacity = op;
+    if (v && !was && !e.toldLit && !G.toldShadow){ G.toldShadow = true; hint('그림자 도깨비는 램프 빛(램프 탑 · 주인공 램프 25 m 안)이나 성벽 12 m 안에서만 보여요'); }
+  }
+}
 function pickNearest(ox, oz, list, cone, maxD, design){
   let best = null, bd = 1e9, good = null, gd = 1e9;
-  for (const e of list){
+  for (const e of list){ if (!seen(e)) continue;
     const dx = e.mesh.position.x - ox, dz = e.mesh.position.z - oz; if (cone && dz > 0) continue;
     if (cone && Math.atan2(Math.abs(dx), -dz) > rad(cone)) continue;
     const dist = Math.hypot(dx, dz)/M2W; if (dist > maxD) continue;
     if (dist < bd){ bd = dist; best = e; }
-    if (design && dist < gd && hitD(design, FOES[e.type], dist, e.armor, null).v > 0){ gd = dist; good = e; }
+    if (design && dist < gd && hitD(design, foeOf(e), dist, e.armor, null).v > 0){ gd = dist; good = e; }
   }
   if (good) return {e:good, dist:gd};
   return best ? {e:best, dist:bd} : null;
 }
+/* 탑의 표적: 교전 범위 [최소–최대 m] 밖은 안 본다(안 쏘니 전기도 안 쓴다).
+   자동: 데미지가 나는 가장 가까운 적. 효율 문턱(Ⅲ)을 켜면 그 탑 최고 데미지의 35%보다 약하게 맞는 적은 건너뛴다 */
+function pickTower(T, o, op){
+  const [lo, hi] = rangeOf(T), eff = T.rng && T.rng.eff && G.research.range3;
+  let best = null, bd = 1e9, good = null, gd = 1e9;
+  for (const e of G.enemies){ if (!seen(e)) continue;
+    const dx = e.mesh.position.x - o.x, dz = e.mesh.position.z - o.z; if (dz > 0 || Math.atan2(Math.abs(dx), -dz) > rad(42)) continue;
+    const dist = Math.hypot(dx, dz)/M2W; if (dist < lo || dist > hi) continue;
+    if (dist < bd){ bd = dist; best = e; }
+    if (op === 'auto' && dist < gd){ const v = hitD(T.design, foeOf(e), dist, e.armor, null).v; if (v > 0 && (!eff || v >= EFF_MIN*peakV(T.design, e.type, e.armor))){ gd = dist; good = e; } }
+  }
+  if (good) return {e:good, dist:gd};
+  if (eff) return null;
+  return best ? {e:best, dist:bd} : null;
+}
 function applyHit(design, e, dist, dt, polTheta, acc = 1, scale){
-  const r = hitD(design, FOES[e.type], dist, e.armor, polTheta, scale);
+  if (FOES[e.type].quantum && !(e.qShow > 0)) return {v:0, why:'퍼져 있음', w:1};
+  const r = hitD(design, foeOf(e), dist, e.armor, polTheta, scale);
   if (r.v){ e.hp -= r.v*dt*acc; e.hitT = .1; bumpBest(r.v); }
   return r;
 }
@@ -231,6 +312,16 @@ function applyHit(design, e, dist, dt, polTheta, acc = 1, scale){
 function splash(design, center, dist, dt, r, acc = 1, scale){
   const R = spreadW(r.w); if (R < .35) return;
   for (const o of G.enemies) if (o !== center && o.mesh.position.distanceTo(center.mesh.position) < R + .3) applyHit(design, o, dist, dt, null, acc, scale);
+}
+/* 대형 무기: 굵은 빔이 첫 적을 지나 같은 줄에 선 적들도 비춘다 (각자 자기 거리 · 자기 몸 크기로 계산) */
+function pierce(design, o, first, dt, acc = 1){
+  const dx0 = first.mesh.position.x - o.x, dz0 = first.mesh.position.z - o.z, L = Math.hypot(dx0, dz0) || 1, ux = dx0/L, uz = dz0/L;
+  for (const q of G.enemies){
+    if (q === first) continue;
+    const px = q.mesh.position.x - o.x, pz = q.mesh.position.z - o.z, t = px*ux + pz*uz; if (t <= L*.98) continue;
+    const dist = t/M2W, lat = Math.abs(px*uz - pz*ux), w = traceD(design, dist).w;
+    if (lat < (foeOf(q).rb/100)*M2W + spreadW(w) + .15) applyHit(design, q, dist, dt, null, acc);
+  }
 }
 function fireAlong(design, origin, dirX, dirZ, dt, polTheta, zeroCtx){
   let best = null, bt = 1e9;
@@ -258,7 +349,7 @@ function updateWave(dt){
   if (S) sortieMove(dt);
   const sm = spdMul(G.wave);
   for (const e of G.enemies){
-    const slow = e.d <= RIVER[1] && e.d >= RIVER[0] ? .35 : 1, sp = FOES[e.type].speed*slow*sm;
+    const slow = !FOES[e.type].fly && e.d <= RIVER[1] && e.d >= RIVER[0] ? .35 : 1, sp = FOES[e.type].speed*slow*sm;
     e.hitT = Math.max(0, e.hitT - dt);
     let chased = false;
     if (S){
@@ -275,7 +366,7 @@ function updateWave(dt){
     }
     if (!chased){ e.d -= sp*dt; e.mesh.position.z = dToZ(e.d); }
     // 몬스터가 노려보는 쪽: 토벌 중엔 쫓는 상대, 아니면 성벽 위 주인공
-    { let lx, lz; if (chased && e.chase){ lx = e.chase.x; lz = e.chase.z; } else { lx = S && !S.auto ? S.x : H().x; lz = S && !S.auto ? S.z : heroZ(); }
+    if (!FOES[e.type].quantum){ let lx, lz; if (chased && e.chase){ lx = e.chase.x; lz = e.chase.z; } else { lx = S && !S.auto ? S.x : H().x; lz = S && !S.auto ? S.z : heroZ(); }
       const want = Math.atan2(lx - e.mesh.position.x, lz - e.mesh.position.z); let df = want - e.mesh.rotation.y; df = Math.atan2(Math.sin(df), Math.cos(df)); e.mesh.rotation.y += df*Math.min(1, dt*6); }
     { const fb = e.mesh.children[0]; if (fb && fb.userData.anim) fb.userData.anim(G.waveT + e.x); }
     e.mesh.position.y = slow < 1 ? -.25 : 0;
@@ -310,7 +401,7 @@ function updateWave(dt){
     const op = T.soldier != null ? 'soldier' : (T.auto && T.autoOn) ? 'auto' : null;
     if (!op){ T.beam.visible = false; continue; }
     if (op === 'auto') G.energy = Math.max(0, G.energy - autoUpkeep()*dt);
-    const nb = pickNearest(o.x, o.z, G.enemies, 42, 100, op === 'auto' ? T.design : null);
+    const nb = pickTower(T, o, op);
     if (!nb){ T.beam.visible = false; continue; }
     if (G.energy < draw*dt){ noPower(); continue; }
     G.energy -= draw*dt;
@@ -318,6 +409,7 @@ function updateWave(dt){
     const jit = (1 - acc)*1.6, jx = (Math.random() - .5)*jit, jz = (Math.random() - .5)*jit;
     head.rotation.y = Math.atan2(-(e.mesh.position.x + jx - o.x), -(e.mesh.position.z + jz - o.z));
     const r = applyHit(T.design, e, nb.dist, dt, null, op === 'soldier' ? .5 + .5*acc : 1); splash(T.design, e, nb.dist, dt, r, op === 'soldier' ? .5 + .5*acc : 1);
+    if (T.design.kind === 'siege') pierce(T.design, o, e, dt, op === 'soldier' ? .5 + .5*acc : 1);
     T.zeroT = (T.zeroT || 0) - dt;
     if (!r.v && T.zeroT <= 0){ T.zeroT = 1.2; floatText(r.why, V(e.mesh.position.x, 2.6, e.mesh.position.z), true); }
     setBeam(T.beam, o, tB.set(e.mesh.position.x + jx, e.mesh.position.y + .8, e.mesh.position.z + jz), beamW(r.w), r.v ? (r.sat ? .8 : .5) : .2);
@@ -340,17 +432,24 @@ function updateWave(dt){
       else heroBeam.visible = false;
     } else heroBeam.visible = false;
   }
+  // 보스: 방패 회전(편광 기사왕) · 체력 3/4 · 1/2 · 1/4마다 졸개 부르기
+  for (const e of G.enemies) if (e.boss) bossStep(e, dt);
   // 정리
+  lightShadows();
+  for (const e of G.enemies) if (FOES[e.type].quantum) quantumStep(e, dt);
+  if (G.which && G.enemies.some(e => FOES[e.type].quantum)) G.energy = Math.max(0, G.energy - WHICH_DRAW*dt);
   const rm = rewardMul(G.wave);
   for (const e of G.enemies.slice()){
     if (e.hp <= 0){
-      const f = FOES[e.type], rw = Math.round(f.reward*rm); G.kills++;
-      if (Math.random() < .35){ const mt = DROP_METAL[e.type]; G.metals[mt] = (G.metals[mt] || 0) + 1; floatText(`+${METALS[mt].name} 조각`, V(e.mesh.position.x, 3.0, e.mesh.position.z)); }
+      const f = FOES[e.type], rw = Math.round(f.reward*rm*(e.elite ? ELITE_HP : 1)); G.kills++;
+      if (DROP_METAL[e.type] && Math.random() < .35){ const mt = DROP_METAL[e.type]; G.metals[mt] = (G.metals[mt] || 0) + 1; floatText(`+${METALS[mt].name} 조각`, V(e.mesh.position.x, 3.0, e.mesh.position.z)); }
       if (S){ const v = Math.round(rw*1.5), cr = new THREE.Mesh(new THREE.OctahedronGeometry(.3), new THREE.MeshStandardMaterial({color:0xffd166, emissive:0xffb020, emissiveIntensity:.8})); cr.position.set(e.mesh.position.x, .5, e.mesh.position.z); wScene.add(cr); S.drops.push({m:cr, v}); }
       else { G.gold += rw; G.waveGold += rw; floatText(`+${rw}G`, V(e.mesh.position.x, 2.2, e.mesh.position.z)); }
+      if (f.boss) bossDefeated(e, f);
+      if (f.split){ for (const s of [-1, 1]){ spawnFoe({type:f.split}); const k = G.enemies[G.enemies.length - 1]; k.mesh.position.set(e.mesh.position.x + s*.7, 0, e.mesh.position.z - .3); k.x = k.mesh.position.x; k.d = Math.max(.5, zToD(k.mesh.position.z)); } G.total += 2; floatText('갈라졌어요!', V(e.mesh.position.x, 2.8, e.mesh.position.z), true); }
       killFoe(e, G.enemies);
     }
-    else if (e.d <= 0){ G.wallHp -= FOES[e.type].wall; killFoe(e, G.enemies); hint(`${FOES[e.type].name}가 성벽에 닿았어요 −${FOES[e.type].wall}`); if (G.wallHp <= 0) return gameOver(); }
+    else if (e.d <= 0){ G.wallHp -= FOES[e.type].wall; killFoe(e, G.enemies); hint(`${josa(FOES[e.type].name, '이', '가')} 성벽에 닿았어요 −${FOES[e.type].wall}`); if (G.wallHp <= 0) return gameOver(); }
     else { e.mesh.userData.bar.scale.x = Math.max(.02, e.hp/e.max); e.mesh.userData.bar.quaternion.copy(e.mesh.quaternion).invert().multiply(camera.quaternion); e.mesh.userData.body.material.emissiveIntensity = e.hitT ? .9 : .15; }
   }
   if (S){
@@ -419,7 +518,7 @@ function sortieMove(dt){
     if (d > .1){ const sp = Math.min(d, 3.2*dt); S.x += dx/d*sp; S.z += dz/d*sp; S.heading = Math.atan2(-dx, -dz); }
   } else {
     const [mx, mz] = moveInput(), ml = Math.hypot(mx, mz);
-    if (ml > .05){ const sp = 4.2*heroSpeed()*Math.min(1, ml); S.x = clamp(S.x + mx/ml*sp*dt, SOR_BOUNDS.x0, SOR_BOUNDS.x1); S.z = clamp(S.z + mz/ml*sp*dt, SOR_BOUNDS.z1, SOR_BOUNDS.z0); hero.rotation.y = Math.atan2(-mx, -mz); }
+    if (ml > .05){ const sp = 4.2*heroSpeed()*Math.min(1, ml); const Bd = S.bounds || SOR_BOUNDS; S.x = clamp(S.x + mx/ml*sp*dt, Bd.x0, Bd.x1); S.z = clamp(S.z + mz/ml*sp*dt, Bd.z1, Bd.z0); hero.rotation.y = Math.atan2(-mx, -mz); }
     hero.position.set(S.x, 0, S.z);
   }
   // 대형은 대장이 보는 방향을 따라 돌아가고, 쏠 적이 없으면 다들 대장과 같은 쪽을 봐요
@@ -442,7 +541,7 @@ function sortieFire(dt){
       else { setBeam(sortieBeam, o, V(G.aim.x, .2, G.aim.z), .05, .3); hero.rotation.y = Math.atan2(-(G.aim.x - S.x), -(G.aim.z - S.z)); }
     } else nb = pickNearest(S.x, S.z, G.enemies, 0, 40, G.weapon);
     if (nb){
-      const best = nb.e, r = hitD(G.weapon, FOES[best.type], nb.dist, best.armor, null);
+      const best = nb.e, r = hitD(G.weapon, foeOf(best), nb.dist, best.armor, null);
       if (r.v){ best.hp -= r.v*1.4*dt; best.hitT = .1; bumpBest(r.v*1.4); }
       splash(G.weapon, best, nb.dist, dt*1.4, r);
       S.zero.t -= dt; if (!r.v && S.zero.t <= 0){ S.zero.t = 1.2; floatText(r.why, V(best.mesh.position.x, 2.4, best.mesh.position.z), true); }
@@ -458,7 +557,7 @@ function sortieFire(dt){
     if (!u.target){ u.beam.visible = false; continue; }
     const e = u.target, dist = Math.hypot(e.mesh.position.x - u.mesh.position.x, e.mesh.position.z - u.mesh.position.z)/M2W;
     const jit = (1 - acc)*1.8, jx = (Math.random() - .5)*jit, jz = (Math.random() - .5)*jit;
-    const r = hitD(u.gun, FOES[e.type], dist, e.armor, null, sc);
+    const r = hitD(u.gun, foeOf(e), dist, e.armor, null, sc);
     if (r.v){ e.hp -= r.v*(.5 + .5*acc)*dt; e.hitT = .1; }
     setBeam(u.beam, V(u.mesh.position.x, .8, u.mesh.position.z), V(e.mesh.position.x + jx, .7, e.mesh.position.z + jz), .04, .55);
     u.mesh.rotation.y = Math.atan2(-(e.mesh.position.x - u.mesh.position.x), -(e.mesh.position.z - u.mesh.position.z));

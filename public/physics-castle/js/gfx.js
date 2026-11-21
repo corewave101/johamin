@@ -108,6 +108,9 @@ function part(type, o = {}){
     const ped = new THREE.Mesh(new THREE.CylinderGeometry(.55, .65, .3, 24), std(0x47566b, {metalness:.5})); ped.position.y = -BEAM_Y + .15; g.add(ped);
     const pole = new THREE.Mesh(new THREE.CylinderGeometry(.06, .06, BEAM_Y - .3, 8), std(0x8a99ad)); pole.position.y = -(BEAM_Y - .3)/2 - .3; g.add(pole);
     const body = foeBody(o.foe, o.armor, std(f.color, {emissive:f.color, emissiveIntensity:.1}));
+    // 6.5: 실험장 표적은 작게(빔 · 상 크기를 가리지 않게). 큰 몸일수록 더 줄인다
+    const DUMMY_S = {gt:.3, ca:.42, kn:.5, na:.5, sh:.5, bt:.75, sk:.85};
+    body.scale.setScalar(DUMMY_S[o.foe] || .55); body.position.y = -.15;
     body.rotation.y = -Math.PI/2; g.add(body); g.userData.body = body.userData.body;
   }
   return g;

@@ -146,7 +146,7 @@ function buildRange(){
   const hit = fHit();
   if (!hide && fReady() && p){
     const s = [], end = F.dummy.x, mw = minWOf(d); let fmax = 0;
-    for (let m = 0; m <= end + 1e-9; m += .5){ const tr = traceD(d, Math.max(.01, m)), fr = Math.min(1, (RT/Math.max(tr.w, mw))**2); fmax = Math.max(fmax, fr); s.push({X:mToW(m), w:tr.w, t:tr.t, pol:tr.pol, fr, x:m}); }
+    for (let m = 0; m <= end + 1e-9; m += .5){ const tr = traceD(d, Math.max(.01, m)), fr = Math.min(1, ((fFoe().rb || BODY_REF)/Math.max(tr.w, mw))**2); fmax = Math.max(fmax, fr); s.push({X:mToW(m), w:tr.w, t:tr.t, pol:tr.pol, fr, x:m}); }
     fDrawBeam(s.map(q => ({X:q.X, r:clamp(.035*q.w, .03, 2.4), t:q.t, pol:q.pol, b:Math.max(.12, Math.sqrt(q.fr/Math.max(fmax, 1e-9))), x:q.x})), col, false);
     for (const im of fImages()){ const m = im.at/100; if (m > .5 && m <= 100){ const X = mToW(m);
       const dot = new THREE.Mesh(new THREE.SphereGeometry(.09, 12, 8), new THREE.MeshBasicMaterial({color:0xffffff})); dot.position.set(X, BEAM_Y, 0); fDyn.add(dot);
@@ -455,10 +455,14 @@ function fRefresh(){
 /* 실험부 창: 표적 · 전기 계산 */
 function elecHtml(hit, foe, armor){
   if (!hit.v) return `<div class="eq"><span class="warn">0 · ${hit.why}</span>${hit.why === 'E < W' ? `<br>어떤 광자도 일함수 ${foe.W} eV를 못 넘어요. 세기를 올려도 소용없어요 → 진동수를 올려요.` : hit.why === '편광 차단' ? '<br>편광 방향과 갑옷 투과축이 수직이에요.' : ''}</div>`;
-  const lim = hit.sat ? `IR = ${(hit.Itot*foe.R).toFixed(2)} V &gt; V₀ → <span class="gold">전압 포화</span> · u = ${hit.u.toFixed(2)} V<br>→ 세기를 올려도 그대로, 진동수를 올려야 세져요` : `IR = ${hit.u.toFixed(2)} V &lt; V₀ → <span class="ok">전류 제한</span><br>→ 빛을 더 모으면(세기↑) 더 세져요`;
-  return `<div class="eq">빔 반지름 ${fmtLen(hit.w)} → 급소(반지름 ${RT} cm)에 ${(hit.frac*100).toFixed(hit.frac < .01 ? 2 : 1)}%${hit.t < 1 ? ` · 편광 투과 ${hit.t.toFixed(3)}` : ''}<br>
-    들어간 빛 ${hit.Ph < .1 ? hit.Ph.toFixed(3) : hit.Ph.toFixed(2)} mW → 광전류 I = Σ P/E = <b>${hit.Itot < .01 ? hit.Itot.toFixed(4) : hit.Itot.toFixed(3)} mA</b><br>
-    정지 전압 V₀ = E − W = <b>${hit.V0.toFixed(2)} V</b> · 저항 R = ${foe.R} kΩ<br>${lim}<br>
+  const lim = hit.sat ? `I₀R = ${(hit.Itot*foe.R).toFixed(2)} V &gt; V₀ → <span class="gold">전압 포화</span>: u가 V₀ 아래에서 막혀요<br>→ 세기를 올려도 거의 그대로, 진동수를 올려야 세져요` : `I₀R = ${(hit.Itot*foe.R).toFixed(2)} V &lt; V₀ → <span class="ok">전류 제한</span><br>→ 빛을 더 모으면(세기↑) 더 세져요`;
+  const pct = hit.Itot > 0 ? Math.round(hit.I/hit.Itot*100) : 0;
+  return `<div class="eq">빔 반지름 ${fmtLen(hit.w)} → ${foe.short || '적'} 몸(반지름 ${hit.rb} cm)에 ${(hit.frac*100).toFixed(hit.frac < .01 ? 2 : hit.frac >= 1 ? 0 : 1)}%${hit.frac >= 1 ? ' (빛이 몸 안에 다 들어가요)' : ''}${hit.t < 1 ? ` · 편광 투과 ${hit.t.toFixed(3)}` : ''}<br>
+    들어간 빛 ${hit.Ph < .1 ? hit.Ph.toFixed(3) : hit.Ph.toFixed(1)} mW → 광자 2000개에 전자 1개(양자 효율 η = ${ETA})<br>
+    ${foe.line ? `${foe.short}은 준위 차 ${foe.line} eV(±${foe.band}) 근처 광자만 흡수 → 들어간 빛의 <b>${Math.round((hit.abs ?? 1)*100)}%</b>만 흡수, 나머지는 그냥 지나가요<br>` : ''}
+    다 모이면 광전류 I₀ = η·Σ P/E = <b>${hit.Itot < .01 ? hit.Itot.toFixed(4) : hit.Itot.toFixed(3)} mA</b><br>
+    정지 전압 V₀ = E − W = <b>${hit.V0.toFixed(2)} V</b> · 저항 R = ${foe.R} kΩ<br>
+    R에 생긴 전압 u가 역전압이 돼서 일부 전자만 넘어가요 → u = R·I(u)를 풀면 <b>u = ${hit.u.toFixed(2)} V</b>, I = ${hit.I < .01 ? hit.I.toFixed(4) : hit.I.toFixed(3)} mA (I₀의 ${pct}%)<br>${lim}<br>
     전력 P = u²/R = ${hit.P < .01 ? hit.P.toFixed(4) : hit.P.toFixed(3)} mW × ${DMG_K}${hit.scale !== 1 ? ` × ${hit.scale.toFixed(2)}` : ''} = <b>${hit.v.toFixed(1)}/초</b></div>`;
 }
 function testPanel(){
@@ -467,7 +471,7 @@ function testPanel(){
     <div class="sec">
       <div class="seg"><button type="button" data-act="learnOn" aria-pressed="false">문제 풀기</button><button type="button" data-act="learnOff" aria-pressed="true">자유 설계</button></div>
       <div class="ed-head"><h3>시험 표적</h3><span>${F.kind === 'weapon' ? '주인공 무기' : '탑'} · 경통 ${F.barrel} cm</span></div>
-      <div class="seg">${Object.entries(FOES).map(([id, f]) => `<button type="button" aria-pressed="${F.dummy.foe===id}" data-ffoe="${id}"><i style="background:${f.color}"></i>${f.short}</button>`).join('')}</div>
+      <div class="seg">${foeEntries().map(([id, f]) => `<button type="button" aria-pressed="${F.dummy.foe===id}" data-ffoe="${id}"><i style="background:${f.color}"></i>${f.short}</button>`).join('')}</div>
       ${F.dummy.foe === 'kn' ? `<div class="range"><label for="sA">기사 갑옷 투과축 <b id="vA">${armor}°</b></label><input id="sA" type="range" min="0" max="180" step="15" value="${armor}"></div>` : ''}
       <div class="range"><label for="sD">표적 거리 <b id="vD">${F.dummy.x} m</b></label><input id="sD" type="range" min="1" max="100" step="1" value="${F.dummy.x}"></div>
       <p class="muted">${foe.name} · 일함수 W = ${foe.W} eV · 저항 R = ${foe.R} kΩ${armor != null ? ` · 갑옷 ${armor}°` : ''}</p>
@@ -503,15 +507,21 @@ function fSave(how){
 /* ═════════ 연구부 (블루프린트) ═════════ */
 const RESEARCH = [
   {id:'laser', name:'레이저', desc:'유도 방출로 빛을 증폭하는 광원. 단색 · 지향성 · 집속성 · 가간섭성', cost:300, exam:true, unit:'23번 레이저', art:'cavity'},
-  {id:'doublet', name:'겹렌즈 · 수차 보정', desc:'볼록 · 오목 렌즈를 겹쳐 수차를 줄여요. 레이저를 모을 수 있는 최소 반지름 1.0 → 0.82 cm', cost:150, req:'laser', unit:'20번 수차', art:'doublet'},
-  {id:'ap1', name:'대구경 렌즈 Ⅰ', desc:'렌즈 지름을 키우면 회절로 퍼지는 정도가 줄어요. 0.82 → 0.67 cm', cost:300, req:'doublet', unit:'회절 한계', art:'lens'},
-  {id:'ap2', name:'대구경 렌즈 Ⅱ', desc:'0.67 → 0.5 cm (급소 크기와 같아져요)', cost:600, req:'ap1', unit:'회절 한계', art:'lens'},
+  {id:'doublet', name:'겹렌즈 · 수차 보정', desc:'볼록 · 오목 렌즈를 겹쳐 수차를 줄이면 더 큰 렌즈를 쓸 수 있어요. 램프 빛을 모으는 양 ×1.22 · 레이저 최소 반지름 1.0 → 0.82 cm', cost:150, req:'laser', unit:'20번 수차', art:'doublet'},
+  {id:'ap1', name:'대구경 렌즈 Ⅰ', desc:'렌즈 지름을 키우면 램프에서 퍼지는 빛을 더 많이 받아요(×1.5). 회절도 줄어 레이저 0.82 → 0.67 cm', cost:300, req:'doublet', unit:'회절 한계', art:'lens'},
+  {id:'ap2', name:'대구경 렌즈 Ⅱ', desc:'램프 빛을 모으는 양 ×2 · 레이저 0.67 → 0.5 cm', cost:600, req:'ap1', unit:'회절 한계', art:'lens'},
   {id:'pump4', name:'펌핑 Ⅳ', desc:'왕복 이득 g₀ 45% 램프', cost:200, req:'laser', unit:'23번 밀도 반전', art:'pump'},
   {id:'pump5', name:'펌핑 Ⅴ', desc:'왕복 이득 g₀ 55% 램프', cost:400, req:'pump4', unit:'23번 밀도 반전', art:'pump'},
   {id:'krf', name:'KrF 엑시머 248 nm', desc:'더 짧은 파장 → 광자 에너지 5.0 eV → 정지 전압 ↑. 전압이 막히는 단단한 적에게 세요', cost:450, req:'pump4', unit:'22번 광전 효과', art:'excimer'},
   {id:'arf', name:'ArF 엑시머 193 nm', desc:'광자 에너지 6.4 eV. 골렘도 전압 포화로 녹여요', cost:800, req:'krf', unit:'22번 광전 효과', art:'excimer'},
+  {id:'range', name:'교전 범위 모듈 Ⅰ', desc:'탑마다 쏘는 거리 [최소–최대 m]를 정해요. 범위 밖 적은 안 쏘고 전기도 안 써요. 연구 뒤 탑 카드에서 탑마다 달아요', cost:150, exam:'range', unit:'20번 렌즈', art:'range'},
+  {id:'range2', name:'교전 범위 Ⅱ · 자동 구간', desc:'설계의 빛이 적의 몸(반지름 30 cm)에 절반 넘게 들어가는 구간에 범위를 자동으로 맞춰요', cost:250, req:'range', unit:'20번 렌즈', art:'range'},
+  {id:'which', name:'경로 측정기 · 상보성', desc:'양자 유령이 두 문 중 어디로 지나는지 재요. 재는 순간 간섭무늬가 사라지고 유령이 두 문 자리 두 줄로만 와요(늘 보여서 쏘기 쉬움). 켜 두는 동안 ⚡1/초', cost:300, unit:'24번 이중성', art:'which'},
+  {id:'range3', name:'교전 범위 Ⅲ · 효율 문턱', desc:'그 탑이 낼 수 있는 최고 데미지의 35%보다 약하게 맞는 적은 건너뛰어요. 전기를 아껴요', cost:400, req:'range2', unit:'22번 전력', art:'range'},
 ];
 const BP_ART = {
+  which:'<svg viewBox="0 0 160 50"><path d="M20 5 v14 M20 25 v0 M20 31 v14" stroke-width="3"/><path d="M20 19 v6" stroke-dasharray="1 2"/><path d="M24 22 Q80 0 140 10 M24 28 Q80 50 140 40" stroke-dasharray="4 3"/><circle cx="140" cy="10" r="4"/><circle cx="140" cy="40" r="4"/><text x="60" y="30">👁</text></svg>',
+  range:'<svg viewBox="0 0 160 50"><line x1="5" y1="25" x2="155" y2="25" stroke-dasharray="4 3"/><path d="M12 12 L12 38 M12 12 L70 25 L12 38"/><path d="M70 25 L150 10 M70 25 L150 40" stroke-dasharray="2 3"/><rect x="45" y="18" width="50" height="14" rx="3" stroke-width="2"/><text x="52" y="47">최소–최대</text></svg>',
   cavity:'<svg viewBox="0 0 160 50"><line x1="10" y1="25" x2="150" y2="25" stroke-dasharray="4 3"/><rect x="18" y="8" width="5" height="34"/><rect x="137" y="8" width="5" height="34"/><rect x="50" y="17" width="60" height="16" rx="3"/><path d="M50 10 h60 M50 40 h60" stroke-dasharray="2 3"/><text x="80" y="49">유도 방출</text></svg>',
   doublet:'<svg viewBox="0 0 160 50"><line x1="5" y1="25" x2="155" y2="25" stroke-dasharray="4 3"/><path d="M70 5 Q80 25 70 45 Q60 25 70 5"/><path d="M84 5 Q78 25 84 45 L92 45 Q86 25 92 5 Z"/><path d="M10 15 L70 15 L130 25 M10 35 L70 35 L130 25"/></svg>',
   lens:'<svg viewBox="0 0 160 50"><line x1="5" y1="25" x2="155" y2="25" stroke-dasharray="4 3"/><path d="M70 2 Q90 25 70 48 Q50 25 70 2"/><path d="M10 6 L70 6 L135 25 M10 44 L70 44 L135 25"/><circle cx="135" cy="25" r="2"/><text x="100" y="12">D ↑ · 점 ↓</text></svg>',
@@ -529,6 +539,21 @@ const LASER_QS = [
   {q:'레이저의 집속성이란?', a:'렌즈로 아주 작은 점에 빛을 모을 수 있는 성질', w:['여러 색이 섞여 있는 성질', '사방으로 고르게 퍼지는 성질', '편광판을 지나면 사라지는 성질']},
 ];
 let exam = null;
+/* 교전 범위 자격 시험 (20번 렌즈 · 기하광학): 숫자를 바꿔 가며 세 문제. 정답은 아래 표의 식으로 맞춰 둔 값 (tests/test_physics_castle.cjs가 다시 계산) */
+const RANGE_Q = {
+  image:[[30, 20, 60], [15, 10, 30], [20, 15, 60], [24, 12, 24], [40, 30, 120], [60, 20, 30], [25, 20, 100], [36, 12, 18]],   // a, f → b = af/(a−f)
+  focal:[[30, 60, 20], [20, 20, 10], [12, 24, 8], [40, 40, 20], [15, 30, 10], [60, 30, 20], [18, 36, 12], [24, 12, 8]],    // a, b → f = ab/(a+b)
+  beam:[[2, 20, 40, 2], [2, 20, 30, 1], [3, 15, 45, 6], [4, 25, 50, 4], [2, 10, 35, 5], [3, 30, 40, 1]],                    // r cm, F m, D m → r(D−F)/F
+};
+function wrongs(ans, cands){ const out = []; for (const w of cands){ const v = Math.round(w*10)/10; if (v > 0 && v !== ans && !out.includes(v)) out.push(v); } for (let k = 2; out.length < 3; k++){ const v = ans*k; if (!out.includes(v)) out.push(v); } return out.slice(0, 3); }
+function rangeQs(){
+  const [a, f, b] = rnd(RANGE_Q.image), [a2, b2, f2] = rnd(RANGE_Q.focal), [r, F, D, x] = rnd(RANGE_Q.beam);
+  return [
+    {q:`볼록 렌즈의 초점 거리가 ${f} cm예요. 렌즈에서 ${a} cm 떨어진 광원의 빛은 렌즈 뒤 몇 cm에 모일까요? (1/a + 1/b = 1/f)`, a:`${b} cm`, w:wrongs(b, [a + f, Math.abs(a - f), a*f/(a + f), 2*f, a + b]).map(v => `${v} cm`)},
+    {q:`광원에서 ${a2} cm 앞에 볼록 렌즈를 두었더니 렌즈 뒤 ${b2} cm에 빛이 모였어요. 이 렌즈의 초점 거리는?`, a:`${f2} cm`, w:wrongs(f2, [a2 + b2, Math.abs(a2 - b2), (a2 + b2)/2, a2*b2/Math.abs(a2 - b2 || 1)]).map(v => `${v} cm`)},
+    {q:`탑 출구의 빔 반지름 ${r} cm를 ${F} m 앞의 한 점에 모았어요. 그 점을 지나 다시 퍼질 때 ${D} m 지점의 빔 반지름은? (닮은 삼각형)`, a:`${x} cm`, w:wrongs(x, [r*D/F, r*F/D, r*(D + F)/F, r]).map(v => `${v} cm`)},
+  ];
+}
 function startExam(){ const pool = LASER_QS.slice().sort(() => Math.random() - .5).slice(0, 3); exam = pool.map(q => ({q:q.q, a:q.a, opts:[q.a, ...q.w].sort(() => Math.random() - .5), pick:null})); researchPanel(); }
 function researchPanel(){
   const card = r => { const done = G.research[r.id], locked = r.req && !G.research[r.req], needExam = r.exam && !G.laserExam;

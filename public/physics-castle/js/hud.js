@@ -21,11 +21,15 @@ function endUI(){
   for (const k of [...CARDS.keys()]) if (!p.pops.has(k)) closePop(k);
   paintPage();
 }
-function guard(d){ if (UI.rangeEl && d.contains(UI.rangeEl)){ UI.skipped = true; return true; } return false; }
+/* 누르는 중인 카드 · 슬라이더를 잡은 카드는 다시 그리지 않는다 (다시 그리면 버튼이 새로 만들어져서 그 탭이 사라진다) */
+function guard(d){ if ((UI.rangeEl && d.contains(UI.rangeEl)) || (UI.pressEl && d.contains(UI.pressEl))){ UI.skipped = true; return true; } return false; }
+document.addEventListener('pointerdown', ev => { const t = ev.target.closest && ev.target.closest('#cards .pop, #note, #page, #dock'); UI.pressEl = t ? ev.target : null; }, true);
+const pressEnd = () => { if (!UI.pressEl) return; setTimeout(() => { UI.pressEl = null; if (UI.skipped){ UI.skipped = false; renderAll(); } }, 0); };
+document.addEventListener('pointerup', pressEnd, true); document.addEventListener('pointercancel', pressEnd, true);
 function paintDock(h){ const d = $('dock'); if (painted) painted.dock = !!h; if (guard(d)) return; if (d.dataset.h !== h){ d.innerHTML = h; d.dataset.h = h; } d.hidden = !h; renderHud(); requestAnimationFrame(syncDockH); }
 function syncDockH(){ const d = $('dock'); stage.style.setProperty('--dockh', `${d.hidden ? 0 : d.offsetHeight + 12}px`); }
 function paintTopc(h){ const d = $('topc'); if (painted) painted.topc = !!h; d.innerHTML = h; d.hidden = !h; }
-function paintNote(h){ const d = $('note'); if (painted) painted.note = !!h; const st = d.scrollTop; d.innerHTML = h; d.hidden = !h; d.scrollTop = st; }
+function paintNote(h){ const d = $('note'); if (painted) painted.note = !!h; if (guard(d)) return; const st = d.scrollTop; d.innerHTML = h; d.hidden = !h; d.scrollTop = st; }
 function paintResult(h){ const d = $('result'); if (painted) painted.result = !!h; d.innerHTML = h; d.hidden = !h; }
 /* 카드: key마다 한 장. at = () => 3D 점 | {el, below}. opts.side = 'left' | 'right'(먼저 놓을 쪽), opts.cls */
 function paintPop(key, at, h, noX, opts = {}){
@@ -175,7 +179,7 @@ window.mapPanel = function(){
 };
 const _mapSVG = window.mapSVG;
 window.mapSVG = function(){
-  const ink = '#5a3e28', s = _mapSVG(), inv = G.inventory.filter(i => i.design.kind === 'tower').length, placed = SOCKETS.filter(q => q.tower).length;
+  const ink = '#5a3e28', s = _mapSVG(), inv = G.inventory.filter(i => isMount(i.design)).length, placed = SOCKETS.filter(q => q.tower).length;
   const jobs = G.craft.length ? G.craft.map(j => `${j.design.name} ${Math.max(1, Math.ceil((j.need - j.done)/craftSpeed()))}밤`).join(' · ') : '';
   const extra = `<g font-family="Gaegu, 'IBM Plex Sans KR', sans-serif" fill="${ink}" text-anchor="middle">
       <text x="500" y="192" font-size="18" opacity=".85">오늘 밤 · ${waveSummary(G.wave)}</text>
@@ -210,7 +214,7 @@ window.recordsHtml = function(){
 const sockPos = () => { const so = SOCKETS[G.sel]; return so ? so.ring.getWorldPosition(new THREE.Vector3()).add(V(0, 1.2, 0)) : null; };
 window.placePanel = function(){
   if (!painted) return renderAll();
-  const next = [3, 2, 1].find(f => !built(f)), inv = G.inventory.filter(i => i.design.kind === 'tower').length, placed = SOCKETS.filter(s => s.tower).length;
+  const next = [3, 2, 1].find(f => !built(f)), inv = G.inventory.filter(i => isMount(i.design)).length, placed = SOCKETS.filter(s => s.tower).length;
   paintDock(dgrp('', cGold() + cWall()) +
     dgrp('증축', next ? dk(`data-build="${next}" ${G.gold >= FLOOR_COST[next] ? '' : 'disabled'}`, `${FLOORS[next].name} 증축`, `${FLOOR_COST[next]}G · 탑 자리 4개`) : `<span class="dl">${builtFloors().length}층 다 지음</span>`) +
     dgrp('성벽', upgradeDockBtns('wall')) +
@@ -228,18 +232,18 @@ function sockHtml(){
       <div class="rows">
         <div class="row"><span>쫄병 (조준 ${Math.round(soldierAcc()*100)}%)</span>${op ? `<button class="btn" type="button" data-unassign="${so.i}">${op.name} 빼기</button>` : `<button class="btn" type="button" data-assign="${so.i}" ${idle.length ? '' : 'disabled'}>${idle.length ? `${idle[0].name} 맡기기` : '대기 쫄병 없음'}</button>`}</div>
         <div class="row"><span>자동 조준</span>${T.auto ? `<button class="btn" type="button" data-act="${T.autoOn ? 'autoOff' : 'autoOn'}">${T.autoOn ? '켜짐 · 끄기' : '꺼짐 · 켜기'}</button>` : `<button class="btn" type="button" data-act="buyAuto" ${G.gold >= AUTO_PRICE ? '' : 'disabled'}>달기 · ${AUTO_PRICE}G</button>`}</div>
-      </div>
+      </div>${rangeHtml(T)}
       <p class="muted">쏠 때 ${drawOf(d).toFixed(2)} ⚡/초 · 자동은 유지비 ${autoUpkeep().toFixed(2)} ⚡/초 더. 밤에 탑 근처에서 직접 탈 수도 있어요.</p>
       <button class="btn danger" type="button" data-act="unplace" ${here ? '' : 'disabled'}>창고로 내리기</button>`;
   }
-  const items = G.inventory.filter(i => i.design.kind === 'tower');
+  const items = G.inventory.filter(i => isMount(i.design));
   if (!items.length) return `${head(`${sockName(so)} 자리`)}<p class="muted">창고에 탑이 없어요. 대장간 제작부에서 탑을 만들면 밤이 지난 뒤 올릴 수 있어요.</p>`;
   const groups = {}; for (const it of items){ const k = it.design.name + '|' + formula(it.design); (groups[k] = groups[k] || []).push(it); }
   const pv = items.find(i => i.uid === G.previewUid);
   return `${head(`${sockName(so)} 자리`)}<p class="muted">탑을 누르면 바닥에 세기 띠가 보여요.</p>
     <div class="trows">${Object.values(groups).map(g => { const it = g[0], d = it.design, on = g.some(i => i.uid === G.previewUid);
       return `<div class="trow ${on ? 'on' : ''}"><button class="tpick" type="button" data-prev="${it.uid}"><i style="background:${beamColor(d)}"></i><b>${d.name}</b><small>${bandHtml(d).replace(/<\/?b>/g, '')}${g.length > 1 ? ` · ${g.length}개` : ''}</small></button>
-        <button class="btn" type="button" data-place="${it.uid}" ${here ? '' : 'disabled'}>설치</button><button class="btn primary" type="button" data-place="${it.uid}" data-auto="1" ${here && G.gold >= AUTO_PRICE ? '' : 'disabled'}>+자동</button></div>`; }).join('')}</div>
+        ${d.kind === 'siege' && siegeBlock(so) ? `<button class="btn" type="button" disabled data-why="${siegeBlock(so)}">${siegeBlock(so).split(' · ')[0]}</button>` : `<button class="btn" type="button" data-place="${it.uid}" ${here ? '' : 'disabled'}>설치</button><button class="btn primary" type="button" data-place="${it.uid}" data-auto="1" ${here && G.gold >= AUTO_PRICE ? '' : 'disabled'}>+자동</button>`}</div>`; }).join('')}</div>
     ${pv ? `<div class="bp-f">${formula(pv.design)}</div>${vsHtml(pv.design, 44)}` : ''}`;
 }
 
@@ -273,7 +277,7 @@ window.renderLive = function(){
     const so = SOCKETS[G.ride.sock], d = so.tower.design, e = G.ride.target;
     if (!e) rl.innerHTML = `조준 거리 ${Math.round(G.ride.aimD)} m · ${G.ride.firing || G.keys[' '] ? '발사 중' : '발사 버튼을 누르고 있으면 쏴요'}`;
     else {
-      const oo = towerOrigin(so), dist = Math.hypot(e.mesh.position.x - oo.x, e.mesh.position.z - oo.z)/M2W, th = hasPol(d) ? G.ride.theta : null, r = hitD(d, FOES[e.type], dist, e.armor, th), tr = traceD(d, dist, th);
+      const oo = towerOrigin(so), dist = Math.hypot(e.mesh.position.x - oo.x, e.mesh.position.z - oo.z)/M2W, th = hasPol(d) ? G.ride.theta : null, r = hitD(d, foeOf(e), dist, e.armor, th), tr = traceD(d, dist, th);
       rl.innerHTML = `${FOES[e.type].name}${e.armor != null ? ` · 갑옷 ${e.armor}°` : ''} @ ${Math.round(dist)} m<br>` +
         (e.armor != null ? `편광 ${tr.t.toFixed(2)} × ${tr.pol == null ? '자연광 ½' : `cos²(${tr.pol}° − ${e.armor}°)`} = <b>${(tr.t*(tr.pol == null ? .5 : cos2(tr.pol - e.armor))).toFixed(2)}</b><br>` : '') +
         (r.v ? `I ${r.Itot.toFixed(3)} mA · V₀ ${r.V0.toFixed(2)} V · ${r.sat ? '<span class="gold">전압 포화</span>' : '전류 제한'}<br>초당 <b class="ok">${r.v.toFixed(1)}</b>` : `<span class="warn">0 · ${r.why}</span>`);
@@ -357,7 +361,7 @@ window.fRenderEditor = function(){
   } else if (k === 'pump' && fIsLaser()){
     h = `<div class="ed-head"><h3>펌핑 램프</h3></div><div class="seg">${PUMPS.filter(pumpOk).map(q => `<button type="button" aria-pressed="${F.pump === q.lv}" data-fpump="${q.lv}">${q.label}</button>`).join('')}</div>${calcBox()}<canvas id="rplot" class="spec" aria-label="반사율과 출력 그래프"></canvas>`;
   } else if (k === 'mirror' && fIsLaser()){
-    h = `<div class="ed-head"><h3>출력 거울</h3><span>심화 · 시험 범위 밖</span></div><div class="range"><label for="sR">반사율 R <b id="vR"></b></label><input id="sR" type="range" min="60" max="99" step="1" value="${Math.round(F.R*100)}"></div>
+    h = `<div class="ed-head"><h3>출력 거울</h3><span>심화 · 시험 범위 밖</span></div><div class="range"><label for="sR">반사율 R <b id="vR"></b></label><span class="rng"><input id="sR" type="range" min="60" max="99" step="1" value="${Math.round(F.R*100)}"><span class="rng-e"><i>60%</i><i>99%</i></span></span></div>
       <canvas id="rplot" class="spec" aria-label="반사율과 출력 그래프"></canvas>${calcBox()}`;
   } else if (k === 'barrel'){
     h = `<div class="ed-head"><h3>경통 · ${F.barrel} cm</h3></div><div class="seg">${BARRELS.map(b => `<button type="button" data-fbar="${b.L}" aria-pressed="${F.barrel === b.L}" ${F.kind === 'weapon' && b.L > 40 ? 'disabled' : ''}>${b.L}cm${b.price ? ` · ${b.price}G` : ''}</button>`).join('')}</div>
@@ -417,7 +421,7 @@ window.fRefreshTest = function(){
   const ctl = $('fctl');
   if (ctl && !ctl.dataset.built){
     ctl.dataset.built = 1;
-    ctl.innerHTML = F.learn ? '' : `<div class="seg foeseg">${Object.entries(FOES).map(([id, f]) => `<button type="button" data-ffoe="${id}" aria-pressed="${F.dummy.foe === id}"><i style="background:${f.color}"></i>${f.short}</button>`).join('')}</div>
+    ctl.innerHTML = F.learn ? '' : `<div class="seg foeseg">${foeEntries().map(([id, f]) => `<button type="button" data-ffoe="${id}" aria-pressed="${F.dummy.foe === id}"><i style="background:${f.color}"></i>${f.short}</button>`).join('')}</div>
       <div class="range"><label for="sD">거리 <b id="vD"></b></label><input id="sD" type="range" min="1" max="100" step="1" value="${F.dummy.x}"></div>
       ${F.dummy.foe === 'kn' ? `<div class="range"><label for="sA">갑옷 투과축 <b id="vA"></b></label><input id="sA" type="range" min="0" max="180" step="15" value="${armor}"></div>` : ''}`;
   }
@@ -450,16 +454,16 @@ function learnUI(){
 
 /* 연구부 · 제작부: 전체 화면 */
 function researchHtml(){
-  const card = r => { const done = G.research[r.id], locked = r.req && !G.research[r.req], needExam = r.exam && !G.laserExam;
+  const card = r => { const done = G.research[r.id], locked = r.req && !G.research[r.req], ek = examKind(r), needExam = ek && !examPassed(ek), myExam = exam && exam.kind === ek;
     let btn = '';
     if (!done){
       if (locked) btn = `<button class="btn" type="button" disabled>먼저: ${RESEARCH.find(q => q.id === r.req).name}</button>`;
-      else if (needExam) btn = exam ? '' : `<button class="btn primary" type="button" data-act="exam">자격 시험 보기 (3문제)</button>`;
+      else if (needExam) btn = myExam ? '' : `<button class="btn primary" type="button" data-act="exam" data-exam="${ek}">자격 시험 보기 (3문제)</button>`;
       else btn = `<button class="btn primary" type="button" data-research="${r.id}" ${G.gold >= r.cost ? '' : 'disabled'}>${G.gold >= r.cost ? `연구하기 · ${r.cost}G` : `골드 부족 · ${r.cost}G`}</button>`;
     }
-    const ex = r.exam && exam && !G.laserExam ? `<div class="exam">${exam.map((q, i) => `<p>${i+1}. ${q.q}</p>${q.opts.map((o, j) => `<button type="button" class="opt ${q.pick === j ? 'on' : ''}" data-exq="${i}:${j}">${o}</button>`).join('')}`).join('')}<button class="btn primary" type="button" data-act="examSubmit" ${exam.every(q => q.pick != null) ? '' : 'disabled'}>제출</button></div>` : '';
+    const ex = ek && myExam && !examPassed(ek) ? `<div class="exam">${exam.map((q, i) => `<p>${i+1}. ${q.q}</p>${q.opts.map((o, j) => `<button type="button" class="opt ${q.pick === j ? 'on' : ''}" data-exq="${i}:${j}">${o}</button>`).join('')}`).join('')}<button class="btn primary" type="button" data-act="examSubmit" ${exam.every(q => q.pick != null) ? '' : 'disabled'}>제출</button></div>` : '';
     return `<div class="bpcard ${done ? 'done' : ''}"><div class="bph"><b>${r.name}</b><span>${done ? '완료' : r.unit}</span></div>${BP_ART[r.art] || ''}<p>${r.desc}</p>${btn}${ex}</div>`; };
-  return `<p class="muted pnote">레이저 최소 반지름 ${(LASER_WMIN/Math.sqrt(capMult()/4)).toFixed(2)} cm · 레이저는 자격 시험(23번 레이저 3문제)을 통과해야 연구할 수 있어요.</p><div class="bpgrid">${RESEARCH.map(card).join('')}</div>`;
+  return `<p class="muted pnote">렌즈가 모으는 램프 빛 ×${lampGain().toFixed(2)} · 레이저 최소 반지름 ${(LASER_WMIN/Math.sqrt(capMult()/4)).toFixed(2)} cm · 레이저(23번 레이저)와 교전 범위(20번 렌즈)는 자격 시험 3문제를 통과해야 연구할 수 있어요.</p><div class="bpgrid">${RESEARCH.map(card).join('')}</div>`;
 }
 function craftHtml(){
   const inv = {}; for (const it of G.inventory){ const k = it.design.name + '|' + it.design.kind; (inv[k] = inv[k] || {d:it.design, items:[]}).items.push(it); }
@@ -613,7 +617,7 @@ window.trainPanel = function(){
     const gun = gunOf(s), sc = soldierScale(), acc = soldierAcc();
     paintPop('soldier', soldierPos, `<div class="ed-head"><h3>${s.name}</h3><span>${roleTxt(s)}</span></div>
       <div class="bp-f">${gun.name} · ${formula(gun)}</div>
-      <div class="vs">${Object.entries(FOES).map(([id, f]) => { const r = hitD(gun, f, 10, id === 'kn' ? 90 : null, null, sc); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v*(.5 + .5*acc)) : r.why === 'E < W' ? 'E&lt;W' : '0'}</b></div>`; }).join('')}</div>
+      <div class="vs">${foeEntries().map(([id, f]) => { const r = hitD(gun, f, 10, id === 'kn' ? 90 : null, null, sc); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v*(.5 + .5*acc)) : r.why === 'E < W' ? 'E&lt;W' : r.why === '흡수선 밖' ? '통과' : '0'}</b></div>`; }).join('')}</div>
       <p class="muted">10 m 초당 데미지 · 명중 ×${(.5 + .5*acc).toFixed(2)}</p>
       <h2>무기 쥐여 주기</h2>
       <div class="chips"><button class="chip ${!s.weapon ? 'on' : ''}" type="button" data-sweap="base">${SOLDIER_GUN.name} (기본)</button>${weaponGroups().map(g => `<button class="chip" type="button" data-sweap="${g.items[0].uid}">${g.d.name} ×${g.items.length}</button>`).join('')}</div>
@@ -635,9 +639,9 @@ window.solarPanel = function(){
     const pn = labOk('pn'), bu = bestU();
     paintDock(solarSeg() + dgrp('', cBat()) + dgrp('', dk(`data-act="upgSolar" aria-pressed="${UI.page === 'upg-solar'}"`, '발전단지 업그레이드')));
     paintPop('power', {fixed:'right'}, `<div class="ed-head"><h3>${pn ? 'p-n 반도체' : METALS[G.panelMetal].name + ' 금속판'} 패널</h3><span>${pn ? '' : `W ${METALS[G.panelMetal].W} eV`}</span></div>
-      <div class="eq">${pn ? 'p-n 태양전지: 빛을 흡수하면 전자–양공 쌍이 생기고, 접합부 전기장이 전자는 n형, 양공은 p형으로 보내 전압과 전류를 만들어요.' : `금속판 패널 = 광전관: 햇빛 광자가 금속판에서 전자를 떼어 내고, 전자가 검출판에 모여 배터리로 흘러요. 배터리 전압 U가 역전압 역할을 해서 정지 전압이 U보다 큰 전자만 넘어가요.`}</div>
-      ${!pn && labOk('cond') ? `<div class="range"><label for="chgU">충전 전압 U <b>${G.chargeU.toFixed(2)} V</b></label><input id="chgU" type="range" min="0" max="${(1240/300 - METALS[G.panelMetal].W).toFixed(2)}" step="0.01" value="${G.chargeU}"></div>
-        <canvas id="puPlot" class="spec" aria-label="충전 전압과 전력"></canvas><p class="muted">전력 = U × I가 최대인 곳을 찾아요. ${G.lab.A ? `(최대 약 ${bu.U.toFixed(2)} V)` : ''}</p>` : !pn ? '<p class="muted">충전 전압은 0.3 V로 고정이에요. 연구의 "회로 조건표"를 끝내면 직접 조절해요.</p>' : ''}
+      <div class="eq">${pn ? 'p-n 태양전지: 빛을 흡수하면 전자–양공 쌍이 생기고, 접합부 전기장이 전자는 n형, 양공은 p형으로 보내 전압과 전류를 만들어요.' : `금속판 패널 = 광전관: 햇빛 광자가 금속판에서 전자를 떼어 내고, 전자가 검출판에 모여 배터리로 흘러요. 배터리 전압 U가 역전압 역할을 해서, 판에 수직인 운동 에너지가 eU보다 큰 전자만 넘어가요. 그래서 U를 올리면 전압은 커지지만 넘어가는 전자는 줄어요.`}</div>
+      ${!pn && labOk('cond') ? `<div class="range"><label for="chgU">충전 전압 U <b>${G.chargeU.toFixed(2)} V</b></label><input id="chgU" type="range" min="0" max="${puRange()}" step="0.01" value="${Math.min(G.chargeU, puRange())}"></div>
+        <canvas id="puPlot" class="spec" aria-label="충전 전압과 전력"></canvas><p class="muted">전력 = U × I가 최대인 곳을 찾아요. ${G.lab.A ? `(최대 약 ${bu.U.toFixed(2)} V)` : ''}</p>` : !pn ? '<p class="muted">충전 전압은 0.5 V로 고정이에요. 연구의 "회로 조건표"를 끝내면 직접 조절해요.</p>' : ''}
       ${pn ? '' : `<h2>도금 · 적이 떨어뜨린 조각</h2><div class="rows">${['na', 'cs', 'ag'].map(k => { const M = METALS[k], have = G.metals[k] || 0, on = G.panelMetal === k, meas = k === 'na' || G.lab['B_' + k];
         return `<div class="row"><span><b style="color:var(--ink);font-family:var(--f-body)">${M.name}</b> W ${M.W} eV · 조각 ${have}개<br>${on ? '사용 중' : !meas ? '연구 탐구 B로 일함수를 먼저 재요' : `조각 ${M.need}개 · 하루 ${(panelsN()*panelPower(k)).toFixed(0)} ⚡`}</span>${on ? '<b>사용 중</b>' : `<button class="btn" type="button" data-plate="${k}" ${meas && have >= M.need ? '' : 'disabled'}>도금</button>`}</div>`; }).join('')}</div>`}`, true);
     drawPU($('puPlot'));
@@ -647,8 +651,8 @@ window.solarPanel = function(){
       dgrp('', dseg([['data-lact="circuit"', l.closed ? '회로 연결' : '회로 열림', l.closed]])));
     paintPop('lamp', lampPos, `<div class="ed-head"><h3>램프</h3><span>${nm === 'sun' ? '햇빛' : `${nm} nm`}</span></div>
       <div class="seg"><button type="button" data-lsrc="sun" aria-pressed="${nm === 'sun'}">햇빛</button><button type="button" data-lsrc="${nm === 'sun' ? (UI.lastNm || 400) : nm}" aria-pressed="${nm !== 'sun'}">단색 빛</button></div>
-      ${nm === 'sun' ? '' : `<div class="crow"><span>λ</span><input id="labNm" type="range" min="300" max="600" step="50" value="${nm}"><b id="labNmV" style="color:${nmColor(nm)}">${nm} nm</b></div>`}
-      <div class="crow"><span>세기</span><input id="labInt" type="range" min="25" max="100" step="25" value="${l.inten}"><b>${l.inten}%</b></div>
+      ${nm === 'sun' ? '' : `<div class="crow"><span>λ</span><span class="rng"><input id="labNm" type="range" min="300" max="600" step="50" value="${nm}"><span class="rng-e"><i>300</i><i>600 nm</i></span></span><b id="labNmV" style="color:${nmColor(nm)}">${nm} nm</b></div>`}
+      <div class="crow"><span>세기</span><div class="seg inten">${[25, 50, 75, 100].map(v => `<button type="button" data-linten="${v}" aria-pressed="${l.inten === v}">${v}%</button>`).join('')}</div></div>
       ${nm === 'sun' ? '' : `<div class="seg"><button type="button" data-lbasis="power" aria-pressed="${l.basis === 'power'}">광출력 기준</button><button type="button" data-lbasis="photon" aria-pressed="${l.basis === 'photon'}">광자 수 기준</button></div>`}
       <button class="btn" type="button" data-lact="light">${l.light ? '빛 끄기' : '빛 켜기'}</button>`, true, {side:'left', cls:'narrow'});
     paintPop('lab', labPos, `<div class="ed-head"><h3>전압 = 검출판 − 금속판</h3><span>${l.closed ? '회로 연결' : '회로 열림'}</span></div>
@@ -926,7 +930,8 @@ const _renderTabs5 = window.renderTabs;
 window.renderTabs = function(){ _renderTabs5(); if (G.mode === 'wave' && !painted){ waveSigns(); renderLive(); } };
 window.sortiePanel = function(){
   if (!painted) return renderAll();
-  sign('sstat', () => G.sortie ? V(G.sortie.x, 0, G.sortie.z) : null, `<div class="pill" id="sPill"><button class="pl-flag" type="button" data-act="retreat" title="퇴각 · 바로 성으로 (주운 결정은 그대로)" aria-label="퇴각 · 바로 성으로">🏳</button><span class="pl-hp" title="체력"><i></i></span><b class="pl-n"></b><span class="pl-sq" title="쫄병"></span><span class="pl-g gold" title="광자 결정"></span><span class="pl-e" title="남은 적"></span></div>`, 'pill', 'below');
+  const nw = narrowUI();
+  sign('sstat', () => G.sortie ? V(G.sortie.x, nw ? 2.6 : 0, G.sortie.z) : null, `<div class="pill" id="sPill"><button class="pl-flag" type="button" data-act="retreat" title="퇴각 · 바로 성으로 (주운 결정은 그대로)" aria-label="퇴각 · 바로 성으로">🏳</button><span class="pl-hp" title="체력"><i></i></span><b class="pl-n"></b><span class="pl-sq" title="쫄병"></span><span class="pl-g gold" title="광자 결정"></span><span class="pl-e" title="남은 적"></span></div>`, 'pill', nw ? 'above' : 'below');
   renderLive();
 };
 
@@ -1016,18 +1021,21 @@ window.fUp = function(ev){
 window.trainPanel = function(){
   if (!painted) return renderAll();
   const squad = G.soldiers.filter(q => q.role === 'sortie'), full = G.soldiers.length >= soldierMax(), c = recruitCost(), ok = !full && G.gold >= c;
-  sign('recruit', () => V((BARRACK.x0 + BARRACK.x1)/2, 0, BARRACK.z0 - 1.3), sgB(`data-act="recruit" ${ok ? '' : 'disabled'}`, '🪖', full ? '병영이 꽉 찼어요' : `쫄병 모집 · ${c}G`, `병영 ${G.soldiers.length}/${soldierMax()}${!full && !ok ? ` · 보유 ${G.gold}G` : ''}`, ok ? 'go' : ''));
-  sign('command', () => T_LEAD.clone(), `<span class="sg-t">지휘 깃발 · 토벌대 ${squad.length}명</span>
-      <div class="sg-l">대형</div>${sgRow(Object.entries(FORMS).map(([k, f]) => [`data-form="${k}"`, f.name, false, !squad.length]))}
-      <div class="sg-l">자동 출병</div>${sgRow([['off', '끔'], ['start', '밤 시작'], ['half', '절반 남으면']].map(([k, t]) => [`data-auto="${k}"`, t, G.autoSortie === k]))}`);
-  sign('tupg', () => V((DUTY.x0 + DUTY.x1)/2, 0, DUTY.z0 - 1.3), sgB(`data-act="upgTrain" aria-pressed="${UI.page === 'upg-train'}"`, '📋', '훈련 업그레이드', `조준 ${Math.round(soldierAcc()*100)}% · 체력 ${soldierHpMax()}`));
+  sign('recruit', () => V((BARRACK.x0 + BARRACK.x1)/2, 0, BARRACK.z0 + 4.6), sgB(`data-act="recruit" ${ok ? '' : 'disabled'}`, '🪖', full ? '병영이 꽉 찼어요' : `쫄병 모집 · ${c}G`, `병영 ${G.soldiers.length}/${soldierMax()}${!full && !ok ? ` · 보유 ${G.gold}G` : ''}`, ok ? 'go' : ''));
+  const AUTO_T = {off:'끔', start:'밤 시작', half:'절반 남으면'};
+  sign('command', () => T_LEAD.clone(), `<div class="sg-in"><span class="sg-t">🚩 토벌대<br>${squad.length}명</span>${sgRow([[`data-tmenu="form"`, '대형 ▾', UI.tmenu === 'form', !squad.length], [`data-tmenu="auto"`, `자동 · ${AUTO_T[G.autoSortie] || '끔'} ▾`, UI.tmenu === 'auto']])}</div>${narrowUI() ? `<div class="sg-row2 sg-narrow">${sgB(`data-act="recruit" ${ok ? '' : 'disabled'}`, '🪖', full ? '병영 꽉 참' : `모집 · ${c}G`, `병영 ${G.soldiers.length}/${soldierMax()}`, ok ? 'go' : '')}${sgB(`data-act="upgTrain" aria-pressed="${UI.upg === 'train'}"`, '📋', '훈련', '업그레이드')}</div>` : ''}`);
+  if (narrowUI()){ closePop('recruit'); closePop('tupg'); }
+  if (UI.tmenu === 'form') paintPop('tmenu', {el:'#cards [data-tmenu="form"]', under:'#cards .pop[data-key="command"]'}, `<div class="ed-head"><h3>대형</h3></div>${sgRow(Object.entries(FORMS).map(([k, f]) => [`data-form="${k}"`, f.name, false]))}<p class="muted">토벌대가 깃발 뒤에 서는 모양이에요.</p>`, false, {cls:'narrow'});
+  else if (UI.tmenu === 'auto') paintPop('tmenu', {el:'#cards [data-tmenu="auto"]', under:'#cards .pop[data-key="command"]'}, `<div class="ed-head"><h3>자동 출병</h3></div>${sgRow(Object.entries(AUTO_T).map(([k, t]) => [`data-auto="${k}"`, t, G.autoSortie === k]))}<p class="muted">밤에 토벌대가 알아서 성문 밖으로 나가요.</p>`, false, {cls:'narrow'});
+  else closePop('tmenu');
+  sign('tupg', () => V((DUTY.x0 + DUTY.x1)/2, 0, DUTY.z0 + 4.6), sgB(`data-act="upgTrain" aria-pressed="${UI.upg === 'train'}"`, '📋', '훈련', '업그레이드'));
   const s = G.soldiers.find(q => q.id === G.tSel);
   if (s){
     const roleTxt = q => q.down ? '기절 (다음 밤 회복)' : q.role === 'sortie' ? '토벌대' : q.role === 'tower' ? `${sockName(SOCKETS[q.sock])} 조종` : '병영 대기';
     const gun = gunOf(s), sc = soldierScale(), acc = soldierAcc();
     paintPop('soldier', soldierPos, `<div class="ed-head"><h3>${s.name}</h3><span>${roleTxt(s)}</span></div>
       <div class="bp-f">${gun.name} · ${formula(gun)}</div>
-      <div class="vs">${Object.entries(FOES).map(([id, f]) => { const r = hitD(gun, f, 10, id === 'kn' ? 90 : null, null, sc); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v*(.5 + .5*acc)) : r.why === 'E < W' ? 'E&lt;W' : '0'}</b></div>`; }).join('')}</div>
+      <div class="vs">${foeEntries().map(([id, f]) => { const r = hitD(gun, f, 10, id === 'kn' ? 90 : null, null, sc); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v*(.5 + .5*acc)) : r.why === 'E < W' ? 'E&lt;W' : r.why === '흡수선 밖' ? '통과' : '0'}</b></div>`; }).join('')}</div>
       <p class="muted">10 m 초당 데미지 · 명중 ×${(.5 + .5*acc).toFixed(2)}</p>
       <h2>무기 쥐여 주기</h2>
       <div class="chips"><button class="chip ${!s.weapon ? 'on' : ''}" type="button" data-sweap="base">${SOLDIER_GUN.name} (기본)</button>${weaponGroups().map(g => `<button class="chip" type="button" data-sweap="${g.items[0].uid}">${g.d.name} ×${g.items.length}</button>`).join('')}</div>
@@ -1041,9 +1049,9 @@ window.solarPanel = function(){
   if (!painted) return renderAll();
   _solarPanel5();
   const t = LS().tab;
-  sign('spanel', () => panelPos().add(V(0, .6, 0)), `<div class="sg-row2">${sgB(`data-ltab="power" aria-pressed="${t === 'power'}"`, '☀', '발전 패널', `밤이 끝나면 +${dayCharge().toFixed(0)} ⚡`)}${sgB(`data-ltab="study" aria-pressed="${t === 'study'}"`, '📖', '연구 노트', '탐구 · 해금')}</div>`, 'lab');
-  if (t !== 'lab') sign('slab', () => LAB0.clone().add(V(0, 2.2, 0)), sgB('data-ltab="lab"', '🔬', '광전관 실험대', '눌러서 실험하기'), 'lab');
-  if (t === 'power'){ const c = CARDS.get('power'); if (c && !c.el.querySelector('.bat-up')) c.el.querySelector('.popb').insertAdjacentHTML('beforeend', `<button class="btn bat-up" type="button" data-act="upgSolar">🔋 배터리 ${Math.floor(G.energy)}/${batteryCap()} · 발전단지 업그레이드</button>`); }
+  sign('spanel', () => panelPos().add(V(0, .6, 0)), `<div class="sg-row2">${sgB(`data-ltab="power" aria-pressed="${t === 'power'}"`, '☀', '발전 패널', `밤이 끝나면 +${dayCharge().toFixed(0)} ⚡`)}${sgB(`data-ltab="study" aria-pressed="${t === 'study'}"`, '📖', '연구 노트', '탐구 · 해금')}${narrowUI() ? sgB(`data-ltab="lab" aria-pressed="${t === 'lab'}"`, '🔬', '실험대', '광전관') : ''}</div>`, 'lab');
+  if (t !== 'lab' && !narrowUI()) sign('slab', () => LAB0.clone().add(V(0, 2.2, 0)), sgB('data-ltab="lab"', '🔬', '광전관 실험대', '눌러서 실험하기'), 'lab');
+  if (t === 'power'){ const c = CARDS.get('power'); if (c && !c.el.querySelector('.ugs')) c.el.querySelector('.popb').insertAdjacentHTML('afterbegin', `<div class="ug-head"><b>🔋 배터리 ${Math.floor(G.energy)} / ${batteryCap()} ⚡</b>${cGold()}</div><div class="ugs">${upgRows(['panels', 'battery'])}</div>`); }
   if (t === 'lab'){ const l = LS(), c = CARDS.get('lab');
     if (c && !c.el.querySelector('.lab-tools')){ const d = document.createElement('div'); d.className = 'lab-tools';
       d.innerHTML = `<div class="seg">${labMetals().map(k => `<button type="button" data-lmetal="${k}" aria-pressed="${l.metal === k}"><i style="background:${METALS[k].color}"></i>${METALS[k].name}</button>`).join('')}</div><button class="btn" type="button" data-lact="circuit">${l.closed ? '회로 열기' : '회로 연결'}</button>`;
@@ -1128,8 +1136,8 @@ window.kTap = function(ev){
 };
 // 발전단지: 램프 · 전압 카드도 물건을 눌러야 열린다
 UI.sCard = 'both';
-const sOpen = k => UI.sCard === 'both' || UI.sCard === k;
-const sAdd = k => { UI.sCard = UI.sCard && UI.sCard !== k ? 'both' : k; };
+const sOpen = k => UI.sCard === k || (UI.sCard === 'both' && !(narrowUI() && k === 'lamp'));
+const sAdd = k => { UI.sCard = narrowUI() ? k : UI.sCard && UI.sCard !== k ? 'both' : k; };   // 좁은 세로 화면은 카드 하나씩
 const _solarPanel6 = window.solarPanel;
 window.solarPanel = function(){
   if (!painted) return renderAll();
@@ -1288,7 +1296,7 @@ window.renderMap = function(){
 /* 안개가 걷히는 순간: 성벽 드립 · 지도가 스스로 한 바퀴 보여 줌 → 끌어 보게 만든다 */
 const MAP_STORY = {
   1: () => ({t:'지도가 펼쳐졌어요!', l:built(3) ? ['3층을 올렸더니 성 밖이 다 보인다?', '— 원래 다 있었는데 아무도 안 봤답니다'] : ['며칠 버텼더니 성 밖이 궁금해졌다', '— 지도가 접혀 있었던 거래요'], s:'끌어서 둘러봐요 · 북쪽 안개 너머엔 적의 소굴이…'}),
-  2: () => ({t:'북쪽 안개가 걷혔어요!', l:['보스가 쓰러지자 적의 소굴이 드러났다', '— 위로 쭉 끌어 올려서 쳐들어가요'], s:'던전은 준비 중이에요'}),
+  2: () => ({t:'북쪽 안개가 걷혔어요!', l:['보스가 쓰러지자 적의 소굴이 드러났다', '— 위로 쭉 끌어 올려서 쳐들어가요'], s:'소굴을 누르면 들어가요 · 보스를 잡을 때마다 챕터가 열려요'}),
 };
 function mapBannerHide(){ const b = $('banner'); if (UI.mapBanner){ clearTimeout(UI.mapBanner); UI.mapBanner = null; b.hidden = true; b.classList.remove('story'); } }
 $('banner').addEventListener('click', () => { if (UI.mapBanner) mapBannerHide(); });
@@ -1385,9 +1393,13 @@ function flashResearch(r){
 }
 function whyNot(b){
   const t = b.textContent.replace(/\s+/g, ' ').trim(); let m;
+  if (b.dataset.why){ b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope'); return hint(b.dataset.why); }
   b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope');
   if (b.id === 'labX') return hint('회로가 열려 있어요 · 「회로 연결」을 먼저 눌러요');
-  if ((m = t.match(/^먼저: (.+)$/))){ flashResearch(RESEARCH.find(q => q.name === m[1])); return hint(`먼저 「${m[1]}」 연구를 끝내야 열려요`); }
+  if ((m = t.match(/^먼저: (.+)$/))){
+    if (Object.values(LAB_NAMES).includes(m[1])) return hint(`발전단지 실험대의 연구 노트에서 「${m[1]}」을 먼저 끝내요`);
+    flashResearch(RESEARCH.find(q => q.name === m[1])); return hint(`먼저 「${m[1]}」 연구를 끝내야 열려요`);
+  }
   if (b.dataset.craft && /연구 필요/.test(t)){
     const d = G.designs.find(q => q.id === b.dataset.craft), need = !G.research.laser ? RESEARCH.find(q => q.id === 'laser') : null;
     deptGo('research'); setTimeout(() => flashResearch(need), 300);
@@ -1411,3 +1423,183 @@ document.addEventListener('click', ev => {
   const b = ev.target.closest('[data-dgo]'); if (!b) return;
   ev.stopPropagation(); if (G.mode === 'forge') deptGo(b.dataset.dgo);
 }, true);
+
+/* ═════════════════════════════════════════════════════════════════
+   v8 · 업그레이드는 그 건물 옆 작은 카드 · 대장간 부서는 엄지가 닿는 아래 구석에서도 넘긴다
+   ═════════════════════════════════════════════════════════════════ */
+
+/* ── 업그레이드 카드: 화면 전체 페이지 대신 그 자리(연병장 게시판 · 발전 패널) 옆에 뜬다 ── */
+UI.upg = null; UI.upgTab = 'soldier';
+const UPG_TABS = {soldier:['sAcc', 'sHp', 'sPow', 'barracks'], hero:['hHp', 'hPow', 'hSpd']};
+function upgRows(ids){
+  return ids.map(id => {
+    const u = UPG[id], lv = up(id), max = lv >= u.max, c = max ? 0 : u.cost(lv);
+    const lock = u.req && !labOk(u.req);
+    const btn = lock ? `<button class="btn" type="button" disabled data-why="발전단지 실험대의 연구 노트에서 「${LAB_NAMES[u.req]}」을 먼저 끝내요">🔒</button>`
+      : max ? '<span class="ug-max">최대</span>' : `<button class="btn" type="button" data-up="${id}" ${G.gold >= c ? '' : 'disabled'}>${c}G</button>`;
+    return `<div class="ug"><div><b>${u.name}</b> <small>Lv.${lv}/${u.max}</small><span>${max ? '다 올렸어요' : u.eff(lv)}</span>${lock ? `<span class="ug-lock">연구 노트 「${LAB_NAMES[u.req]}」 먼저</span>` : ''}</div>${btn}</div>`;
+  }).join('');
+}
+function upgCard(){
+  if (UI.upg === 'train' && G.mode === 'train'){
+    const t = UI.upgTab;
+    paintPop('upg', {fixed:'left'}, `<div class="ed-head"><h3>훈련 업그레이드</h3>${cGold()}</div>
+      <div class="seg"><button type="button" data-ugtab="soldier" aria-pressed="${t === 'soldier'}">쫄병</button><button type="button" data-ugtab="hero" aria-pressed="${t === 'hero'}">주인공</button></div>
+      <div class="ugs">${upgRows(UPG_TABS[t])}</div>`, false, {cls:'narrow'});
+  } else closePop('upg');
+}
+const _trainPanel8 = window.trainPanel;
+window.trainPanel = function(){ if (!painted) return renderAll(); _trainPanel8(); if (UI.upg === 'train') closePop('tupg'); upgCard(); };
+const _solarPanel8 = window.solarPanel;
+window.solarPanel = function(){
+  if (!painted) return renderAll(); _solarPanel8();
+  // 패널 표지판: 금속 · 장 수 · 하루 충전량을 한 곳에서 (3D 이름표는 없앴다)
+  const sp = CARDS.get('spanel'); if (sp){ const s = sp.el.querySelector('[data-ltab="power"] small, [data-ltab="power"] .sg-s'); if (s) s.textContent = `${labOk('pn') ? 'p-n 반도체' : METALS[G.panelMetal].name} ${panelsN()}장 · 밤이 끝나면 +${dayCharge().toFixed(0)} ⚡`; }
+  upgCard();
+  if (narrowUI() && LS().tab === 'lab'){
+    if (sOpen('lab')) closePop('slamp'); if (sOpen('lamp')) closePop('slab2');   // 시트에 가린 표지판 대신 시트 머리의 바꾸기 단추
+    for (const [k, o, ic, t] of [['lab', 'lamp', '💡', '램프'], ['lamp', 'lab', '⚡', '전압 · 그래프']]){
+      const c = CARDS.get(k); if (c && !c.el.querySelector('.swap')) c.el.querySelector('.ed-head')?.insertAdjacentHTML('beforeend', `<button class="tbtn swap" type="button" data-scard="${o}">${ic} ${t}</button>`);
+    }
+  }
+};
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('button'); if (!b) return;
+  const a = b.dataset.act;
+  if (a === 'upgTrain' || a === 'upgSolar'){ ev.stopPropagation(); const k = a === 'upgTrain' ? 'train' : 'solar'; UI.upg = UI.upg === k ? null : k; UI.page = null; renderAll(); return; }
+  if (b.dataset.ugtab){ ev.stopPropagation(); UI.upgTab = b.dataset.ugtab; renderAll(); return; }
+  if (b.dataset.pclose === 'upg') UI.upg = null;
+  if (b.dataset.ltab) UI.upg = null;
+}, true);
+(function upgFold(){
+  let st = null;
+  canvas.addEventListener('pointerdown', ev => { st = {x:ev.clientX, y:ev.clientY}; });
+  canvas.addEventListener('pointerup', ev => { if (!st) return; const tap = Math.hypot(ev.clientX - st.x, ev.clientY - st.y) < 8; st = null; if (tap && UI.upg){ UI.upg = null; renderAll(); } });
+})();
+let lastMode8 = G.mode;
+const _renderAll8 = window.renderAll;
+window.renderAll = function(){ if (G.mode !== lastMode8){ lastMode8 = G.mode; UI.upg = null; } _renderAll8.apply(this, arguments); thumbNav(); };
+
+/* ── 대장간 엄지 이동: 패드를 두 손으로 쥐면 위쪽 탭에 손가락이 안 닿는다 → 아래 양 구석에 이전 · 다음 부서 ── */
+const tnav = document.createElement('div'); tnav.className = 'thumbnav'; tnav.hidden = true; stage.appendChild(tnav);
+function thumbNav(){
+  const on = G.mode === 'forge'; tnav.hidden = !on; if (!on) return;
+  const i = DEPT_ORDER.indexOf(G.dept), p = DEPT_ORDER[i - 1], n = DEPT_ORDER[i + 1];
+  const h = `${p ? `<button type="button" class="tn-l" data-dgo="${p}" aria-label="${DEPT_NAME[p]}로"><span>◀</span>${DEPT_NAME[p]}</button>` : '<i></i>'}${n ? `<button type="button" class="tn-r" data-dgo="${n}" aria-label="${DEPT_NAME[n]}로">${DEPT_NAME[n]}<span>▶</span></button>` : '<i></i>'}`;
+  if (tnav.dataset.h !== h){ tnav.innerHTML = h; tnav.dataset.h = h; }
+}
+
+/* ── 훈련소 지휘 메뉴 · 업그레이드 카드는 왼쪽에 붙인다(가운데 표지판을 안 덮게) · 좁은 세로 화면에서는 고정 카드가 아래 시트가 된다 ── */
+UI.tmenu = null;
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('button'); if (!b) return;
+  if (b.dataset.tmenu){ ev.stopPropagation(); UI.tmenu = UI.tmenu === b.dataset.tmenu ? null : b.dataset.tmenu; UI.upg = null; renderAll(); return; }
+  if (b.dataset.form || b.dataset.auto && G.mode === 'train') UI.tmenu = null;
+  if (b.dataset.pclose === 'tmenu') UI.tmenu = null;
+  if (b.dataset.act === 'upgTrain') UI.tmenu = null;
+}, true);
+(function tmenuFold(){
+  let st = null;
+  canvas.addEventListener('pointerdown', ev => { st = {x:ev.clientX, y:ev.clientY}; });
+  canvas.addEventListener('pointerup', ev => { if (!st) return; const tap = Math.hypot(ev.clientX - st.x, ev.clientY - st.y) < 8; st = null; if (tap && UI.tmenu){ UI.tmenu = null; renderAll(); } });
+})();
+const narrowUI = () => stage.clientWidth < 600 && stage.clientHeight > stage.clientWidth;
+const SHEET_KEYS = new Set(['test', 'power', 'dress', 'keepBoard', 'lab', 'lamp', 'upg', 'soldier', 'sock', 'fsel']);
+let sheetH = 0;   // 이번 프레임에 아래 시트가 차지한 높이 → 엄지 이동 버튼을 그 위로 올린다
+(function sheetLoop(){ stage.style.setProperty('--sheeth', `${sheetH}px`); sheetH = 0; requestAnimationFrame(sheetLoop); })();
+const _placeCard8 = placeCard;
+window.placeCard = function(c){
+  _placeCard8(c);
+  const p = c.el, at = c.at, W = stage.clientWidth, Hh = stage.clientHeight;
+  const sheet = narrowUI() && SHEET_KEYS.has(c.key || p.dataset.key);
+  p.classList.toggle('sheet', sheet);
+  if (sheet){ p.style.left = '8px'; p.style.top = `${Math.round(Hh - p.offsetHeight - 8)}px`; p.style.visibility = 'visible'; p.style.scale = ''; sheetH = Math.max(sheetH, p.offsetHeight + 8); return; }
+  if (at && at.fixed === 'left'){ const top0 = 60; p.style.left = '14px'; p.style.top = `${Math.round(clamp((Hh - p.offsetHeight)/2, top0, Math.max(top0, Hh - p.offsetHeight - 10)))}px`; p.style.visibility = 'visible'; }
+};
+
+/* ═════════════════════════════════════════════════════════════════
+   v9 · 교전 범위 모듈 (연구 → 탑마다 구매) · 렌즈 자격 시험
+   ═════════════════════════════════════════════════════════════════ */
+const examKind = r => r.exam === true ? 'laser' : r.exam || null;
+const examPassed = k => k === 'laser' ? !!G.laserExam : !!(G.exams && G.exams[k]);
+function rangeHtml(T){
+  if (!G.research.range) return `<div class="row"><span>교전 범위</span><button class="btn" type="button" disabled data-why="대장간 연구부에서 「교전 범위 모듈 Ⅰ」을 먼저 연구해요 (자격 시험 · 20번 렌즈)">🔒</button></div>`;
+  if (!T.rng) return `<div class="row"><span>교전 범위 모듈<br><small class="muted">범위 밖 적은 안 쏘고 전기도 안 써요</small></span><button class="btn" type="button" data-act="buyRange" ${G.gold >= RANGE_PRICE ? '' : 'disabled'}>달기 · ${RANGE_PRICE}G</button></div>`;
+  const [lo, hi] = rangeOf(T), bd = band(T.design), auto = T.rng.auto && G.research.range2, pct = v => `${clamp(v, 0, 100)}%`;
+  return `<div class="rng-box">
+    <div class="row"><span>교전 범위 <b id="rngV">${Math.round(lo)}–${Math.round(hi)} m</b></span>${G.research.range2 ? `<button class="btn" type="button" data-act="rngAuto" aria-pressed="${auto}">${auto ? '자동 구간 · 켜짐' : '자동 구간'}</button>` : ''}</div>
+    <div class="rbar" aria-hidden="true">${bd ? `<i class="bd" style="left:${pct(bd[0])};width:${pct(bd[1] - bd[0])}"></i>` : ''}<i class="sel" id="rngSel" style="left:${pct(lo)};width:${pct(hi - lo)}"></i><span>0</span><span>50</span><span>100 m</span></div>
+    <p class="muted rng-key"><i class="k bd"></i>빛이 잘 모이는 구간${bd ? ` ${bd[0]}–${bd[1]} m` : ' 없음(가까울수록 셈)'} · <i class="k sel"></i>쏘는 범위</p>
+    ${auto ? '' : `<div class="crow"><span>최소</span><input id="rMin" type="range" min="0" max="100" step="1" value="${T.rng.min}"><b id="rMinV">${T.rng.min} m</b></div>
+    <div class="crow"><span>최대</span><input id="rMax" type="range" min="0" max="100" step="1" value="${T.rng.max}"><b id="rMaxV">${T.rng.max} m</b></div>`}
+    ${G.research.range3 ? `<div class="row"><span>효율 문턱<br><small class="muted">최고 데미지의 ${Math.round(EFF_MIN*100)}%보다 약하면 건너뜀</small></span><button class="btn" type="button" data-act="rngEff" aria-pressed="${!!T.rng.eff}">${T.rng.eff ? '켜짐' : '꺼짐'}</button></div>` : ''}
+  </div>`;
+}
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('button'); if (!b) return;
+  const a = b.dataset.act, so = G.sel != null ? SOCKETS[G.sel] : null, T = so && so.tower;
+  if (a === 'exam' && b.dataset.exam === 'range'){ ev.stopPropagation(); exam = rangeQs().map(q => ({q:q.q, a:q.a, opts:[q.a, ...q.w].sort(() => Math.random() - .5), pick:null})); exam.kind = 'range'; renderAll(); return; }
+  if (a === 'exam'){ setTimeout(() => { if (exam && !exam.kind) exam.kind = 'laser'; renderAll(); }, 0); return; }
+  if (a === 'examSubmit' && exam && exam.kind === 'range'){
+    ev.stopPropagation(); const bad = exam.filter(q => q.opts[q.pick] !== q.a).length;
+    if (!bad){ G.exams = G.exams || {}; G.exams.range = true; hint('자격 시험 통과! 이제 교전 범위 모듈을 연구할 수 있어요'); } else hint(`${bad}문제 틀렸어요 · 숫자를 바꿔서 다시 도전해요`);
+    exam = null; renderAll(); return;
+  }
+  if (!T) return;
+  if (a === 'buyRange'){ ev.stopPropagation(); if (G.gold < RANGE_PRICE || T.rng) return; G.gold -= RANGE_PRICE; const bd = band(T.design); T.rng = {min:bd ? Math.max(0, bd[0] - 2) : 0, max:bd ? Math.min(100, bd[1] + 2) : 60, auto:false, eff:false}; hint(`교전 범위 모듈을 달았어요 · ${T.rng.min}–${T.rng.max} m`); buildPreview(); renderAll(); }
+  else if (a === 'rngAuto'){ ev.stopPropagation(); T.rng.auto = !T.rng.auto; buildPreview(); renderAll(); }
+  else if (a === 'rngEff'){ ev.stopPropagation(); T.rng.eff = !T.rng.eff; renderAll(); }
+}, true);
+document.addEventListener('input', ev => {
+  const t = ev.target; if (!t || (t.id !== 'rMin' && t.id !== 'rMax')) return;
+  const T = G.sel != null && SOCKETS[G.sel] && SOCKETS[G.sel].tower; if (!T || !T.rng) return;
+  let v = +t.value;
+  if (t.id === 'rMin'){ v = Math.min(v, T.rng.max - 2); T.rng.min = v; } else { v = Math.max(v, T.rng.min + 2); T.rng.max = v; }
+  t.value = v; const lb = $(t.id + 'V'); if (lb) lb.textContent = `${v} m`;
+  const [lo, hi] = rangeOf(T), sel = $('rngSel'), rv = $('rngV');
+  if (sel){ sel.style.left = `${lo}%`; sel.style.width = `${hi - lo}%`; } if (rv) rv.textContent = `${Math.round(lo)}–${Math.round(hi)} m`;
+  buildPreview();
+});
+/* 바닥 표시: 고른 탑의 교전 범위 양 끝에 주황 선 */
+const _buildPreview9 = window.buildPreview;
+window.buildPreview = function(){
+  _buildPreview9();
+  if (G.mode !== 'place' || G.sel == null) return;
+  const so = SOCKETS[G.sel], T = so && so.tower; if (!T || !T.rng) return;
+  const [lo, hi] = rangeOf(T), mat = new THREE.MeshBasicMaterial({color:0xff8a3d, transparent:true, opacity:.9, depthWrite:false, fog:false});
+  for (const m of [lo, hi]){ const bar = new THREE.Mesh(new THREE.BoxGeometry(4.2, .06, .22), mat); bar.position.set(so.x, .09, dToZ(clamp(m, 0, 100))); previewGroup.add(bar); }
+  const l = label(['쏘는 범위', `${Math.round(lo)}–${Math.round(hi)} m`], {size:20, color:'#1a0d04', sub:'#3b2716', bg:'rgba(255,170,90,.95)', h:.026}); l.position.set(so.x + 3, 1.2, dToZ(clamp(hi, 0, 100))); previewGroup.add(l);
+};
+
+/* 연구 · 제작 페이지도 누르는 동안은 다시 그리지 않는다 */
+const _paintPage10 = window.paintPage;
+window.paintPage = function(){ const pg = $('page'); if (!pg.hidden && UI.page && pg.dataset.id === UI.page && guard(pg)) return; _paintPage10.apply(this, arguments); };
+
+/* ── 떠 있는 카드는 덜 움직인다: 주인공이 걸어가며 카메라가 따라가도, 물건이 크게(160px) 움직이거나 화면 밖으로 나가기 전까지
+      카드는 제자리. 누르고 있는 동안은 아예 안 움직인다 (움직이는 단추는 누르기 어렵다). 표지판은 물건에 붙어 있으니 그대로 따라간다 ── */
+const _placeCard10 = placeCard;
+window.placeCard = function(c){
+  const p = c.el, isSign = p.classList.contains('sign'), anchored = typeof c.at === 'function';
+  if (!anchored || isSign || p.classList.contains('sheet')) return _placeCard10(c);
+  if (UI.pressEl && p.contains(UI.pressEl) && p.style.visibility === 'visible') return;
+  const v = c.at(); let ax = null, ay = null;
+  if (v){ const q = v.clone().project(camera); ax = (q.x + 1)/2*stage.clientWidth; ay = (1 - q.y)/2*stage.clientHeight; }
+  const fits = st => st && parseFloat(st.left) + p.offsetWidth <= stage.clientWidth - 4 && parseFloat(st.top) + p.offsetHeight <= stage.clientHeight - 4 && parseFloat(st.left) >= 0 && parseFloat(st.top) >= 0;   // 내용이 커져서 화면 밖으로 나가면 다시 놓는다
+  if (c.stick && v && p.style.visibility === 'visible' && fits(c.stick) && Math.hypot(ax - c.stick.ax, ay - c.stick.ay) < 160 && ax > 0 && ax < stage.clientWidth && ay > 0 && ay < stage.clientHeight){
+    p.style.left = c.stick.left; p.style.top = c.stick.top; return;
+  }
+  _placeCard10(c);
+  c.stick = v && p.style.visibility === 'visible' ? {ax, ay, left:p.style.left, top:p.style.top} : null;
+};
+/* 탑 자리 카드: 주인공이 걸어가는 동안 카메라가 움직여서 카드가 따라 미끄러졌다 → 탑 반대쪽 가장자리에 고정 */
+const _paintPop11 = paintPop;
+window.paintPop = function(key, at, h, noX, opts = {}){
+  if (key === 'sock' && typeof at === 'function'){
+    const c = CARDS.get('sock'); let side = c && c.sockSide && c.sockSel === G.sel ? c.sockSide : null;
+    if (!side){ const v = at(), q = v ? v.clone().project(camera) : null; side = q && q.x < 0 ? 'right' : 'left'; }
+    _paintPop11(key, {fixed:side}, h, noX, opts);
+    const c2 = CARDS.get('sock'); if (c2){ c2.sockSide = side; c2.sockSel = G.sel; }
+    return;
+  }
+  return _paintPop11(key, at, h, noX, opts);
+};

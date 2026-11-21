@@ -26,7 +26,7 @@ function eyes(g, y, z, sep, r = .08, look = 0){
 const lathe = (pts, seg = 28) => new THREE.LatheGeometry(pts.map(([r, y]) => new THREE.Vector2(r, y)), seg);
 
 /* ── 적 (발이 y = −오프셋, foeMesh가 위로 올려 줌) ── */
-const FOE_OFF = {ag:.5, cs:.5, na:.6, ca:.6, kn:.5};
+const FOE_OFF = {ag:.5, cs:.5, na:.6, ca:.6, kn:.5, bt:.3, gt:.6, ne:.5, sp:.5, sk:.25, sh:.6, qg:.5};
 function foeBody(type, armor, mat){
   const outer = new THREE.Group(), g = new THREE.Group(); g.rotation.y = Math.PI; outer.add(g);   // 앞(눈 · 방패)이 성벽(+z)을 보게
   const _g = g, off = FOE_OFF[type] || .5; let body, anim;
@@ -62,6 +62,61 @@ function foeBody(type, armor, mat){
       const e = new THREE.Mesh(new THREE.BoxGeometry(.08, .05, .03), new THREE.MeshBasicMaterial({color:0x8fe9ff})); e.position.set(s*.09, -off + 1.24, -.24); g.add(e);
     }
     anim = t => { g.rotation.z = .05*Math.sin(t*3); };
+  } else if (type === 'bt'){ // 칼륨 박쥐: 작은 몸 · 퍼덕이는 날개 (날아서 강에서 안 느려짐)
+    body = new THREE.Mesh(new THREE.SphereGeometry(.2, 14, 10), mat); body.position.y = -off + .3; body.scale.set(1, 1.1, .9); g.add(body);
+    for (const s of [-1, 1]){ const ear = new THREE.Mesh(new THREE.ConeGeometry(.05, .14, 8), mat); ear.position.set(s*.1, -off + .52, 0); g.add(ear); }
+    const wm = smooth(0x4a3a7a, {side:THREE.DoubleSide}), wings = [];
+    for (const s of [-1, 1]){ const w = new THREE.Group(); w.position.set(s*.16, -off + .32, 0);
+      const sh = new THREE.Shape(); sh.moveTo(0, 0); sh.lineTo(s*.55, .18); sh.lineTo(s*.46, -.02); sh.lineTo(s*.34, .06); sh.lineTo(s*.24, -.08); sh.lineTo(s*.12, .02); sh.lineTo(0, -.1);
+      w.add(new THREE.Mesh(new THREE.ShapeGeometry(sh), wm)); g.add(w); wings.push([w, s]); }
+    eyes(g, -off + .36, -.17, .07, .045);
+    anim = t => { for (const [w, s] of wings) w.rotation.z = s*.7*Math.sin(t*22); body.position.y = -off + .3 + .06*Math.sin(t*5); };
+  } else if (type === 'ne'){ // 네온 정령: 빛나는 심지 + 반투명 겉불 (준위 차 1.96 eV · 주황빨강)
+    body = new THREE.Mesh(new THREE.SphereGeometry(.24, 18, 14), new THREE.MeshStandardMaterial({color:0xff7a4a, emissive:0xff5a2a, emissiveIntensity:1.1, roughness:.3})); body.position.y = -off + .45; g.add(body);
+    const aura = new THREE.Mesh(new THREE.SphereGeometry(.42, 18, 14), new THREE.MeshBasicMaterial({color:0xff9a6a, transparent:true, opacity:.28, depthWrite:false})); aura.position.y = -off + .45; g.add(aura);
+    const flame = new THREE.Mesh(new THREE.ConeGeometry(.26, .62, 16, 1, true), new THREE.MeshBasicMaterial({color:0xffb27a, transparent:true, opacity:.4, side:THREE.DoubleSide, depthWrite:false})); flame.position.y = -off + .86; g.add(flame);
+    const tail = new THREE.Mesh(new THREE.ConeGeometry(.18, .4, 12, 1, true), new THREE.MeshBasicMaterial({color:0xff7a4a, transparent:true, opacity:.35, side:THREE.DoubleSide, depthWrite:false})); tail.position.y = -off + .1; tail.rotation.x = Math.PI; g.add(tail);
+    eyes(g, -off + .5, -.22, .09, .06);
+    anim = t => { aura.scale.setScalar(1 + .12*Math.sin(t*6)); flame.scale.y = 1 + .25*Math.sin(t*11); flame.rotation.y = t*2; g.position.y = .08*Math.sin(t*3); };
+  } else if (type === 'sp' || type === 'sk'){ // 분열 슬라임: 두 덩이가 붙은 모양(가운데 금) · 꼬마는 작은 한 덩이
+    const k = type === 'sk' ? .42 : 1;
+    if (type === 'sp'){
+      const parts = [];
+      for (const s2 of [-1, 1]){ const lobe = new THREE.Mesh(new THREE.SphereGeometry(.38, 18, 14), mat); lobe.position.set(s2*.22, -off + .36, 0); lobe.scale.set(1, .9, .95); g.add(lobe); parts.push(lobe); }
+      body = parts[0];
+      const seam = new THREE.Mesh(new THREE.TorusGeometry(.3, .025, 6, 24), smooth(0x2a7a5a)); seam.rotation.y = Math.PI/2; seam.position.y = -off + .38; g.add(seam);
+      eyes(g, -off + .5, -.34, .2, .08);
+      anim = t => { const q = .06*Math.sin(t*8); parts[0].position.x = -.22 - q; parts[1].position.x = .22 + q; };
+    } else {
+      body = new THREE.Mesh(lathe([[0, 0], [.56*k, .05*k], [.6*k, .22*k], [.46*k, .5*k], [.22*k, .78*k], [0, .9*k]]), mat); body.position.y = -off; g.add(body);
+      eyes(g, -off + .22, -.22, .08, .05);
+      anim = t => { const s2 = 1 + .1*Math.sin(t*14); body.scale.set(1/Math.sqrt(s2), s2, 1/Math.sqrt(s2)); };
+    }
+  } else if (type === 'sh'){ // 그림자 도깨비: 어두운 몸 · 뿔 · 빛나는 눈(어둠 속에서도 눈만 보인다)
+    body = new THREE.Mesh(lathe([[0, 0], [.34, .02], [.4, .34], [.32, .66], [.2, .8], [0, .82]]), mat); body.position.y = -off + .24; g.add(body);
+    const head = new THREE.Mesh(new THREE.SphereGeometry(.28, 18, 14), mat); head.position.y = -off + 1.14; g.add(head);
+    for (const s2 of [-1, 1]){ const horn = new THREE.Mesh(new THREE.ConeGeometry(.06, .3, 8), mat); horn.position.set(s2*.16, -off + 1.42, 0); horn.rotation.z = -s2*.35; g.add(horn);
+      const eye = new THREE.Mesh(new THREE.SphereGeometry(.06, 10, 8), new THREE.MeshBasicMaterial({color:0xffe066})); eye.position.set(s2*.1, -off + 1.16, -.25); eye.userData.eye = true; g.add(eye); }
+    const cloak = new THREE.Mesh(new THREE.ConeGeometry(.5, .9, 16, 1, true), new THREE.MeshStandardMaterial({color:0x2a2540, side:THREE.DoubleSide, roughness:.9})); cloak.position.y = -off + .55; g.add(cloak);
+    anim = t => { g.rotation.z = .06*Math.sin(t*9); cloak.scale.set(1 + .05*Math.sin(t*7), 1, 1); };
+  } else if (type === 'qg'){ // 양자 유령: 물결치는 천 자락 · 몸에 파동 무늬
+    const pts = []; for (let i = 0; i <= 10; i++){ const y = i/10*1.0; pts.push([i === 10 ? 0 : .38*Math.sqrt(1 - Math.pow(Math.max(0, y - .55)/.45, 2)) + (i === 0 ? .06 : 0), y]); }
+    body = new THREE.Mesh(lathe(pts, 24), new THREE.MeshStandardMaterial({color:0xd8f6ff, emissive:0x7fd8ff, emissiveIntensity:.5, roughness:.3})); body.position.y = -off; g.add(body);
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(.42, .03, 6, 32), new THREE.MeshBasicMaterial({color:0x7fd8ff})); ring.rotation.x = Math.PI/2; ring.position.y = -off + .05; g.add(ring);
+    eyes(g, -off + .72, -.33, .12, .07);
+    anim = t => { body.rotation.y = .3*Math.sin(t*2); ring.scale.setScalar(1 + .15*Math.sin(t*8)); g.position.y = .1*Math.sin(t*2.6); };
+  } else if (type === 'gt'){ // 바륨 거인: 크고 둔한 몸 · 굵은 팔
+    body = new THREE.Mesh(lathe([[0, 0], [.7, .05], [.82, .6], [.74, 1.2], [.5, 1.5], [0, 1.55]]), mat); body.position.y = -off + .42; g.add(body);
+    const head = new THREE.Mesh(new THREE.SphereGeometry(.38, 18, 14), mat); head.position.y = -off + 2.2; g.add(head);
+    const brow = new THREE.Mesh(new THREE.BoxGeometry(.5, .08, .1), smooth(0x7a4a2e)); brow.position.set(0, -off + 2.32, -.32); g.add(brow);
+    eyes(g, -off + 2.22, -.32, .13, .07);
+    const arms = [];
+    for (const s of [-1, 1]){
+      const arm = new THREE.Mesh(new THREE.CylinderGeometry(.2, .26, 1.2, 12), mat); arm.position.set(s*.98, -off + 1.25, 0); arm.rotation.z = s*.12; g.add(arm); arms.push(arm);
+      const fist = new THREE.Mesh(new THREE.SphereGeometry(.26, 12, 10), mat); fist.position.set(s*1.05, -off + .62, 0); g.add(fist);
+      const leg = new THREE.Mesh(new THREE.CylinderGeometry(.24, .28, .5, 12), smooth(0x5a3a26)); leg.position.set(s*.36, -off + .25, 0); g.add(leg);
+    }
+    anim = t => { g.rotation.z = .06*Math.sin(t*2.2); arms[0].rotation.x = .25*Math.sin(t*2.2); arms[1].rotation.x = -.25*Math.sin(t*2.2); };
   } else { // 편광 기사: 투구 · 갑옷 · 편광 방패(투과축 줄무늬)
     body = new THREE.Mesh(lathe([[0, 0], [.34, .02], [.42, .35], [.36, .7], [.2, .82], [0, .84]]), mat); body.position.y = -off + .12; g.add(body);
     const helm = new THREE.Mesh(new THREE.CylinderGeometry(.24, .26, .32, 18), smooth(0x4b5a7a, {metalness:.6, roughness:.35})); helm.position.y = -off + 1.12; g.add(helm);
@@ -71,10 +126,10 @@ function foeBody(type, armor, mat){
     const sh = new THREE.Group(); sh.position.set(0, -off + .62, -.48); sh.rotation.z = rad(armor == null ? 90 : armor);
     sh.add(new THREE.Mesh(new THREE.CylinderGeometry(.42, .42, .06, 28), smooth(0x1b2438, {metalness:.4})).rotateX(Math.PI/2));
     for (let i = -3; i <= 3; i++){ const ln = new THREE.Mesh(new THREE.BoxGeometry(.03, .72*Math.sqrt(1 - (i/3.6)**2), .02), new THREE.MeshBasicMaterial({color:0xbfd4ff})); ln.position.set(i*.1, 0, -.04); sh.add(ln); }
-    g.add(sh);
+    g.add(sh); outer.userData.shield = sh;
     const by = body.position.y; anim = t => { body.position.y = by + .03*Math.abs(Math.sin(t*6)); };
   }
-  shade(outer); outer.userData.body = body; outer.userData.anim = anim; return outer;
+  shade(outer); outer.userData.body = body; outer.userData.anim = anim; if (!outer.userData.shield) outer.userData.shield = null; return outer;
 }
 
 /* ── 주인공 (꾸미기: 머리 모양 · 색 · 얼굴 사진) ── */
