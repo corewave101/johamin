@@ -61,7 +61,7 @@ const _mapPanel10 = window.mapPanel;
 window.mapPanel = function(){
   if (!painted) return renderAll();
   _mapPanel10();
-  if (UI.site && mapStage() >= 1) paintPop('site', UI.site === 'lair' ? {fixed:'right'} : {el:`#map [data-go="${UI.site}"]`}, siteHtml(UI.site), false, {cls:`site site-${UI.site}`});
+  if (UI.site && mapStage() >= 1) paintPop('site', UI.site === 'lair' || UI.site === 'hall' || /^plot\d$/.test(UI.site) ? {fixed:'right'} : {el:`#map [data-go="${UI.site}"]`}, siteHtml(UI.site), false, {cls:`site site-${UI.site}`});
 };
 function siteHtml(k){ return k === 'siege' ? siegeHtml() : k === 'lake' ? lakeHtml() : mountHtml(); }
 

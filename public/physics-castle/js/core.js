@@ -382,7 +382,7 @@ function newGame(){
     autoSortie:'off', tSel:null,
     panelMetal:'na', metals:{na:0, cs:0, ag:0, ca:0}, lab:{recs:[]}, chargeU:U_DEFAULT,
     sites:{siege:false, mount:false, lakeDay:0, mountDay:0, scoutDay:0},
-    bosses:{}, bossDown:false, which:false, dg:{day:0, ch:{}, relics:[]},
+    bosses:{}, bossDown:false, which:false, dg:{day:0, ch:{}, relics:[]}, town:null,
     stick:{x:0, y:0}, keys:{}, settings:loadSettings(), best:loadBest(), report:null,
   };
 }
@@ -390,7 +390,7 @@ const bumpBest = v => { if (v > G.best.dps){ G.best.dps = v; bestDirty = true; }
 
 /* ═════════ 자동 저장 (낮 상태만 저장 · 밤 도중에 꺼지면 그날 낮으로) ═════════ */
 const SAVE_KEY = 'johamin-castle-save-v1';
-const SAVE_FIELDS = ['wave', 'gold', 'wallHp', 'designs', 'weapon', 'nextDesign', 'inventory', 'craft', 'soldiers', 'nextSoldier', 'energy', 'research', 'up', 'floors', 'laserExam', 'exams', 'learn', 'ptype', 'solved', 'autoSortie', 'panelMetal', 'metals', 'lab', 'chargeU', 'look', 'sites', 'bosses', 'bossDown', 'which', 'dg'];
+const SAVE_FIELDS = ['wave', 'gold', 'wallHp', 'designs', 'weapon', 'nextDesign', 'inventory', 'craft', 'soldiers', 'nextSoldier', 'energy', 'research', 'up', 'floors', 'laserExam', 'exams', 'learn', 'ptype', 'solved', 'autoSortie', 'panelMetal', 'metals', 'lab', 'chargeU', 'look', 'sites', 'bosses', 'bossDown', 'which', 'dg', 'town'];
 function snapshot(){
   const o = {v:6, at:Date.now(), nextUid};
   for (const k of SAVE_FIELDS) o[k] = G[k];

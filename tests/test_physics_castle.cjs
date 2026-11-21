@@ -181,6 +181,25 @@ check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정�
     check(!PZ.lens.calc({f:20, L:90, v:60}).pass, '렌즈: a 60이면 또렷해도 축소라서 안 열려요');
     check(Math.abs(PZ.slit.calc({v:.5}).dx - 2.4) < 1e-9, '이중 슬릿: Δx = λL/d = 600 nm × 2 m / 0.5 mm = 2.4 mm');
   }
+  // 6.7 내정: 마을 계산 · 전광판 · 현미경 · 광자 통신
+  { const tsrc = fs.readFileSync(path.join(dir, 'js/town.js'), 'utf8').replace(/^'use strict';/, '');
+    const stub = `const window = {mapSVG(){ return ''; }, siteHtml(){ return ''; }, waveCleared(){}, clearedPanel(){}}; const document = {addEventListener(){}, getElementById(){ return {addEventListener(){}}; }}; const SITE_KEYS = []; const UI = {}; const mapStage = () => 1; const hint = () => {}; const renderAll = () => {}; const cGold = () => ''; const showBossBanner = {};`;
+    const ctx = {}; new Function('ctx', csrc.replace(/^'use strict';/, '') + stub + tsrc + '; newGame(); ctx.f = {T, townTick, TB, cap, foodProd, sanOf, happyTarget, taxGold, dispB, dispCalc, DISP_REQ, dispReq, microCalc, bb84, get G(){ return G; }};')(ctx); const f = ctx.f;
+    const t = f.T(); check(t.pop <= f.cap() && f.foodProd() > t.pop, '처음 마을: 정원 안 · 식량이 남아요');
+    check(Math.abs(f.dispB({lv:1}, 45) - .5) < 1e-12 && Math.abs(f.dispB({lv:1}, 90) - 1) < 1e-12 && f.dispB({lv:1}, 0) === 0, 'LCD 밝기 = sin²φ (말뤼스)');
+    const lcd = {b:'board', lv:1, w:1}, oled = {b:'board', lv:2, w:1}; t.plots[5] = lcd;
+    const R = f.dispReq(); R.set = [0, 0, 0]; const pL0 = f.dispCalc(lcd).power; R.set = [90, 90, 90]; const pL1 = f.dispCalc(lcd).power;
+    R.set = [0, 0, 0]; const pO0 = f.dispCalc(oled).power; R.set = [100, 100, 100]; const pO1 = f.dispCalc(oled).power;
+    check(pL0 === pL1 && pO0 === 0 && pO1 > 0, 'LCD는 그림과 상관없이 전기가 같고, OLED는 검은 화면이 0');
+    t.plague = {kind:'bacteria', sick:2, days:0, found:false}; t.micro = {fo:16, fe:25, kv:1}; const clinic = {b:'clinic', lv:1, w:1};
+    check(!f.microCalc(clinic).ok, '광학 100배: 세균 2 μm → 0.2 mm라 알아보기엔 작아요'); t.micro.fo = 4; check(f.microCalc(clinic).ok && f.microCalc(clinic).mag === 400, '광학 400배면 세균이 보여요');
+    t.plague.kind = 'virus'; check(!f.microCalc(clinic).ok && f.microCalc(clinic).blur, '바이러스는 광학으로 배율을 올려도 안 보여요(분해능)');
+    const em = {b:'clinic', lv:2, w:1}; t.micro.em = true; t.micro.kv = 1; check(!f.microCalc(em).ok, '전자 현미경 1 kV는 아직 흐려요');
+    t.micro.kv = 10; const c10 = f.microCalc(em); check(c10.ok && Math.abs(c10.lam - 1.226/Math.sqrt(10000)) < 1e-12, '10 kV: λ = 1.226/√V nm로 보여요'); t.micro.kv = 30; check(!f.microCalc(em).ok && f.microCalc(em).burn, '30 kV는 시료가 타요');
+    let k = 0, e = 0, k2 = 0, e2 = 0; for (let i = 0; i < 1500; i++){ for (const r of f.bb84(true)) if (r.keep){ k++; if (r.got !== r.bit) e++; } for (const r of f.bb84(false)) if (r.keep){ k2++; if (r.got !== r.bit) e2++; } }
+    check(Math.abs(e/k - .25) < .02 && e2 === 0, `광자 통신: 도적이 있으면 남긴 비트의 25%가 틀려요 (${(e/k*100).toFixed(1)}%) · 없으면 0`);
+    for (let d = 0; d < 40; d++) f.townTick(); check(t.pop >= 1 && t.food >= 0 && t.happy >= 0 && t.happy <= 100, '40일 돌려도 값이 망가지지 않아요');
+  }
   check(env.waveB(30)/env.waveB(10) > 5, '30밤은 10밤보다 훨씬 세야 해요(골드가 쌓여도 어렵게)');
   for (let n = 1; n <= 80; n++){ const c = env.waveSize(n); check(c >= 3 && c <= env.WAVE_CAP, `밤 ${n}의 마리 수 ${c}가 3~${env.WAVE_CAP} 밖이에요`); check(Math.abs((c + env.ELITE_HP*env.eliteCount(n))*env.hpMul(n) - env.waveB(n)) < 1e-6, `밤 ${n}: 마리 수 × 체력 ≠ 총 체력`); }
   // 탑 광전관: solveCircuit이 u = R·I(u)를 풀었는지
