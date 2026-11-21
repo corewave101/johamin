@@ -508,7 +508,7 @@ input[type=range]#sFl{height:22px}
 .rng-key .k.bd{background:rgba(127,211,255,.6)}.rng-key .k.sel{background:var(--ember)}
 
 /* v10 (6.4): 지도 터 카드 · 새 몬스터 칸 */
-.vs{grid-template-columns:repeat(7,1fr)}
+.vs{grid-template-columns:repeat(5,1fr)}
 .sg-lab{font-size:11px;color:var(--muted);margin:8px 0 4px}
 .sg-base{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
 .sg-base button{justify-content:flex-start;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -523,7 +523,7 @@ input[type=range]#sFl{height:22px}
 .pop.site{width:min(640px,calc(100% - 20px))}
 .st-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start}
 .st-grid > div{display:grid;gap:7px;min-width:0}
-.chips{display:flex;gap:5px;overflow-x:auto;padding-bottom:3px;scrollbar-width:thin}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
 .chips button{flex:0 0 auto;padding:6px 9px;border-radius:7px;border:1px solid var(--line);background:var(--panel-2);font-size:12px;display:flex;align-items:center;gap:5px;white-space:nowrap}
 .chips button[aria-pressed="true"]{border-color:var(--ember);color:var(--ember)}
 .chips button i{width:9px;height:9px;border-radius:50%;display:inline-block}

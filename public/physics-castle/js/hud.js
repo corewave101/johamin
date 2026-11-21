@@ -421,7 +421,7 @@ window.fRefreshTest = function(){
   const ctl = $('fctl');
   if (ctl && !ctl.dataset.built){
     ctl.dataset.built = 1;
-    ctl.innerHTML = F.learn ? '' : `<div class="seg foeseg">${Object.entries(FOES).map(([id, f]) => `<button type="button" data-ffoe="${id}" aria-pressed="${F.dummy.foe === id}"><i style="background:${f.color}"></i>${f.short}</button>`).join('')}</div>
+    ctl.innerHTML = F.learn ? '' : `<div class="seg foeseg">${foeEntries().map(([id, f]) => `<button type="button" data-ffoe="${id}" aria-pressed="${F.dummy.foe === id}"><i style="background:${f.color}"></i>${f.short}</button>`).join('')}</div>
       <div class="range"><label for="sD">거리 <b id="vD"></b></label><input id="sD" type="range" min="1" max="100" step="1" value="${F.dummy.x}"></div>
       ${F.dummy.foe === 'kn' ? `<div class="range"><label for="sA">갑옷 투과축 <b id="vA"></b></label><input id="sA" type="range" min="0" max="180" step="15" value="${armor}"></div>` : ''}`;
   }
@@ -617,7 +617,7 @@ window.trainPanel = function(){
     const gun = gunOf(s), sc = soldierScale(), acc = soldierAcc();
     paintPop('soldier', soldierPos, `<div class="ed-head"><h3>${s.name}</h3><span>${roleTxt(s)}</span></div>
       <div class="bp-f">${gun.name} · ${formula(gun)}</div>
-      <div class="vs">${Object.entries(FOES).map(([id, f]) => { const r = hitD(gun, f, 10, id === 'kn' ? 90 : null, null, sc); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v*(.5 + .5*acc)) : r.why === 'E < W' ? 'E&lt;W' : '0'}</b></div>`; }).join('')}</div>
+      <div class="vs">${foeEntries().map(([id, f]) => { const r = hitD(gun, f, 10, id === 'kn' ? 90 : null, null, sc); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v*(.5 + .5*acc)) : r.why === 'E < W' ? 'E&lt;W' : r.why === '흡수선 밖' ? '통과' : '0'}</b></div>`; }).join('')}</div>
       <p class="muted">10 m 초당 데미지 · 명중 ×${(.5 + .5*acc).toFixed(2)}</p>
       <h2>무기 쥐여 주기</h2>
       <div class="chips"><button class="chip ${!s.weapon ? 'on' : ''}" type="button" data-sweap="base">${SOLDIER_GUN.name} (기본)</button>${weaponGroups().map(g => `<button class="chip" type="button" data-sweap="${g.items[0].uid}">${g.d.name} ×${g.items.length}</button>`).join('')}</div>
@@ -1035,7 +1035,7 @@ window.trainPanel = function(){
     const gun = gunOf(s), sc = soldierScale(), acc = soldierAcc();
     paintPop('soldier', soldierPos, `<div class="ed-head"><h3>${s.name}</h3><span>${roleTxt(s)}</span></div>
       <div class="bp-f">${gun.name} · ${formula(gun)}</div>
-      <div class="vs">${Object.entries(FOES).map(([id, f]) => { const r = hitD(gun, f, 10, id === 'kn' ? 90 : null, null, sc); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v*(.5 + .5*acc)) : r.why === 'E < W' ? 'E&lt;W' : '0'}</b></div>`; }).join('')}</div>
+      <div class="vs">${foeEntries().map(([id, f]) => { const r = hitD(gun, f, 10, id === 'kn' ? 90 : null, null, sc); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v*(.5 + .5*acc)) : r.why === 'E < W' ? 'E&lt;W' : r.why === '흡수선 밖' ? '통과' : '0'}</b></div>`; }).join('')}</div>
       <p class="muted">10 m 초당 데미지 · 명중 ×${(.5 + .5*acc).toFixed(2)}</p>
       <h2>무기 쥐여 주기</h2>
       <div class="chips"><button class="chip ${!s.weapon ? 'on' : ''}" type="button" data-sweap="base">${SOLDIER_GUN.name} (기본)</button>${weaponGroups().map(g => `<button class="chip" type="button" data-sweap="${g.items[0].uid}">${g.d.name} ×${g.items.length}</button>`).join('')}</div>

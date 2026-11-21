@@ -459,6 +459,7 @@ function elecHtml(hit, foe, armor){
   const pct = hit.Itot > 0 ? Math.round(hit.I/hit.Itot*100) : 0;
   return `<div class="eq">빔 반지름 ${fmtLen(hit.w)} → ${foe.short || '적'} 몸(반지름 ${hit.rb} cm)에 ${(hit.frac*100).toFixed(hit.frac < .01 ? 2 : hit.frac >= 1 ? 0 : 1)}%${hit.frac >= 1 ? ' (빛이 몸 안에 다 들어가요)' : ''}${hit.t < 1 ? ` · 편광 투과 ${hit.t.toFixed(3)}` : ''}<br>
     들어간 빛 ${hit.Ph < .1 ? hit.Ph.toFixed(3) : hit.Ph.toFixed(1)} mW → 광자 2000개에 전자 1개(양자 효율 η = ${ETA})<br>
+    ${foe.line ? `${foe.short}은 준위 차 ${foe.line} eV(±${foe.band}) 근처 광자만 흡수 → 들어간 빛의 <b>${Math.round((hit.abs ?? 1)*100)}%</b>만 흡수, 나머지는 그냥 지나가요<br>` : ''}
     다 모이면 광전류 I₀ = η·Σ P/E = <b>${hit.Itot < .01 ? hit.Itot.toFixed(4) : hit.Itot.toFixed(3)} mA</b><br>
     정지 전압 V₀ = E − W = <b>${hit.V0.toFixed(2)} V</b> · 저항 R = ${foe.R} kΩ<br>
     R에 생긴 전압 u가 역전압이 돼서 일부 전자만 넘어가요 → u = R·I(u)를 풀면 <b>u = ${hit.u.toFixed(2)} V</b>, I = ${hit.I < .01 ? hit.I.toFixed(4) : hit.I.toFixed(3)} mA (I₀의 ${pct}%)<br>${lim}<br>
@@ -470,7 +471,7 @@ function testPanel(){
     <div class="sec">
       <div class="seg"><button type="button" data-act="learnOn" aria-pressed="false">문제 풀기</button><button type="button" data-act="learnOff" aria-pressed="true">자유 설계</button></div>
       <div class="ed-head"><h3>시험 표적</h3><span>${F.kind === 'weapon' ? '주인공 무기' : '탑'} · 경통 ${F.barrel} cm</span></div>
-      <div class="seg">${Object.entries(FOES).map(([id, f]) => `<button type="button" aria-pressed="${F.dummy.foe===id}" data-ffoe="${id}"><i style="background:${f.color}"></i>${f.short}</button>`).join('')}</div>
+      <div class="seg">${foeEntries().map(([id, f]) => `<button type="button" aria-pressed="${F.dummy.foe===id}" data-ffoe="${id}"><i style="background:${f.color}"></i>${f.short}</button>`).join('')}</div>
       ${F.dummy.foe === 'kn' ? `<div class="range"><label for="sA">기사 갑옷 투과축 <b id="vA">${armor}°</b></label><input id="sA" type="range" min="0" max="180" step="15" value="${armor}"></div>` : ''}
       <div class="range"><label for="sD">표적 거리 <b id="vD">${F.dummy.x} m</b></label><input id="sD" type="range" min="1" max="100" step="1" value="${F.dummy.x}"></div>
       <p class="muted">${foe.name} · 일함수 W = ${foe.W} eV · 저항 R = ${foe.R} kΩ${armor != null ? ` · 갑옷 ${armor}°` : ''}</p>

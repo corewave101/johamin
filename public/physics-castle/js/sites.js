@@ -93,7 +93,7 @@ function siegeHtml(){
   return `${head}<div class="st-grid"><div>
     <div class="sg-lab">설계</div><div class="chips">${towers.map(d => chip('sgBase', d.id, d.id === base.id, d.name, beamColor(d))).join('')}</div>
     <div class="sg-lab">묶을 광원 수</div><div class="chips">${SIEGE_MODS.map(m => chip('sgMods', m, m === n, `${m}개`)).join('')}</div>
-    <div class="sg-lab">표적 (40 m)</div><div class="chips">${Object.entries(FOES).map(([id, f]) => chip('sgFoe', id, id === UI.sg.foe, f.short, f.color)).join('')}</div>
+    <div class="sg-lab">표적 (40 m)</div><div class="chips">${foeEntries().map(([id, f]) => chip('sgFoe', id, id === UI.sg.foe, f.short, f.color)).join('')}</div>
     <div class="rows"><div class="row"><span>재료비 · 작업량</span><b>${c}G · ${w.toFixed(1)}</b></div><div class="row"><span>쏠 때 전기</span><b>${drawOf(sd).toFixed(2)} ⚡/초</b></div></div>
     <button class="btn primary" type="button" data-sx="siegeMake" ${full || poor ? `disabled data-why="${full ? '제작 칸이 꽉 찼어요 · 밤이 지나면 비어요' : `골드 부족 · ${c}G`}"` : ''}>${full ? '제작 칸 꽉 참' : poor ? `골드 부족 · ${c}G` : `${sd.name} 만들기 · ${c}G`}</button>
   </div><div>

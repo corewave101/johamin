@@ -65,6 +65,17 @@ const FOES = {
   kn:{name:'편광 기사',     short:'기사', W:2.3, R:6,  color:'#9db4ff', hp:110, speed:4.4,  reward:16, wall:2, drop:8, rb:40},
   /* 6.4 새 몬스터 · 몸 크기가 다르다: 작은 박쥐는 빛을 작게 모아야 다 맞고, 큰 거인은 저항이 커서 전압이 금방 막힌다 */
   bt:{name:'칼륨 박쥐',     short:'박쥐', W:2.3, R:5,  color:'#a88bff', hp:30,  speed:8,   reward:9,  wall:1, drop:3, rb:12, fly:true, unit:.5},
+  /* 6.5 새 몬스터 · 한계 전압 말고 다른 특성
+     ne 네온 정령(23번 에너지 준위): 몸의 두 준위 차가 1.96 eV → 그 근처(±0.045 eV) 광자만 흡수, 나머지 빛은 그냥 지나간다. 헬륨-네온 633 nm · 빨강 화소 620 nm가 맞음
+     sp 분열 슬라임: 쓰러지면 꼬마 슬라임(sk) 둘로 갈라진다. 꼬마는 몸이 작아(12 cm) 빛을 작게 모아야 다 맞는다
+     sh 그림자 도깨비: 어두워서 램프 빛이 닿는 곳(램프 탑 · 주인공 램프 25 m 안)이나 성벽 12 m 안에서만 보인다. 레이저는 가늘어서 주변을 못 비춘다 */
+  ne:{name:'네온 정령',     short:'정령', W:1.6, R:6,  color:'#ff7a4a', hp:70,  speed:4.2, reward:18, wall:2, drop:0, rb:30, fly:true, line:1.96, band:.045},
+  sp:{name:'분열 슬라임',   short:'분열', W:2.1, R:4,  color:'#5fe0b0', hp:70,  speed:3.6, reward:10, wall:2, drop:6, rb:40, split:'sk', unit:1.6},
+  sk:{name:'꼬마 슬라임',   short:'꼬마', W:2.1, R:4,  color:'#8ff0c8', hp:21,  speed:6,   reward:4,  wall:1, drop:1, rb:12, mini:true},
+  sh:{name:'그림자 도깨비', short:'그림자', W:2.3, R:6, color:'#4a4466', hp:80,  speed:5,   reward:16, wall:2, drop:6, rb:35, dark:true},
+  /* qg 양자 유령(24번 이중 슬릿): 소굴의 두 문(슬릿)을 지나 물질파로 퍼져 온다. 평소엔 간섭무늬(밝은 줄 5개)로만 보이고 맞지 않는다.
+     몇 초마다 한 줄에서 '관측'되어 잠깐 나타나는데, 줄을 고르는 확률이 밝기(확률 밀도 ρ)에 비례한다. 줄 간격 Δx = λL/d */
+  qg:{name:'양자 유령',     short:'유령', W:2.0, R:5,  color:'#b8f0ff', hp:60,  speed:4,   reward:20, wall:2, drop:0, rb:30, fly:true, quantum:true},
   gt:{name:'바륨 거인',     short:'거인', W:2.5, R:40, color:'#d98c5f', hp:320, speed:2.2, reward:48, wall:5, drop:20, rb:90, unit:4.5},   /* unit: 웨이브 체력 예산에서 몇 마리 몫인지 */
 };
 const pumpOk = q => !q.research || G.research[q.research];
@@ -128,14 +139,17 @@ const isMount = d => d.kind === 'tower' || d.kind === 'siege';
 function hitD(d, foe, dist, armor, polTheta, scaleOverride){
   const p = srcPower(d), zero = why => ({v:0, why, w:1, I:0, V0:0, u:0, sat:false, Ph:0, frac:0, t:0});
   if (!p) return zero('발진 안 함');
-  const tr = traceD(d, Math.max(.01, dist), polTheta), sp = specOf(d);
-  if (!sp.some(([nm]) => 1240/nm > foe.W)) return Object.assign(zero('E < W'), {w:tr.w});
+  const tr = traceD(d, Math.max(.01, dist), polTheta);
+  let sp = specOf(d), abs = 1;
+  // 흡수선이 있는 몸(정령): 준위 차 근처 광자만 흡수, 나머지는 그냥 지나간다
+  if (foe.line){ sp = sp.map(([nm, w]) => [nm, Math.abs(1240/nm - foe.line) <= foe.band ? w : 0]); abs = sp.reduce((s, q) => s + q[1], 0); if (abs <= 0) return Object.assign(zero('흡수선 밖'), {w:tr.w, abs:0}); }
+  if (!sp.some(([nm, w]) => w > 0 && 1240/nm > foe.W)) return Object.assign(zero('E < W'), {w:tr.w});
   let t = tr.t; if (armor != null) t *= tr.pol == null ? .5 : cos2(tr.pol - armor);
   if (t < .005) return Object.assign(zero('편광 차단'), {w:tr.w});
   const rb = foe.rb || BODY_REF, frac = Math.min(1, (rb/Math.max(tr.w, minWOf(d)))**2), Ph = p*t*frac;
   const c = solveCircuit(sp.map(([nm, w]) => { const E = 1240/nm; return {I:ETA*Ph*w/E, V:E - foe.W}; }), foe.R);
   const P = c.u*c.u/foe.R, scale = scaleOverride ?? kindScale(d);
-  return {v:DMG_K*P*scale, why:'', w:tr.w, I:c.I, Itot:c.Itot, V0:c.V0, u:c.u, sat:c.sat, P, Ph, frac, t, scale, rb};
+  return {v:DMG_K*P*scale, why:'', w:tr.w, I:c.I, Itot:c.Itot, V0:c.V0, u:c.u, sat:c.sat, P, Ph, frac, t, scale, rb, abs};
 }
 const fracAt = (d, dist, rb = BODY_REF) => Math.min(1, (rb/Math.max(traceD(d, Math.max(.01, dist)).w, minWOf(d)))**2);
 /* 정예는 몸이 1.45배 */
@@ -197,7 +211,13 @@ const METALS = {
   ag:{name:'산화세슘', W:1.1, color:'#ff9ad5', need:25},
   ca:{name:'칼슘', W:2.9, color:'#c9c4b8', need:null},
 };
-const DROP_METAL = {ag:'ag', cs:'cs', na:'na', kn:'na', ca:'ca'};   // 박쥐(칼륨) · 거인(바륨)은 패널 금속이 아니라 골드만
+const DROP_METAL = {ag:'ag', cs:'cs', na:'na', kn:'na', ca:'ca', sp:'cs', sk:'cs', sh:'na'};
+/* 목록에 보이는 몬스터(꼬마 슬라임처럼 갈라져서만 나오는 건 뺀다) */
+const foeEntries = () => Object.entries(FOES).filter(([, f]) => !f.mini);
+const SHADOW_NEAR = 12, LAMP_LIGHT = 25;
+/* 양자 유령의 간섭무늬: 밝은 줄 k = −2…2, 위치 x = k·Δx (성 가운데가 0), 밝기 ρ ∝ cos²(무늬) × 한 슬릿 회절 봉우리 → 가운데가 제일 밝다 */
+const QG_DX = 7, QG_RHO = [.12, .62, 1, .62, .12], QG_SPREAD = 2.4, QG_SHOW = 1.6;
+const qgPick = r => { const t = QG_RHO.reduce((a, b) => a + b, 0); let x = r*t; for (let k = 0; k < 5; k++){ if ((x -= QG_RHO[k]) <= 0) return k - 2; } return 2; };   // 박쥐(칼륨) · 거인(바륨)은 패널 금속이 아니라 골드만
 const PANEL_K = 1280, PN_U = .55, PN_EG = 1.1;
 /* 금속판 패널 한 장 = 평행판 광전관. 충전 전압 U를 거슬러 반대쪽 판에 닿은 전자만 충전한다.
    전자: 운동 에너지 0 ~ Kmax(= E − W)에 고르게, 방향 cos θ 분포. 평행판에서는 판에 수직인 운동 에너지 K cos²θ ≥ eU여야 닿는다
@@ -257,12 +277,16 @@ const WAVE_THEMES = {
   bat:{name:'박쥐 떼', w:{bt:4}, count:1.3, from:4},
   knight:{name:'기사 행진', w:{kn:3}, from:5},
   golem:{name:'골렘 습격', w:{ca:3}, count:.6, from:6},
-  giant:{name:'거인 행진', w:{gt:12}, count:.45, from:10},   // 거인은 한 마리가 4.5마리 몫이라 마리 수를 줄인다
+  giant:{name:'거인 행진', w:{gt:12}, count:.45, from:10},
+  shadow:{name:'그림자 습격', w:{sh:4}, from:7},
+  split:{name:'분열 떼', w:{sp:4}, count:.8, from:8},
+  spirit:{name:'정령 무리', w:{ne:4}, from:9},
+  ghost:{name:'유령 행렬', w:{qg:4}, from:12},   // 거인은 한 마리가 4.5마리 몫이라 마리 수를 줄인다
 };
-const THEME_CYCLE = ['jelly', 'bat', 'knight', 'golem', 'giant', 'mix'];
+const THEME_CYCLE = ['jelly', 'bat', 'knight', 'golem', 'shadow', 'split', 'spirit', 'giant', 'ghost', 'mix'];
 function waveTheme(n){ if (n < 4) return 'mix'; const t = THEME_CYCLE[(n - 4) % THEME_CYCLE.length]; return n >= (WAVE_THEMES[t].from || 0) ? t : 'mix'; }
 /* 처음 나오는 밤 (지도 · 요약에 쓴다) */
-const FOE_FROM = {ag:1, cs:2, na:3, bt:4, kn:5, ca:6, gt:10};
+const FOE_FROM = {ag:1, cs:2, na:3, bt:4, kn:5, ca:6, sh:7, sp:8, ne:9, gt:10, qg:12};
 const waveSize = n => clamp(Math.round(waveB(n)/hpBase(n)*(WAVE_THEMES[waveTheme(n)].count || 1)) - eliteCount(n), 3, WAVE_CAP);
 const waveCount = waveSize;
 /* 한 마리 체력 배율(보상 계산용 어림값) = 총 체력 ÷ (마리 수 + 정예 몫). 정예 한 마리는 보통 ELITE_HP마리 몫 */
@@ -282,6 +306,10 @@ function waveList(n){
     if (n >= 6) w.push(['ca', .15 + .05*sq(n)]);
     if (n >= 4) w.push(['bt', .3 + .04*sq(n)]);
     if (n >= 10) w.push(['gt', .05 + .02*sq(n)]);
+    if (n >= 7) w.push(['sh', .25 + .03*sq(n)]);
+    if (n >= 8) w.push(['sp', .3 + .03*sq(n)]);
+    if (n >= 9) w.push(['ne', .2 + .03*sq(n)]);
+    if (n >= 12) w.push(['qg', .15 + .03*sq(n)]);
     for (const q of w) if (th.w[q[0]]) q[1] *= th.w[q[0]] + 1;   // 테마 몬스터가 더 자주
     const tot = w.reduce((t, [, x]) => t + x, 0); let r = Math.random()*tot, type = w[0][0];
     for (const [k, x] of w){ if ((r -= x) <= 0){ type = k; break; } }

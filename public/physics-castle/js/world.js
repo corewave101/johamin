@@ -181,9 +181,15 @@ function selectSocket(i){
 function foeMesh(type, armor, scale = 1){
   const f = FOES[type], mat = std(f.color, {emissive:f.color, emissiveIntensity:.15, roughness:.5});
   const g = new THREE.Group(), body = foeBody(type, armor, mat);
-  body.position.y = type === 'ca' ? .75 : type === 'na' ? .6 : type === 'bt' ? 1.4 : type === 'gt' ? .6 : .5; body.scale.setScalar(scale*(type === 'ca' ? 1.25 : 1)); g.add(body);
+  body.position.y = type === 'ca' ? .75 : type === 'na' ? .6 : type === 'bt' ? 1.4 : type === 'gt' ? .6 : type === 'ne' ? 1.0 : type === 'sh' ? .6 : .5; body.scale.setScalar(scale*(type === 'ca' ? 1.25 : 1)); g.add(body);
   g.userData.body = body.userData.body;
-  const bar = new THREE.Mesh(new THREE.PlaneGeometry(1.1, .12), new THREE.MeshBasicMaterial({color:0x5ad48e, fog:false})); bar.position.y = type === 'ca' ? 2.1 : type === 'gt' ? 3.2*scale : type === 'bt' ? 2.1 : 1.55; g.add(bar); g.userData.bar = bar;
+  if (f.quantum){ const sh = []; body.traverse(o => { if (o.material && !o.userData.eye){ o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = .1; o.material.depthWrite = false; sh.push(o.material); } }); g.userData.shade = sh;
+    // 땅 위 간섭무늬: 밝은 줄 5개(밝기 = ρ). 유령이 퍼져 있는 동안만 보인다
+    const fr = new THREE.Group();
+    QG_RHO.forEach((rho, i) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 4.2), new THREE.MeshBasicMaterial({color:0xb8f0ff, transparent:true, opacity:.2 + .6*rho, depthWrite:false, fog:false})); m.rotation.x = -Math.PI/2; m.position.set((i - 2)*QG_DX*M2W, .06, 0); fr.add(m); });
+    g.add(fr); g.userData.fringe = fr; }
+  if (f.dark){ const sh = []; body.traverse(o => { if (o.material && !o.userData.eye){ o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = .16; sh.push(o.material); } }); g.userData.shade = sh; }
+  const bar = new THREE.Mesh(new THREE.PlaneGeometry(1.1, .12), new THREE.MeshBasicMaterial({color:0x5ad48e, fog:false})); bar.position.y = type === 'ca' ? 2.1 : type === 'gt' ? 3.2*scale : type === 'bt' || type === 'ne' ? 2.1 : type === 'sh' ? 2.0 : type === 'sk' ? 1.0 : 1.55; g.add(bar); g.userData.bar = bar;
   return g;
 }
 function startWave(){
@@ -196,7 +202,7 @@ function startWave(){
   renderAll();
 }
 function spawnFoe(spec){
-  const f = FOES[spec.type], hp = Math.round(f.hp*(G.waveMul || hpMul(G.wave))*(spec.elite ? ELITE_HP : 1)), mesh = foeMesh(spec.type, spec.armor, spec.elite ? 1.45 : 1), x = -15 + Math.random()*30;
+  const f = FOES[spec.type], hp = Math.round(f.hp*(G.waveMul || hpMul(G.wave))*(spec.elite ? ELITE_HP : 1)), mesh = foeMesh(spec.type, spec.armor, spec.elite ? 1.45 : 1), x = f.quantum ? 0 : -15 + Math.random()*30;
   mesh.position.set(x, 0, dToZ(100)); wScene.add(mesh);
   if (spec.elite){ const l = label('정예', {size:18, color:'#1a0d04', bg:'rgba(255,209,102,.95)', h:.022, bold:true}); l.position.set(0, 3.1, 0); mesh.add(l); hint(`정예 ${josa(f.short, '이', '가')} 나타났어요 · 체력 ×${ELITE_HP} · 몸 ×1.45`); }
   G.enemies.push({type:spec.type, armor:spec.armor, mesh, x, d:100, hp, max:hp, hitT:0, elite:!!spec.elite});
@@ -211,9 +217,32 @@ const tA = V(), tB = V();
 const beamW = w => clamp(.04 + w*.004, .04, .5);
 const spreadW = w => Math.min(w/100, 2.5)*M2W;   // 빔 반지름(cm) → 월드 반지름
 function towerOrigin(so){ return tA.set(so.x, so.y + 1.05, so.floor === 4 ? -.95 : -1.45); }
+/* 그림자 도깨비: 램프 빛이 닿는 곳에서만 보인다 (자동 조준 · 쫄병이 못 본다) */
+const seen = e => (!FOES[e.type].dark || e.lit || e.d < SHADOW_NEAR) && (!FOES[e.type].quantum || e.qShow > 0);
+/* 양자 유령: 퍼져 있다가(QG_SPREAD초) 한 줄에서 관측되어 나타난다(QG_SHOW초) */
+function quantumStep(e, dt){
+  const u = e.mesh.userData;
+  if (e.qShow > 0){ e.qShow -= dt; if (e.qShow <= 0){ e.qWait = QG_SPREAD*(.7 + .6*Math.random()); e.x = 0; e.mesh.position.x = 0; } }
+  else { e.qWait = (e.qWait ?? QG_SPREAD) - dt; if (e.qWait <= 0){ const k = qgPick(Math.random()); e.qShow = QG_SHOW; e.x = k*QG_DX*M2W; e.mesh.position.x = e.x;
+    if (!G.toldGhost){ G.toldGhost = true; hint(`양자 유령: 두 문을 지나 간섭무늬 밝은 줄에서만 나타나요 · 줄 간격 Δx = λL/d = ${QG_DX} m · 가운데 줄이 제일 자주`); } } }
+  const show = e.qShow > 0;
+  for (const m of u.shade || []) m.opacity = show ? .9 : .1;
+  if (u.fringe){ u.fringe.visible = !show; u.fringe.position.x = -e.mesh.position.x; }
+}
+function lightShadows(){
+  const lamps = [];
+  for (const so of SOCKETS) if (so.tower && !isLaser(so.tower.design)) lamps.push([so.x, towerOrigin(so).z]);
+  if (G.weapon && !isLaser(G.weapon)) lamps.push([H().x, heroZ()]);
+  const R = LAMP_LIGHT*M2W;
+  for (const e of G.enemies){ if (!FOES[e.type].dark) continue;
+    const was = e.lit; e.lit = lamps.some(([x, z]) => Math.hypot(e.mesh.position.x - x, e.mesh.position.z - z) < R);
+    const v = seen(e), op = v ? 1 : .16; for (const m of e.mesh.userData.shade || []) m.opacity = op;
+    if (v && !was && !e.toldLit && !G.toldShadow){ G.toldShadow = true; hint('그림자 도깨비는 램프 빛(램프 탑 · 주인공 램프 25 m 안)이나 성벽 12 m 안에서만 보여요'); }
+  }
+}
 function pickNearest(ox, oz, list, cone, maxD, design){
   let best = null, bd = 1e9, good = null, gd = 1e9;
-  for (const e of list){
+  for (const e of list){ if (!seen(e)) continue;
     const dx = e.mesh.position.x - ox, dz = e.mesh.position.z - oz; if (cone && dz > 0) continue;
     if (cone && Math.atan2(Math.abs(dx), -dz) > rad(cone)) continue;
     const dist = Math.hypot(dx, dz)/M2W; if (dist > maxD) continue;
@@ -228,7 +257,7 @@ function pickNearest(ox, oz, list, cone, maxD, design){
 function pickTower(T, o, op){
   const [lo, hi] = rangeOf(T), eff = T.rng && T.rng.eff && G.research.range3;
   let best = null, bd = 1e9, good = null, gd = 1e9;
-  for (const e of G.enemies){
+  for (const e of G.enemies){ if (!seen(e)) continue;
     const dx = e.mesh.position.x - o.x, dz = e.mesh.position.z - o.z; if (dz > 0 || Math.atan2(Math.abs(dx), -dz) > rad(42)) continue;
     const dist = Math.hypot(dx, dz)/M2W; if (dist < lo || dist > hi) continue;
     if (dist < bd){ bd = dist; best = e; }
@@ -239,6 +268,7 @@ function pickTower(T, o, op){
   return best ? {e:best, dist:bd} : null;
 }
 function applyHit(design, e, dist, dt, polTheta, acc = 1, scale){
+  if (FOES[e.type].quantum && !(e.qShow > 0)) return {v:0, why:'퍼져 있음', w:1};
   const r = hitD(design, foeOf(e), dist, e.armor, polTheta, scale);
   if (r.v){ e.hp -= r.v*dt*acc; e.hitT = .1; bumpBest(r.v); }
   return r;
@@ -301,7 +331,7 @@ function updateWave(dt){
     }
     if (!chased){ e.d -= sp*dt; e.mesh.position.z = dToZ(e.d); }
     // 몬스터가 노려보는 쪽: 토벌 중엔 쫓는 상대, 아니면 성벽 위 주인공
-    { let lx, lz; if (chased && e.chase){ lx = e.chase.x; lz = e.chase.z; } else { lx = S && !S.auto ? S.x : H().x; lz = S && !S.auto ? S.z : heroZ(); }
+    if (!FOES[e.type].quantum){ let lx, lz; if (chased && e.chase){ lx = e.chase.x; lz = e.chase.z; } else { lx = S && !S.auto ? S.x : H().x; lz = S && !S.auto ? S.z : heroZ(); }
       const want = Math.atan2(lx - e.mesh.position.x, lz - e.mesh.position.z); let df = want - e.mesh.rotation.y; df = Math.atan2(Math.sin(df), Math.cos(df)); e.mesh.rotation.y += df*Math.min(1, dt*6); }
     { const fb = e.mesh.children[0]; if (fb && fb.userData.anim) fb.userData.anim(G.waveT + e.x); }
     e.mesh.position.y = slow < 1 ? -.25 : 0;
@@ -368,6 +398,8 @@ function updateWave(dt){
     } else heroBeam.visible = false;
   }
   // 정리
+  lightShadows();
+  for (const e of G.enemies) if (FOES[e.type].quantum) quantumStep(e, dt);
   const rm = rewardMul(G.wave);
   for (const e of G.enemies.slice()){
     if (e.hp <= 0){
@@ -375,6 +407,7 @@ function updateWave(dt){
       if (DROP_METAL[e.type] && Math.random() < .35){ const mt = DROP_METAL[e.type]; G.metals[mt] = (G.metals[mt] || 0) + 1; floatText(`+${METALS[mt].name} 조각`, V(e.mesh.position.x, 3.0, e.mesh.position.z)); }
       if (S){ const v = Math.round(rw*1.5), cr = new THREE.Mesh(new THREE.OctahedronGeometry(.3), new THREE.MeshStandardMaterial({color:0xffd166, emissive:0xffb020, emissiveIntensity:.8})); cr.position.set(e.mesh.position.x, .5, e.mesh.position.z); wScene.add(cr); S.drops.push({m:cr, v}); }
       else { G.gold += rw; G.waveGold += rw; floatText(`+${rw}G`, V(e.mesh.position.x, 2.2, e.mesh.position.z)); }
+      if (f.split){ for (const s of [-1, 1]){ spawnFoe({type:f.split}); const k = G.enemies[G.enemies.length - 1]; k.mesh.position.set(e.mesh.position.x + s*.7, 0, e.mesh.position.z - .3); k.x = k.mesh.position.x; k.d = Math.max(.5, zToD(k.mesh.position.z)); } G.total += 2; floatText('갈라졌어요!', V(e.mesh.position.x, 2.8, e.mesh.position.z), true); }
       killFoe(e, G.enemies);
     }
     else if (e.d <= 0){ G.wallHp -= FOES[e.type].wall; killFoe(e, G.enemies); hint(`${josa(FOES[e.type].name, '이', '가')} 성벽에 닿았어요 −${FOES[e.type].wall}`); if (G.wallHp <= 0) return gameOver(); }

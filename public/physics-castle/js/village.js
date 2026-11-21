@@ -101,7 +101,7 @@ function trainPanel(){
     sel = `<div class="sec"><div class="ed-head"><h3>${s.name}</h3><span>${roleTxt(s)}</span></div>
       <div class="bp-f">${gun.name} · ${formula(gun)}</div>
       <p class="muted">10 m에서 초당 데미지 (사격 ×${sc.toFixed(1)}, 조준 ${Math.round(acc*100)}% → 명중 ×${(.5 + .5*acc).toFixed(2)})</p>
-      <div class="vs">${Object.entries(FOES).map(([id, f]) => { const r = hitD(gun, f, 10, id === 'kn' ? 90 : null, null, sc); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v*(.5 + .5*acc)) : r.why === 'E < W' ? 'E&lt;W' : '0'}</b></div>`; }).join('')}</div>
+      <div class="vs">${foeEntries().map(([id, f]) => { const r = hitD(gun, f, 10, id === 'kn' ? 90 : null, null, sc); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v*(.5 + .5*acc)) : r.why === 'E < W' ? 'E&lt;W' : r.why === '흡수선 밖' ? '통과' : '0'}</b></div>`; }).join('')}</div>
       <h2>무기 쥐여 주기</h2>
       <div class="chips"><button class="chip ${!s.weapon ? 'on' : ''}" type="button" data-sweap="base">${SOLDIER_GUN.name} (기본)</button>${weaponGroups().map(g => `<button class="chip" type="button" data-sweap="${g.items[0].uid}">${g.d.name} ×${g.items.length}</button>`).join('')}</div>
       <p class="muted">무기는 대장간 제작부에서 '주인공 무기' 설계로 만들어요. 쥐여 주면 창고에서 빠지고, 바꾸면 원래 무기는 창고로 돌아가요.</p>

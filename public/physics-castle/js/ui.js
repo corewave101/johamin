@@ -1,7 +1,7 @@
 'use strict';
 /* ═════════ 패널 ═════════ */
 function vsHtml(d, dist){
-  return `<div class="vs">${Object.entries(FOES).map(([id, f]) => { const r = hitD(d, f, dist, id === 'kn' ? 90 : null); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v) : r.why === 'E < W' ? 'E&lt;W' : r.why === '편광 차단' ? '차단' : '0'}</b></div>`; }).join('')}</div>`;
+  return `<div class="vs">${foeEntries().map(([id, f]) => { const r = hitD(d, f, dist, id === 'kn' ? 90 : null); return `<div><small>${f.short}</small><b class="${r.v ? '' : 'zero'}">${r.v ? Math.round(r.v) : r.why === 'E < W' ? 'E&lt;W' : r.why === '흡수선 밖' ? '통과' : r.why === '편광 차단' ? '차단' : '0'}</b></div>`; }).join('')}</div>`;
 }
 const bandHtml = d => { const b = band(d); return b ? `가장 센 구간 <b>${b[0]}–${b[1]} m</b>` : '빛이 모이지 않음 · 가까울수록 셈'; };
 function recordsHtml(){

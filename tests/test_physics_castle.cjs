@@ -138,6 +138,17 @@ check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정�
     check(s3.v/s1.v > 2.5, `전류 제한인 슬라임은 광원 3개면 크게 늘어야 해요 (×${(s3.v/s1.v).toFixed(2)})`);
     check(Math.abs(f.srcPower(f.siegeDesign(led, 3)) - 3*f.srcPower(led)) < 1e-9 && Math.abs(f.drawOf(f.siegeDesign(led, 3)) - 3*f.drawOf(led)) < 1e-9, '대형 무기: 광출력 · 전기 N배');
   }
+  // 6.5 새 몬스터: 네온 정령은 준위 차(1.96 eV) 근처 빛만 흡수 · 양자 유령 줄 고르기는 밝기 ρ에 비례
+  { const ctx = {}; new Function('ctx', csrc.replace(/^'use strict';/, '') + '; newGame(); ctx.f = {hitD, FOES, PRESETS, qgPick, QG_RHO};')(ctx); const f = ctx.f;
+    const las = f.PRESETS.find(d => d.id === 'focus'), mk = m => Object.assign(JSON.parse(JSON.stringify(las)), {medium:m});
+    check(f.hitD(mk('hene'), f.FOES.ne, 30, null).v > 0, '헬륨-네온 633 nm(1.96 eV)는 정령에 흡수돼야 해요');
+    for (const m of ['ruby', 'green', 'argon', 'n2']) check(f.hitD(mk(m), f.FOES.ne, 30, null).why === '흡수선 밖', `${m}은 정령을 그냥 지나가야 해요`);
+    const bulb = f.PRESETS.find(d => d.id === 'bulbT'), hb = f.hitD(bulb, f.FOES.ne, 15, null);
+    check(hb.v > 0 && hb.abs > 0 && hb.abs < .2, `백열등은 흡수선에 걸친 조금만 흡수 (${(hb.abs*100).toFixed(1)}%)`);
+    const cnt = {}; for (let i = 0; i < 5000; i++){ const r = (i + .5)/5000, k = f.qgPick(r); cnt[k] = (cnt[k] || 0) + 1; }
+    const tot = f.QG_RHO.reduce((a, b) => a + b, 0); for (let k = -2; k <= 2; k++) check(Math.abs(cnt[k]/5000 - f.QG_RHO[k + 2]/tot) < .002, `유령 줄 ${k} 확률 = ρ 비율`);
+    check(f.FOES.sp.split === 'sk' && f.FOES.sk.mini && f.FOES.sh.dark && f.FOES.qg.quantum, '새 몬스터 특성');
+  }
   check(env.waveB(30)/env.waveB(10) > 5, '30밤은 10밤보다 훨씬 세야 해요(골드가 쌓여도 어렵게)');
   for (let n = 1; n <= 80; n++){ const c = env.waveSize(n); check(c >= 3 && c <= env.WAVE_CAP, `밤 ${n}의 마리 수 ${c}가 3~${env.WAVE_CAP} 밖이에요`); check(Math.abs((c + env.ELITE_HP*env.eliteCount(n))*env.hpMul(n) - env.waveB(n)) < 1e-6, `밤 ${n}: 마리 수 × 체력 ≠ 총 체력`); }
   // 탑 광전관: solveCircuit이 u = R·I(u)를 풀었는지
