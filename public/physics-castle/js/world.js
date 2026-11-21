@@ -180,8 +180,15 @@ function selectSocket(i){
 /* ═════════ 웨이브 ═════════ */
 function foeMesh(type, armor, scale = 1){
   const f = FOES[type], mat = std(f.color, {emissive:f.color, emissiveIntensity:.15, roughness:.5});
-  const g = new THREE.Group(), body = foeBody(type, armor, mat);
-  body.position.y = type === 'ca' ? .75 : type === 'na' ? .6 : type === 'bt' ? 1.4 : type === 'gt' ? .6 : type === 'ne' ? 1.0 : type === 'sh' ? .6 : .5; body.scale.setScalar(scale*(type === 'ca' ? 1.25 : 1)); g.add(body);
+  if (f.boss) scale *= f.scale;
+  const g = new THREE.Group(), body = foeBody(f.boss ? f.base : type, armor, mat);
+  if (f.boss){ // 왕관
+    const crown = new THREE.Group(), gold = new THREE.MeshStandardMaterial({color:0xffd166, emissive:0xffb020, emissiveIntensity:.6, metalness:.7, roughness:.3});
+    const ring = new THREE.Mesh(new THREE.CylinderGeometry(.22, .25, .14, 16, 1, true), gold); crown.add(ring);
+    for (let i = 0; i < 5; i++){ const sp = new THREE.Mesh(new THREE.ConeGeometry(.06, .2, 6), gold); const a = i/5*Math.PI*2; sp.position.set(Math.cos(a)*.22, .15, Math.sin(a)*.22); crown.add(sp); }
+    const top = {cs:1.05, kn:1.75, ca:1.55, sh:1.68, qg:1.1}[f.base] || 1.2; crown.position.y = top - (FOE_OFF[f.base] || .5); body.add(crown); }
+  const bt = f.boss ? f.base : type;
+  body.position.y = f.boss ? .5*scale : bt === 'ca' ? .75 : bt === 'na' ? .6 : bt === 'bt' ? 1.4 : bt === 'gt' ? .6 : bt === 'ne' ? 1.0 : bt === 'sh' ? .6 : .5; body.scale.setScalar(scale*(bt === 'ca' ? 1.25 : 1)); g.add(body);
   g.userData.body = body.userData.body;
   if (f.quantum){ const sh = []; body.traverse(o => { if (o.material && !o.userData.eye){ o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = .1; o.material.depthWrite = false; sh.push(o.material); } }); g.userData.shade = sh;
     // 땅 위 간섭무늬: 밝은 줄 5개(밝기 = ρ). 유령이 퍼져 있는 동안만 보인다
@@ -189,7 +196,7 @@ function foeMesh(type, armor, scale = 1){
     QG_RHO.forEach((rho, i) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 4.2), new THREE.MeshBasicMaterial({color:0xb8f0ff, transparent:true, opacity:.2 + .6*rho, depthWrite:false, fog:false})); m.rotation.x = -Math.PI/2; m.position.set((i - 2)*QG_DX*M2W, .06, 0); fr.add(m); });
     g.add(fr); g.userData.fringe = fr; }
   if (f.dark){ const sh = []; body.traverse(o => { if (o.material && !o.userData.eye){ o.material = o.material.clone(); o.material.transparent = true; o.material.opacity = .16; sh.push(o.material); } }); g.userData.shade = sh; }
-  const bar = new THREE.Mesh(new THREE.PlaneGeometry(1.1, .12), new THREE.MeshBasicMaterial({color:0x5ad48e, fog:false})); bar.position.y = type === 'ca' ? 2.1 : type === 'gt' ? 3.2*scale : type === 'bt' || type === 'ne' ? 2.1 : type === 'sh' ? 2.0 : type === 'sk' ? 1.0 : 1.55; g.add(bar); g.userData.bar = bar;
+  const bar = new THREE.Mesh(new THREE.PlaneGeometry(1.1, .12), new THREE.MeshBasicMaterial({color:0x5ad48e, fog:false})); bar.position.y = f.boss ? 1.9*scale + .4 : type === 'ca' ? 2.1 : type === 'gt' ? 3.2*scale : type === 'bt' || type === 'ne' ? 2.1 : type === 'sh' ? 2.0 : type === 'sk' ? 1.0 : 1.55; g.add(bar); g.userData.bar = bar;
   return g;
 }
 function startWave(){
@@ -198,14 +205,16 @@ function startWave(){
   if (G.settings.autoClose) G.winOpen = false;
   H().route = []; buildPreview(); setWallXray(true);
   heroBeam.material.color.set(beamColor(G.weapon));
-  hint(`밤 ${G.wave} · 적이 온다! 화면을 누르면 그 지점으로 쏴요`);
+  const fresh = Object.keys(FOE_FROM).filter(k => FOE_FROM[k] === G.wave);
+  hint(fresh.length ? `밤 ${G.wave} · 새 몬스터! ${fresh.map(k => FOE_TIP[k]).join(' / ')}` : `밤 ${G.wave} · 적이 온다! 화면을 누르면 그 지점으로 쏴요`);
   renderAll();
 }
 function spawnFoe(spec){
   const f = FOES[spec.type], hp = Math.round(f.hp*(G.waveMul || hpMul(G.wave))*(spec.elite ? ELITE_HP : 1)), mesh = foeMesh(spec.type, spec.armor, spec.elite ? 1.45 : 1), x = f.quantum ? 0 : -15 + Math.random()*30;
   mesh.position.set(x, 0, dToZ(100)); wScene.add(mesh);
+  if (f.boss){ const l = label(f.name, {size:22, color:'#1a0d04', bg:'rgba(255,140,80,.95)', h:.03, bold:true}); l.position.set(0, 1.9*f.scale + 1.1, 0); mesh.add(l); showBossBanner(f); }
   if (spec.elite){ const l = label('정예', {size:18, color:'#1a0d04', bg:'rgba(255,209,102,.95)', h:.022, bold:true}); l.position.set(0, 3.1, 0); mesh.add(l); hint(`정예 ${josa(f.short, '이', '가')} 나타났어요 · 체력 ×${ELITE_HP} · 몸 ×1.45`); }
-  G.enemies.push({type:spec.type, armor:spec.armor, mesh, x, d:100, hp, max:hp, hitT:0, elite:!!spec.elite});
+  G.enemies.push({type:spec.type, armor:spec.armor, mesh, x, d:100, hp, max:hp, hitT:0, elite:!!spec.elite, boss:!!f.boss, sum:0});
 }
 function killFoe(e, list){ wScene.remove(e.mesh); dispose(e.mesh); list.splice(list.indexOf(e), 1); }
 function floatText(text, pos, bad){
@@ -217,11 +226,37 @@ const tA = V(), tB = V();
 const beamW = w => clamp(.04 + w*.004, .04, .5);
 const spreadW = w => Math.min(w/100, 2.5)*M2W;   // 빔 반지름(cm) → 월드 반지름
 function towerOrigin(so){ return tA.set(so.x, so.y + 1.05, so.floor === 4 ? -.95 : -1.45); }
+/* ═════════ 보스 ═════════ */
+function bossStep(e, dt){
+  const f = FOES[e.type];
+  if (f.spin){ e.armor = ((e.armor || 0) + f.spin*dt) % 180; const sh = e.mesh.children[0] && e.mesh.children[0].userData.shield; if (sh) sh.rotation.z = rad(e.armor); }
+  const th = [.75, .5, .25][e.sum]; if (th != null && e.hp < e.max*th){ e.sum++;
+    const [t, n] = f.summon; for (let i = 0; i < n; i++){ spawnFoe({type:t, armor:t === 'kn' ? rnd([0, 90]) : null}); const k = G.enemies[G.enemies.length - 1]; k.mesh.position.set(e.mesh.position.x + (i - (n - 1)/2)*1.6, 0, e.mesh.position.z + .8); k.x = k.mesh.position.x; k.d = Math.max(1, zToD(k.mesh.position.z)); }
+    G.total += n; floatText(`졸개 ${n}마리!`, V(e.mesh.position.x, 3.4, e.mesh.position.z), true); }
+}
+function showBossBanner(f){
+  const b = $('banner'); if (!b) return;
+  const tip = {Bs:'체력이 줄 때마다 슬라임을 불러요', Bk:'편광 방패가 계속 돌아요 · 편광된 빛은 cos²으로 출렁이고, 편광 안 된 빛은 늘 절반', Bg:'일함수 3.2 eV · 자외선만 통해요', Bd:'램프 빛 안에서만 보여요', Bq:'간섭무늬 밝은 줄에서만 · 경로 측정기를 켜면 두 줄로'}[Object.keys(FOES).find(k => FOES[k] === f)] || '';
+  b.innerHTML = G.dgRun ? `<b>챕터 우두머리 · ${f.name}</b><span>${tip}<br>쓰러뜨리면 유물을 얻어요</span>` : `<b>보스 등장 · ${f.name}</b><span>${tip}<br>쓰러뜨리면 적의 소굴에 새 챕터가 열려요</span>`; b.hidden = false; clearTimeout(showBossBanner.t); showBossBanner.t = setTimeout(() => { b.hidden = true; }, 5200);
+}
+function bossDefeated(e, f){
+  if (G.dgRun) return;   // 던전 우두머리는 dungeon.js가 처리
+  const id = e.type, first = !G.bosses[id]; G.bosses[id] = true; G.bossDown = true;
+  floatText(`${f.name} 격파!`, V(e.mesh.position.x, 4, e.mesh.position.z));
+  if (first){ const b = $('banner'); if (b){ b.innerHTML = `<b>${f.name} 격파!</b><span>적의 소굴 ${f.ch}장 · ${DG_CH[f.ch].name}이 열렸어요<br>낮에 지도 북쪽으로 올라가요</span>`; b.hidden = false; clearTimeout(showBossBanner.t); showBossBanner.t = setTimeout(() => { b.hidden = true; }, 5200); } }
+}
 /* 그림자 도깨비: 램프 빛이 닿는 곳에서만 보인다 (자동 조준 · 쫄병이 못 본다) */
 const seen = e => (!FOES[e.type].dark || e.lit || e.d < SHADOW_NEAR) && (!FOES[e.type].quantum || e.qShow > 0);
 /* 양자 유령: 퍼져 있다가(QG_SPREAD초) 한 줄에서 관측되어 나타난다(QG_SHOW초) */
+const WHICH_X = 4, WHICH_DRAW = 1;
 function quantumStep(e, dt){
   const u = e.mesh.userData;
+  // 경로 측정기(상보성): 어느 문으로 왔는지 재면 간섭무늬가 사라지고, 두 문 자리(±4 m) 중 한 줄로만 늘 보이며 온다
+  if (G.which && G.energy > 0 && !G.dgRun){
+    if (e.slit == null) e.slit = Math.random() < .5 ? -1 : 1;
+    e.qShow = 1; e.x = e.slit*WHICH_X*M2W*(FOES[e.type].boss ? .5 : 1); e.mesh.position.x = e.x;
+    for (const m of u.shade || []) m.opacity = .9; if (u.fringe) u.fringe.visible = false; return;
+  }
   if (e.qShow > 0){ e.qShow -= dt; if (e.qShow <= 0){ e.qWait = QG_SPREAD*(.7 + .6*Math.random()); e.x = 0; e.mesh.position.x = 0; } }
   else { e.qWait = (e.qWait ?? QG_SPREAD) - dt; if (e.qWait <= 0){ const k = qgPick(Math.random()); e.qShow = QG_SHOW; e.x = k*QG_DX*M2W; e.mesh.position.x = e.x;
     if (!G.toldGhost){ G.toldGhost = true; hint(`양자 유령: 두 문을 지나 간섭무늬 밝은 줄에서만 나타나요 · 줄 간격 Δx = λL/d = ${QG_DX} m · 가운데 줄이 제일 자주`); } } }
@@ -232,7 +267,7 @@ function quantumStep(e, dt){
 function lightShadows(){
   const lamps = [];
   for (const so of SOCKETS) if (so.tower && !isLaser(so.tower.design)) lamps.push([so.x, towerOrigin(so).z]);
-  if (G.weapon && !isLaser(G.weapon)) lamps.push([H().x, heroZ()]);
+  if (G.weapon && !isLaser(G.weapon)) lamps.push(G.sortie && !G.sortie.auto ? [G.sortie.x, G.sortie.z] : [H().x, heroZ()]);
   const R = LAMP_LIGHT*M2W;
   for (const e of G.enemies){ if (!FOES[e.type].dark) continue;
     const was = e.lit; e.lit = lamps.some(([x, z]) => Math.hypot(e.mesh.position.x - x, e.mesh.position.z - z) < R);
@@ -397,9 +432,12 @@ function updateWave(dt){
       else heroBeam.visible = false;
     } else heroBeam.visible = false;
   }
+  // 보스: 방패 회전(편광 기사왕) · 체력 3/4 · 1/2 · 1/4마다 졸개 부르기
+  for (const e of G.enemies) if (e.boss) bossStep(e, dt);
   // 정리
   lightShadows();
   for (const e of G.enemies) if (FOES[e.type].quantum) quantumStep(e, dt);
+  if (G.which && G.enemies.some(e => FOES[e.type].quantum)) G.energy = Math.max(0, G.energy - WHICH_DRAW*dt);
   const rm = rewardMul(G.wave);
   for (const e of G.enemies.slice()){
     if (e.hp <= 0){
@@ -407,6 +445,7 @@ function updateWave(dt){
       if (DROP_METAL[e.type] && Math.random() < .35){ const mt = DROP_METAL[e.type]; G.metals[mt] = (G.metals[mt] || 0) + 1; floatText(`+${METALS[mt].name} 조각`, V(e.mesh.position.x, 3.0, e.mesh.position.z)); }
       if (S){ const v = Math.round(rw*1.5), cr = new THREE.Mesh(new THREE.OctahedronGeometry(.3), new THREE.MeshStandardMaterial({color:0xffd166, emissive:0xffb020, emissiveIntensity:.8})); cr.position.set(e.mesh.position.x, .5, e.mesh.position.z); wScene.add(cr); S.drops.push({m:cr, v}); }
       else { G.gold += rw; G.waveGold += rw; floatText(`+${rw}G`, V(e.mesh.position.x, 2.2, e.mesh.position.z)); }
+      if (f.boss) bossDefeated(e, f);
       if (f.split){ for (const s of [-1, 1]){ spawnFoe({type:f.split}); const k = G.enemies[G.enemies.length - 1]; k.mesh.position.set(e.mesh.position.x + s*.7, 0, e.mesh.position.z - .3); k.x = k.mesh.position.x; k.d = Math.max(.5, zToD(k.mesh.position.z)); } G.total += 2; floatText('갈라졌어요!', V(e.mesh.position.x, 2.8, e.mesh.position.z), true); }
       killFoe(e, G.enemies);
     }
@@ -479,7 +518,7 @@ function sortieMove(dt){
     if (d > .1){ const sp = Math.min(d, 3.2*dt); S.x += dx/d*sp; S.z += dz/d*sp; S.heading = Math.atan2(-dx, -dz); }
   } else {
     const [mx, mz] = moveInput(), ml = Math.hypot(mx, mz);
-    if (ml > .05){ const sp = 4.2*heroSpeed()*Math.min(1, ml); S.x = clamp(S.x + mx/ml*sp*dt, SOR_BOUNDS.x0, SOR_BOUNDS.x1); S.z = clamp(S.z + mz/ml*sp*dt, SOR_BOUNDS.z1, SOR_BOUNDS.z0); hero.rotation.y = Math.atan2(-mx, -mz); }
+    if (ml > .05){ const sp = 4.2*heroSpeed()*Math.min(1, ml); const Bd = S.bounds || SOR_BOUNDS; S.x = clamp(S.x + mx/ml*sp*dt, Bd.x0, Bd.x1); S.z = clamp(S.z + mz/ml*sp*dt, Bd.z1, Bd.z0); hero.rotation.y = Math.atan2(-mx, -mz); }
     hero.position.set(S.x, 0, S.z);
   }
   // 대형은 대장이 보는 방향을 따라 돌아가고, 쏠 적이 없으면 다들 대장과 같은 쪽을 봐요

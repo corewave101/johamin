@@ -1296,7 +1296,7 @@ window.renderMap = function(){
 /* 안개가 걷히는 순간: 성벽 드립 · 지도가 스스로 한 바퀴 보여 줌 → 끌어 보게 만든다 */
 const MAP_STORY = {
   1: () => ({t:'지도가 펼쳐졌어요!', l:built(3) ? ['3층을 올렸더니 성 밖이 다 보인다?', '— 원래 다 있었는데 아무도 안 봤답니다'] : ['며칠 버텼더니 성 밖이 궁금해졌다', '— 지도가 접혀 있었던 거래요'], s:'끌어서 둘러봐요 · 북쪽 안개 너머엔 적의 소굴이…'}),
-  2: () => ({t:'북쪽 안개가 걷혔어요!', l:['보스가 쓰러지자 적의 소굴이 드러났다', '— 위로 쭉 끌어 올려서 쳐들어가요'], s:'던전은 준비 중이에요'}),
+  2: () => ({t:'북쪽 안개가 걷혔어요!', l:['보스가 쓰러지자 적의 소굴이 드러났다', '— 위로 쭉 끌어 올려서 쳐들어가요'], s:'소굴을 누르면 들어가요 · 보스를 잡을 때마다 챕터가 열려요'}),
 };
 function mapBannerHide(){ const b = $('banner'); if (UI.mapBanner){ clearTimeout(UI.mapBanner); UI.mapBanner = null; b.hidden = true; b.classList.remove('story'); } }
 $('banner').addEventListener('click', () => { if (UI.mapBanner) mapBannerHide(); });

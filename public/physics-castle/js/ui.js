@@ -461,6 +461,7 @@ function applySave(o){
   for (const k of SAVE_FIELDS) if (o[k] !== undefined) G[k] = o[k];
   G.exams = G.exams || {};
   G.sites = Object.assign({siege:false, mount:false, lakeDay:0, mountDay:0, scoutDay:0}, G.sites || {});
+  G.bosses = G.bosses || {}; G.bossDown = !!G.bossDown; G.which = !!G.which; G.dg = Object.assign({day:0, ch:{}, relics:[]}, G.dg || {});
   nextUid = Math.max(nextUid, o.nextUid || 1);
   for (const s of G.soldiers){ s.down = false; if (s.role === 'tower') s.role = 'idle'; s.sock = null; }
   (o.towers || []).forEach((t, i) => { const so = SOCKETS[i]; if (!t || !so || !built(so.floor)) return; placeTower(so, {uid:t.uid, design:t.design}, t.auto); so.tower.autoOn = t.autoOn !== false; so.tower.rng = t.rng || null;

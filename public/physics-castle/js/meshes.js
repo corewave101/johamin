@@ -126,10 +126,10 @@ function foeBody(type, armor, mat){
     const sh = new THREE.Group(); sh.position.set(0, -off + .62, -.48); sh.rotation.z = rad(armor == null ? 90 : armor);
     sh.add(new THREE.Mesh(new THREE.CylinderGeometry(.42, .42, .06, 28), smooth(0x1b2438, {metalness:.4})).rotateX(Math.PI/2));
     for (let i = -3; i <= 3; i++){ const ln = new THREE.Mesh(new THREE.BoxGeometry(.03, .72*Math.sqrt(1 - (i/3.6)**2), .02), new THREE.MeshBasicMaterial({color:0xbfd4ff})); ln.position.set(i*.1, 0, -.04); sh.add(ln); }
-    g.add(sh);
+    g.add(sh); outer.userData.shield = sh;
     const by = body.position.y; anim = t => { body.position.y = by + .03*Math.abs(Math.sin(t*6)); };
   }
-  shade(outer); outer.userData.body = body; outer.userData.anim = anim; return outer;
+  shade(outer); outer.userData.body = body; outer.userData.anim = anim; if (!outer.userData.shield) outer.userData.shield = null; return outer;
 }
 
 /* ── 주인공 (꾸미기: 머리 모양 · 색 · 얼굴 사진) ── */

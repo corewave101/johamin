@@ -149,6 +149,38 @@ check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정�
     const tot = f.QG_RHO.reduce((a, b) => a + b, 0); for (let k = -2; k <= 2; k++) check(Math.abs(cnt[k]/5000 - f.QG_RHO[k + 2]/tot) < .002, `유령 줄 ${k} 확률 = ρ 비율`);
     check(f.FOES.sp.split === 'sk' && f.FOES.sk.mini && f.FOES.sh.dark && f.FOES.qg.quantum, '새 몬스터 특성');
   }
+  // 6.6 새 몬스터 5밤 간격 · 보스 밤과 안 겹침 · 보스는 10밤마다, 못 잡으면 다시
+  { const ctx = {}; new Function('ctx', csrc.replace(/^'use strict';/, '') + '; newGame(); ctx.f = {FOE_FROM, FOES, bossFor, waveList, BOSS_ORDER, get G(){ return G; }};')(ctx); const f = ctx.f;
+    const nights = [...new Set(Object.values(f.FOE_FROM))].sort((a, b) => a - b);
+    for (let k = 1; k < nights.length; k++) check(nights[k] - nights[k - 1] >= 5, `새 몬스터 간격 ${nights[k - 1]} → ${nights[k]}밤`);
+    for (const n of nights) check(n % 10 !== 0, `새 몬스터(${n}밤)가 보스 밤과 겹쳐요`);
+    check(f.bossFor(10) === 'Bs' && f.bossFor(11) === null, '10밤 보스 = 슬라임 왕');
+    check(f.bossFor(20) === 'Bs', '슬라임 왕을 못 잡으면 20밤에 또 와요');
+    f.G.bosses.Bs = true; check(f.bossFor(20) === 'Bk', '잡으면 다음 보스(편광 기사왕)');
+    for (const b of f.BOSS_ORDER) check(f.FOES[b].boss && f.FOES[b].mini && f.FOES[f.FOES[b].base], `보스 ${b}`);
+    const L = f.waveList(20); check(L[L.length - 1].type === 'Bk' && L[L.length - 1].boss, '보스는 웨이브 맨 뒤');
+  }
+  // 6.6 던전 퍼즐: 어떤 무작위 문제든 정답이 있고(슬라이더 눈금 위에서), 처음 값은 정답이 아니어야 해요
+  { const dsrc = fs.readFileSync(path.join(dir, 'js/dungeon.js'), 'utf8');
+    const blk = dsrc.slice(dsrc.indexOf('const PZ = {'), dsrc.indexOf('function pzHtml'));
+    const cos2 = d => Math.cos(d*Math.PI/180)**2, rad = d => d*Math.PI/180;
+    const PZ = new Function('cos2', 'rad', 'rnd', `${blk}; return PZ;`)(cos2, rad, a => a[0]);
+    const combos = {photo:[[[2.3, '칼륨'], .5], [[2.3, '칼륨'], .7], [[2.1, '세슘'], .5], [[2.1, '세슘'], .7]], pol3:[[0]], dg:[[40], [50], [60]], lens:[[15], [20]], slit:[[2.0], [2.4], [3.0]]};
+    for (const [type, list] of Object.entries(combos)) for (const c of list){
+      let k = 0; const P = PZ[type], p = new Function('cos2', 'rad', 'rnd', `${blk}; return PZ;`)(cos2, rad, a => c[k++ % c.length] ?? a[0])[type].make();
+      check(!P.solved(p), `${type} ${JSON.stringify(c)}: 처음부터 풀려 있으면 안 돼요`);
+      const sl = P.slider(p), ch = P.chips(p); let ok = false;
+      const chipVals = ch ? ch[0].map(x => x.v) : [null];
+      for (const cv of chipVals){ if (ch) p[ch[1]] = ch[1] === 'mid' ? !!cv : cv; for (let v = sl.min; v <= sl.max + 1e-9 && !ok; v = Math.round((v + sl.step)*1000)/1000){ p.v = v; if (P.solved(p)) ok = true; } if (ok) break; }
+      check(ok, `${type} ${JSON.stringify(c)}: 눈금 위에 정답이 있어야 해요`);
+    }
+    // 물리 값 확인: 데이비슨–저머 54 V 근처 · 니켈 50°, 렌즈 식, 이중 슬릿
+    check(Math.abs(1.226/Math.sqrt(54) - 0.1668) < .001, '물질파 λ = 1.226/√V nm (54 V → 0.167 nm)');
+    check(Math.abs(PZ.pol3.calc({v:45, mid:true}).I - .125) < 1e-9 && PZ.pol3.calc({v:0, mid:true}).I < 1e-12, '세 장 편광판: 45°에서 1/8, 0°에서 0');
+    const ln = PZ.lens.calc({f:20, L:90, v:30}); check(Math.abs(ln.b - 60) < 1e-9 && ln.pass, '렌즈: a 30 · f 20 → b 60 · 배율 2');
+    check(!PZ.lens.calc({f:20, L:90, v:60}).pass, '렌즈: a 60이면 또렷해도 축소라서 안 열려요');
+    check(Math.abs(PZ.slit.calc({v:.5}).dx - 2.4) < 1e-9, '이중 슬릿: Δx = λL/d = 600 nm × 2 m / 0.5 mm = 2.4 mm');
+  }
   check(env.waveB(30)/env.waveB(10) > 5, '30밤은 10밤보다 훨씬 세야 해요(골드가 쌓여도 어렵게)');
   for (let n = 1; n <= 80; n++){ const c = env.waveSize(n); check(c >= 3 && c <= env.WAVE_CAP, `밤 ${n}의 마리 수 ${c}가 3~${env.WAVE_CAP} 밖이에요`); check(Math.abs((c + env.ELITE_HP*env.eliteCount(n))*env.hpMul(n) - env.waveB(n)) < 1e-6, `밤 ${n}: 마리 수 × 체력 ≠ 총 체력`); }
   // 탑 광전관: solveCircuit이 u = R·I(u)를 풀었는지

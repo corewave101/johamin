@@ -516,9 +516,11 @@ const RESEARCH = [
   {id:'arf', name:'ArF 엑시머 193 nm', desc:'광자 에너지 6.4 eV. 골렘도 전압 포화로 녹여요', cost:800, req:'krf', unit:'22번 광전 효과', art:'excimer'},
   {id:'range', name:'교전 범위 모듈 Ⅰ', desc:'탑마다 쏘는 거리 [최소–최대 m]를 정해요. 범위 밖 적은 안 쏘고 전기도 안 써요. 연구 뒤 탑 카드에서 탑마다 달아요', cost:150, exam:'range', unit:'20번 렌즈', art:'range'},
   {id:'range2', name:'교전 범위 Ⅱ · 자동 구간', desc:'설계의 빛이 적의 몸(반지름 30 cm)에 절반 넘게 들어가는 구간에 범위를 자동으로 맞춰요', cost:250, req:'range', unit:'20번 렌즈', art:'range'},
+  {id:'which', name:'경로 측정기 · 상보성', desc:'양자 유령이 두 문 중 어디로 지나는지 재요. 재는 순간 간섭무늬가 사라지고 유령이 두 문 자리 두 줄로만 와요(늘 보여서 쏘기 쉬움). 켜 두는 동안 ⚡1/초', cost:300, unit:'24번 이중성', art:'which'},
   {id:'range3', name:'교전 범위 Ⅲ · 효율 문턱', desc:'그 탑이 낼 수 있는 최고 데미지의 35%보다 약하게 맞는 적은 건너뛰어요. 전기를 아껴요', cost:400, req:'range2', unit:'22번 전력', art:'range'},
 ];
 const BP_ART = {
+  which:'<svg viewBox="0 0 160 50"><path d="M20 5 v14 M20 25 v0 M20 31 v14" stroke-width="3"/><path d="M20 19 v6" stroke-dasharray="1 2"/><path d="M24 22 Q80 0 140 10 M24 28 Q80 50 140 40" stroke-dasharray="4 3"/><circle cx="140" cy="10" r="4"/><circle cx="140" cy="40" r="4"/><text x="60" y="30">👁</text></svg>',
   range:'<svg viewBox="0 0 160 50"><line x1="5" y1="25" x2="155" y2="25" stroke-dasharray="4 3"/><path d="M12 12 L12 38 M12 12 L70 25 L12 38"/><path d="M70 25 L150 10 M70 25 L150 40" stroke-dasharray="2 3"/><rect x="45" y="18" width="50" height="14" rx="3" stroke-width="2"/><text x="52" y="47">최소–최대</text></svg>',
   cavity:'<svg viewBox="0 0 160 50"><line x1="10" y1="25" x2="150" y2="25" stroke-dasharray="4 3"/><rect x="18" y="8" width="5" height="34"/><rect x="137" y="8" width="5" height="34"/><rect x="50" y="17" width="60" height="16" rx="3"/><path d="M50 10 h60 M50 40 h60" stroke-dasharray="2 3"/><text x="80" y="49">유도 방출</text></svg>',
   doublet:'<svg viewBox="0 0 160 50"><line x1="5" y1="25" x2="155" y2="25" stroke-dasharray="4 3"/><path d="M70 5 Q80 25 70 45 Q60 25 70 5"/><path d="M84 5 Q78 25 84 45 L92 45 Q86 25 92 5 Z"/><path d="M10 15 L70 15 L130 25 M10 35 L70 35 L130 25"/></svg>',

@@ -76,6 +76,12 @@ const FOES = {
   /* qg 양자 유령(24번 이중 슬릿): 소굴의 두 문(슬릿)을 지나 물질파로 퍼져 온다. 평소엔 간섭무늬(밝은 줄 5개)로만 보이고 맞지 않는다.
      몇 초마다 한 줄에서 '관측'되어 잠깐 나타나는데, 줄을 고르는 확률이 밝기(확률 밀도 ρ)에 비례한다. 줄 간격 Δx = λL/d */
   qg:{name:'양자 유령',     short:'유령', W:2.0, R:5,  color:'#b8f0ff', hp:60,  speed:4,   reward:20, wall:2, drop:0, rb:30, fly:true, quantum:true},
+  /* 6.6 보스(10밤마다): 그 집안의 왕. 몸이 크고 체력은 한 마리 몫(unit)만큼, 체력이 3/4 · 1/2 · 1/4이 될 때마다 졸개를 부른다 */
+  Bs:{name:'슬라임 왕',     short:'슬라임 왕', W:2.1, R:4,  color:'#4fd6a0', hp:720,  speed:2.0, reward:160, wall:10, drop:30, rb:110, unit:12, boss:true, mini:true, base:'cs', summon:['cs', 3], scale:2.3, ch:1},
+  Bk:{name:'편광 기사왕',   short:'기사왕',   W:2.3, R:6,  color:'#8fa8ff', hp:840,  speed:2.4, reward:220, wall:12, drop:30, rb:70,  unit:14, boss:true, mini:true, base:'kn', summon:['kn', 2], scale:1.9, ch:2, spin:40},
+  Bg:{name:'골렘왕',        short:'골렘왕',   W:3.2, R:12, color:'#d8d0bc', hp:960,  speed:1.8, reward:300, wall:14, drop:30, rb:90,  unit:16, boss:true, mini:true, base:'ca', summon:['ca', 2], scale:1.9, ch:3},
+  Bd:{name:'그림자 군주',   short:'군주',     W:2.3, R:8,  color:'#3a3355', hp:1080, speed:2.6, reward:380, wall:16, drop:30, rb:70,  unit:18, boss:true, mini:true, base:'sh', summon:['sh', 3], scale:1.9, ch:4, dark:true},
+  Bq:{name:'유령왕',        short:'유령왕',   W:2.0, R:6,  color:'#a8ecff', hp:1200, speed:2.4, reward:460, wall:18, drop:30, rb:60,  unit:20, boss:true, mini:true, base:'qg', summon:['qg', 2], scale:1.9, ch:5, quantum:true, fly:true},
   gt:{name:'바륨 거인',     short:'거인', W:2.5, R:40, color:'#d98c5f', hp:320, speed:2.2, reward:48, wall:5, drop:20, rb:90, unit:4.5},   /* unit: 웨이브 체력 예산에서 몇 마리 몫인지 */
 };
 const pumpOk = q => !q.research || G.research[q.research];
@@ -133,7 +139,9 @@ function solveCircuit(lines, R){
   const u = (lo + hi)/2;
   return {u, I:Iat(u), Itot, sat:R*Itot >= V0, V0};
 }
-const kindScale = d => (d.kind === 'weapon' ? weaponScale() : d.kind === 'soldier' ? soldierScale() : 1)*(G && G.sites && G.sites.scoutDay === G.wave && G.mode === 'wave' ? SCOUT_BUFF : 1);
+/* 소굴 유물(챕터 우두머리 보상): 하나에 모든 데미지 +6% */
+const relicMul = () => 1 + .06*((G && G.dg && G.dg.relics) || []).length;
+const kindScale = d => (d.kind === 'weapon' ? weaponScale() : d.kind === 'soldier' ? soldierScale() : 1)*(G && G.sites && G.sites.scoutDay === G.wave && G.mode === 'wave' ? SCOUT_BUFF : 1)*relicMul();
 /* 성벽에 올리는 것: 탑 · 대형 무기 */
 const isMount = d => d.kind === 'tower' || d.kind === 'siege';
 function hitD(d, foe, dist, armor, polTheta, scaleOverride){
@@ -211,7 +219,7 @@ const METALS = {
   ag:{name:'산화세슘', W:1.1, color:'#ff9ad5', need:25},
   ca:{name:'칼슘', W:2.9, color:'#c9c4b8', need:null},
 };
-const DROP_METAL = {ag:'ag', cs:'cs', na:'na', kn:'na', ca:'ca', sp:'cs', sk:'cs', sh:'na'};
+const DROP_METAL = {ag:'ag', cs:'cs', na:'na', kn:'na', ca:'ca', sp:'cs', sk:'cs', sh:'na', Bs:'cs', Bk:'na', Bg:'ca', Bd:'na'};
 /* 목록에 보이는 몬스터(꼬마 슬라임처럼 갈라져서만 나오는 건 뺀다) */
 const foeEntries = () => Object.entries(FOES).filter(([, f]) => !f.mini);
 const SHADOW_NEAR = 12, LAMP_LIGHT = 25;
@@ -270,28 +278,46 @@ const WAVE_C = [.7, .03, .001], WAVE_CAP = 40, ELITE_HP = 4;
 const waveB = n => { const m = n - 1; return 4*(1 + WAVE_C[0]*m + WAVE_C[1]*m*m + WAVE_C[2]*m*m*m); };
 const waveDB = n => { const m = n - 1; return 4*(WAVE_C[0] + 2*WAVE_C[1]*m + 3*WAVE_C[2]*m*m); };
 const hpBase = n => 1 + .1*(n - 1);   // 0.06이면 마리 수가 너무 빨리 불어나서(10밤 20마리) 새는 적이 성벽을 금방 깬다
-const eliteCount = n => n % 5 === 0 ? Math.min(3, 1 + Math.floor(n/20)) : 0;   // 5밤마다 1마리, 20밤부터 2 · 40밤부터 3
+const eliteCount = n => n % 5 === 0 && n % 10 !== 0 ? Math.min(3, 1 + Math.floor(n/20)) : 0;   // 5 · 15 · 25…밤에 1마리, 20밤부터 2 · 40밤부터 3 (10의 배수는 보스 밤)
+/* 6.6 새 몬스터는 5밤마다 하나씩 (사용자: "너무 붙어서 나온다") · 첫 밤엔 젤리 · 슬라임 둘, 그다음 6 · 11 · 16 …밤
+   10밤마다 보스가 오고, 보스는 그 전에 나온 몬스터 집안의 왕이다 → 잡으면 소굴 던전에 그 테마 챕터가 열린다 */
+const FOE_FROM = {ag:1, cs:1, na:6, kn:11, ca:16, bt:21, sh:26, sp:31, ne:36, qg:41, gt:46};   // 5밤 간격 · 보스 밤(10의 배수)과 겹치지 않게 6 · 11 · 16 …
+const FOE_TIP = {
+  ag:'젤리 · 일함수가 아주 작아(1.1 eV) 빨간빛 · 적외선도 통해요', cs:'슬라임 · 세슘(2.1 eV)', na:'고블린 · 나트륨(2.3 eV) · 몽둥이로 성벽을 쳐요',
+  kn:'편광 기사 · 방패가 편광판이라 투과축과 수직인 빛은 막혀요', ca:'칼슘 골렘 · 일함수가 커서(2.9 eV) 보라 · 자외선만 통해요', bt:'칼륨 박쥐 · 작고 빨라요 · 빛을 작게 모아야 다 맞아요',
+  sh:'그림자 도깨비 · 램프 빛(25 m) 안에서만 보여요 · 레이저는 주변을 못 비춰요', sp:'분열 슬라임 · 쓰러지면 꼬마 둘로 갈라져요', ne:'네온 정령 · 1.96 eV 근처 광자만 흡수 · 헬륨-네온 · 빨강 화소',
+  qg:'양자 유령 · 간섭무늬 밝은 줄에서만 나타나요 · 경로 측정기를 켜면 두 줄로', gt:'바륨 거인 · 저항이 커서 전압이 금방 막혀요 · 진동수 높은 빛'};
 const WAVE_THEMES = {
   mix:{name:'섞여서', w:{}},
   jelly:{name:'젤리 떼', w:{ag:3, cs:2}, count:1.25},
-  bat:{name:'박쥐 떼', w:{bt:4}, count:1.3, from:4},
-  knight:{name:'기사 행진', w:{kn:3}, from:5},
-  golem:{name:'골렘 습격', w:{ca:3}, count:.6, from:6},
-  giant:{name:'거인 행진', w:{gt:12}, count:.45, from:10},
-  shadow:{name:'그림자 습격', w:{sh:4}, from:7},
-  split:{name:'분열 떼', w:{sp:4}, count:.8, from:8},
-  spirit:{name:'정령 무리', w:{ne:4}, from:9},
-  ghost:{name:'유령 행렬', w:{qg:4}, from:12},   // 거인은 한 마리가 4.5마리 몫이라 마리 수를 줄인다
+  bat:{name:'박쥐 떼', w:{bt:4}, count:1.3, main:'bt'},
+  knight:{name:'기사 행진', w:{kn:3}, main:'kn'},
+  golem:{name:'골렘 습격', w:{ca:3}, count:.6, main:'ca'},
+  giant:{name:'거인 행진', w:{gt:12}, count:.45, main:'gt'},   // 거인은 한 마리가 4.5마리 몫이라 마리 수를 줄인다
+  shadow:{name:'그림자 습격', w:{sh:4}, main:'sh'},
+  split:{name:'분열 떼', w:{sp:4}, count:.8, main:'sp'},
+  spirit:{name:'정령 무리', w:{ne:4}, main:'ne'},
+  ghost:{name:'유령 행렬', w:{qg:4}, main:'qg'},
 };
 const THEME_CYCLE = ['jelly', 'bat', 'knight', 'golem', 'shadow', 'split', 'spirit', 'giant', 'ghost', 'mix'];
-function waveTheme(n){ if (n < 4) return 'mix'; const t = THEME_CYCLE[(n - 4) % THEME_CYCLE.length]; return n >= (WAVE_THEMES[t].from || 0) ? t : 'mix'; }
-/* 처음 나오는 밤 (지도 · 요약에 쓴다) */
-const FOE_FROM = {ag:1, cs:2, na:3, bt:4, kn:5, ca:6, sh:7, sp:8, ne:9, gt:10, qg:12};
+/* 테마는 그 몬스터가 나온 뒤에만. 새 몬스터가 처음 나오는 밤과 보스 밤은 섞여서 */
+function waveTheme(n){ if (n < 4 || n % 10 === 0 || Object.values(FOE_FROM).includes(n)) return 'mix'; const t = THEME_CYCLE[(n - 4) % THEME_CYCLE.length], m = WAVE_THEMES[t].main; return !m || n > FOE_FROM[m] ? t : 'mix'; }
+/* 몬스터 가중치(나온 뒤부터) */
+const WAVE_W = {ag:n => Math.max(.15, 1 - .25*sq(n)), cs:() => .9, na:n => .6 + .05*sq(n), kn:n => .3 + .05*sq(n), ca:n => .15 + .05*sq(n), bt:n => .3 + .04*sq(n),
+  sh:n => .25 + .03*sq(n), sp:n => .3 + .03*sq(n), ne:n => .2 + .03*sq(n), qg:n => .15 + .03*sq(n), gt:n => .05 + .02*sq(n)};
+/* ── 보스: 10밤마다. 아직 못 잡은 보스 중 첫째가 온다(잡을 때까지 10밤마다 다시). 다 잡으면 차례로 돈다 ── */
+const BOSS_ORDER = ['Bs', 'Bk', 'Bg', 'Bd', 'Bq'];
+function bossFor(n){
+  if (n % 10 !== 0) return null;
+  const ok = BOSS_ORDER.filter(b => n > FOE_FROM[FOES[b].base]);
+  const left = ok.filter(b => !((G && G.bosses) || {})[b]);
+  return left[0] || ok[(n/10 - 1) % ok.length] || null;
+}
 const waveSize = n => clamp(Math.round(waveB(n)/hpBase(n)*(WAVE_THEMES[waveTheme(n)].count || 1)) - eliteCount(n), 3, WAVE_CAP);
 const waveCount = waveSize;
 /* 한 마리 체력 배율(보상 계산용 어림값) = 총 체력 ÷ (마리 수 + 정예 몫). 정예 한 마리는 보통 ELITE_HP마리 몫 */
 const hpMul = n => waveB(n)/(waveSize(n) + ELITE_HP*eliteCount(n));
-/* 실제 밤의 체력 배율: 뽑힌 몬스터들의 몫(unit · 정예 ×ELITE_HP)을 다 더해서 총 체력이 꼭 B(n)이 되게 */
+/* 실제 밤의 체력 배율: 뽑힌 몬스터들의 몫(unit · 정예 ×ELITE_HP · 보스는 자기 unit)을 다 더해서 총 체력이 꼭 B(n)이 되게 */
 const unitOf = q => (FOES[q.type].unit || 1)*(q.elite ? ELITE_HP : 1);
 const waveHpMul = (list, n) => waveB(n)/Math.max(1e-9, list.reduce((s, q) => s + unitOf(q), 0));
 const spdMul = n => 1 + .04*sq(n);
@@ -299,32 +325,24 @@ const rewardMul = n => Math.pow(hpMul(n), .9);
 function waveList(n){
   const count = waveSize(n), th = WAVE_THEMES[waveTheme(n)], out = [];
   for (let i = 0; i < count; i++){
-    const w = [['ag', Math.max(.15, 1 - .25*sq(n))]];
-    if (n >= 2) w.push(['cs', .9]);
-    if (n >= 3) w.push(['na', .6 + .05*sq(n)]);
-    if (n >= 5) w.push(['kn', .3 + .05*sq(n)]);
-    if (n >= 6) w.push(['ca', .15 + .05*sq(n)]);
-    if (n >= 4) w.push(['bt', .3 + .04*sq(n)]);
-    if (n >= 10) w.push(['gt', .05 + .02*sq(n)]);
-    if (n >= 7) w.push(['sh', .25 + .03*sq(n)]);
-    if (n >= 8) w.push(['sp', .3 + .03*sq(n)]);
-    if (n >= 9) w.push(['ne', .2 + .03*sq(n)]);
-    if (n >= 12) w.push(['qg', .15 + .03*sq(n)]);
+    const w = Object.keys(WAVE_W).filter(k => n >= FOE_FROM[k]).map(k => [k, WAVE_W[k](n)]);
     for (const q of w) if (th.w[q[0]]) q[1] *= th.w[q[0]] + 1;   // 테마 몬스터가 더 자주
     const tot = w.reduce((t, [, x]) => t + x, 0); let r = Math.random()*tot, type = w[0][0];
     for (const [k, x] of w){ if ((r -= x) <= 0){ type = k; break; } }
-    const armor = type === 'kn' ? (n < 8 ? 90 : rnd([0, 45, 90, 90, 135])) : null;
+    const armor = type === 'kn' ? (n < FOE_FROM.kn + 5 ? 90 : rnd([0, 45, 90, 90, 135])) : null;
     out.push({type, armor});
   }
   // 정예: 그 밤의 가장 센 종류로, 웨이브 뒤쪽에 섞는다
-  const strong = n >= 6 ? 'ca' : n >= 5 ? 'kn' : n >= 3 ? 'na' : 'cs';
+  const strong = n >= FOE_FROM.ca ? 'ca' : n >= FOE_FROM.kn ? 'kn' : n >= FOE_FROM.na ? 'na' : 'cs';
   for (let i = 0; i < eliteCount(n); i++) out.splice(Math.round(out.length*(.55 + .4*Math.random())), 0, {type:strong, armor:strong === 'kn' ? 90 : null, elite:true});
+  // 보스: 맨 뒤에
+  const B = bossFor(n); if (B) out.push({type:B, armor:FOES[B].base === 'kn' ? 0 : null, boss:true});
   return out;
 }
 function waveSummary(n){
   const have = Object.keys(FOE_FROM).filter(k => n >= FOE_FROM[k]).map(k => FOES[k].short);
-  const th = waveTheme(n), ec = eliteCount(n);
-  return `약 ${waveSize(n)}마리${th !== 'mix' ? ` · ${WAVE_THEMES[th].name}` : ''}${ec ? ` · 정예 ${ec}` : ''} · ${have.join(' · ')}${n >= 8 ? ' · 기사 갑옷 각도 섞임' : ''}`;
+  const th = waveTheme(n), ec = eliteCount(n), B = bossFor(n), fresh = Object.keys(FOE_FROM).filter(k => FOE_FROM[k] === n).map(k => FOES[k].short);
+  return `약 ${waveSize(n)}마리${B ? ` · 보스 ${FOES[B].name}` : ''}${fresh.length ? ` · 새 몬스터 ${fresh.join(' · ')}` : ''}${th !== 'mix' ? ` · ${WAVE_THEMES[th].name}` : ''}${ec ? ` · 정예 ${ec}` : ''} · ${have.join(' · ')}${n >= FOE_FROM.kn + 5 ? ' · 기사 갑옷 각도 섞임' : ''}`;
 }
 
 /* ═════════ 교전 범위 모듈 (6.4): 연구 → 탑마다 구매. Ⅰ 수동 [최소–최대 m] · Ⅱ 설계 반값 폭 구간 자동 · Ⅲ 효율 문턱 ═════════ */
@@ -364,6 +382,7 @@ function newGame(){
     autoSortie:'off', tSel:null,
     panelMetal:'na', metals:{na:0, cs:0, ag:0, ca:0}, lab:{recs:[]}, chargeU:U_DEFAULT,
     sites:{siege:false, mount:false, lakeDay:0, mountDay:0, scoutDay:0},
+    bosses:{}, bossDown:false, which:false, dg:{day:0, ch:{}, relics:[]},
     stick:{x:0, y:0}, keys:{}, settings:loadSettings(), best:loadBest(), report:null,
   };
 }
@@ -371,7 +390,7 @@ const bumpBest = v => { if (v > G.best.dps){ G.best.dps = v; bestDirty = true; }
 
 /* ═════════ 자동 저장 (낮 상태만 저장 · 밤 도중에 꺼지면 그날 낮으로) ═════════ */
 const SAVE_KEY = 'johamin-castle-save-v1';
-const SAVE_FIELDS = ['wave', 'gold', 'wallHp', 'designs', 'weapon', 'nextDesign', 'inventory', 'craft', 'soldiers', 'nextSoldier', 'energy', 'research', 'up', 'floors', 'laserExam', 'exams', 'learn', 'ptype', 'solved', 'autoSortie', 'panelMetal', 'metals', 'lab', 'chargeU', 'look', 'sites'];
+const SAVE_FIELDS = ['wave', 'gold', 'wallHp', 'designs', 'weapon', 'nextDesign', 'inventory', 'craft', 'soldiers', 'nextSoldier', 'energy', 'research', 'up', 'floors', 'laserExam', 'exams', 'learn', 'ptype', 'solved', 'autoSortie', 'panelMetal', 'metals', 'lab', 'chargeU', 'look', 'sites', 'bosses', 'bossDown', 'which', 'dg'];
 function snapshot(){
   const o = {v:6, at:Date.now(), nextUid};
   for (const k of SAVE_FIELDS) o[k] = G[k];
