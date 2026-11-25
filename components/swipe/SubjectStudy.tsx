@@ -5,6 +5,7 @@ import ObservationLab from './ObservationLab';
 import OpticsLab from './OpticsLab';
 import PolarizationLab from './PolarizationLab';
 import StructureLab from './StructureLab';
+import OrbitalLab from './OrbitalLab';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { SubjectDeck } from '../../data/swipe-subjects';
 import { labsOf, type LabKind } from '../../lib/labs';
@@ -53,6 +54,9 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   const optics = labs.includes('optics'), polarization = labs.includes('polarization'), castle = labs.includes('castle');
   // 주민지T 구조식 실습(4.4.0~): lab: 'structure'.
   const structure = labs.includes('structure');
+  // 주민지T 오비탈 실습(6.5.0~): lab: 'orbital'. 3D로 돌려 보기와 문제를 따로 고를 수 있다.
+  const orbital = labs.includes('orbital');
+  const [orbitalStart, setOrbitalStart] = useState<'menu' | 'quiz'>('menu');
   // 박상영T 수행평가 대비(5.0.0~): lab: 'dna' — 구강상피세포 DNA 추출 · NanoDrop 실험 장면.
   const dna = labs.includes('dna');
   const [practice, setPractice] = useState<LabKind | null>(null);
@@ -83,7 +87,7 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
   if (mode === 'missed') return <SwipeGame cards={retryCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 오답 다시`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
   if (mode === 'choice') return <SwipeGame cards={choiceCards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · 객관식`} onBack={() => setMode(gameBack)} backLabel={gameBackLabel} figurePanel={figurePanel} />;
   if (mode === 'word-game') return <SwipeGame cards={wordList.cards} deckId={deck.id} deckName={`${deck.fullName ?? deck.name} · ${wordList.name}`} onBack={() => setMode('words')} backLabel={gameBackLabel} />;
-  if (mode === 'practice') return practice === 'dna' ? <DnaLab onBack={() => setMode('menu')} /> : practice === 'polarization' ? <PolarizationLab onBack={() => setMode('menu')} /> : practice === 'optics' ? <OpticsLab onBack={() => setMode('menu')} /> : structure ? <StructureLab onBack={() => setMode('menu')} /> : deck.id === 'chemistry' ? <ChemistryLab onBack={() => setMode('menu')} /> : <ObservationLab onBack={() => setMode('menu')} />;
+  if (mode === 'practice') return practice === 'orbital' ? <OrbitalLab start={orbitalStart} onBack={() => setMode('menu')} /> : practice === 'dna' ? <DnaLab onBack={() => setMode('menu')} /> : practice === 'polarization' ? <PolarizationLab onBack={() => setMode('menu')} /> : practice === 'optics' ? <OpticsLab onBack={() => setMode('menu')} /> : structure ? <StructureLab onBack={() => setMode('menu')} /> : deck.id === 'chemistry' ? <ChemistryLab onBack={() => setMode('menu')} /> : <ObservationLab onBack={() => setMode('menu')} />;
   const name = deck.fullName ?? deck.name;
   // 카드 패: the subject menu and the unit menu are hands of cards.
   if (mode === 'menu' && !pending) {
@@ -95,7 +99,9 @@ function GeneralStudy({ deck, onBack, figurePanel }: { deck: SubjectDeck; onBack
       ...(castle ? [{ id: 'practice-castle', kicker: '물리 디펜스 게임', title: '피직스 캐슬', note: '렌즈 · 편광 · 광전 효과 · 레이저', onPlay: () => { window.location.href = 'physics-castle/'; } }] : []),
       ...(polarization ? [{ id: 'practice-polarization', kicker: '편광 가상실험실', title: '편광판 돌려 보기', note: '말뤼스 법칙 · LCD · 광자 정보', onPlay: () => { setPractice('polarization'); setMode('practice'); } }] : []),
       ...(optics ? [{ id: 'practice', kicker: '빛과 렌즈 실습', title: '광선 작도하기', note: '렌즈 · 거울 · 스크린 상맺힘', onPlay: () => { setPractice('optics'); setMode('practice'); } }] : []),
-      ...(structure ? [{ id: 'practice', kicker: '구조식 실습', title: '구조식 ↔ 이름', note: '이름 맞히기 · 점 이어 그리기', onPlay: () => setMode('practice') }] : []),
+      ...(structure ? [{ id: 'practice', kicker: '구조식 실습', title: '구조식 ↔ 이름', note: '이름 맞히기 · 점 이어 그리기', onPlay: () => { setPractice('structure'); setMode('practice'); } }] : []),
+      ...(orbital ? [{ id: 'practice-orbital', kicker: '오비탈 실습', title: '3D로 돌려 보기', note: '혼성 · σ/π와 회전 · 고리 스트레인', onPlay: () => { setOrbitalStart('menu'); setPractice('orbital'); setMode('practice'); } },
+        { id: 'practice-orbital-quiz', kicker: '오비탈 문제', title: '돌려 보고 맞히기', note: '혼성 · σπ 개수 · 시스-트랜스 · 고리', onPlay: () => { setOrbitalStart('quiz'); setPractice('orbital'); setMode('practice'); } }] : []),
       ...(deck.id === 'chemistry' ? [{ id: 'practice', kicker: '화학 실험', title: '직접 연습하기', note: '적정 곡선 · 완충 · 5% 규칙', onPlay: () => setMode('practice') }] : []),
       ...(deck.id === 'astronomy-hwang' ? [{ id: 'practice', kicker: '관측 실습', title: '직접 연습하기', note: '정렬 · 천구 좌표 · 기록', onPlay: () => setMode('practice') }] : []),
       { id: 'concept', kicker: '개념', title: '개념 정리', note: `${lessons.length}단원`, disabled: !lessons.length, onPlay: () => setMode('concept') },

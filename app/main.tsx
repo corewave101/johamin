@@ -4,6 +4,7 @@ import '../components/swipe/polarization.css';
 import '../components/swipe/settings.css';
 import '../components/swipe/dna-lab.css';
 import '../components/swipe/structure.css';
+import '../components/swipe/orbital.css';
 import '../components/swipe/elice.css';
 import '../components/swipe/lotte.css';
 import '../components/swipe/lotte-theme.css';

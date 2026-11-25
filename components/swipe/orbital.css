@@ -1,0 +1,71 @@
+/* 주민지T 오비탈 실습 (OrbitalLab · OrbitalScene). 3D 판은 어느 가호에서도 읽히게 밝은 종이 위에, 강조는 가호 색.
+   패드 가로(901px~): 왼쪽 3D · 오른쪽 설명 두 칸. 그보다 좁으면 위아래. */
+.orbital-app .biology-study { width: min(1200px, calc(100% - 32px)); }
+.orbital-menu-extra { display: grid; justify-items: center; gap: 10px; }
+.orbital-quiz-link { padding: 9px 18px; font-size: 15px; font-weight: 800; }
+
+.orbital-panel { display: grid; gap: 12px; }
+.orbital-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; }
+.orbital-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.orbital-chips .glass-button { padding: 6px 12px; font-size: 13.5px; font-weight: 700; }
+.orbital-panel .glass-button[aria-pressed="true"] { background: var(--theme-base); color: var(--theme-ink); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .7); }
+.orbital-panel .glass-button.is-primary { background: var(--theme-base); color: var(--theme-ink); font-weight: 800; }
+
+.orbital-body { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, 1fr); gap: 14px; align-items: start; }
+.orbital-scene { position: relative; height: clamp(340px, 64vh, 660px); border-radius: 18px; overflow: hidden;
+  background: radial-gradient(120% 90% at 30% 20%, #ffffff 0%, #f7f8fb 55%, color-mix(in srgb, var(--theme-soft) 35%, #eef1f6) 100%);
+  border: 1px solid #d7deea; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9); }
+.orbital-canvas, .orbital-labels { position: absolute; inset: 0; }
+.orbital-canvas canvas { display: block; width: 100%; height: 100%; cursor: grab; outline: none; }
+.orbital-canvas canvas:active { cursor: grabbing; }
+.orbital-labels { pointer-events: none; overflow: hidden; }
+.orbital-label { position: absolute; left: 0; top: 0; padding: 2px 7px; border-radius: 8px; white-space: nowrap; font: 800 13px/1.3 Pretendard, "Noto Sans KR", system-ui, sans-serif;
+  background: rgba(255, 255, 255, .88); color: #0f766e; box-shadow: 0 2px 6px rgba(15, 23, 42, .12); }
+.orbital-label.is-flag { color: #e11d48; }
+.orbital-status { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; padding: 24px; text-align: center; font-size: 14.5px; line-height: 1.6; color: #475467; word-break: keep-all; }
+.orbital-status.is-error { color: #b42318; }
+
+.orbital-info { display: grid; gap: 10px; align-content: start; color: var(--ink); }
+.orbital-info h2 { margin: 0; font-size: 20px; color: var(--navy); }
+.orbital-info h2 small { margin-left: 6px; font-size: 14px; font-weight: 700; color: var(--ink-soft); }
+.orbital-info ul { margin: 0; padding-left: 1.15em; line-height: 1.7; font-size: 14.5px; word-break: keep-all; }
+.orbital-big { margin: 0; font-size: 17px; font-weight: 700; word-break: keep-all; }
+.orbital-big b { color: var(--theme-deep, var(--navy)); }
+.orbital-big.is-broken b, .orbital-big.is-broken { color: #b42318; }
+
+.orbital-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--ink-soft); }
+.orbital-legend li { display: flex; align-items: center; gap: 6px; }
+.orbital-legend .swatch { width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12); }
+.swatch.is-hybrid { background: #f59e0b; } .swatch.is-p { background: #8b5cf6; } .swatch.is-h1s { background: #2dd4bf; }
+.swatch.is-sigma { background: #facc15; } .swatch.is-pi { background: #7c3aed; } .swatch.is-flag { background: #e11d48; }
+
+.orbital-slider { display: grid; gap: 6px; font-size: 14.5px; font-weight: 700; }
+.orbital-slider b { color: var(--theme-deep, var(--navy)); font-size: 17px; }
+.orbital-slider input { width: 100%; accent-color: var(--theme-base); height: 28px; }
+.orbital-meter { position: relative; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 10px 12px 16px; border-radius: 14px; background: rgba(255, 255, 255, .72); font-size: 14px; overflow: hidden; }
+.orbital-meter b { font-size: 18px; color: #6d28d9; }
+.orbital-meter i { position: absolute; left: 0; bottom: 0; height: 6px; background: linear-gradient(90deg, #c4b5fd, #7c3aed); border-radius: 0 6px 6px 0; transition: width .15s; }
+
+/* 문제 */
+.orbital-kind { margin: 0; padding: 4px 12px; border-radius: 999px; background: var(--theme-soft); color: var(--theme-ink); font-size: 13.5px; font-weight: 800; }
+.orbital-body.is-quiz .orbital-scene { height: clamp(320px, 60vh, 600px); }
+.orbital-quiz { display: grid; gap: 10px; align-content: start; }
+.orbital-ask { padding: 16px 16px 12px; border-radius: 22px; background: #fffdf8; border: 1px solid rgba(255, 255, 255, .9);
+  box-shadow: 0 18px 40px -18px rgba(28, 18, 8, .55), 0 0 0 3px color-mix(in srgb, var(--theme-base) 45%, transparent);
+  touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; transition: transform .12s; }
+.orbital-ask p { margin: 0 0 6px; font-size: 17px; font-weight: 800; line-height: 1.5; color: var(--navy); word-break: keep-all; }
+.orbital-ask small { font-size: 12.5px; color: var(--ink-soft); }
+.orbital-choices { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "up up" "left right" "down down"; gap: 8px; }
+.orbital-choices .structure-choice { min-height: 50px; font-size: 15px; }
+
+@media (max-width: 900px) {
+  .orbital-body, .orbital-body.is-quiz { grid-template-columns: minmax(0, 1fr); }
+  .orbital-scene { height: clamp(300px, 52vh, 520px); }
+  .orbital-body.is-quiz .orbital-scene { height: clamp(280px, 46vh, 460px); }
+}
+@media (max-width: 700px) {
+  .orbital-app .biology-study { width: 100%; }
+  .orbital-chips .glass-button { padding: 6px 10px; font-size: 13px; }
+  .orbital-ask p { font-size: 16px; }
+  .orbital-choices .structure-choice { min-height: 46px; font-size: 14px; }
+}

@@ -138,7 +138,8 @@ for (const hard of [false, true]) for (let i = 0; i < 150; i++) {
 // 화면 연결: 화학(주민지T · 기말) 덱 학습 메뉴 맨 앞 '구조식 실습'.
 const { finalMenu } = require('../data/final-subjects.ts');
 const chem = finalMenu.children.find(n => n.id === 'science').children.find(n => n.id === 'physics-chemistry').children.find(n => n.id === 'chemistry-final');
-assert.equal(chem.lab, 'structure');
+// 6.5.0~ 오비탈 실습이 같이 붙어 lab이 배열이 됐다.
+assert.ok([].concat(chem.lab).includes('structure'));
 const study = fs.readFileSync('components/swipe/SubjectStudy.tsx', 'utf8');
 assert.ok(study.includes("const structure = labs.includes('structure');") && study.includes('<StructureLab'));
 assert.ok(!/from '\.\.\/\.\.\/data\//.test(fs.readFileSync('components/swipe/StructureLab.tsx', 'utf8').replace("import type { Direction } from '../../data/swipe-cards';", '')), '실습 화면은 카드 묶음을 불러오지 않는다');
