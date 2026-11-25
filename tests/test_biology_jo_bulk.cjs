@@ -75,5 +75,6 @@ for (const row of exported.filter(r => r.deck_id === 'biology-jo-bulk' && r.kind
   assert.equal(row.figure_src, card.figure?.src, row.id);
   assert.deepEqual(rowToCard(row).figure, card.figure, row.id);
 }
-assert.ok(exported.filter(r => r.deck_id !== 'biology-jo-bulk').every(r => !('figure_src' in r)), 'other rows keep their exact shape');
+// 6.6.0~ 화학(주민지T 기말)에도 그림 카드가 있다. 그 줄은 test_chemistry_final.cjs가 본다.
+assert.ok(exported.filter(r => r.deck_id !== 'biology-jo-bulk' && r.deck_id !== 'chemistry-final').every(r => !('figure_src' in r)), 'other rows keep their exact shape');
 console.log(`PASS: 조용민T 뭉탱이 ${editions.map(e => `${e.name} ${cards.filter(c => c.topic === e.name).length}`).join(', ')} — sizes, pages, sources, no repeats of the 기본 deck, ${cards.filter(c => c.figure).length} figure cards.`);
