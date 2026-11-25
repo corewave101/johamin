@@ -18,10 +18,13 @@ const all = [...cards, ...written];
 assert.equal(new Set(all.map(c => c.id)).size, all.length);
 assert.ok(all.every(c => /^chemistry-final-(written-)?\d{3}$/.test(c.id)));
 assert.equal(new Set(cards.map(c => c.question)).size, cards.length);
-const pages = { 1: 21, 2: 15, 3: 6, 4: 8, 5: 12, 7: null, 8: null, 9: null }; // PDF 쪽수 (7~9번은 원본을 열어 확인한 값)
+const pages = { 1: 21, 2: 15, 3: 6, 4: 8, 5: 12, 7: 5 }; // PDF 쪽수 (7번은 5쪽까지 확인)
+// 6.6.0~ PPT 8 · 9번은 파일 전체가 한 탐구라 쪽 대신 ‘전체’로 적는다(저장소 주인 확인). 다른 PPT에는 ‘전체’를 쓰지 않는다.
 for (const c of [...cards, ...written]) {
-  const m = /^주민지T PPT (\d) · (\d+)쪽$/.exec(c.sourceNote);
-  assert.ok(m && Number(m[2]) >= 1 && Number(m[2]) <= pages[m[1]], `${c.id}: ${c.sourceNote}`);
+  const m = /^주민지T PPT (\d) · (?:(\d+)쪽|전체)$/.exec(c.sourceNote);
+  assert.ok(m, `${c.id}: ${c.sourceNote}`);
+  if (m[2] === undefined) assert.ok(m[1] === '8' || m[1] === '9', `${c.id}: ‘전체’는 PPT 8 · 9번만`);
+  else assert.ok(Number(m[2]) >= 1 && Number(m[2]) <= pages[m[1]], `${c.id}: ${c.sourceNote}`);
 }
 for (const c of cards) {
   assert.equal(new Set(Object.values(c.answers)).size, 4, c.id);
