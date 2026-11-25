@@ -327,6 +327,141 @@ export function stereoOf(m: Molecule): 'cis' | 'trans' | null {
   return d < 60 ? 'cis' : d > 120 ? 'trans' : null;
 }
 
+// ── 직접 조립 ───────────────────────────────────────────────────────────
+// 탄소만 기억한다: 앞 탄소(parent, 첫 탄소는 −1)와 그 결합 차수. 수소는 남는 자리에 저절로 채우고,
+// 3D 좌표는 혼성(sp³ 정사면체 · sp² 평면 삼각형 · sp 직선)에 맞춰 매번 새로 계산한다.
+// 사슬은 지그재그(앞앞 탄소 반대쪽), 이중 결합 양쪽 치환기는 한 평면. 고리는 만들지 않는다.
+export interface BuildCarbon { parent: number; order: 1 | 2 | 3; flip?: boolean }
+export type BuildGraph = BuildCarbon[];
+export const MAX_BUILD_CARBONS = 8;
+export const START_GRAPH: BuildGraph = [{ parent: -1, order: 1 }];
+const ORDER_NAME = ['', '단일', '이중', '삼중'];
+
+export const childrenOf = (g: BuildGraph, i: number) => g.flatMap((c, k) => c.parent === i ? [k] : []);
+/** i에 붙은 결합들의 차수(앞 탄소 쪽 포함). */
+const bondOrdersAt = (g: BuildGraph, i: number) => [...(g[i].parent >= 0 ? [g[i].order] : []), ...childrenOf(g, i).map(k => g[k].order)];
+export const usedValence = (g: BuildGraph, i: number) => bondOrdersAt(g, i).reduce((s, o) => s + o, 0);
+export const freeValence = (g: BuildGraph, i: number) => 4 - usedValence(g, i);
+const multipleCount = (g: BuildGraph, i: number) => bondOrdersAt(g, i).filter(o => o > 1).length;
+
+/** 탄소 i에 order 결합으로 새 탄소를 붙일 수 없는 이유(붙일 수 있으면 null). */
+export function addReason(g: BuildGraph, i: number, order: 1 | 2 | 3): string | null {
+  if (g.length >= MAX_BUILD_CARBONS) return `탄소는 ${MAX_BUILD_CARBONS}개까지만 붙여요`;
+  const free = freeValence(g, i);
+  if (free === 0) return '이 탄소는 결합 4개가 다 찼어요';
+  if (free < order) return `빈 자리가 ${free}개라 ${ORDER_NAME[order]} 결합은 못 붙여요`;
+  if (order > 1 && multipleCount(g, i) > 0) return '한 탄소에는 이중 · 삼중 결합을 하나만 붙여요';
+  return null;
+}
+/** 탄소 i와 앞 탄소 사이 결합을 order로 바꿀 수 없는 이유. */
+export function orderReason(g: BuildGraph, i: number, order: 1 | 2 | 3): string | null {
+  const p = g[i]?.parent ?? -1;
+  if (p < 0) return '첫 탄소는 앞 결합이 없어요';
+  const diff = order - g[i].order;
+  if (diff === 0) return null;
+  if (freeValence(g, i) < diff || freeValence(g, p) < diff) return `양쪽 탄소에 빈 자리가 모자라 ${ORDER_NAME[order]} 결합이 안 돼요`;
+  if (order > 1 && (multipleCount(g, i) - (g[i].order > 1 ? 1 : 0) > 0 || multipleCount(g, p) - (g[i].order > 1 ? 1 : 0) > 0)) return '한 탄소에는 이중 · 삼중 결합을 하나만 붙여요';
+  return null;
+}
+export const addCarbon = (g: BuildGraph, i: number, order: 1 | 2 | 3): BuildGraph => [...g, { parent: i, order }];
+export const setOrder = (g: BuildGraph, i: number, order: 1 | 2 | 3): BuildGraph => g.map((c, k) => k === i ? { ...c, order } : c);
+/** i부터 그 끝까지 지운다. 남은 탄소의 새 번호(map[옛 번호] = 새 번호, 지워지면 −1)도 돌려준다. */
+export function removeFrom(g: BuildGraph, i: number): { graph: BuildGraph; map: number[] } {
+  if (i <= 0) return { graph: START_GRAPH, map: g.map((_, k) => k === 0 ? 0 : -1) };
+  const gone = new Set([i]);
+  g.forEach((c, k) => { if (gone.has(c.parent)) gone.add(k); }); // 부모가 늘 앞 번호라 한 번에 된다
+  const map: number[] = [];
+  let next = 0;
+  g.forEach((_, k) => { map[k] = gone.has(k) ? -1 : next++; });
+  return { graph: g.filter((_, k) => !gone.has(k)).map(c => ({ ...c, parent: c.parent < 0 ? -1 : map[c.parent] })), map };
+}
+/** 탄소 i가 걸린 이중 결합에서 시스 ↔ 트랜스를 바꿀 수 있으면, 뒤집을 탄소(이중 결합의 뒤쪽 탄소) 번호. 없으면 −1. */
+export function flipTarget(g: BuildGraph, i: number): number {
+  const ends: [number, number][] = [];
+  if (g[i]?.parent >= 0 && g[i].order === 2) ends.push([g[i].parent, i]);
+  for (const k of childrenOf(g, i)) if (g[k].order === 2) ends.push([i, k]);
+  for (const [a, b] of ends) {
+    const subsA = (g[a].parent >= 0 ? 1 : 0) + childrenOf(g, a).filter(k => k !== b).length;
+    const subsB = childrenOf(g, b).length;
+    if (subsA > 0 && subsB > 0) return b;
+  }
+  return -1;
+}
+export const toggleFlip = (g: BuildGraph, i: number): BuildGraph => g.map((c, k) => k === i ? { ...c, flip: !c.flip } : c);
+
+const buildHyb = (g: BuildGraph, i: number): Hyb => { const m = Math.max(...bondOrdersAt(g, i), 1); return m === 3 ? 'sp' : m === 2 ? 'sp2' : 'sp3'; };
+/** 앞 탄소 쪽 방향 u를 빼고 남는 σ 자리 방향. ref 반대쪽(φ = 180°)이 먼저라 사슬이 지그재그가 된다. */
+function slotDirs(hyb: Hyb, u: Vec, ref: Vec): Vec[] {
+  if (hyb === 'sp') return [scale(u, -1)];
+  if (hyb === 'sp2') return [dirAt(u, 120, 180, ref), dirAt(u, 120, 0, ref)];
+  return [dirAt(u, TETRA, 180, ref), dirAt(u, TETRA, 300, ref), dirAt(u, TETRA, 60, ref)];
+}
+function ccLength(order: 1 | 2 | 3, a: Hyb, b: Hyb) {
+  if (order === 3) return C_TR_C;
+  if (order === 2) return C_EQ_C;
+  return a === 'sp' || b === 'sp' ? C_SP : a === 'sp2' || b === 'sp2' ? C_SP2 : CC;
+}
+/** 조립한 탄소 그래프 → 분자. 원자 번호는 탄소가 그래프 순서대로 먼저, 수소가 뒤. */
+export function buildMolecule(g: BuildGraph): Molecule {
+  const n = g.length;
+  const pos: Vec[] = new Array(n), refOf: Vec[] = new Array(n);
+  const hDirs: { c: number; dir: Vec }[] = [];
+  pos[0] = [0, 0, 0];
+  for (let i = 0; i < n; i++) {
+    const hyb = buildHyb(g, i);
+    const root = g[i].parent < 0;
+    const u: Vec = root ? [-1, 0, 0] : unit(sub(pos[g[i].parent], pos[i]));
+    const ref: Vec = root ? [0, 1, 0] : refOf[i];
+    let slots = slotDirs(hyb, u, ref);
+    if (root) slots = [...slots, u]; // 첫 탄소는 앞 탄소 자리도 비어 있다
+    if (g[i].flip) slots = [...slots].reverse();
+    const kids = childrenOf(g, i);
+    kids.forEach((k, s) => {
+      const d = slots[s];
+      pos[k] = add(pos[i], scale(d, ccLength(g[k].order, hyb, buildHyb(g, k))));
+      // 자식의 기준 방향: 이 탄소에서 다른 치환기 쪽(앞 탄소가 있으면 그쪽). 그래야 sp² 평면이 이어진다.
+      refOf[k] = root ? (s === 0 ? slots[1] ?? [0, 1, 0] : slots[0]) : u;
+    });
+    for (let s = kids.length; s < kids.length + freeValence(g, i); s++) hDirs.push({ c: i, dir: slots[s] });
+  }
+  const atoms: Atom[] = pos.map(p => ({ el: 'C' as El, p }));
+  const bonds: Bond[] = g.flatMap((c, k) => c.parent >= 0 ? [{ a: c.parent, b: k, order: c.order }] : []);
+  for (const h of hDirs) {
+    atoms.push({ el: 'H', p: add(pos[h.c], scale(h.dir, buildHyb(g, h.c) === 'sp' ? CH_SP : CH)) });
+    bonds.push({ a: h.c, b: atoms.length - 1, order: 1 });
+  }
+  const multi = bonds.find(b => b.order > 1);
+  const kind: MolKind = bonds.some(b => b.order === 3) ? 'alkyne' : multi ? 'alkene' : 'alkane';
+  return { id: 'built', name: '직접 만든 분자', kind, atoms, bonds, ...(multi ? { axis: [multi.a, multi.b] as [number, number] } : {}) };
+}
+/** 서로 결합하지 않은 원자끼리 가장 가까운 거리(같은 탄소에 붙은 두 원자는 뺀다). */
+export function closestNonbonded(m: Molecule) {
+  const near = new Set<string>();
+  m.atoms.forEach((_, i) => { const nb = neighbors(m, i).map(x => x.atom); nb.forEach(a => { near.add(`${i},${a}`); nb.forEach(b => near.add(`${a},${b}`)); }); });
+  let best = Infinity;
+  for (let i = 0; i < m.atoms.length; i++) for (let j = i + 1; j < m.atoms.length; j++) if (!near.has(`${i},${j}`)) best = Math.min(best, len(sub(m.atoms[i].p, m.atoms[j].p)));
+  return best;
+}
+/**
+ * 이름 짓기(lib/structure.ts의 nameOf)에 넘길 2D 탄소 골격. 이중 결합이 있으면 그 평면에 펼쳐서
+ * 시스 · 트랜스가 그대로 남게 한다.
+ */
+export function skeleton2D(m: Molecule) {
+  const carbons = m.atoms.map((a, i) => i).filter(i => m.atoms[i].el === 'C');
+  let ex: Vec = [1, 0, 0], ey: Vec = [0, 1, 0];
+  const multi = m.bonds.find(b => b.order === 2);
+  if (multi) {
+    ex = unit(sub(m.atoms[multi.b].p, m.atoms[multi.a].p));
+    const n = orbitalsOf(m, multi.a)?.p[0] ?? [0, 0, 1];
+    ey = unit(cross(n, ex));
+  }
+  const index = new Map(carbons.map((c, k) => [c, k]));
+  return {
+    atoms: carbons.map(c => ({ el: 'C' as const, x: dot(m.atoms[c].p, ex), y: -dot(m.atoms[c].p, ey) })),
+    bonds: m.bonds.filter(b => index.has(b.a) && index.has(b.b)).map(b => ({ a: index.get(b.a)!, b: index.get(b.b)!, order: b.order })),
+  };
+}
+
 // ── 문제 만들기 ─────────────────────────────────────────────────────────
 export type QuizKind = 'hyb' | 'count' | 'cistrans' | 'ring' | 'chair' | 'twist';
 export const QUIZ_KINDS: QuizKind[] = ['hyb', 'count', 'cistrans', 'ring', 'chair', 'twist'];

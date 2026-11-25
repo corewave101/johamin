@@ -132,6 +132,47 @@ const hybs = new Set();
 for (let n = 0; n < 300; n++) { const q = O.makeQuestion(rng, undefined, ['hyb']); hybs.add(O.hybOf(q.mol, q.highlight)); }
 assert.deepEqual([...hybs].sort(), ['sp', 'sp2', 'sp3']);
 
+// 직접 조립: 탄소를 붙이면 수소가 채워지고, 혼성에 맞는 결합각 · 원자가, 원자끼리 겹치지 않음, 이름은 구조식 실습의 nameOf.
+const S = require('../lib/structure.ts');
+const nameOfBuilt = m => { const r = S.nameOf(O.skeleton2D(m)); return r.ok ? S.render(r.plan) : null; };
+const assemble = steps => steps.reduce((g, [i, o]) => { assert.equal(O.addReason(g, i, o), null, `붙이기 ${i} ${o}`); return O.addCarbon(g, i, o); }, O.START_GRAPH);
+const built = {
+  '메테인': [], '프로페인': [[0, 1], [1, 1]], '2-메틸프로페인': [[0, 1], [0, 1], [0, 1]], '2,2-다이메틸프로페인': [[0, 1], [0, 1], [0, 1], [0, 1]],
+  '에텐': [[0, 2]], '트랜스-2-뷰텐': [[0, 1], [1, 2], [2, 1]], '1-뷰텐': [[0, 2], [1, 1], [2, 1]], '프로파인': [[0, 3], [1, 1]], '옥테인': [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1]],
+  '2,2,3,3-테트라메틸뷰테인': [[0, 1], [1, 1], [1, 1], [1, 1], [2, 1], [2, 1], [2, 1]],
+};
+for (const [want, steps] of Object.entries(built)) {
+  const m = O.buildMolecule(assemble(steps));
+  assert.equal(nameOfBuilt(m), want, `조립 이름 ${want}`);
+  m.atoms.forEach((a, i) => assert.equal(O.neighbors(m, i).reduce((s, n) => s + n.order, 0), a.el === 'C' ? 4 : 1, `${want} 원자가`));
+  for (let i = 0; i < m.atoms.length; i++) {
+    if (m.atoms[i].el !== 'C') continue;
+    const ideal = { sp3: 109.47, sp2: 120, sp: 180 }[O.hybOf(m, i)];
+    for (const x of O.anglesAround(m, i)) near(x.angle, ideal, 0.05, `${want} 탄소 ${i} 결합각`);
+  }
+  assert.ok(O.closestNonbonded(m) > 1.8, `${want} 원자가 겹침 ${O.closestNonbonded(m)}`);
+  assert.equal(m.atoms.filter(a => a.el === 'C').length, steps.length + 1, '탄소가 그래프 순서대로 앞에');
+}
+// 시스 ↔ 트랜스 뒤집기, 그리고 뒤집어도 sp² 평면 · 결합각 그대로.
+let g2 = assemble(built['트랜스-2-뷰텐']);
+const flipAt = O.flipTarget(g2, 1);
+assert.equal(flipAt, 2); assert.equal(O.flipTarget(assemble(built['1-뷰텐']), 0), -1, '1-뷰텐은 시스-트랜스 없음');
+g2 = O.toggleFlip(g2, flipAt);
+assert.equal(nameOfBuilt(O.buildMolecule(g2)), '시스-2-뷰텐');
+const cisBuilt = O.buildMolecule(g2);
+near(O.piAlignment(cisBuilt, 1, 2), 1, 1e-9, '조립한 C=C의 p 오비탈이 나란함');
+// 원자가 · 범위 막기와 지우기.
+assert.match(O.addReason(assemble([[0, 3]]), 1, 2), /빈 자리가 1개/);
+assert.match(O.addReason(assemble([[0, 2]]), 1, 2), /하나만/);
+assert.match(O.addReason(assemble(built['2,2-다이메틸프로페인']), 0, 1), /4개가 다 찼/);
+assert.match(O.addReason(assemble(built['옥테인']), 7, 1), /8개까지/);
+assert.equal(O.orderReason(assemble(built['프로페인']), 2, 3), null, 'C–C≡C 가능');
+assert.match(O.orderReason(assemble([[0, 2], [1, 1]]), 2, 2), /하나만/);
+assert.match(O.orderReason(O.START_GRAPH, 0, 2), /첫 탄소/);
+const cut = O.removeFrom(assemble([[0, 1], [1, 1], [0, 1]]), 1);
+assert.deepEqual(cut.graph, [{ parent: -1, order: 1 }, { parent: 0, order: 1 }]); assert.deepEqual(cut.map, [0, -1, -1, 1]);
+assert.deepEqual(O.removeFrom(assemble([[0, 1]]), 0).graph, O.START_GRAPH);
+
 // 화면 연결: 화학(주민지T · 기말) 덱 학습 메뉴에 ‘3D로 돌려 보기’ · ‘돌려 보고 맞히기’.
 const { finalMenu } = require('../data/final-subjects.ts');
 const chem = finalMenu.children.find(n => n.id === 'science').children.find(n => n.id === 'physics-chemistry').children.find(n => n.id === 'chemistry-final');

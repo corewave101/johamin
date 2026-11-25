@@ -5,14 +5,16 @@ import type { Direction } from '../../data/swipe-cards';
 import { arrows, directionOf, directions, isTyping, keyDirections, SWIPE_DISTANCE } from '../../lib/directions';
 import { playResult, playTick } from '../../lib/sound';
 import {
-  HYB_SOURCE, HYB_TEXT, anglesAround, bentAngle, bondCounts, formula, hybOf, makeQuestion, molecule, orbitalsOf, piAlignment, ringAngle, stereoOf, twist,
-  type Hyb, type OrbitalQuestion, type QuizKind, type SceneMode,
+  HYB_SOURCE, HYB_TEXT, MAX_BUILD_CARBONS, START_GRAPH, addCarbon, addReason, anglesAround, bentAngle, bondCounts, buildMolecule, flipTarget, formula, hybOf,
+  makeQuestion, molecule, orbitalsOf, orderReason, piAlignment, removeFrom, ringAngle, setOrder, skeleton2D, stereoOf, toggleFlip, twist,
+  type BuildGraph, type Hyb, type OrbitalQuestion, type QuizKind, type SceneMode,
 } from '../../lib/orbital';
+import { nameOf, render } from '../../lib/structure';
 import MenuCard, { modalOpen, useEscape } from './MenuCard';
 import OrbitalScene, { type AngleSpec } from './OrbitalScene';
 
-type Page = 'menu' | 'hybrid' | 'bond' | 'ring' | 'quiz';
-const PAGE_TITLE: Record<Exclude<Page, 'menu'>, string> = { hybrid: '혼성 오비탈', bond: 'σ · π와 회전', ring: '고리 스트레인', quiz: '오비탈 문제' };
+type Page = 'menu' | 'build' | 'hybrid' | 'bond' | 'ring' | 'quiz';
+const PAGE_TITLE: Record<Exclude<Page, 'menu'>, string> = { build: '직접 만들기', hybrid: '혼성 오비탈', bond: 'σ · π와 회전', ring: '고리 스트레인', quiz: '오비탈 문제' };
 const fmt = (n: number) => `${Math.round(n * 10) / 10}°`.replace('.0°', '°');
 
 export default function OrbitalLab({ onBack, start = 'menu' }: { onBack: () => void; start?: 'menu' | 'quiz' }) {
@@ -21,13 +23,16 @@ export default function OrbitalLab({ onBack, start = 'menu' }: { onBack: () => v
   useEscape(back); // 한 단계만 뒤로(과목 메뉴까지 튀어 나가지 않게)
 
   if (page === 'menu') return <MenuCard topic="주민지T · 오비탈 실습" question="무엇을 돌려 볼까요?"
-    up={{ label: '혼성 오비탈', note: 'sp³ · sp² · sp와 결합각', onChoose: () => setPage('hybrid') }}
+    up={{ label: '직접 만들기', note: '탄소를 붙여 오비탈 보기', onChoose: () => setPage('build') }}
     left={{ label: 'σ · π와 회전', note: '왜 C=C는 못 돌까?', onChoose: () => setPage('bond') }}
     right={{ label: '고리 스트레인', note: '굽은 겹침 · 의자형/보트형', onChoose: () => setPage('ring') }}
     onBack={onBack} backLabel="학습 메뉴">
     <div className="orbital-menu-extra">
       <p className="structure-menu-note glass">끌어서 돌리고, 두 손가락이나 휠로 확대해요.</p>
-      <button type="button" className="glass-button orbital-quiz-link" onClick={() => { playTick(); setPage('quiz'); }}>오비탈 문제 풀기 →</button>
+      <div className="orbital-chips">
+        <button type="button" className="glass-button orbital-quiz-link" onClick={() => { playTick(); setPage('hybrid'); }}>혼성 오비탈 예시 →</button>
+        <button type="button" className="glass-button orbital-quiz-link" onClick={() => { playTick(); setPage('quiz'); }}>오비탈 문제 풀기 →</button>
+      </div>
     </div>
   </MenuCard>;
 
@@ -36,7 +41,7 @@ export default function OrbitalLab({ onBack, start = 'menu' }: { onBack: () => v
       <button type="button" className="glass-button" onClick={back}>{start === 'quiz' && page === 'quiz' ? '← 학습 메뉴' : '← 오비탈 실습'}</button>
       <h1>{PAGE_TITLE[page]}</h1>
     </header>
-    {page === 'hybrid' ? <HybridPage /> : page === 'bond' ? <BondPage /> : page === 'ring' ? <RingPage /> : <QuizPage />}
+    {page === 'build' ? <BuildPage /> : page === 'hybrid' ? <HybridPage /> : page === 'bond' ? <BondPage /> : page === 'ring' ? <RingPage /> : <QuizPage />}
   </div></main>;
 }
 
@@ -60,6 +65,119 @@ const HYB_INFO: Record<Hyb, { mix: string; shape: string; left: string }> = {
   sp2: { mix: 's 1개 + p 2개 → 혼성 오비탈 3개', shape: '한 평면에서 삼각형으로 퍼져요', left: '남는 p 오비탈 1개가 옆 탄소의 p와 측면으로 겹쳐 π 결합 1개를 만들어요.' },
   sp: { mix: 's 1개 + p 1개 → 혼성 오비탈 2개', shape: '일직선으로 퍼져요', left: '남는 p 오비탈 2개가 서로 수직으로 π 결합 2개를 만들어요.' },
 };
+// ── 직접 만들기 ─────────────────────────────────────────────────────────
+// 탄소를 고르고 단일 · 이중 · 삼중 결합으로 탄소를 붙이면, 수소가 저절로 채워지고 혼성에 맞는 3D 모양 · 오비탈이 바로 바뀐다.
+const ORDER_LABEL: Record<1 | 2 | 3, string> = { 1: 'C–C 단일', 2: 'C=C 이중', 3: 'C≡C 삼중' };
+const ORDERS = [1, 2, 3] as const;
+/** 막힌 결합들의 이유를 한 줄로: “빈 자리가 1개라 이중 · 삼중 결합은 못 붙여요”. */
+function blockedText(blocked: { o: 1 | 2 | 3; why: string | null }[]) {
+  const room = blocked.filter(b => b.why?.startsWith('빈 자리가'));
+  const free = room[0]?.why?.match(/빈 자리가 (\d)개/)?.[1];
+  const parts = room.length ? [`빈 자리가 ${free}개라 ${room.map(b => ['', '단일', '이중', '삼중'][b.o]).join(' · ')} 결합은 못 붙여요`] : [];
+  for (const b of blocked) if (b.why && !b.why.startsWith('빈 자리가') && !parts.includes(b.why)) parts.push(b.why);
+  return parts.join(' · ');
+}
+function BuildPage() {
+  const [graph, setGraph] = useState<BuildGraph>(START_GRAPH);
+  const [selected, setSelected] = useState(0);
+  const [history, setHistory] = useState<{ graph: BuildGraph; selected: number }[]>([]);
+  const [orbitals, setOrbitals] = useState(true);
+  const [showAngles, setShowAngles] = useState(true);
+  const [showPi, setShowPi] = useState(true);
+  const [showSigma, setShowSigma] = useState(false);
+  const mol = useMemo(() => buildMolecule(graph), [graph]);
+  const sel = Math.min(selected, graph.length - 1);
+  const hyb = hybOf(mol, sel)!;
+  const set = orbitalsOf(mol, sel)!;
+  const around = anglesAround(mol, sel);
+  const angles: AngleSpec[] = useMemo(() => showAngles ? (hyb === 'sp' ? around.slice(0, 1) : around.slice(0, 3)).map(a => ({ center: sel, a: a.a, b: a.b })) : [], [showAngles, around, sel, hyb]);
+  const { sigma, pi } = bondCounts(mol);
+  const named = useMemo(() => nameOf(skeleton2D(mol)), [mol]);
+  // 고른 탄소가 걸린 이중 결합 먼저, 없으면 분자 안의 아무 이중 결합(시스 · 트랜스가 되는 것).
+  const flipAt = [sel, ...graph.map((_, k) => k)].map(k => flipTarget(graph, k)).find(k => k >= 0) ?? -1;
+  const parent = graph[sel].parent;
+
+  const commit = useCallback((next: BuildGraph, nextSelected: number) => {
+    setHistory(h => [...h.slice(-40), { graph, selected: sel }]);
+    setGraph(next); setSelected(nextSelected); playTick();
+  }, [graph, sel]);
+  const add = useCallback((order: 1 | 2 | 3) => { if (!addReason(graph, sel, order)) commit(addCarbon(graph, sel, order), graph.length); }, [graph, sel, commit]);
+  const bond = (order: 1 | 2 | 3) => { if (order !== graph[sel].order && !orderReason(graph, sel, order)) commit(setOrder(graph, sel, order), sel); };
+  const remove = useCallback(() => {
+    if (graph.length === 1) return;
+    const { graph: next, map } = removeFrom(graph, sel);
+    commit(next, sel === 0 ? 0 : Math.max(0, map[graph[sel].parent]));
+  }, [graph, sel, commit]);
+  const undo = useCallback(() => {
+    const last = history[history.length - 1];
+    if (!last) return;
+    setHistory(h => h.slice(0, -1)); setGraph(last.graph); setSelected(last.selected); playTick();
+  }, [history]);
+  // PC: 1 · 2 · 3 = 붙이기, Delete = 지우기, Z = 되돌리기(방향키는 모형 돌리기).
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (isTyping(event) || modalOpen() || event.altKey || event.metaKey) return;
+      if (event.key === '1' || event.key === '2' || event.key === '3') { event.preventDefault(); add(Number(event.key) as 1 | 2 | 3); }
+      else if (event.key === 'Delete' || event.key === 'Backspace') { event.preventDefault(); remove(); }
+      else if (event.key.toLowerCase() === 'z') { event.preventDefault(); undo(); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [add, remove, undo]);
+
+  const blocked = ORDERS.map(o => ({ o, why: addReason(graph, sel, o) })).filter(x => x.why);
+  const info = HYB_INFO[hyb];
+  return <section className="biology-menu glass orbital-panel">
+    <div className="orbital-controls">
+      <div className="orbital-chips" role="group" aria-label="탄소 고르기">
+        {graph.map((_, k) => <button key={k} type="button" className="glass-button" aria-pressed={k === sel} onClick={() => { playTick(); setSelected(k); }}>C{k + 1} · {HYB_TEXT[hybOf(mol, k)!]}</button>)}
+      </div>
+      <div className="orbital-chips">
+        <Toggle on={orbitals} onChange={setOrbitals}>오비탈</Toggle>
+        {orbitals && <Toggle on={showSigma} onChange={setShowSigma}>σ 겹침</Toggle>}
+        <Toggle on={showPi} onChange={setShowPi}>π 겹침</Toggle>
+        <Toggle on={showAngles} onChange={setShowAngles}>결합각</Toggle>
+      </div>
+    </div>
+    <div className="orbital-body is-build">
+      <OrbitalScene mol={mol} mode={orbitals ? 'orbital' : 'ball'} highlight={sel} angles={angles} sigma={showSigma} pi={showPi} onPick={i => { if (i < graph.length) { playTick(); setSelected(i); } }}
+        keyboard viewKey="build" view={[0.3, 0.15]} label={`직접 만든 분자 ${formula(mol)} 3D 모형, 고른 탄소 C${sel + 1}은 ${HYB_TEXT[hyb]} 혼성`} />
+      <aside className="orbital-info">
+        <h2>{named.ok ? render(named.plan) : '이름 없음'} <small>{formula(mol)} · σ {sigma} · π {pi}</small></h2>
+        {!named.ok && <p className="structure-source">{named.reason}</p>}
+        <div className="orbital-build-box">
+          <p className="orbital-build-title">빛나는 <b>C{sel + 1}</b>에 탄소 붙이기</p>
+          <div className="orbital-build-row">
+            {ORDERS.map(o => <button key={o} type="button" className="glass-button orbital-build-add" disabled={Boolean(addReason(graph, sel, o))} onClick={() => add(o)}>
+              <kbd>{o}</kbd> {ORDER_LABEL[o]}</button>)}
+          </div>
+          {blocked.length > 0 && <p className="orbital-build-why">{blockedText(blocked)}</p>}
+          {parent >= 0 && <>
+            <p className="orbital-build-title">C{parent + 1}–C{sel + 1} 결합 바꾸기</p>
+            <div className="orbital-build-row">
+              {ORDERS.map(o => { const why = orderReason(graph, sel, o); return <button key={o} type="button" className="glass-button" aria-pressed={graph[sel].order === o}
+                disabled={graph[sel].order !== o && Boolean(why)} title={why ?? undefined} onClick={() => bond(o)}>{['', '단일', '이중', '삼중'][o]}</button>; })}
+            </div>
+          </>}
+          <div className="orbital-build-row">
+            {flipAt >= 0 && <button type="button" className="glass-button" onClick={() => commit(toggleFlip(graph, flipAt), sel)}>시스 ↔ 트랜스</button>}
+            <button type="button" className="glass-button" disabled={graph.length === 1} onClick={remove}>{sel === 0 ? '처음부터' : `C${sel + 1}부터 지우기`}</button>
+            <button type="button" className="glass-button" disabled={!history.length} onClick={undo}>되돌리기</button>
+          </div>
+        </div>
+        <p className="orbital-big">C{sel + 1}: <b>{HYB_TEXT[hyb]} 혼성</b> · 혼성 오비탈 {set.lobes.length}개 · 남는 p {set.p.length}개</p>
+        <ul>
+          <li>{info.mix} · {info.shape}</li>
+          <li>결합각 {[...new Set(around.map(a => fmt(a.angle)))].join(' · ') || '—'} (모형에서 잰 값)</li>
+          <li>{info.left}</li>
+        </ul>
+        <p className="structure-source">탄소를 누르거나 위 C 버튼으로 골라요. 수소는 남는 자리에 저절로 붙어요. 탄소는 {MAX_BUILD_CARBONS}개까지, 고리는 ‘고리 스트레인’에서 봐요. 근거: 주민지T {HYB_SOURCE[hyb]}</p>
+        {orbitals && <Legend items={[...(['hybrid', 'p', 'h1s'] as const), ...(showSigma ? ['sigma' as const] : []), ...(showPi && pi ? ['pi' as const] : [])]} />}
+      </aside>
+    </div>
+  </section>;
+}
+
 function HybridPage() {
   const [molId, setMolId] = useState('methane');
   const [orbitals, setOrbitals] = useState(true);
