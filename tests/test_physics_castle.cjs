@@ -109,20 +109,20 @@ check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정�
   }
   // 웨이브 곡선: 첫 밤 4, 계속 오른다, 5의 배수 근처가 더 가파르다, 마리 수 상한
   const csrc = fs.readFileSync(path.join(dir, 'js/core.js'), 'utf8');
-  const blk = csrc.slice(csrc.indexOf('const WAVE_C'), csrc.indexOf('function waveList'));
+  const blk = csrc.slice(csrc.indexOf('const WAVE_CAP'), csrc.indexOf('function waveList'));
   const env = new Function('sq', 'clamp', `${blk}; return {waveB, waveDB, waveSize, hpMul, eliteCount, ELITE_HP, WAVE_CAP};`)(n => Math.sqrt(Math.max(0, n - 1)), (v, a, b) => Math.max(a, Math.min(b, v)));
   check(Math.abs(env.waveB(1) - 4) < 1e-9, '웨이브 1의 총 체력은 4 (예전과 같게)');
   let mono = true; for (let n = 2; n <= 80; n++) if (env.waveB(n) <= env.waveB(n - 1)) mono = false;
   check(mono, '총 체력은 밤마다 늘어야 해요');
-  // 도함수가 이차함수: 밤마다 느는 양이 계속 커지고, 그 느는 양의 증가도 일정하게 커진다(이계차가 직선 → 삼계차가 상수)
-  for (let n = 3; n <= 80; n++) check(env.waveB(n) - env.waveB(n - 1) > env.waveB(n - 1) - env.waveB(n - 2), `밤 ${n}: 늘어나는 양이 앞 밤보다 커야 해요`);
-  const d3 = n => env.waveB(n + 3) - 3*env.waveB(n + 2) + 3*env.waveB(n + 1) - env.waveB(n);
-  for (let n = 1; n <= 60; n++) check(Math.abs(d3(n) - d3(1)) < 1e-6 && d3(1) > 0, `웨이브 곡선은 삼차식이어야 해요(삼계차 일정) · 밤 ${n}`);
-  for (let n = 1; n <= 60; n++){ const h = 1e-4, num = (env.waveB(n + h) - env.waveB(n - h))/(2*h); check(Math.abs(num - env.waveDB(n)) < 1e-4, `B′(${n}) 식이 수치 미분과 달라요`); }
+  // 6.5: 6.3.1 곡선으로 되돌림(사용자: "난이도 넘 어려움, 기존으로") — 마리 수 4 + 2.2√(n−1), 한 마리 1 + 0.5√(n−1)
+  //      그래서 6.4의 '삼차식 · 느는 양이 계속 커진다' 검사를 '예전 곡선과 같다 · 느는 양은 줄어든다'로 바꿨다
+  for (const n of [2, 5, 10, 20, 30, 60]){ const s = Math.sqrt(n - 1); check(Math.abs(env.waveB(n) - (4 + 2.2*s)*(1 + .5*s)) < 1e-9, `밤 ${n}: 6.3.1 곡선과 달라요`); }
+  for (let n = 4; n <= 80; n++) check(env.waveB(n) - env.waveB(n - 1) <= env.waveB(n - 1) - env.waveB(n - 2) + 1e-9, `밤 ${n}: 느는 양이 앞 밤보다 커지면 안 돼요(되돌린 곡선)`);
+  for (let n = 2; n <= 60; n++){ const h = 1e-4, num = (env.waveB(n + h) - env.waveB(n - h))/(2*h); check(Math.abs(num - env.waveDB(n)) < 1e-4, `B′(${n}) 식이 수치 미분과 달라요`); }
   // 실제 밤: 뽑힌 몬스터 몫을 다 더하면 총 체력 B(n) (거인 4.5마리 몫 · 박쥐 0.5 · 정예 ×4)
   { const ctx = {}; const run = new Function('ctx', csrc.replace(/^'use strict';/, '') + '; ctx.f = {waveList, waveHpMul, waveB, unitOf, FOES, waveTheme}; ');
     try { run(ctx); } catch(e){ /* 브라우저 전용 코드가 섞여 있으면 건너뜀 */ }
-    if (ctx.f){ for (let n = 1; n <= 40; n++){ const L = ctx.f.waveList(n), m = ctx.f.waveHpMul(L, n), tot = L.reduce((s, q) => s + ctx.f.unitOf(q)*m, 0); check(Math.abs(tot - ctx.f.waveB(n)) < 1e-6, `밤 ${n}: 몬스터 몫 × 배율 ≠ 총 체력`); check(L.length >= 3, `밤 ${n}: 너무 적어요`); } }
+    if (ctx.f){ for (let n = 1; n <= 40; n++){ const L = ctx.f.waveList(n), m = ctx.f.waveHpMul(L, n), tot = L.reduce((s, q) => s + (q.boss ? 0 : ctx.f.unitOf(q)*m), 0); check(Math.abs(tot - ctx.f.waveB(n)) < 1e-6, `밤 ${n}: 몬스터 몫 × 배율 ≠ 총 체력(보스 빼고)`); check(L.length >= 3, `밤 ${n}: 너무 적어요`); } }
   }
   // 6.4 몸 전체 판정: 빛이 몸 반지름 안에 다 들어가면 100%, 상이 커도 몸에 걸친 만큼 맞는다
   { const ctx = {}; new Function('ctx', csrc.replace(/^'use strict';/, '') + '; newGame(); ctx.f = {hitD, traceD, FOES, PRESETS, siegeDesign, srcPower, drawOf, BODY_REF, fracAt};')(ctx); const f = ctx.f;
@@ -200,7 +200,7 @@ check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정�
     check(Math.abs(e/k - .25) < .02 && e2 === 0, `광자 통신: 도적이 있으면 남긴 비트의 25%가 틀려요 (${(e/k*100).toFixed(1)}%) · 없으면 0`);
     for (let d = 0; d < 40; d++) f.townTick(); check(t.pop >= 1 && t.food >= 0 && t.happy >= 0 && t.happy <= 100, '40일 돌려도 값이 망가지지 않아요');
   }
-  check(env.waveB(30)/env.waveB(10) > 5, '30밤은 10밤보다 훨씬 세야 해요(골드가 쌓여도 어렵게)');
+  check(env.waveB(30)/env.waveB(10) > 2 && env.waveB(30) < 80, '30밤은 10밤보다 세지만 6.4처럼 폭주하지 않아요');
   for (let n = 1; n <= 80; n++){ const c = env.waveSize(n); check(c >= 3 && c <= env.WAVE_CAP, `밤 ${n}의 마리 수 ${c}가 3~${env.WAVE_CAP} 밖이에요`); check(Math.abs((c + env.ELITE_HP*env.eliteCount(n))*env.hpMul(n) - env.waveB(n)) < 1e-6, `밤 ${n}: 마리 수 × 체력 ≠ 총 체력`); }
   // 탑 광전관: solveCircuit이 u = R·I(u)를 풀었는지
   const sc = csrc.match(/function solveCircuit\(lines, R\)\{[\s\S]*?\n\}/), pf = csrc.match(/const panelFrac = ([^\n]*);/);
@@ -213,5 +213,11 @@ check(/피직스 캐슬|랭킹/.test(read('public/privacy.html')) , '개인정�
     }
   }
 }
+// 6.5: 마을 3D · 성주관 걷기 파일은 town.js 다음에 · 업그레이드 상한이 표 길이를 넘지 않는다 · 성벽 수리는 낮에만
+check(scripts.includes('js/town3d.js') && scripts.indexOf('js/town3d.js') > scripts.indexOf('js/town.js'), 'town3d.js는 town.js 다음에 불러야 해요');
+{ const csrc65 = fs.readFileSync(path.join(dir, 'js/core.js'), 'utf8'), sp = csrc65.match(/speed:\s*\{[^\n]*max:(\d+)/), cs = csrc65.match(/const CRAFT_SPD = \[([^\]]*)\]/);
+  check(sp && cs && +sp[1] < cs[1].split(',').length, '제작 속도 상한이 CRAFT_SPD 칸 수를 넘으면 안 돼요');
+  const ac = csrc65.match(/sAcc:\s*\{[^\n]*max:(\d+)/); check(ac && .4 + .1*(+ac[1]) <= 1.0001, '쫄병 조준은 100%를 넘으면 안 돼요');
+  const hsrc = fs.readFileSync(path.join(dir, 'js/hud.js'), 'utf8'); check(/sign\('wallfix'/.test(hsrc) && /const REPAIR_G = \d+/.test(hsrc), '낮 성벽에 수리 표지판이 있어야 해요'); }
 if (failed){ console.error(`physics castle: ${failed}개 실패`); process.exit(1); }
 console.log('physics castle ok');

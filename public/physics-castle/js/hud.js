@@ -129,7 +129,7 @@ window.renderAll = function(){
   renderTabs(); renderMap();
   beginUI();
   if (UI.page && UI.pageMode !== G.mode) UI.page = null;
-  ({keep:keepPanel, map:mapPanel, forge:forgePanel, place:placePanel, wave:wavePanel, cleared:clearedPanel, sortie:sortiePanel, over:overPanel, build:() => {}, train:trainPanel, solar:solarPanel, dress:dressPanel})[G.mode]();
+  ({keep:keepPanel, town:() => window.townPanel && window.townPanel(), map:mapPanel, forge:forgePanel, place:placePanel, wave:wavePanel, cleared:clearedPanel, sortie:sortiePanel, over:overPanel, build:() => {}, train:trainPanel, solar:solarPanel, dress:dressPanel})[G.mode]();
   if (G.showSettings && G.mode !== 'over' && G.mode !== 'build') paintPop('settings', {el:'[data-act="settings"]', below:true}, settingsHtml(), false, {cls:'drop'});
   endUI();
   renderHud(); renderParts();
@@ -137,7 +137,7 @@ window.renderAll = function(){
   $('cross').hidden = !(G.mode === 'wave' && G.view === 'first' && !G.ride);
   $('panel').hidden = true; stage.classList.remove('winopen');
   applySettings(); applyGfx();
-  const stickMode = G.mode === 'wave' || G.mode === 'sortie';
+  const stickMode = G.mode === 'wave' || G.mode === 'sortie' || G.mode === 'town' || G.mode === 'keep';   // 6.5 마을 · 성주관도 걷는다
   $('stick').hidden = !stickMode || (G.settings.stick === 'float' && floatPid == null);
   $('fireBtn').hidden = !(G.mode === 'wave' && G.ride);
   renderDialbox();
@@ -150,7 +150,8 @@ window.renderAll = function(){
 window.renderTabs = function(){
   const m = G.mode; let h = '';
   if (m === 'map') h = IN_JOHAMIN ? `<button class="tbtn" type="button" data-act="goHome">← 조하민</button>` : '';
-  else if (m === 'forge' || m === 'train' || m === 'solar' || m === 'dress' || m === 'keep') h = `<button class="tbtn" type="button" data-act="toMap">← 지도</button>`;
+  else if (m === 'keep' && UI.keepFrom === 'town') h = `<button class="tbtn" type="button" data-act="toTown">← 마을</button><button class="tbtn" type="button" data-act="toMap">지도</button>`;
+  else if (m === 'forge' || m === 'train' || m === 'solar' || m === 'dress' || m === 'keep' || m === 'town') h = `<button class="tbtn" type="button" data-act="toMap">← 지도</button>`;
   else if (m === 'place') h = `<button class="tbtn" type="button" data-act="toMap">← 지도</button><button class="tbtn" type="button" data-act="placeView">${G.placeView === 'follow' ? '전체 보기' : '주인공 시점'}</button>`;
   if (m !== 'over' && m !== 'build') h += `<button class="tbtn" type="button" data-act="settings" aria-pressed="${G.showSettings}">설정 ${G.showSettings ? '▴' : '▾'}</button>`;
   $('tabs').innerHTML = h;
@@ -221,6 +222,12 @@ window.placePanel = function(){
     dgrp('', dk('data-act="night"', `밤 시작 · 웨이브 ${G.wave}`, waveSummary(G.wave), 'go')));
   if (G.sel != null) paintPop('sock', sockPos, sockHtml());
 };
+const REPAIR_G = 3;
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('[data-fix]'); if (!b || b.disabled) return;
+  const n = Math.min(+b.dataset.fix, wallMax() - Math.max(0, G.wallHp)), c = n*REPAIR_G; if (n <= 0 || G.gold < c) return;
+  G.gold -= c; G.wallHp = Math.max(0, G.wallHp) + n; hint(`성벽을 ${n}칸 고쳤어요 · ${G.wallHp}/${wallMax()}`); saveGame(); renderAll();
+});
 function sockHtml(){
   const so = SOCKETS[G.sel], here = atSocket(G.sel);
   const head = (t) => `<div class="ed-head"><h3>${t}</h3><span class="${here ? 'go' : ''}">${here ? '도착' : '이동 중…'}</span></div>`;
@@ -908,6 +915,10 @@ window.placePanel = function(){
   const w = Object.entries(UPG).find(([, u]) => u.b === 'wall');
   if (w){ const [id, u] = w, lv = up(id), max = lv >= u.max, c = max ? 0 : u.cost(lv), ok = !max && G.gold >= c;
     sign('wallup', () => V(5.2, 4.6, 1.7), sgB(`${max ? 'disabled' : `data-up="${id}"`} ${ok || max ? '' : 'disabled'}`, '🧱', `${u.name} Lv.${lv}${max ? ' · 최대' : ` · ${c}G`}`, `성벽 ${Math.max(0, G.wallHp)}/${wallMax()}${!max && !ok ? ` · 보유 ${G.gold}G` : ''}`)); }
+  // 6.5 성벽 수리 (사용자: "웨이브 시작 전에 성벽 수리할 수 있게") · 1칸당 REPAIR_G골드, +10씩 또는 전부
+  const lack = wallMax() - Math.max(0, G.wallHp);
+  if (lack > 0){ const n10 = Math.min(10, lack), c10 = n10*REPAIR_G, cAll = lack*REPAIR_G, okAll = G.gold >= cAll, ok10 = G.gold >= c10;
+    sign('wallfix', () => V(0, 5.6, 1.9), `<div class="sg-pair">${sgB(`data-fix="${n10}" ${ok10 ? '' : 'disabled'}`, '🔨', `성벽 수리 +${n10} · ${c10}G`, ok10 ? `성벽 ${Math.max(0, G.wallHp)}/${wallMax()}` : `골드 부족 · ${c10}G`)}${lack > 10 ? sgB(`data-fix="${lack}" ${okAll ? '' : 'disabled'}`, '🧰', `전부 수리 · ${cAll}G`, okAll ? `${lack}칸 다 채워요` : `골드 부족 · ${cAll}G`) : ''}</div>`); }
   if (G.sel != null) paintPop('sock', sockPos, sockHtml());
 };
 
@@ -1103,7 +1114,7 @@ const _placePanel6 = window.placePanel;
 window.placePanel = function(){
   if (!painted) return renderAll();
   _placePanel6();
-  for (const k of ['bell', 'build', 'wallup']){ const c = CARDS.get(k); if (c) c.opts.world = WORLD_PPU; }
+  for (const k of ['bell', 'build', 'wallup', 'wallfix']){ const c = CARDS.get(k); if (c) c.opts.world = WORLD_PPU; }
 };
 
 /* ── 바깥을 누르면 닫힌다 ── */
@@ -1353,7 +1364,7 @@ function deptTabs(label = true){
 }
 const brandEl = document.querySelector('.hud .brand'), BRAND0 = brandEl.innerHTML;
 function paintBrand(){
-  const f = G.mode === 'forge', h = f ? deptTabs() : BRAND0;
+  const f = G.mode === 'forge', h = f ? '<span class="ft-t">대장간</span>' : BRAND0;   // 6.5 부서 탭은 양쪽 가장자리(edgenav)로 옮겼다
   if (brandEl.dataset.h !== h){ brandEl.innerHTML = h; brandEl.dataset.h = h; }
   brandEl.classList.toggle('has-tabs', f);
 }
@@ -1480,12 +1491,14 @@ let lastMode8 = G.mode;
 const _renderAll8 = window.renderAll;
 window.renderAll = function(){ if (G.mode !== lastMode8){ lastMode8 = G.mode; UI.upg = null; } _renderAll8.apply(this, arguments); thumbNav(); };
 
-/* ── 대장간 엄지 이동: 패드를 두 손으로 쥐면 위쪽 탭에 손가락이 안 닿는다 → 아래 양 구석에 이전 · 다음 부서 ── */
-const tnav = document.createElement('div'); tnav.className = 'thumbnav'; tnav.hidden = true; stage.appendChild(tnav);
+/* ── 대장간 부서 이동 (6.5): 위 탭과 아래 구석 화살표를 합쳐 양쪽 가장자리로 (사용자: "구석은 손에 가려서 안 보임 · 위랑 구석을 합쳐서 모서리에 · 2배 · 반투명")
+   왼쪽 가장자리 = 연구부 · 설계부, 오른쪽 가장자리 = 실험부 · 제작부. 패드를 두 손으로 쥐면 엄지가 닿는 높이(세로 가운데)에 둔다 ── */
+const DEPT_IC = {research:'📜', design:'📐', test:'🧪', craft:'🔨'};
+const tnav = document.createElement('div'); tnav.className = 'edgenav'; tnav.hidden = true; stage.appendChild(tnav);
 function thumbNav(){
   const on = G.mode === 'forge'; tnav.hidden = !on; if (!on) return;
-  const i = DEPT_ORDER.indexOf(G.dept), p = DEPT_ORDER[i - 1], n = DEPT_ORDER[i + 1];
-  const h = `${p ? `<button type="button" class="tn-l" data-dgo="${p}" aria-label="${DEPT_NAME[p]}로"><span>◀</span>${DEPT_NAME[p]}</button>` : '<i></i>'}${n ? `<button type="button" class="tn-r" data-dgo="${n}" aria-label="${DEPT_NAME[n]}로">${DEPT_NAME[n]}<span>▶</span></button>` : '<i></i>'}`;
+  const btn = d => `<button type="button" data-dgo="${d}" aria-pressed="${G.dept === d}" aria-label="${DEPT_NAME[d]}로"><span class="en-i">${DEPT_IC[d] || ''}</span>${DEPT_NAME[d]}</button>`;
+  const h = `<div class="en-col l">${DEPT_ORDER.slice(0, 2).map(btn).join('')}</div><div class="en-col r">${DEPT_ORDER.slice(2).map(btn).join('')}</div>`;
   if (tnav.dataset.h !== h){ tnav.innerHTML = h; tnav.dataset.h = h; }
 }
 

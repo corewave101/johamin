@@ -438,6 +438,7 @@ input[type=range]#sFl{height:22px}
 .bpcard.flash{animation:flash 1.6s ease}
 @keyframes flash{0%,60%{box-shadow:0 0 0 3px var(--ember),0 0 24px rgba(255,140,60,.55)}100%{box-shadow:none}}
 .brand.has-tabs{font-size:inherit;text-shadow:none}
+.brand.has-tabs > .ft-t{font-size:22px;color:var(--ink);text-shadow:0 1px 2px rgba(0,0,0,.6)}
 .ftabs{display:flex;align-items:center;gap:4px;pointer-events:auto;font-family:var(--f-body)}
 .ftabs .ft-t{font-family:var(--f-display);font-size:20px;margin-right:6px;color:var(--ink);text-shadow:0 1px 2px rgba(0,0,0,.6)}
 .ftabs button{font:inherit;font-size:13px;font-weight:700;color:var(--ink);background:rgba(11,22,40,.72);border:1px solid rgba(160,200,255,.28);border-radius:999px;padding:7px 12px;cursor:pointer;min-height:34px}
@@ -487,6 +488,16 @@ input[type=range]#sFl{height:22px}
 .thumbnav button{pointer-events:auto;display:flex;align-items:center;gap:8px;min-height:50px;padding:0 18px;border-radius:999px;border:1px solid rgba(160,200,255,.3);background:rgba(11,22,40,.78);color:var(--ink);font:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35)}
 .thumbnav button span{color:var(--ember);font-size:12px}
 .thumbnav button:active{background:var(--ember);color:#1a0d04}
+/* 6.5 대장간 부서 이동: 양쪽 가장자리 · 예전 탭의 2배 · 반투명 */
+.edgenav{position:absolute;left:0;right:0;top:64px;bottom:var(--sheeth,0px);display:flex;justify-content:space-between;align-items:center;padding:0 max(10px,env(safe-area-inset-right,0px)) 0 max(10px,env(safe-area-inset-left,0px));pointer-events:none;z-index:40;transition:bottom .15s}
+.edgenav .en-col{display:grid;gap:12px}
+.edgenav button{pointer-events:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:96px;min-height:72px;padding:8px 6px;border-radius:18px;border:1px solid rgba(160,200,255,.32);background:rgba(11,22,40,.42);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);color:var(--ink);font:inherit;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:.82;transition:opacity .15s,background .15s}
+.edgenav .en-i{font-size:24px;line-height:1}
+.edgenav button[aria-pressed="true"]{background:rgba(255,138,61,.62);border-color:rgba(255,138,61,.9);color:#1a0d04;opacity:.95}
+.edgenav button:hover,.edgenav button:focus-visible{opacity:1}
+.edgenav button:active{background:var(--ember);color:#1a0d04;opacity:1}
+@media (max-width:560px){ .edgenav{top:56px} .edgenav button{width:62px;min-height:58px;font-size:12px;border-radius:14px;padding:6px 4px} .edgenav .en-i{font-size:19px} .edgenav .en-col{gap:8px} }
+.sg-pair{display:grid;gap:2px}
 .stage[data-mode="forge"] .page-b{padding-bottom:76px}
 
 /* v8 · 좁은 세로 화면: 고정 카드는 아래 시트 */
@@ -610,5 +621,6 @@ table.bb td:first-child{text-align:left;color:var(--muted)} table.bb .ok{color:v
 <script src="js/sites.js"></script>
 <script src="js/dungeon.js"></script>
 <script src="js/town.js"></script>
+<script src="js/town3d.js"></script>
 </body>
 </html>

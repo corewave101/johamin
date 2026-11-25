@@ -193,22 +193,23 @@ const PRESETS = [
 const SOLDIER_GUN = {id:'sgun', kind:'soldier', name:'LED 소총', source:'led', barrel:40, els:[{type:'convex', x:38, f:lensFor(38, 9)}]};
 
 /* ═════════ 업그레이드 ═════════ */
+/* 6.5 상한 늘림 (사용자: "최대 웨이브에 맞게 업그레이드 상한도") — 보스 다섯이 50밤까지 나오니 60밤 근처까지 올릴 거리가 있게 */
 const UPG = {
-  panels:  {b:'solar', req:'A', name:'태양광 패널 추가', max:16, cost:l => 50 + 25*l, eff:l => `패널 ${3+l}장 → ${4+l}장`},
-  battery: {b:'solar', req:'C', name:'배터리 용량', max:10, cost:l => 70*(l + 1), eff:l => `${100 + 50*l} → ${150 + 50*l} ⚡`},
-  slots:   {b:'craft', name:'제작 칸', max:2, cost:l => 160*(l + 1), eff:l => `${1+l}칸 → ${2+l}칸`},
-  speed:   {b:'craft', name:'제작 속도', max:3, cost:l => 130*(l + 1), eff:l => `밤마다 작업량 ${CRAFT_SPD[l]} → ${CRAFT_SPD[l+1]}`},
-  lowPower:{b:'craft', req:'sensor', name:'자동 조준 절전', max:3, cost:l => 100*(l + 1), eff:l => `유지비 ${autoUpkeep(l).toFixed(2)} → ${autoUpkeep(l+1).toFixed(2)} ⚡/초`},
-  sAcc:    {b:'train', name:'쫄병 조준 훈련', max:5, cost:l => 70*(l + 1), eff:l => `조준 ${Math.round((.4 + .1*l)*100)}% → ${Math.round((.5 + .1*l)*100)}%`},
-  sHp:     {b:'train', name:'쫄병 체력 훈련', max:5, cost:l => 60*(l + 1), eff:l => `체력 ${8 + 3*l} → ${11 + 3*l}`},
-  sPow:    {b:'train', name:'쫄병 사격 훈련', max:5, cost:l => 80*(l + 1), eff:l => `무기 배율 ×${(.5 + .1*l).toFixed(1)} → ×${(.6 + .1*l).toFixed(1)}`},
-  barracks:{b:'train', name:'병영 늘리기', max:4, cost:l => 120*(l + 1), eff:l => `정원 ${3 + 2*l} → ${5 + 2*l}명`},
-  hHp:     {b:'train', name:'주인공 체력', max:5, cost:l => 60*(l + 1), eff:l => `토벌 체력 ${12 + 5*l} → ${17 + 5*l}`},
-  hPow:    {b:'train', name:'주인공 사격', max:5, cost:l => 70*(l + 1), eff:l => `무기 배율 ×${(.8*(1 + .25*l)).toFixed(2)} → ×${(.8*(1 + .25*(l+1))).toFixed(2)}`},
-  hSpd:    {b:'train', name:'주인공 달리기', max:5, cost:l => 50*(l + 1), eff:l => `속도 +${12*l}% → +${12*(l+1)}%`},
-  wallHp:  {b:'wall', name:'성벽 보강', max:5, cost:l => 100*(l + 1), eff:l => `성벽 ${30 + 10*l} → ${40 + 10*l}`},
+  panels:  {b:'solar', req:'A', name:'태양광 패널 추가', max:21, cost:l => 50 + 25*l, eff:l => `패널 ${3+l}장 → ${4+l}장`},
+  battery: {b:'solar', req:'C', name:'배터리 용량', max:20, cost:l => 70*(l + 1), eff:l => `${100 + 50*l} → ${150 + 50*l} ⚡`},
+  slots:   {b:'craft', name:'제작 칸', max:3, cost:l => 160*(l + 1), eff:l => `${1+l}칸 → ${2+l}칸`},
+  speed:   {b:'craft', name:'제작 속도', max:5, cost:l => 130*(l + 1), eff:l => `밤마다 작업량 ${CRAFT_SPD[l]} → ${CRAFT_SPD[l+1]}`},
+  lowPower:{b:'craft', req:'sensor', name:'자동 조준 절전', max:4, cost:l => 100*(l + 1), eff:l => `유지비 ${autoUpkeep(l).toFixed(2)} → ${autoUpkeep(l+1).toFixed(2)} ⚡/초`},
+  sAcc:    {b:'train', name:'쫄병 조준 훈련', max:6, cost:l => 70*(l + 1), eff:l => `조준 ${Math.round((.4 + .1*l)*100)}% → ${Math.round((.5 + .1*l)*100)}%`},
+  sHp:     {b:'train', name:'쫄병 체력 훈련', max:15, cost:l => 60*(l + 1), eff:l => `체력 ${8 + 3*l} → ${11 + 3*l}`},
+  sPow:    {b:'train', name:'쫄병 사격 훈련', max:15, cost:l => 80*(l + 1), eff:l => `무기 배율 ×${(.5 + .1*l).toFixed(1)} → ×${(.6 + .1*l).toFixed(1)}`},
+  barracks:{b:'train', name:'병영 늘리기', max:6, cost:l => 120*(l + 1), eff:l => `정원 ${3 + 2*l} → ${5 + 2*l}명`},
+  hHp:     {b:'train', name:'주인공 체력', max:15, cost:l => 60*(l + 1), eff:l => `토벌 체력 ${12 + 5*l} → ${17 + 5*l}`},
+  hPow:    {b:'train', name:'주인공 사격', max:15, cost:l => 70*(l + 1), eff:l => `무기 배율 ×${(.8*(1 + .25*l)).toFixed(2)} → ×${(.8*(1 + .25*(l+1))).toFixed(2)}`},
+  hSpd:    {b:'train', name:'주인공 달리기', max:8, cost:l => 50*(l + 1), eff:l => `속도 +${12*l}% → +${12*(l+1)}%`},
+  wallHp:  {b:'wall', name:'성벽 보강', max:15, cost:l => 100*(l + 1), eff:l => `성벽 ${30 + 10*l} → ${40 + 10*l}`},
 };
-const CRAFT_SPD = [1, 1.5, 2, 3];
+const CRAFT_SPD = [1, 1.5, 2, 3, 4, 5];   // 6.5 상한 늘림(60밤까지 가니까)
 const up = id => G.up[id] || 0;
 const panelsN = () => 3 + up('panels');
 /* ═════════ 광전 패널 (22번): 금속판 → 광전자 → 검출판. 충전 전압 U에서 전류 = 각 파장 광전류 × panelFrac (아래) ═════════ */
@@ -267,17 +268,16 @@ const FLOOR_COST = {3:250, 2:450, 1:700};
 
 /* ═════════ 웨이브 밸런스 (무리함수: 초반에 빨리, 뒤로 갈수록 완만하게) ═════════ */
 const sq = n => Math.sqrt(Math.max(0, n - 1));
-/* ═════════ 웨이브 곡선 (6.4 · 두 번째 판, 사용자: "사인 빼고 미분한 식이 이차함수가 되게, 골드가 쌓이면 쉬워져서")
-   밤 n의 총 체력(기본 몬스터 체력 단위), m = n − 1:
-     B(n) = 4·(1 + c₁m + c₂m² + c₃m³)   →   B′(n) = 4·(c₁ + 2c₂m + 3c₃m²)  (이차함수: 밤마다 느는 양 자체가 점점 빨리 는다)
-     c₁ = 0.7 · c₂ = 0.03 · c₃ = 0.001
-     5밤 ≈ 17 · 10밤 ≈ 42 · 20밤 ≈ 128 · 30밤 ≈ 284 · 60밤 ≈ 1407 (첫 판 18 · 37 · 74 · 110 · 215)
-   마리 수 = 총 체력 ÷ 천천히 느는 한 마리 체력(1 + 0.1(n−1)). 40마리에 닿으면 그 뒤는 한 마리 체력이 늘어난다.
-   밤마다 테마(젤리 떼는 많고 약하게 · 골렘 습격은 적고 세게) · 5밤마다 정예(체력 ×4, 몸 ×1.45) ═════════ */
-const WAVE_C = [.7, .03, .001], WAVE_CAP = 40, ELITE_HP = 4;
-const waveB = n => { const m = n - 1; return 4*(1 + WAVE_C[0]*m + WAVE_C[1]*m*m + WAVE_C[2]*m*m*m); };
-const waveDB = n => { const m = n - 1; return 4*(WAVE_C[0] + 2*WAVE_C[1]*m + 3*WAVE_C[2]*m*m); };
-const hpBase = n => 1 + .1*(n - 1);   // 0.06이면 마리 수가 너무 빨리 불어나서(10밤 20마리) 새는 적이 성벽을 금방 깬다
+/* ═════════ 웨이브 곡선 (6.5 · 사용자: "난이도 넘 어려움, 기존으로 되돌려") — 6.3.1 곡선으로 되돌림
+   밤 n, s = √(n − 1):  마리 수 ≈ 4 + 2.2s  ·  한 마리 체력 배율 1 + 0.5s  →  총 체력 B(n) = (4 + 2.2s)(1 + 0.5s)
+   5밤 ≈ 16 · 10밤 ≈ 27 · 20밤 ≈ 47 · 30밤 ≈ 64 · 60밤 ≈ 110 (6.4 삼차식은 17 · 42 · 128 · 284 · 1407 이라 너무 셌다)
+   B′(n) = (2.2·(1 + 0.5s) + 0.5·(4 + 2.2s)) / (2s)  — 밤마다 느는 양은 조금씩 줄어든다(골드로 따라잡을 수 있게)
+   보스는 이 예산 밖에서 따로(BOSS_MUL) · 밤마다 테마 · 5밤마다 정예(체력 ×4, 몸 ×1.45) ═════════ */
+const WAVE_CAP = 40, ELITE_HP = 4;
+const hpBase = n => 1 + .5*sq(n);
+const waveB = n => (4 + 2.2*sq(n))*hpBase(n);
+const waveDB = n => { const s = Math.sqrt(Math.max(1e-9, n - 1)); return (2.2*(1 + .5*s) + .5*(4 + 2.2*s))/(2*s); };
+const BOSS_MUL = n => .6*hpBase(n);   // 보스 체력 배율: 10밤 1.5 · 20밤 1.9 · 30밤 2.3
 const eliteCount = n => n % 5 === 0 && n % 10 !== 0 ? Math.min(3, 1 + Math.floor(n/20)) : 0;   // 5 · 15 · 25…밤에 1마리, 20밤부터 2 · 40밤부터 3 (10의 배수는 보스 밤)
 /* 6.6 새 몬스터는 5밤마다 하나씩 (사용자: "너무 붙어서 나온다") · 첫 밤엔 젤리 · 슬라임 둘, 그다음 6 · 11 · 16 …밤
    10밤마다 보스가 오고, 보스는 그 전에 나온 몬스터 집안의 왕이다 → 잡으면 소굴 던전에 그 테마 챕터가 열린다 */
@@ -319,7 +319,7 @@ const waveCount = waveSize;
 const hpMul = n => waveB(n)/(waveSize(n) + ELITE_HP*eliteCount(n));
 /* 실제 밤의 체력 배율: 뽑힌 몬스터들의 몫(unit · 정예 ×ELITE_HP · 보스는 자기 unit)을 다 더해서 총 체력이 꼭 B(n)이 되게 */
 const unitOf = q => (FOES[q.type].unit || 1)*(q.elite ? ELITE_HP : 1);
-const waveHpMul = (list, n) => waveB(n)/Math.max(1e-9, list.reduce((s, q) => s + unitOf(q), 0));
+const waveHpMul = (list, n) => waveB(n)/Math.max(1e-9, list.reduce((s, q) => s + (q.boss ? 0 : unitOf(q)), 0));   // 보스는 빼고(보스는 BOSS_MUL)
 const spdMul = n => 1 + .04*sq(n);
 const rewardMul = n => Math.pow(hpMul(n), .9);
 function waveList(n){
@@ -399,7 +399,7 @@ function snapshot(){
 }
 let lastSaveStr = '';
 function saveGame(){
-  if (!G || !['map', 'forge', 'place', 'cleared', 'train', 'solar', 'dress'].includes(G.mode)) return false;
+  if (!G || !['map', 'forge', 'place', 'cleared', 'train', 'solar', 'dress', 'town', 'keep'].includes(G.mode)) return false;
   try { const s = JSON.stringify(snapshot()); if (s !== lastSaveStr){ localStorage.setItem(SAVE_KEY, s); lastSaveStr = s; } return true; } catch(e){ return false; }
 }
 function readSave(){ try { const o = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); return o && o.v === 6 ? o : null; } catch(e){ return null; } }

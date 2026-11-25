@@ -210,7 +210,7 @@ function startWave(){
   renderAll();
 }
 function spawnFoe(spec){
-  const f = FOES[spec.type], hp = Math.round(f.hp*(G.waveMul || hpMul(G.wave))*(spec.elite ? ELITE_HP : 1)), mesh = foeMesh(spec.type, spec.armor, spec.elite ? 1.45 : 1), x = f.quantum ? 0 : -15 + Math.random()*30;
+  const f = FOES[spec.type], hp = Math.round(f.hp*(spec.boss && !G.dgRun ? BOSS_MUL(G.wave) : (G.waveMul || hpMul(G.wave)))*(spec.elite ? ELITE_HP : 1)), mesh = foeMesh(spec.type, spec.armor, spec.elite ? 1.45 : 1), x = f.quantum ? 0 : -15 + Math.random()*30;
   mesh.position.set(x, 0, dToZ(100)); wScene.add(mesh);
   if (f.boss){ const l = label(f.name, {size:22, color:'#1a0d04', bg:'rgba(255,140,80,.95)', h:.03, bold:true}); l.position.set(0, 1.9*f.scale + 1.1, 0); mesh.add(l); showBossBanner(f); }
   if (spec.elite){ const l = label('정예', {size:18, color:'#1a0d04', bg:'rgba(255,209,102,.95)', h:.022, bold:true}); l.position.set(0, 3.1, 0); mesh.add(l); hint(`정예 ${josa(f.short, '이', '가')} 나타났어요 · 체력 ×${ELITE_HP} · 몸 ×1.45`); }
