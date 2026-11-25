@@ -415,7 +415,8 @@ function frame(){
     for (const ph of fAnim.photons || []){ const s = (time*.9 + ph.userData.phase) % 2, f = s < 1 ? s : 2 - s; ph.position.set(X_REAR + .15 + f*span, BEAM_Y + ph.userData.dy, ph.userData.dz); }
     if (fAnim.ring) fAnim.ring.scale.setScalar(1 + .04*Math.sin(time*4));
     if (fAnim.body) fAnim.body.material.emissiveIntensity = fAnim.hit ? .25 + .35*Math.abs(Math.sin(time*14)) : .1;
-  } else if (G.mode === 'train' || G.mode === 'solar' || G.mode === 'dress'){ if (G.mode === 'solar') updateLab(dt); if (G.mode === 'dress'){ if (!dDrag) dSpin += dt*.4; dHero.rotation.y = dSpin; } }
+  } else if (G.mode === 'town' || G.mode === 'keep') roamTick(dt, time);   // 6.5 마을 · 성주관 걷기 (town3d.js)
+  else if (G.mode === 'train' || G.mode === 'solar' || G.mode === 'dress'){ if (G.mode === 'solar') updateLab(dt); if (G.mode === 'dress'){ if (!dDrag) dSpin += dt*.4; dHero.rotation.y = dSpin; } }
   else if (G.mode !== 'map'){
     const h = H();
     if (G.mode === 'wave' && !G.ride && !h.climb && !h.route.length){
@@ -446,7 +447,7 @@ function frame(){
     if (lastMode !== key){ const snap = G.mode === 'forge' || key.endsWith('r') || lastMode === 'map' || lastMode === null; lastMode = key; if (snap){ camPos.copy(goalPos); camLook.copy(goalLook); } }
     camPos.lerp(goalPos, k); camLook.lerp(goalLook, k);
     camera.position.copy(camPos); camera.lookAt(camLook);
-    const sc = G.mode === 'forge' ? fScene : G.mode === 'train' ? tScene : G.mode === 'solar' ? sScene : G.mode === 'dress' ? dScene : G.mode === 'keep' ? kScene : wScene;
+    const sc = G.mode === 'forge' ? fScene : G.mode === 'train' ? tScene : G.mode === 'solar' ? sScene : G.mode === 'dress' ? dScene : G.mode === 'keep' ? kScene : G.mode === 'town' ? nScene : wScene;
     if (sc === wScene){ applySky(['wave', 'sortie', 'over'].includes(G.mode)); wAnimate(time); gfxSample(rawDt); }
     renderer.setClearColor(G.mode === 'forge' ? 0x0f355e : G.mode === 'train' ? 0x9fc7e8 : G.mode === 'solar' ? 0xa8d8f0 : 0x0b1220);
     renderer.render(sc, camera);
