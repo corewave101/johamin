@@ -37,7 +37,7 @@ export const finalMenu: SubjectGroup = {
         { id: 'physics-final-group', kind: 'group', name: '물리학Ⅱ', direction: 'left', symbol: 'F', description: '공부할 선생님 파트를 골라요.', children: [
           { id: 'physics-yang-final', kind: 'deck', name: '양동비T', fullName: '물리학Ⅱ(양동비T · 기말)', direction: 'left', symbol: 'F', description: '광학 기기의 원리(렌즈 · 거울 · 렌즈 방정식 · 전반사 · 망원경 · 현미경 · 수차)와 편광(횡파 · 말뤼스 법칙 · 여러 편광판).', cards: physicsYangFinalCards, writtenQuestions: physicsYangFinalWritten, lab: ['castle', 'polarization', 'optics'] },
         ] },
-        { id: 'chemistry-final', kind: 'deck', name: '화학', fullName: '화학(주민지T · 기말)', direction: 'right', symbol: '⚗', description: '탄소 화합물: 분산력 · 알케인 · 이성질 · 명명법 · 고리형 · 알켄 · 알카인 · 알코올 · 산화제 · 에스터 · 은거울 · 바나나향.', cards: chemistryFinalCards, writtenQuestions: chemistryFinalWritten, lab: 'structure', figures: true },
+        { id: 'chemistry-final', kind: 'deck', name: '화학', fullName: '화학(주민지T · 기말)', direction: 'right', symbol: '⚗', description: '탄소 화합물: 분산력 · 알케인 · 이성질 · 명명법 · 고리형 · 알켄 · 알카인 · 알코올 · 산화제 · 에스터 · 은거울 · 바나나향.', cards: chemistryFinalCards, writtenQuestions: chemistryFinalWritten, lab: ['structure', 'orbital'], figures: true },
       ] },
     ] },
     { id: 'math-final-group', kind: 'group', name: '수학', direction: 'down', symbol: '∑', description: '수학 선생님을 골라요.', children: [
