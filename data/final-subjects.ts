@@ -30,7 +30,7 @@ export const finalMenu: SubjectGroup = {
         { id: 'biology-park-final', kind: 'deck', name: '박상영T', fullName: '생물(박상영T · 수행평가 대비)', direction: 'left', symbol: '✳', description: '수행평가 대비: 마이크로피펫 · 구강상피세포 DNA 추출 · NanoDrop 정량 · 보고서 계산.', cards: [], lab: 'dna' },
       ] },
       { id: 'astronomy-final-group', kind: 'group', name: '지구과학', direction: 'left', symbol: '✦', description: '왼쪽은 황윤환T, 오른쪽은 전효진T. 공부할 파트를 골라요.', children: [
-        { id: 'astronomy-hwang-final', kind: 'deck', name: '황윤환T', fullName: '행성우주과학(황윤환T · 기말)', direction: 'left', symbol: '✦', description: 'CCD와 CMOS · 노출 · DSLR 천체 촬영 · 행성 촬영 · 태양 관측 위성 자료.', cards: astronomyHwangFinalCards, writtenQuestions: astronomyHwangFinalWritten },
+        { id: 'astronomy-hwang-final', kind: 'deck', name: '황윤환T', fullName: '행성우주과학(황윤환T · 기말)', direction: 'left', symbol: '✦', description: 'CCD와 CMOS · 노출 · DSLR 천체 촬영 · 토성 관측과 영상 처리 · 태양 자전 주기.', cards: astronomyHwangFinalCards, writtenQuestions: astronomyHwangFinalWritten },
         { id: 'astronomy-jeon-final', kind: 'deck', name: '전효진T', fullName: '행성우주과학(전효진T · 기말)', direction: 'right', symbol: '✧', description: '외계 행성 탐사(시선 속도 · 식 현상 · 미세 중력 렌즈) · 별의 스펙트럼 · 크기 · 탄생.', cards: astronomyJeonFinalCards, writtenQuestions: astronomyJeonFinalWritten },
       ] },
       { id: 'physics-chemistry', kind: 'group', name: '물리 · 화학', direction: 'right', symbol: 'F', description: '왼쪽은 물리학Ⅱ, 오른쪽은 화학이에요.', children: [
