@@ -1,5 +1,6 @@
 // 덱에 붙는 실습 화면(학습 메뉴 맨 앞에 나온다). 4.10.0~: 양동비T 덱처럼 실습이 둘 이상이면 배열로 쓴다.
 // 카드 묶음(data/)을 불러오지 않도록 여기에 둔다.
 // 6.0.0~: 'castle'은 화면을 바꾸지 않고 따로 된 물리 디펜스 게임 페이지(/johamin/physics-castle/)로 간다.
-export type LabKind = 'optics' | 'polarization' | 'structure' | 'dna' | 'castle';
+// 6.8.0~: 'stellar'도 따로 된 페이지(/johamin/stellar-life/, 별의 일생 3D)로 간다.
+export type LabKind = 'optics' | 'polarization' | 'structure' | 'dna' | 'castle' | 'stellar';
 export const labsOf = (deck: { lab?: LabKind | LabKind[] }): LabKind[] => deck.lab === undefined ? [] : Array.isArray(deck.lab) ? deck.lab : [deck.lab];

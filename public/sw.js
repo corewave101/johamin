@@ -52,8 +52,8 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
   if (url.origin === self.location.origin) {
-    // 피직스 캐슬은 따로 된 페이지: 앱 첫 화면(SHELL)으로 저장하면 안 된다. 인터넷 먼저, 안 되면 저장해 둔 것.
-    if (/\/physics-castle(\/|$)/.test(url.pathname)) event.respondWith(castle(request));
+    // 피직스 캐슬 · 별의 일생은 따로 된 페이지: 앱 첫 화면(SHELL)으로 저장하면 안 된다. 인터넷 먼저, 안 되면 저장해 둔 것.
+    if (/\/(physics-castle|stellar-life)(\/|$)/.test(url.pathname)) event.respondWith(castle(request));
     else if (request.mode === 'navigate') event.respondWith(page(request));
     else event.respondWith(asset(request));
   } else if (url.hostname === 'cdn.jsdelivr.net') {
@@ -82,7 +82,7 @@ async function castle(request) {
   const cache = await caches.open(CACHE);
   try {
     const response = await Promise.race([fetch(request), new Promise((_, reject) => setTimeout(reject, 8000))]);
-    if (response.redirected) return Response.redirect(response.url, 302); // /physics-castle → /physics-castle/
+    if (response.redirected) return Response.redirect(response.url, 302); // /physics-castle → /physics-castle/ (stellar-life도 같음)
     if (response.ok && response.status === 200) await cache.put(request, response.clone());
     return response;
   } catch {

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05070f">
+<title>별의 일생 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* 레이아웃: 화면 전체가 3D 우주. UI는 위·아래 가장자리에만 얇게, 결과·문제는 가운데 카드로 잠깐 */
+:root{
+  --void:#05070f; --ink:#e9eefc; --dim:#9aa6c4; --glass:rgba(13,19,38,.66); --glass-2:rgba(22,30,58,.78);
+  --line:rgba(150,180,255,.20); --sun:#ffb45a; --sun-ink:#2b1700; --holo:#7fd6ff; --ok:#5fd39a; --bad:#ff6b7d;
+  --f-display:"Do Hyeon","IBM Plex Sans KR",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  --f-num:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0;background:var(--void);color:var(--ink);font-family:var(--f-body);overflow:hidden;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit}
+#stage{position:fixed;inset:0;touch-action:none}
+#stage canvas{display:block}
+.ui{position:fixed;z-index:20;pointer-events:none}
+.ui>*{pointer-events:auto}
+.glass{background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:16px}
+.btn{border:1px solid var(--line);background:var(--glass-2);border-radius:999px;padding:10px 18px;font-weight:600;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;gap:8px;justify-content:center;transition:transform .12s, background .2s}
+.btn:active{transform:scale(.96)}
+.btn:focus-visible,.opt:focus-visible,.chip:focus-visible{outline:2px solid var(--holo);outline-offset:2px}
+.btn.primary{background:var(--sun);color:var(--sun-ink);border-color:transparent}
+.btn.on{background:var(--holo);color:#04202c;border-color:transparent}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+/* 위 */
+.top{top:calc(env(safe-area-inset-top,0px) + 12px);left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.top-l{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;min-width:0}
+.back{width:44px;height:44px;padding:0;border-radius:14px}
+.hud{padding:10px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.hud-k{font-size:12px;color:var(--dim);letter-spacing:.04em}
+.hud-t{font-family:var(--f-display);font-size:28px;line-height:1.05}
+.hud-s{font-size:13px;color:var(--dim);max-width:46ch}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,auto));max-width:440px;gap:4px 16px;padding:10px 14px;font-size:13px}
+.stats b{display:block;font-family:var(--f-num);font-size:15px;color:var(--ink);font-weight:700}
+.stats span{color:var(--dim);font-size:11px}
+/* 아래 */
+.bottom{bottom:calc(env(safe-area-inset-bottom,0px) + 14px);left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));display:flex;justify-content:center;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.bar{display:flex;gap:8px;align-items:center;padding:8px;flex-wrap:wrap;justify-content:center}
+.chip{white-space:nowrap;border:1px solid var(--line);background:transparent;border-radius:999px;padding:8px 13px;min-height:40px;font-weight:600;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip.on{background:var(--sun);color:var(--sun-ink);border-color:transparent}
+.chip[disabled]{opacity:.35;cursor:default}
+.chip small{font-family:var(--f-num);font-size:11px;opacity:.75}
+/* 문제 카드 */
+.quiz{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:rgba(2,4,10,.45);padding:16px;animation:fade .2s}
+.quiz.out{opacity:0;transition:opacity .2s}
+.quiz-card{width:min(620px,100%);background:var(--glass-2);border:1px solid var(--line);border-radius:22px;padding:22px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:flex;flex-direction:column;gap:14px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.quiz-eyebrow{font-size:12px;color:var(--holo);letter-spacing:.06em}
+.quiz-q{font-size:20px;font-weight:700;line-height:1.45;text-wrap:balance}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{text-align:left;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:14px;padding:12px 14px;min-height:56px;cursor:pointer;font-size:15px;line-height:1.4;display:flex;gap:8px;align-items:flex-start}
+.opt-k{color:var(--dim);font-family:var(--f-num)}
+.opt.right{background:rgba(95,211,154,.18);border-color:var(--ok)}
+.opt.wrong{background:rgba(255,107,125,.16);border-color:var(--bad)}
+.quiz-why{font-size:15px;line-height:1.55;color:#d6def4}
+.quiz-why b{color:var(--sun)}
+.quiz-next{align-self:flex-end}
+@media (max-width:560px){.quiz-opts{grid-template-columns:1fr}.quiz-q{font-size:18px}}
+/* 배너·토스트 */
+.banner{position:fixed;left:50%;top:22%;transform:translate(-50%,10px);z-index:40;text-align:center;opacity:0;transition:.45s;pointer-events:none;width:min(720px,calc(100% - 32px))}
+.banner.on{opacity:1;transform:translate(-50%,0)}
+.banner-t{font-family:var(--f-display);font-size:clamp(34px,6vw,58px);text-shadow:0 4px 30px rgba(0,0,0,.7)}
+.banner-s{font-size:16px;color:#dfe6fb;margin-top:6px;text-shadow:0 2px 14px rgba(0,0,0,.9);line-height:1.5}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 150px);transform:translateX(-50%) translateY(20px);z-index:45;background:var(--glass-2);border:1px solid var(--line);padding:10px 16px;border-radius:14px;opacity:0;transition:.3s;pointer-events:none;font-size:14px;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+/* 결과·안내 카드 */
+.center{position:fixed;inset:0;z-index:48;display:grid;place-items:center;padding:16px;background:rgba(2,4,10,.5)}
+.card{width:min(720px,100%);max-height:calc(100% - 32px);overflow:auto;background:var(--glass-2);border:1px solid var(--line);border-radius:22px;padding:22px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:flex;flex-direction:column;gap:14px}
+.card h2{font-family:var(--f-display);font-weight:400;font-size:34px;margin:0}
+.card p{margin:0;line-height:1.6;color:#d6def4}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+@keyframes fade{from{opacity:0}}
+/* 고르기 화면 */
+.pick{position:fixed;inset:0;overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 28px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 28px) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:22px;align-items:center;justify-content:center}
+.pick-h{text-align:center;display:flex;flex-direction:column;gap:6px}
+.pick-h h1{font-family:var(--f-display);font-weight:400;font-size:clamp(40px,7vw,72px);margin:0;letter-spacing:.01em}
+.pick-h h1 em{font-style:normal;color:var(--sun)}
+.pick-h p{margin:0;color:var(--dim);font-size:14px}
+.pick-tip{color:var(--ink)!important;font-size:15px!important;margin-top:6px!important}
+.pick-tip b{color:var(--sun)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;width:min(1100px,100%)}
+.pc{position:relative;text-align:left;border:1px solid var(--line);background:var(--glass);border-radius:22px;padding:18px;cursor:pointer;display:flex;flex-direction:column;gap:10px;min-width:0;transition:transform .2s,border-color .2s;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);text-decoration:none}
+.pc:hover{transform:translateY(-3px);border-color:rgba(255,180,90,.5)}
+.pc svg{width:100%;height:auto;aspect-ratio:16/9;max-width:100%;border-radius:14px;background:#070b18}
+.pc-k{font-family:var(--f-num);font-size:12px;color:var(--sun)}
+.pc h3{font-family:var(--f-display);font-weight:400;font-size:30px;margin:0}
+.pc p{margin:0;color:#ccd5ee;font-size:14px;line-height:1.55}
+.pc ul{margin:0;padding-left:18px;color:var(--dim);font-size:13px;line-height:1.6}
+@media (max-width:860px){.cards{grid-template-columns:1fr}.pc svg{aspect-ratio:21/9}}
+@media (max-width:600px){
+  .hud{padding:8px 12px}.hud-t{font-size:22px}.hud-s{font-size:12px}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:2px 10px;padding:8px 12px}.stats b{font-size:13px}
+  #legend{display:none}.bar{padding:6px;gap:6px}.chip{padding:6px 10px;min-height:36px;font-size:13px}.btn{min-height:40px;padding:8px 14px}
+  .top-l{gap:8px}.toast{bottom:calc(env(safe-area-inset-bottom,0px) + 190px)}
+}
+#sky{position:fixed;inset:0;z-index:-1}
+.cards.two{grid-template-columns:repeat(2,minmax(0,1fr));width:min(860px,100%)}
+.pc .go{margin-top:auto;font-weight:700;color:var(--sun)}
+/* 천천히 보기 · 핵융합 크게 보기 */
+.scene,.fx{position:fixed;inset:0;z-index:60;background:#04060d;animation:fade .25s}
+.scene{animation:fade .7s ease}
+.scene.out{opacity:0;transition:opacity .35s}
+.scene-intro{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:8px;z-index:2;padding:16px;transition:opacity .6s,transform .6s}
+.scene-intro.out{opacity:0;transform:scale(.97)}
+.scene-top,.scene-bot{transition:opacity .5s}
+.scene.pre .scene-top,.scene.pre .scene-bot{opacity:0;pointer-events:none}
+.scene-it{font-family:var(--f-display);font-size:clamp(34px,6vw,58px);line-height:1.1;text-wrap:balance}
+.scene-is{font-size:15px;color:var(--dim)}
+.scene-x.in{animation:capin .45s ease}
+@keyframes capin{from{opacity:0;transform:translateY(6px)}}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--dim)}
+.btn.ready{animation:ready 1.4s ease-in-out infinite}
+@keyframes ready{0%,100%{box-shadow:0 0 0 0 rgba(255,180,90,.55)}50%{box-shadow:0 0 0 8px rgba(255,180,90,0)}}
+.scene-c,.fx-c{position:absolute;inset:0;width:100%;height:100%;display:block}
+.scene-top,.fx-top{position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:calc(env(safe-area-inset-top,0px) + 12px);pointer-events:none}
+.scene-t{font-family:var(--f-display);font-size:30px;line-height:1.1;text-wrap:balance}
+.scene-top,.fx-top{right:max(16px,env(safe-area-inset-right,0px))}
+.scene-bot{position:absolute;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 14px);display:flex;gap:12px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
+.scene-cap{flex:1 1 420px;min-width:0;max-width:760px;background:var(--glass-2);border:1px solid var(--line);border-radius:16px;padding:12px 16px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.scene-n{font-size:12px;color:var(--sun)}
+.scene-x{font-size:19px;font-weight:600;line-height:1.45;margin-top:2px;text-wrap:balance}
+.scene-dots{display:flex;gap:6px;margin-top:10px}
+.scene-dots i{height:4px;flex:1;border-radius:2px;background:rgba(255,255,255,.12)}
+.scene-dots i.done{background:rgba(255,180,90,.5)}.scene-dots i.on{background:var(--sun)}
+.scene-btns,.fx-b{display:flex;gap:8px;margin-left:auto}
+.fx-b{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 14px)}
+/* 문제 탭 */
+.qp{position:fixed;inset:0;overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 16px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 32px) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px;align-items:center}
+.qp>*{width:min(720px,100%)}
+.qp-h{display:flex;gap:12px;align-items:center}
+.qp-h h1{font-family:var(--f-display);font-weight:400;font-size:36px;margin:0}
+.qp-modes{display:flex;gap:8px;flex-wrap:wrap}
+.qp-prog{height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:12px}
+.qp-prog div{height:100%;background:var(--sun);transition:width .3s}
+.qp-card{width:100%;box-sizing:border-box;box-shadow:none}
+.fx .fx-c{top:calc(env(safe-area-inset-top,0px) + 76px);bottom:calc(env(safe-area-inset-bottom,0px) + 78px);height:auto}
+.qp-wrong{margin:0;padding-left:18px;display:grid;gap:8px;font-size:14px;line-height:1.5}
+.qp-wrong span{color:var(--ok)}
+@media (max-width:600px){.cards.two{grid-template-columns:1fr}.scene-t{font-size:22px}.scene-x{font-size:16px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="app"></div>
+
+<script src="three.min.js"></script>
+<script src="js/star.js"></script>
+<script src="js/core.js"></script>
+<script src="js/react.js"></script>
+<script src="js/scenes.js"></script>
+<script src="js/collect.js"></script>
+<script src="js/watch.js"></script>
+<script src="js/quizpage.js"></script>
+<script>
+/* 흐름: 처음 화면 → 시뮬(성운 고르기 → 모으기 → 주계열 이후 지켜보기) / 문제 */
+(function(){
+  const stageEl = document.getElementById('stage'), app = document.getElementById('app');
+  let cur = null, sky = null;
+  function clear(){ if (cur) cur.stop(); cur = null; if (sky) { sky(); sky = null; } document.querySelectorAll('body > .center, body > .quiz, body > .banner, body > .scene, body > .toast').forEach(e => e.remove()); }
+  function toTitle(){
+    clear(); if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    app.innerHTML = `<canvas id="sky"></canvas><main class="pick">
+      <a class="btn back" href="../" aria-label="조하민으로" style="position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:max(12px,env(safe-area-inset-left,0px));text-decoration:none">←</a>
+      <header class="pick-h"><h1>별의 <em>일생</em> 3D</h1><p>행성우주과학 10번 · 별의 진화 (학습지 36~41쪽)</p><p class="pick-tip">처음이면 <b>시뮬레이션</b>으로 별의 일생을 먼저 보고, 그다음 <b>문제</b>를 풀어 보세요</p></header>
+      <div class="cards two">
+        <button class="pc" id="go-sim"><div class="pc-k">시뮬레이션</div><h3>내 별 키우기</h3>
+          <p>성운을 골라 원시별로 질량을 모으고, 그 질량으로 태어난 별의 일생을 끝까지 지켜봐요.</p>
+          <ul><li>단계가 바뀔 때마다 천천히 보기로 힘의 관계 설명</li><li>핵을 누르면 핵융합을 크게</li><li>H-R도 위로 움직이는 진화 경로</li></ul><div class="go">시작 ▶</div></button>
+        <button class="pc" id="go-quiz"><div class="pc-k">문제</div><h3>학습지 빈칸 확인</h3>
+          <p>시뮬과 따로 풀어요. 틀린 문제만 다시 풀 수도 있어요.</p>
+          <ul><li>${STAR.Q.length}문제 · 학습지 쪽 번호 표시</li><li>순서대로 · 섞어서 · 틀린 것만</li></ul><div class="go">풀기 ▶</div></button>
+      </div></main>`;
+    document.getElementById('go-sim').onclick = toCollect;
+    document.getElementById('go-quiz').onclick = toQuiz;
+    const c = document.getElementById('sky'), x = c.getContext('2d'); let st = [], alive = true;
+    const rs = () => { c.width = innerWidth * devicePixelRatio; c.height = innerHeight * devicePixelRatio; st = Array.from({length: 260}, () => ({x: Math.random(), y: Math.random(), r: Math.random() * 1.6 + .3, t: Math.random() * 6, T: 2500 + Math.random() ** 2.5 * 25000})); };
+    rs(); addEventListener('resize', rs);
+    (function f(now){ if (!alive) return; x.fillStyle = '#05070f'; x.fillRect(0, 0, c.width, c.height);
+      for (const s of st) { const [r, g, b] = STAR.bbRGB(s.T); x.fillStyle = `rgba(${r*255|0},${g*255|0},${b*255|0},${.45 + .4 * Math.sin(now / 900 + s.t)})`; x.beginPath(); x.arc(s.x * c.width, s.y * c.height, s.r * devicePixelRatio, 0, 7); x.fill(); }
+      requestAnimationFrame(f); })(0);
+    sky = () => { alive = false; removeEventListener('resize', rs); };
+    cur = { stop(){ app.innerHTML = ''; } };
+  }
+  function toCollect(){ clear(); app.innerHTML = ''; cur = COLLECT.start(stageEl, app, { onHome: toTitle, onRetry: toCollect, onDone: r => toWatch(r) }); }
+  function toWatch(r){ clear(); cur = WATCH.start(stageEl, app, { M: r.M, neb: r.neb, onHome: toTitle, onRetry: toCollect, onQuiz: toQuiz }); }
+  function toQuiz(){ clear(); app.innerHTML = ''; cur = QUIZPAGE.start(app, { onHome: toTitle, onSim: toCollect }); }
+  window.__go = { toTitle, toCollect, toWatch, toQuiz, play: (id, P) => SCENES.play(id, P) }; // 점검용
+  location.hash === '#quiz' ? toQuiz() : toTitle();
+})();
+</script>
+</body>
+</html>
